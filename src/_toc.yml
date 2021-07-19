@@ -4,4 +4,5 @@
 format: jb-book
 root: intro
 chapters:
-- file: markdown
+- file: laboratorio1
+- file: laboratorio2
