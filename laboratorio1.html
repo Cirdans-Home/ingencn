@@ -1,0 +1,557 @@
+
+<!DOCTYPE html>
+
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Laboratorio 1 : Introduzione a MATLAB &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.acff12b8f9c144ce68a297486a2fa670.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/translations.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="index" title="Indice" href="genindex.html" />
+    <link rel="search" title="Cerca" href="search.html" />
+    <link rel="next" title="Laboratorio 2: Interpolazione di Funzioni" href="laboratorio2.html" />
+    <link rel="prev" title="Calcolo Numerico - Esercitazioni di Laboratorio" href="intro.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Calcolo Numerico - Esercitazioni di Laboratorio</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Cerca in questo libro ..." aria-label="Cerca in questo libro ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Calcolo Numerico - Esercitazioni di Laboratorio
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Laboratorio 1 : Introduzione a MATLAB
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio2.html">
+   Laboratorio 2: Interpolazione di Funzioni
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Attiva / disattiva la navigazione" aria-controls="site-navigation"
+                title="Attiva / disattiva la navigazione" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Scarica questa pagina"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/laboratorio1.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Scarica il file sorgente" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Stampa in PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/Cirdans-Home/ingcn"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Repository di origine"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/Cirdans-Home/ingcn/issues/new?title=Issue%20on%20page%20%2Flaboratorio1.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Apri un problema"><i class="fas fa-lightbulb"></i>questione aperta</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Modalità schermo intero"
+        title="Modalità schermo intero"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contenuti
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#il-desktop-di-matlab">
+   Il Desktop di Matlab
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#operazioni-artimetiche-e-ordine-delle-operazioni">
+   Operazioni artimetiche e ordine delle operazioni
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#variabili">
+   Variabili
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#variabili-carattere-e-stringhe">
+     Variabili carattere e stringhe
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#alcune-funzioni-di-cui-e-opportuno-ricordarsi">
+   Alcune funzioni di cui è opportuno ricordarsi
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="laboratorio-1-introduzione-a-matlab">
+<h1>Laboratorio 1 : Introduzione a MATLAB<a class="headerlink" href="#laboratorio-1-introduzione-a-matlab" title="Link a questa intestazione">¶</a></h1>
+<p>MATLAB/Simulink è uno strumento software per:</p>
+<ul class="simple">
+<li><p>Esecuzione di calcoli matematici ed elaborazione dei segnali,</p></li>
+<li><p>Analisi e visualizzazione dei dati: possiedi svariati strumenti grafici,</p></li>
+<li><p>Modellazione di sistemi e fenomeni fisici,</p></li>
+<li><p>Test e simulazioni di progetti ingegneristici.</p></li>
+</ul>
+<div class="section" id="il-desktop-di-matlab">
+<h2>Il Desktop di Matlab<a class="headerlink" href="#il-desktop-di-matlab" title="Link a questa intestazione">¶</a></h2>
+<div class="figure align-default" id="matlabdesktop">
+<img alt="_images/matlabdesktop.png" src="_images/matlabdesktop.png" />
+<p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">Il Desktop di Matlab</span><a class="headerlink" href="#matlabdesktop" title="Link a questa immagine">¶</a></p>
+</div>
+<ol class="simple">
+<li><p>La <strong>command window</strong> è dove digiti i comandi MATLAB seguendo il prompt:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>La finestra <strong>workspace</strong> mostra tutte le variabili che hai definito nella sessione
+corrente. Le variabili possono essere effettivamente manipolate all’interno della
+finestra dell’area di lavoro.</p></li>
+<li><p>La <strong>command history</strong> mostra tutti i comandi MATLAB che hai usato di recente,
+includendo anche le sessioni passate.</p></li>
+<li><p>La <strong>current folder</strong> mostra tutti i file in qualsiasi cartella sia stata
+selezionata per essere la cartella corrente.</p></li>
+</ol>
+</div>
+<div class="section" id="operazioni-artimetiche-e-ordine-delle-operazioni">
+<h2>Operazioni artimetiche e ordine delle operazioni<a class="headerlink" href="#operazioni-artimetiche-e-ordine-delle-operazioni" title="Link a questa intestazione">¶</a></h2>
+<ul>
+<li><p>Le operazioni di base sono l’addizione (<code class="docutils literal notranslate"><span class="pre">+</span></code>), sottrazione (<code class="docutils literal notranslate"><span class="pre">-</span></code>), la
+moltiplicazione (<code class="docutils literal notranslate"><span class="pre">*</span></code>), la divisione (<code class="docutils literal notranslate"><span class="pre">\</span></code>), l’elevamento a potenza (<code class="docutils literal notranslate"><span class="pre">^</span></code>),</p></li>
+<li><p>L’ordine delle operazioni è quello <em>canonico</em> adoperato in matematica e segue
+le usuali convenzioni di una calcolatrice scientifica</p>
+<ol class="simple">
+<li><p>Si completano tutte le operazioni tra parentesi <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">)</span></code> usando le seguenti
+regole di precedenza,</p></li>
+<li><p>Elevamento a potenza (da sinistra verso destra)</p></li>
+<li><p>Moltiplicazione e divisione (da sinistra verso destra)</p></li>
+<li><p>Addizione e sottrazione (da sinistra verso destra)</p></li>
+</ol>
+<div class="admonition-esempio admonition">
+<p class="admonition-title">Esempio</p>
+<p>Si considerino ad esempio le seguenti operazioni:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="mi">30</span><span class="o">/</span><span class="mi">5</span><span class="o">*</span><span class="mi">3</span><span class="w"></span>
+<span class="mi">5</span><span class="o">*</span><span class="mi">2</span>^<span class="mi">4</span><span class="o">+</span><span class="mi">4</span><span class="o">*</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+<span class="o">-</span><span class="mi">1</span>^<span class="mi">8</span><span class="w"></span>
+<span class="mi">8</span>^<span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="variabili">
+<h2>Variabili<a class="headerlink" href="#variabili" title="Link a questa intestazione">¶</a></h2>
+<p>Come in ogni linguaggio di programmazione, MATLAB fa utilizzo di <strong>variabili</strong>,
+che, in informatica, sono contenitori di dati situate in una porzione della
+memoria e destinate a contenere valori, che possono (in generale) essere
+modificati nel corso dell’esecuzione di un programma.</p>
+<p>Una variabile è caratterizzata da un nome (inteso solitamente come una sequenza
+di caratteri e cifre) che deve seguire un insieme di <em>convenzioni</em> che dipende
+dal linguaggio che si sta adoperando. In MATLAB le seguenti convenzioni devono
+essere adoperate:</p>
+<ol class="simple">
+<li><p>I nomi delle variabili devono iniziare con una lettera,</p></li>
+<li><p>I nomi possono includere ogni combinazione di lettere, numeri, e <em>underscore</em>,</p></li>
+<li><p>La lunghezza massima per il nome di una variabile è di 63 caratteri,</p></li>
+<li><p>MATLAB è <strong>case sensitive</strong>. La variabile di nome <code class="docutils literal notranslate"><span class="pre">pAlla</span></code> è diversa dalla
+variabile di nome <code class="docutils literal notranslate"><span class="pre">palla</span></code>,
+5 È buona norma evitare i seguenti nomi:  <code class="docutils literal notranslate"><span class="pre">i</span></code>, <code class="docutils literal notranslate"><span class="pre">j</span></code>, <code class="docutils literal notranslate"><span class="pre">pi</span></code>, e più in generale
+tutte i nomi di funzioni predefinite di MATLAB come, ad esempio, <code class="docutils literal notranslate"><span class="pre">length</span></code>,
+<code class="docutils literal notranslate"><span class="pre">char</span></code>, <code class="docutils literal notranslate"><span class="pre">size</span></code>, <code class="docutils literal notranslate"><span class="pre">plot</span></code>, <code class="docutils literal notranslate"><span class="pre">break</span></code>, <code class="docutils literal notranslate"><span class="pre">cos</span></code>, <code class="docutils literal notranslate"><span class="pre">log</span></code>, etc.</p></li>
+<li><p>È buona norma chiamare le variabili con nomi intellegibili, cioè con nomi che
+riflettano l’uso che se ne fa all’interno del programma piuttosto che usare dei
+nomi generici di variabili come ad esempio <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">z</span></code>.</p></li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Suggerimento</p>
+<p>Se vogliamo calcolare l’aria superficiale di una sfera <span class="math notranslate nohighlight">\(A = 4\pi r^2\)</span> di raggio <span class="math notranslate nohighlight">\(r = 5\)</span>, è molto
+meglio scrivere</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">raggio</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
+<span class="n">area_superficiale</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">4</span><span class="o">*</span><span class="nb">pi</span><span class="o">*</span><span class="n">raggio</span>^<span class="mi">2</span><span class="w"></span>
+</pre></div>
+</div>
+<p>al posto di</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">r</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
+<span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">4</span><span class="o">*</span><span class="nb">pi</span><span class="o">*</span><span class="n">r</span>^<span class="mi">2</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Quando riapriremo il secondo codice fra un mese le possibilità di ricordarsi
+cosa intendevamo saranno piuttosto scarse (o, nel mio caso, anche se lo aprissi
+fra due ore).</p>
+</div>
+<p>Dall’esempio che abbiamo appena inserito nella <strong>workspace</strong> osserviamo diverse
+cose</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">raggio</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
+<span class="n">area_superficiale</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">4</span><span class="o">*</span><span class="nb">pi</span><span class="o">*</span><span class="n">raggio</span>^<span class="mi">2</span><span class="w"></span>
+</pre></div>
+</div>
+<ol class="simple">
+<li><p>una variabile <code class="docutils literal notranslate"><span class="pre">raggio</span></code> di tipo <code class="docutils literal notranslate"><span class="pre">double</span></code> è stata creata,</p></li>
+<li><p>una posizione di memoria per la variabile <code class="docutils literal notranslate"><span class="pre">raggio</span></code> è stata allocata ed
+inizializzata al valore <span class="math notranslate nohighlight">\(5\)</span>,</p></li>
+<li><p>il <code class="docutils literal notranslate"><span class="pre">;</span></code> al termine dell’istruzione sopprime la stampa a schermo del contenuto
+della variabile,</p></li>
+<li><p>la variabile <code class="docutils literal notranslate"><span class="pre">area_superficiale</span></code> viene invece creata ed allocata utilizzando
+invece una delle quantità predeterminate di MATLAB, il valore di <span class="math notranslate nohighlight">\(\pi\)</span>, ed il
+contenuto della variabile <code class="docutils literal notranslate"><span class="pre">raggio</span></code> che abbiamo definito in precedenza. Poiché non
+abbiamo terminato la seconda istruzione con un <code class="docutils literal notranslate"><span class="pre">;</span></code>, vediamo stampato nella
+<strong>command window</strong></p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">area_superficiale</span> <span class="o">=</span>
+
+  <span class="mf">314.1593</span>
+</pre></div>
+</div>
+<p>A questo punto possiamo cambiare il valore della variabile <code class="docutils literal notranslate"><span class="pre">raggio</span></code> semplicemente
+riassegnandolo ad una nuova quantità <em>senza</em> alterare il valore conservato nel
+<strong>workspace</strong> della variabile <code class="docutils literal notranslate"><span class="pre">area_superficiale</span></code>.</p>
+<p>Per mostrare il contenuto di una variabile, si può utilizzare il comando <code class="docutils literal notranslate"><span class="pre">disp</span></code>,
+ad esempio:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="s">&quot;L&#39;area superficiale della sfera è:&quot;</span><span class="p">);</span><span class="w"> </span><span class="nb">disp</span><span class="p">(</span><span class="n">area_superficiale</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>che produrrà nella <strong>command window</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">L</span><span class="s1">&#39;area superficiale della sfera è:</span>
+  <span class="mf">314.1593</span>
+</pre></div>
+</div>
+<div class="section" id="variabili-carattere-e-stringhe">
+<h3>Variabili carattere e stringhe<a class="headerlink" href="#variabili-carattere-e-stringhe" title="Link a questa intestazione">¶</a></h3>
+<p>Non siamo obbligati ad usare unicamente variabili di tipo numerico. Ad <strong>esempio</strong>
+possiamo scrivere nella <strong>command window</strong>:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">studente</span><span class="p">=</span><span class="s">&#39;C.F. Gauss&#39;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>che ci stamperà</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">studente</span> <span class="o">=</span>
+
+    <span class="s1">&#39;C.F. Gauss&#39;</span>
+</pre></div>
+</div>
+<p>Abbiamo costruito un”<strong>array</strong> di <code class="docutils literal notranslate"><span class="pre">char</span></code>, cioè una variabile di nome <code class="docutils literal notranslate"><span class="pre">studente</span></code>
+a cui abbiamo assegnato uno spazio di memoria e in cui abbiamo inserito i
+caratteri <code class="docutils literal notranslate"><span class="pre">C.F.</span> <span class="pre">Gauss</span></code>. Nel dubbio, possiamo interrogare MATLAB riguardo il
+tipo della variabile con il comando</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">whos</span><span class="w"> </span><span class="n">studente</span><span class="w"></span>
+</pre></div>
+</div>
+<p>che ci restituirà</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">Name</span>          <span class="n">Size</span>            <span class="n">Bytes</span>  <span class="n">Class</span>    <span class="n">Attributes</span>
+
+  <span class="n">studente</span>      <span class="mi">1</span><span class="n">x10</span>               <span class="mi">20</span>  <span class="n">char</span>      
+</pre></div>
+</div>
+<p>Una variante all”<strong>array</strong> di <code class="docutils literal notranslate"><span class="pre">char</span></code> è quello di definire invece un oggetto
+<code class="docutils literal notranslate"><span class="pre">string</span></code>, cioè assegnare</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">studente_stringa</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;C.F. Gauss&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>per cui <code class="docutils literal notranslate"><span class="pre">whos</span> <span class="pre">studente_stringa</span></code> ci dirà invece</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Name</span>                  <span class="n">Size</span>            <span class="n">Bytes</span>  <span class="n">Class</span>     <span class="n">Attributes</span>
+
+<span class="n">studente_stringa</span>      <span class="mi">1</span><span class="n">x1</span>               <span class="mi">156</span>  <span class="n">string</span>              
+</pre></div>
+</div>
+<p>Riassumendo:</p>
+<ul class="simple">
+<li><p>Un <em>array di <code class="docutils literal notranslate"><span class="pre">char</span></code></em> è una sequenza di caratteri, proprio come un vettore
+numerico è una sequenza di numeri. Un suo uso tipico è quello di memorizzare
+brevi parti di testo come vettori di caratteri,</p></li>
+<li><p>Un oggetto <code class="docutils literal notranslate"><span class="pre">string</span></code>, ovvero un <em>array</em> di <code class="docutils literal notranslate"><span class="pre">string</span></code> è un contenitore per
+parti di testo. Gli <em>array di stringhe</em> forniscono una serie di funzioni per
+lavorare con il testo come dati.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="alcune-funzioni-di-cui-e-opportuno-ricordarsi">
+<h2>Alcune funzioni di cui è opportuno ricordarsi<a class="headerlink" href="#alcune-funzioni-di-cui-e-opportuno-ricordarsi" title="Link a questa intestazione">¶</a></h2>
+<p>MATLAB contiene un grande numero di funzioni matematica già implementate, alcune
+di quelle di più frequente utilizzo sono riportate nella</p>
+<table class="table" id="tabfunzionidibase">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Funzione</p></th>
+<th class="head"><p>MATLAB</p></th>
+<th class="head"><p>Funzione</p></th>
+<th class="head"><p>MATLAB</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Coseno</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cos</span></code></p></td>
+<td><p>Radice quadrata</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sqrt</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Seno</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sin</span></code></p></td>
+<td><p>Esponenziale</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">exp</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Tangente</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tan</span></code></p></td>
+<td><p>Logaritmo (base 10)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">log10</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Cotangente</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cot</span></code></p></td>
+<td><p>Logaritmo (naturale)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">log</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Arcocoseno</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">acos</span></code></p></td>
+<td><p>Arrotonda all’intero più vicino</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">round</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Arcotangente</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">atan</span></code></p></td>
+<td><p>Arrotonda all’intero <span class="math notranslate nohighlight">\(\leq\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">round</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Arcocotangente</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">acot</span></code></p></td>
+<td><p>Arrotonda all’intero <span class="math notranslate nohighlight">\(\geq\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ceil</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition danger">
+<p class="admonition-title">Pericolo</p>
+<p>Le funzioni trigonometriche così espresse assumono gli input in radianti, ovvero
+le funzioni inverse restituiscono l’angolo in radianti. Le versioni che fanno
+utilizzo dei gradi si invocano con il suffisso <code class="docutils literal notranslate"><span class="pre">d</span></code>, e.g., <code class="docutils literal notranslate"><span class="pre">cosd</span></code>, <code class="docutils literal notranslate"><span class="pre">acosd</span></code>.</p>
+</div>
+<p>Se si incontra una funzione di cui non si conosce l’utilizzo è possibile
+interrogare la guida di MATLAB dalla <strong>command window</strong> con, ad esempio,</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">help</span><span class="w"> </span><span class="nb">cosd</span><span class="w"></span>
+</pre></div>
+</div>
+<p>che stamperà delle informazioni essenziali</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cosd</span>   <span class="n">Cosine</span> <span class="n">of</span> <span class="n">argument</span> <span class="ow">in</span> <span class="n">degrees</span><span class="o">.</span>
+   <span class="n">cosd</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">cosine</span> <span class="n">of</span> <span class="n">the</span> <span class="n">elements</span> <span class="n">of</span> <span class="n">X</span><span class="p">,</span> <span class="n">expressed</span> <span class="ow">in</span> <span class="n">degrees</span><span class="o">.</span>
+   <span class="n">For</span> <span class="n">odd</span> <span class="n">integers</span> <span class="n">n</span><span class="p">,</span> <span class="n">cosd</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="mi">90</span><span class="p">)</span> <span class="ow">is</span> <span class="n">exactly</span> <span class="n">zero</span><span class="p">,</span> <span class="n">whereas</span> <span class="n">cos</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+   <span class="n">reflects</span> <span class="n">the</span> <span class="n">accuracy</span> <span class="n">of</span> <span class="n">the</span> <span class="n">floating</span> <span class="n">point</span> <span class="n">value</span> <span class="k">for</span> <span class="n">pi</span><span class="o">.</span>
+
+   <span class="n">Class</span> <span class="n">support</span> <span class="k">for</span> <span class="nb">input</span> <span class="n">X</span><span class="p">:</span>
+      <span class="nb">float</span><span class="p">:</span> <span class="n">double</span><span class="p">,</span> <span class="n">single</span>
+
+   <span class="n">See</span> <span class="n">also</span> <span class="n">acosd</span><span class="p">,</span> <span class="n">cos</span><span class="o">.</span>
+
+   <span class="n">Documentation</span> <span class="k">for</span> <span class="n">cosd</span>
+   <span class="n">Other</span> <span class="n">functions</span> <span class="n">named</span> <span class="n">cosd</span>
+</pre></div>
+</div>
+<p>per cui poi si potrà accedere alle informazioni complete utilizzando il link
+<em>Documentation for …</em>.</p>
+<p>Un’ultima coppia di funzioni estremamente utili è rappresentata dalle funzioni</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">clear</span></code> che svuota la <strong>workspace</strong> di tutte le variabili, ovvero <code class="docutils literal notranslate"><span class="pre">clear</span> <span class="pre">nomevariabile1</span> <span class="pre">nomevariabile2</span></code> che cancella unicamente le variabili <code class="docutils literal notranslate"><span class="pre">nomevariabile1</span></code> e <code class="docutils literal notranslate"><span class="pre">nomevariabile2</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">clc</span></code> che cancella il contenuto stampato nella <strong>command window</strong>.</p></li>
+</ul>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="intro.html" title="previous page">Calcolo Numerico - Esercitazioni di Laboratorio</a>
+    <a class='right-next' id="next-link" href="laboratorio2.html" title="next page">Laboratorio 2: Interpolazione di Funzioni</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          Di F. Durastante<br/>
+        
+            &copy; Diritto d'autore 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
