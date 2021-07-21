@@ -234,13 +234,16 @@
   <a class="reference internal nav-link" href="#convergenza">
    Convergenza
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#stimare-l-ordine-di-convergenza">
-     Stimare l’ordine di convergenza
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#approssimare-la-derivata-prima">
+   Approssimare la derivata prima
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#radici-multiple">
+   Radici multiple
+  </a>
  </li>
 </ul>
 
@@ -255,16 +258,110 @@
                 
   <div class="section" id="laboratorio-4-il-metodo-di-newton">
 <h1>Laboratorio 4 : Il Metodo di Newton<a class="headerlink" href="#laboratorio-4-il-metodo-di-newton" title="Link a questa intestazione">¶</a></h1>
+<p>Nello scorso laboratorio abbiamo affrontato il problema di trovare lo zero di
+una funzione continua <span class="math notranslate nohighlight">\(f : \mathbb{R} \to \mathbb{R}\)</span> utilizzando il metodo di
+bisezione. Il passo successivo visto a lezione è quello di costruire un metodo
+che, a patto di avere funzioni di regolarità più alta,
+<span class="math notranslate nohighlight">\(f \in \mathcal{C}^{2}(\mathbb{R})\)</span>, permette di ottenere una velocità di
+convergenza maggiore.</p>
+<p>Prima di dedicarci all’implementazione, riprendiamo brevemente l’idea e la
+costruzione del metodo. L’idea è di cominciare con una approssimazione iniziale
+che sia <em>ragionevolmente vicina</em> alla radice dell’equazione che vogliamo
+risolvere. Approssimiamo in quel punto la funzione con la tangente, calcoliamo
+la sua intercetta con l’asse delle <span class="math notranslate nohighlight">\(x\)</span> e quella è la nuova approssimazione
+per la radice. Possiamo iterare la procedura come:</p>
+<div class="math notranslate nohighlight" id="equation-eq-newton">
+<span class="eqno">(4)<a class="headerlink" href="#equation-eq-newton" title="Permalink a questa equazione">¶</a></span>\[x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}, \quad x_0 \text{ assegnato},  \quad k \geq 1,\]</div>
+<p>Per cui avete dimostrato il seguente teorema di convergenza.</p>
+<div class="admonition-teorema admonition">
+<p class="admonition-title">Teorema</p>
+<p>Sia <span class="math notranslate nohighlight">\(f \in \mathcal{C}^{2}([a,b])\)</span>, e supponiamo inoltre che <span class="math notranslate nohighlight">\(f(c) = 0\)</span>,
+<span class="math notranslate nohighlight">\(f'(c) = 0\)</span> per qualche <span class="math notranslate nohighlight">\(c \in [a,b]\)</span>. Allora esiste un <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> tale
+per cui l’iterata <a class="reference internal" href="#equation-eq-newton">(4)</a> applicata ad <span class="math notranslate nohighlight">\(f\)</span> converge a <span class="math notranslate nohighlight">\(c\)</span> per ogni
+valore iniziale <span class="math notranslate nohighlight">\(x_0 \in [c-\delta,c+\delta]\)</span>.</p>
+</div>
+<p>Ricordate queste caratteristiche iniziali, possiamo procedere ad implementare
+una versione MATLAB dell’algoritmo di Newton.</p>
+<div class="admonition-esercizio-1 admonition">
+<p class="admonition-title">Esercizio 1</p>
+<p>Si implementi in una funzione MATLAB l’algoritmo di Newton sfruttando l’iterata
+descritta in <a class="reference internal" href="#equation-eq-newton">(4)</a>. Un <em>template</em> della funzione da implementare che
+si può adottare è quindi il seguente:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[c,residuo]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">newton</span><span class="p">(</span>f,fp,x0,maxit,tol<span class="p">)</span><span class="w"></span>
+<span class="c">%%NEWTON Implementazione del metodo di Newton</span><span class="w"></span>
+<span class="c">% Input:  f function handle della funzione di cui si cerca lo zero</span><span class="w"></span>
+<span class="c">%         fp function handle della derivata prima della funzione</span><span class="w"></span>
+<span class="c">%         x0 approssimazione iniziale</span><span class="w"></span>
+<span class="c">%         maxit numero massimo di iterazioni consentite</span><span class="w"></span>
+<span class="c">%         tol tolleranza sul residuo</span><span class="w"></span>
+<span class="c">% Output: c radici candidate prodotte dal metodo</span><span class="w"></span>
+<span class="c">%         residuo vettore dei residui prodotto dal metodo</span><span class="w"></span>
+
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>È importante che la funzione implementata</p>
+<ul class="simple">
+<li><p>faccia il controllo degli input,</p></li>
+<li><p>pre-allochi la memoria per i vettori <code class="docutils literal notranslate"><span class="pre">c</span></code> e <code class="docutils literal notranslate"><span class="pre">residuo</span></code>,</p></li>
+<li><p>riduca al minimo le chiamate ad <span class="math notranslate nohighlight">\(f(\cdot)\)</span>.</p></li>
+</ul>
+<p>Per testare l’algoritmo implementato si può usare</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Script di test per il metodo di Newton</span><span class="w"></span>
+<span class="nb">clear</span><span class="p">;</span><span class="w"> </span><span class="nb">clc</span><span class="p">;</span><span class="w"></span>
+<span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="o">.^</span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
+<span class="n">fp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="mi">3</span><span class="o">*</span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="n">maxit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span><span class="w"></span>
+<span class="n">tol</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-6</span><span class="p">;</span><span class="w"></span>
+<span class="n">ctrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.09455148154232659</span><span class="p">;</span><span class="w"></span>
+<span class="n">x0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+<span class="p">[</span><span class="n">c</span><span class="p">,</span><span class="n">residuo</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">newton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">fp</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">maxit</span><span class="p">,</span><span class="n">tol</span><span class="p">);</span><span class="w"></span>
+<span class="p">[</span><span class="n">c2</span><span class="p">,</span><span class="n">residuo2</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Da cui otteniamo</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Iterata</span> <span class="mi">1</span>	<span class="n">c</span> <span class="o">=</span> <span class="mf">3.000000</span>	<span class="n">residuo</span> <span class="o">=</span> <span class="mf">1.600000e+01</span>
+<span class="n">Iterata</span> <span class="mi">2</span>	<span class="n">c</span> <span class="o">=</span> <span class="mf">2.360000</span>	<span class="n">residuo</span> <span class="o">=</span> <span class="mf">3.424256e+00</span>
+<span class="n">Iterata</span> <span class="mi">3</span>	<span class="n">c</span> <span class="o">=</span> <span class="mf">2.127197</span>	<span class="n">residuo</span> <span class="o">=</span> <span class="mf">3.710998e-01</span>
+<span class="n">Iterata</span> <span class="mi">4</span>	<span class="n">c</span> <span class="o">=</span> <span class="mf">2.095136</span>	<span class="n">residuo</span> <span class="o">=</span> <span class="mf">6.526626e-03</span>
+<span class="n">Iterata</span> <span class="mi">5</span>	<span class="n">c</span> <span class="o">=</span> <span class="mf">2.094552</span>	<span class="n">residuo</span> <span class="o">=</span> <span class="mf">2.146143e-06</span>
+<span class="n">Iterata</span> <span class="mi">6</span>	<span class="n">c</span> <span class="o">=</span> <span class="mf">2.094551</span>	<span class="n">residuo</span> <span class="o">=</span> <span class="mf">2.327027e-13</span>
+	<span class="n">Convergenza</span> <span class="n">raggiunta</span> <span class="ow">in</span> <span class="mi">6</span> <span class="n">iterazioni</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="convergenza">
 <h2>Convergenza<a class="headerlink" href="#convergenza" title="Link a questa intestazione">¶</a></h2>
-<div class="section" id="stimare-l-ordine-di-convergenza">
-<h3>Stimare l’ordine di convergenza<a class="headerlink" href="#stimare-l-ordine-di-convergenza" title="Link a questa intestazione">¶</a></h3>
-<p>In questo caso eravamo in possesso di un’analisi teorica completa che ci ha
-permesso di calcolare l’ordine (o tasso) di convergenza del nostro metodo.
-Può essere utile in alcuni casi avere una procedura numerica che ci permetta
-di stimare l’ordine di convergenza.</p>
-<p>Ricordiamo che una successione di approssimate <span class="math notranslate nohighlight">\(\{x_n\}_n\)</span> che converge ad <span class="math notranslate nohighlight">\(x\)</span>
-ha ordine di convergenza <span class="math notranslate nohighlight">\(p \geq 1\)</span> se</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="figure align-default" id="newtonconvergence">
+<img alt="_images/newtonconvergence.png" src="_images/newtonconvergence.png" />
+<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">Paragone tra la convergenza del metodo di Newton e il metodo di bisezione per
+calcolare una radice di <span class="math notranslate nohighlight">\(f(x) = x^3-2x-5\)</span>.</span><a class="headerlink" href="#newtonconvergence" title="Link a questa immagine">¶</a></p>
+</div>
+</div>
+<p>Possiamo confrontare il metodo di Newton con il metodo di bisezione implementato
+nella scorsa lezione, sfruttiamo lo stesso caso di test dell’Esercizio 1 e
+aggiungiamo allo script di test del metodo di Newton:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+<span class="n">maxit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span><span class="w"></span>
+<span class="n">tol</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-6</span><span class="p">;</span><span class="w"></span>
+<span class="p">[</span><span class="n">c2</span><span class="p">,</span><span class="n">residuo2</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bisezione</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">maxit</span><span class="p">,</span><span class="n">tol</span><span class="p">);</span><span class="w"></span>
+
+<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">residuo</span><span class="p">);</span><span class="w"></span>
+<span class="n">n2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">residuo2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">semilogy</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">c</span><span class="o">-</span><span class="n">ctrue</span><span class="p">),</span><span class="s">&#39;ro-&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="n">n2</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">c2</span><span class="o">-</span><span class="n">ctrue</span><span class="p">),</span><span class="s">&#39;bx-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Metodo di Newton&#39;</span><span class="p">,</span><span class="s">&#39;Metodo di Bisezione&#39;</span><span class="p">},</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">);</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Iterazione&#39;</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>per cui vediamo una rappresentazione in <a class="reference internal" href="#newtonconvergence"><span class="std std-numref">Fig. 5</span></a>. Come ci
+aspettavamo dall’analisi teorica, il metodo di Newton è in questo caso di ordine
+<span class="math notranslate nohighlight">\(2\)</span>. Possiamo investigare l’ordine di convergenza anche in maniera numerica.</p>
+<p>Per farlo ricordiamo che una successione di approssimate <span class="math notranslate nohighlight">\(\{x_n\}_n\)</span> che converge
+ad <span class="math notranslate nohighlight">\(x\)</span> ha ordine di convergenza <span class="math notranslate nohighlight">\(p \geq 1\)</span> se</p>
 <div class="math notranslate nohighlight">
 \[\lim_{n \rightarrow +\infty} \frac{|x_{n+1}-x|}{|x_n -x|^p} = \mu, \text{ con } \mu \in (0,1).\]</div>
 <p>Possiamo sfruttare la definizione per ottenere una stima dell’ordine di
@@ -281,7 +378,42 @@ convergenza mediante i rapporti:</p>
 <span class="k">end</span><span class="w"></span>
 </pre></div>
 </div>
+<p>E se lo applichiamo al vettore <code class="docutils literal notranslate"><span class="pre">c</span></code> e alla <code class="docutils literal notranslate"><span class="pre">ctrue</span></code> prodotta dal metodo di Newton
+otteniamo i valori</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">convergenza</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">ctrue</span><span class="p">)</span><span class="w"></span>
+
+<span class="n">p</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">    </span><span class="mf">1.7080</span><span class="w"></span>
+<span class="w">    </span><span class="mf">1.9194</span><span class="w"></span>
+<span class="w">    </span><span class="mf">1.9936</span><span class="w"></span>
+<span class="w">    </span><span class="mf">1.9996</span><span class="w"></span>
+</pre></div>
 </div>
+<p>che ci conferma che l’ordine di convergenza si avvicina a <span class="math notranslate nohighlight">\(2\)</span>.</p>
+</div>
+<div class="section" id="approssimare-la-derivata-prima">
+<h2>Approssimare la derivata prima<a class="headerlink" href="#approssimare-la-derivata-prima" title="Link a questa intestazione">¶</a></h2>
+<p>Non sempre possediamo o possiamo calcolare in forma chiusa la derivata della
+funzione <span class="math notranslate nohighlight">\(f\)</span>. Può essere utile approssimarla direttamente a partire utilizzando
+solo la <span class="math notranslate nohighlight">\(f\)</span>. Possiamo farlo in maniera numerica sfruttando la definizione stessa
+di derivata:</p>
+<div class="math notranslate nohighlight" id="equation-eq-fd">
+<span class="eqno">(5)<a class="headerlink" href="#equation-eq-fd" title="Permalink a questa equazione">¶</a></span>\[f'(x_k) = \lim_{h \rightarrow 0} \frac{f(x+h)-f(x)}{h} \approx \frac{f(x+h)-f(x)}{h}\]</div>
+<p>prendendo un <span class="math notranslate nohighlight">\(h\)</span> sufficientemente piccolo, una buona scelta è <span class="math notranslate nohighlight">\(h = \sqrt{\varepsilon}\)</span>
+per <span class="math notranslate nohighlight">\(\varepsilon\)</span> la precisione di macchina.</p>
+<div class="admonition-esercizio-2 admonition">
+<p class="admonition-title">Esercizio 2</p>
+<p>Si modifichi il codice dell’Esercizio 1 per utilizzare l’approssimazione della
+derivata in <a class="reference internal" href="#equation-eq-fd">(5)</a>.</p>
+</div>
+</div>
+<div class="section" id="radici-multiple">
+<h2>Radici multiple<a class="headerlink" href="#radici-multiple" title="Link a questa intestazione">¶</a></h2>
+<p>Dalla teoria sappiamo che l’ordine di convergenza del metodo di Newton è
+ridotto quando la radice che <span class="math notranslate nohighlight">\(c\)</span> di <span class="math notranslate nohighlight">\(f\)</span> che cerchiamo è di ordine più elevato.
+Ricordiamo che se <span class="math notranslate nohighlight">\(c\)</span> è una radice di <span class="math notranslate nohighlight">\(f\)</span> il suo <strong>ordine</strong> è il più piccolo
+<span class="math notranslate nohighlight">\(q\)</span> per cui <span class="math notranslate nohighlight">\(f^{(q)}(c) \neq 0\)</span>.</p>
 </div>
 </div>
 
