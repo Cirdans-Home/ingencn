@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Laboratorio 2: Interpolazione di Funzioni &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
+    <title>Laboratorio 2 : L’Aritmetica di Precisione Finita &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -50,8 +50,11 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
+    <link rel="next" title="Laboratorio 3 : Il Metodo di Bisezione" href="laboratorio3.html" />
     <link rel="prev" title="Laboratorio 1 : Introduzione a MATLAB" href="laboratorio1.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -85,7 +88,7 @@
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="intro.html">
-   Welcome to your Jupyter Book
+   Calcolo Numerico - Esercitazioni di Laboratorio
   </a>
  </li>
 </ul>
@@ -97,7 +100,47 @@
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Laboratorio 2: Interpolazione di Funzioni
+   Laboratorio 2 : L’Aritmetica di Precisione Finita
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio3.html">
+   Laboratorio 3 : Il Metodo di Bisezione
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio4.html">
+   Laboratorio 4 : Il Metodo di Newton
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio5.html">
+   Laboratorio 5 : Soluzione di Sistemi Triangolari
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio6.html">
+   Laboratorio 6 : L’Eliminazione di Gauss il Metodo LU
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio7.html">
+   Laboratorio 7 : Metodi Stazionari per Sistemi Lineari
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio8.html">
+   Laboratorio 8 : Metodi di Quadratura
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio9.html">
+   Laboratorio 9 : Metodi Espliciti per la Soluzione di ODE
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio10.html">
+   Laboratorio 10 : Metodi di Tipo Runge-Kutta
   </a>
  </li>
 </ul>
@@ -182,6 +225,39 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contenuti
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#rappresentazione-dei-numeri-di-macchina">
+   Rappresentazione dei numeri di macchina
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#associativita-delle-operazioni">
+   Associatività delle operazioni
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#errori-di-cancellazione-roundoff">
+   Errori di cancellazione/roundoff
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#condizionamento-di-un-sistema-lineare">
+   Condizionamento di un sistema lineare
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bibliografia">
+   Bibliografia
+  </a>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -190,8 +266,394 @@
         
               <div>
                 
-  <div class="section" id="laboratorio-2-interpolazione-di-funzioni">
-<h1>Laboratorio 2: Interpolazione di Funzioni<a class="headerlink" href="#laboratorio-2-interpolazione-di-funzioni" title="Link a questa intestazione">¶</a></h1>
+  <div class="section" id="laboratorio-2-l-aritmetica-di-precisione-finita">
+<h1>Laboratorio 2 : L’Aritmetica di Precisione Finita<a class="headerlink" href="#laboratorio-2-l-aritmetica-di-precisione-finita" title="Link a questa intestazione">¶</a></h1>
+<p>Ricordiamo che l’artimetica <strong>floating point</strong> (floating-point arithmetic) è
+l’artimetica che fornisce una rappresentazione approssimata dei numeri reali
+per supportare un compromesso tra l’intervallo dei numeri rappresentati e la
+precisione ottenibile nei calcoli. Per questo motivo, il calcolo in virgola
+mobile viene spesso utilizzato in sistemi in cui si deve coniugare la
+rappresentazione di numeri in un ampio range richiedendo tuttavia tempi di
+elaborazione rapidi.</p>
+<p>Un numero in virgola mobile è rappresentato approssimativamente da un numero
+fisso di cifre significative (il significando) e scalato usando un esponente
+in una qualche base fissata. Tale base è normalmente due, dieci o sedici.
+Un numero che può essere rappresentato esattamente è della forma seguente:</p>
+<div class="math notranslate nohighlight" id="equation-eq-numeromacchina">
+<span class="eqno">(1)<a class="headerlink" href="#equation-eq-numeromacchina" title="Permalink a questa equazione">¶</a></span>\[ \text{significando} \times \text{base}^{\text{esponente}}.\]</div>
+<p>Di tutte le possibili costruzioni di questo tipo, noi adoperiamo quella
+codificata nello standard IEEE-754 <span id="id1">[<a class="reference internal" href="#id8">IEEE75419</a>]</span>, in cui
+(la maggior parte dei) i numeri <em>floating point</em> sono
+normalizzati, cioè possono essere espressi come</p>
+<div class="math notranslate nohighlight">
+\[x = \pm (1+f) 2^e, \qquad 0 \leq f &lt; 1, \qquad -1022 \leq e \leq 1023,\]</div>
+<p>dove <span class="math notranslate nohighlight">\(f\)</span> è detta la <strong>mantissa</strong>, e deve essere rappresentabile con al più 52 bits,
+cioè <span class="math notranslate nohighlight">\(2^{52}f\)</span> è un intero nell’intervallo <span class="math notranslate nohighlight">\(0 \leq 2^{52} f &lt; 2^{53}\)</span>, abbiamo
+fissato la base a <span class="math notranslate nohighlight">\(2\)</span> e chiamato l’esponente <span class="math notranslate nohighlight">\(e\)</span>.</p>
+<p>Il testo di riferimento per questi argomenti è <span id="id2">[<a class="reference internal" href="#id5">Hig02</a>]</span>.</p>
+<div class="section" id="rappresentazione-dei-numeri-di-macchina">
+<h2>Rappresentazione dei numeri di macchina<a class="headerlink" href="#rappresentazione-dei-numeri-di-macchina" title="Link a questa intestazione">¶</a></h2>
+<p>In generale non tutti i numeri potranno essere espressi nella forma <a class="reference internal" href="#equation-eq-numeromacchina">(1)</a>,
+possiamo scegliere ad esempio il numero <span class="math notranslate nohighlight">\(4/3\)</span> che non può essere scritto esattamente nella
+forma <span class="math notranslate nohighlight">\(s \times 2^k\)</span>. Se proviamo ad eseguire l’operazione</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">e</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="mi">4</span><span class="o">/</span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>da cui ci aspetteremo di ottenere un <span class="math notranslate nohighlight">\(1\)</span>, otteniamo invece</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">e</span> <span class="o">=</span>
+   <span class="mf">2.2204e-16</span>
+</pre></div>
+</div>
+<p>che è un errore della grandezza della <em>precisione di macchina</em> per l’aritmetica
+in virgola mobile adoperata da MATLAB.</p>
+<p>In maniera analoga, possiamo considerare un altro numero che non è esattamente
+rappresentato in macchina <span class="math notranslate nohighlight">\(0.1\)</span>. Se lo sommiamo <span class="math notranslate nohighlight">\(10\)</span> volte in aritmetica esatta
+ci aspettiamo di ottenere <span class="math notranslate nohighlight">\(1\)</span>:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="w"></span>
+<span class="w">  </span><span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.1</span><span class="p">;</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Tuttavia se proviamo a fare la verifica leggiamo</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">  </span><span class="nb">logical</span><span class="w"></span>
+
+<span class="w">   </span><span class="mi">0</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Ed infatti,</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">abs</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+
+<span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">   </span><span class="mf">1.1102e-16</span><span class="w"></span>
+</pre></div>
+</div>
+<p>che è di nuovo dell’ordine della precisione di macchina.</p>
+<div class="admonition tip">
+<p class="admonition-title">Suggerimento</p>
+<p>Quando impostiamo dei confronti di «uguaglianza» tra numeri <em>floating point</em> la
+procedura corretta è sempre quella di controllare la differenza in valore
+assoluto tra il valore calcolato ed il risultato aspettato in termine della
+precisione di macchina in uso:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">abs</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nb">eps</span><span class="w"></span>
+
+<span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w"> </span><span class="nb">logical</span><span class="w"></span>
+
+<span class="w">  </span><span class="mi">1</span><span class="w"></span>
+</pre></div>
+</div>
+<p>che ci restituisce il valore aspettato, dove <code class="docutils literal notranslate"><span class="pre">eps</span></code> è spesso chiamato <em>floating-point
+zero</em>.</p>
+</div>
+<p>All’altro estremo del range dinamico dei numeri rappresentati osserviamo anche
+il problema del «diradarsi» dei numeri di macchina, infatti sfruttando la
+definizione di numero normalizzato osserviamo facilmente che:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">2</span>^<span class="mi">53</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span>^<span class="mi">53</span><span class="w"></span>
+
+<span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">     </span><span class="mi">0</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Possiamo farci dire da MATLAB quali sono il più piccolo ed il più grande numero
+reale rappresentato richiamando le variabili <code class="docutils literal notranslate"><span class="pre">realmin</span></code> e <code class="docutils literal notranslate"><span class="pre">realmax</span></code>:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="nb">realmin</span><span class="w"></span>
+
+<span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">  </span><span class="mf">2.2251e-308</span><span class="w"></span>
+
+<span class="o">&gt;&gt;</span><span class="w"> </span><span class="nb">realmax</span><span class="w"></span>
+
+<span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">  </span><span class="mf">1.7977e+308</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Qualunque operazione generi un numero maggiore di <code class="docutils literal notranslate"><span class="pre">realmax</span></code> provocherà un errore
+di <strong>overflow</strong>, qualunque operazione generi un numero minore di <code class="docutils literal notranslate"><span class="pre">realmin</span></code> genererà
+un errore di <strong>underflow</strong>. In MATLAB questo è rappresento dai valori <code class="docutils literal notranslate"><span class="pre">+Inf</span></code> e <code class="docutils literal notranslate"><span class="pre">-Inf</span></code>:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">realmax</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">.0001e+308</span><span class="w"></span>
+<span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">   </span><span class="nb">Inf</span><span class="w"></span>
+
+<span class="o">-</span><span class="nb">realmax</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">.0001e+308</span><span class="w"></span>
+<span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">  </span><span class="o">-</span><span class="nb">Inf</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Avvertimento</p>
+<p>Alcune macchine permettono il trattamento di alcuni casi eccezionali di numeri
+<em>floating point</em>, cioè l’esistenza di numeri <em>denormalizzati</em> (o <em>subnormali</em>).
+Questi si trovano nell’intevallo [<code class="docutils literal notranslate"><span class="pre">eps*realmin</span></code>,<code class="docutils literal notranslate"><span class="pre">realmin</span></code>].</p>
+</div>
+</div>
+<div class="section" id="associativita-delle-operazioni">
+<h2>Associatività delle operazioni<a class="headerlink" href="#associativita-delle-operazioni" title="Link a questa intestazione">¶</a></h2>
+<p>Mentre l’operazione di somma e di prodotto sono garantite essere commutative
+nello standard IEEE, l’operazione di soma tra <em>floating point</em> è sicuramente
+non associativa. Si consideri infatti l’esempio:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-16</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1e-16</span><span class="p">;</span><span class="w"></span>
+<span class="n">c</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-16</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1e-16</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">c</span><span class="w"></span>
+<span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">  </span><span class="nb">logical</span><span class="w"></span>
+
+<span class="w">   </span><span class="mi">0</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Si osserva che se andiamo a valutare la differenza tra le due procedure</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">c</span><span class="p">)</span><span class="w"></span>
+
+<span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">   </span><span class="mf">1.1102e-16</span><span class="w"></span>
+</pre></div>
+</div>
+<p>che è di nuovo dell’ordine della precisione di macchina.</p>
+<div class="admonition tip">
+<p class="admonition-title">Suggerimento</p>
+<p>Quando si calcola la somma di più termini di ordine diverso è opportuno valutare
+l’accumulazione ed agire di conseguenza.</p>
+</div>
+<p>Per correggere il problema precedente si può implementare l”<strong>algoritmo delle somme
+compensate</strong> di Kahan, per cui uno pseudocodice è dato da:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">KahanSomma</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+    <span class="n">somma</span> <span class="o">=</span> <span class="mf">0.0</span>                  <span class="o">//</span> <span class="n">variabile</span> <span class="n">che</span> <span class="n">conterrà</span> <span class="n">la</span> <span class="n">somma</span> <span class="n">finale</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mf">0.0</span>                      <span class="o">//</span> <span class="n">Compensazione</span> <span class="n">per</span> <span class="n">i</span> <span class="n">bits</span> <span class="n">che</span> <span class="n">altrimenti</span> <span class="n">andrebbero</span> <span class="n">persi</span><span class="o">.</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">to</span> <span class="n">length</span><span class="p">(</span><span class="n">length</span><span class="p">)</span> <span class="n">do</span> <span class="o">//</span> <span class="n">L</span><span class="s1">&#39;array che ha in input le quantità da sommare va da input(1)</span>
+                                   <span class="o">//</span> <span class="n">fino</span> <span class="n">a</span> <span class="nb">input</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="nb">input</span><span class="p">))</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">-</span> <span class="n">c</span>           <span class="o">//</span> <span class="n">Al</span> <span class="n">primo</span> <span class="n">passaggio</span> <span class="n">c</span> <span class="n">è</span> <span class="n">zero</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">somma</span> <span class="o">+</span> <span class="n">y</span>              <span class="o">//</span> <span class="n">Purtroppo</span><span class="p">,</span> <span class="n">somma</span> <span class="n">è</span> <span class="s2">&quot;grande&quot;</span><span class="p">,</span> <span class="n">y</span> <span class="n">è</span> <span class="n">piccolo</span><span class="p">,</span> <span class="n">quindi</span> <span class="n">alcuni</span> <span class="n">bits</span>
+                                   <span class="o">//</span> <span class="n">sono</span> <span class="n">persi</span><span class="p">,</span> <span class="n">ma</span> <span class="n">non</span> <span class="n">per</span> <span class="n">sempre</span><span class="o">...</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">somma</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span>        <span class="o">//</span> <span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">somma</span><span class="p">)</span> <span class="n">cancella</span> <span class="n">la</span> <span class="n">parte</span> <span class="n">di</span> <span class="n">ordine</span> <span class="n">alto</span> <span class="n">di</span> <span class="n">y</span><span class="p">;</span> <span class="n">sottrarre</span> <span class="n">y</span>
+                                   <span class="o">//</span> <span class="n">recupera</span> <span class="n">la</span> <span class="n">parte</span> <span class="s2">&quot;piccola&quot;</span> <span class="n">di</span> <span class="n">y</span>
+        <span class="n">somma</span> <span class="o">=</span> <span class="n">t</span>                  <span class="o">//</span> <span class="n">In</span> <span class="n">aritmetica</span> <span class="n">di</span> <span class="n">precisione</span> <span class="n">infinita</span> <span class="n">c</span> <span class="n">dovrebbe</span> <span class="n">essere</span>
+                                   <span class="o">//</span> <span class="n">sempre</span> <span class="n">zero</span>
+    <span class="o">//</span> <span class="n">Alla</span> <span class="n">prossima</span> <span class="n">iterata</span> <span class="n">la</span> <span class="n">parte</span> <span class="s2">&quot;persa&quot;</span> <span class="n">verrà</span> <span class="n">aggiunta</span> <span class="n">ad</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">un</span> <span class="n">nuovo</span>
+    <span class="o">//</span> <span class="n">tentativo</span> <span class="n">di</span> <span class="n">recuperarla</span><span class="o">.</span>
+    <span class="n">end</span> <span class="k">for</span>
+
+    <span class="k">return</span> <span class="n">somma</span>
+</pre></div>
+</div>
+<div class="admonition-esercizio admonition">
+<p class="admonition-title">Esercizio</p>
+<p>Si implementi l’algoritmo KahanSomma in una funzione MATLAB e se ne verifichino
+le proprietà numeriche.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="p">[</span><span class="n">somma</span><span class="p">]</span> <span class="o">=</span> <span class="n">KahanSomma</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+<span class="o">%%</span><span class="n">KAHANSOMMA</span> <span class="n">algoritmo</span> <span class="n">delle</span> <span class="n">somme</span> <span class="n">compensate</span> <span class="n">di</span> <span class="n">Kahan</span>
+
+<span class="n">end</span>
+</pre></div>
+</div>
+<p>Che possiamo testare sull’esempio precedente costruendo uno script con</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">clear</span><span class="p">;</span><span class="w"> </span><span class="nb">clc</span><span class="p">;</span><span class="w"></span>
+
+<span class="nb">input</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mf">1e-16</span><span class="w"> </span><span class="o">+</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="mf">1e-16</span><span class="p">];</span><span class="w"></span>
+
+<span class="n">somma1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">input</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="nb">input</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="nb">input</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
+<span class="n">somma2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">sum</span><span class="p">(</span><span class="nb">input</span><span class="p">);</span><span class="w"></span>
+<span class="n">somma3</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">KahanSomma</span><span class="p">(</span><span class="nb">input</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>e confrontando la differenza in valore assoluto tra i tre valori <code class="docutils literal notranslate"><span class="pre">somma1</span></code>, <code class="docutils literal notranslate"><span class="pre">somma2</span></code>
+e <code class="docutils literal notranslate"><span class="pre">somma3</span></code>. Cosa si osserva?</p>
+</div>
+<p>Per questo algoritmo è possibile dare una limitazione dell’errore commesso. Se chiamiamo</p>
+<div class="math notranslate nohighlight">
+\[S_n = \sum_{i=1}^{n} \text{input}_i\]</div>
+<p>la somma calcolata in precisione infinita, allora con un algoritmo otteniamo in
+genere <span class="math notranslate nohighlight">\(S_n + E_n\)</span> dove l’errore <span class="math notranslate nohighlight">\(E_n\)</span> può essere limitato per l’algoritmo delle somme
+compensate da</p>
+<div class="math notranslate nohighlight">
+\[|E_n| \leq [2 \varepsilon + O(n\varepsilon^2)] \sum_{i=1}^{n} |\text{input}_i|,\]</div>
+<p>dove <span class="math notranslate nohighlight">\(\varepsilon\)</span> è la precisione di macchina. Più in generale, siamo di solito
+interessati all’errore relativo, cioè alla quantità</p>
+<div class="math notranslate nohighlight">
+\[\frac{|E_n|}{|S_n|} \leq [2 \varepsilon + O(n\varepsilon^2)] \frac{\sum_{i=1}^{n} |\text{input}_i|}{\left| \sum_{i=1}^{n} \text{input}_i| \right|},\]</div>
+<div class="margin sidebar">
+<p class="sidebar-title">Numero di condizionamento</p>
+<p>Ricordiamo che il numero di condizionamento di un problema rappresenta
+essenzialmente la «sensitività» intrinseca del problema, indipendentemente
+dall’algoritmo utilizzato per risolverlo.</p>
+</div>
+<p>dove la quantità <span class="math notranslate nohighlight">\(\kappa = \frac{\sum_{i=1}^{n} |\text{input}_i|}{\left| \sum_{i=1}^{n} \text{input}_i| \right|}\)</span>
+rappresenta il <strong>numero di condizionamento</strong> dell’operazione di somma. Esistono
+algoritmi per la somma che esibiscono migliori limitazioni dell’errore <span id="id3">[<a class="reference internal" href="#id7">Kle06</a>, <a class="reference internal" href="#id6">Neu74</a>]</span> , per i
+nostri scopi illustrativi questa versione è sufficiente.</p>
+</div>
+<div class="section" id="errori-di-cancellazione-roundoff">
+<h2>Errori di cancellazione/roundoff<a class="headerlink" href="#errori-di-cancellazione-roundoff" title="Link a questa intestazione">¶</a></h2>
+<p>Un altro caso in cui calcoli avventati possono avere effetti catastrofici è
+quello delle sottrazioni eseguite con operandi quasi uguali, è facile che
+l’annullamento si verifichi in modo imprevisto. Consideriamo l’esempio:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">sqrt</span><span class="p">(</span><span class="mf">1e-16</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+
+<span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">     </span><span class="mi">0</span><span class="w"></span>
+</pre></div>
+</div>
+<p>in cui osserviamo una <strong>cancellazione</strong> causata da <em>swamping</em>, che è un fenomeno
+analogo a quello che abbiamo visto per l’associatività della somma. Stiamo
+osservando una perdita di precisione che rende l’aggiunta insignificante.
+È possibile introdurre delle correzioni algoritmiche in maniera analoga a quanto
+fatto per la somma anche per altre funzioni, per corregere l’esempio visto sopra
+possiamo usare la seguente riscrittura:</p>
+<div class="math notranslate nohighlight">
+\[\sqrt{1e-16 + 1} - 1 = \exp( \log(\sqrt{1e-16 + 1}) ) - 1 = \exp( 0.5 \log(1e-16 + 1) ) - 1,\]</div>
+<p>ed usare le funzioni <code class="docutils literal notranslate"><span class="pre">expm1</span></code> e <code class="docutils literal notranslate"><span class="pre">log1p</span></code> di MATLAB che ci permettono di risolvere
+il problema di cancellazione:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">expm1</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="nb">log1p</span><span class="p">(</span><span class="mf">1e-16</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+<p>in particolare</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">expm1</span></code> calcola <span class="math notranslate nohighlight">\(\exp(x)-1\)</span> compensando per il <em>roundoff</em> in <span class="math notranslate nohighlight">\(\exp(x)\)</span>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">log1p</span></code> calcola <span class="math notranslate nohighlight">\(\log(1+x)\)</span> evitando di calcolare <span class="math notranslate nohighlight">\(1+x\)</span> per valori «piccoli»
+di <span class="math notranslate nohighlight">\(x\)</span>.</p></li>
+</ul>
+<div class="margin sidebar">
+<p class="sidebar-title">Roundoff polinomio</p>
+<p><img alt="Roundoff nella valutazione di un polinomio" src="_images/polynomialroundoff.png" /></p>
+</div>
+<p>Consideriamo un altro esempio, produciamo uno script che valuti il seguente
+polinomio</p>
+<div class="math notranslate nohighlight" id="equation-eq-polinomio">
+<span class="eqno">(2)<a class="headerlink" href="#equation-eq-polinomio" title="Permalink a questa equazione">¶</a></span>\[p(x) = x^7 - 7x^6 + 21x^5 -35x^5 +35x^3 + 21x^2 +7x -1,\]</div>
+<p>nell’intervallo <span class="math notranslate nohighlight">\([0.988,1.012]\)</span> su di una griglia con scansione <span class="math notranslate nohighlight">\(10^{-4}\)</span>. Come
+si vede dalla figura al margine questo produce il <em>plot</em> di una funzione che
+non sembra proprio essere un polinomio: non è liscia! Stiamo osservando di nuovo
+degli errori di <strong>roundoff</strong> dati dalla sottrazione di numeri dello stesso
+ordine (elevato), che infatti (come si legge dalla scala sull’asse delle <span class="math notranslate nohighlight">\(y\)</span>)
+hanno un ordine di <span class="math notranslate nohighlight">\(10^{-14}\)</span>. Se guardiamo meglio al polinomio in <a class="reference internal" href="#equation-eq-polinomio">(2)</a>
+possiamo osservare che questo non è nient’altro che l’espansione di <span class="math notranslate nohighlight">\(p(x) = (x-1)^7\)</span>,
+provate a fare un <em>plot</em> sullo stesso intervallo e confrontiamolo con il precedente</p>
+<div class="figure align-default" id="buonpolinomio">
+<img alt="_images/polynomialroundoffgood.png" src="_images/polynomialroundoffgood.png" />
+<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">Confronto del grafico del polinomio <a class="reference internal" href="#equation-eq-polinomio">(2)</a> calcolato nella forma <a class="reference internal" href="#equation-eq-polinomio">(2)</a>
+e a partire dalla forma  <span class="math notranslate nohighlight">\(p(x) = (x-1)^7\)</span>.</span><a class="headerlink" href="#buonpolinomio" title="Link a questa immagine">¶</a></p>
+</div>
+</div>
+<div class="section" id="condizionamento-di-un-sistema-lineare">
+<h2>Condizionamento di un sistema lineare<a class="headerlink" href="#condizionamento-di-un-sistema-lineare" title="Link a questa intestazione">¶</a></h2>
+<p>Ricordiamo che il <strong>numero di condizionamento</strong> associato all’equazione lineare
+<span class="math notranslate nohighlight">\(A \mathbf{x} = \mathbf{b}\)</span> fornisce un limite sulla precisione della soluzione
+<span class="math notranslate nohighlight">\(\mathbf{x}\)</span> dopo che un qualunque algoritmo sarà stato applicato per la
+sua approssimazione ed in maniera indipendente dalla precisione <em>floating point</em>
+usata.</p>
+<p>Sia <span class="math notranslate nohighlight">\(\mathbf{e}\)</span> l’errore commesso rispetto a <span class="math notranslate nohighlight">\(\mathbf{b}\)</span>, assumiamo che <span class="math notranslate nohighlight">\(A\)</span> sia
+non singolare, allora l’errore sulla soluzione <span class="math notranslate nohighlight">\(A^{-1} \mathbf{b}\)</span> è dato da
+<span class="math notranslate nohighlight">\(A^{-1} \mathbf{e}\)</span>. Allora il rapporto tra gli errori relativi è dato da</p>
+<div class="math notranslate nohighlight">
+\[\frac{\| A^{-1} \mathbf{e} \|}{\| A^{-1} \mathbf{b} \|} / \frac{\|\mathbf{e}\|}{\|\mathbf{b}\|} = \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|},\]</div>
+<p>per cui possiamo esibire la limitazione per il termine destro come</p>
+<div class="math notranslate nohighlight" id="equation-bound">
+<span class="eqno">(3)<a class="headerlink" href="#equation-bound" title="Permalink a questa equazione">¶</a></span>\[\begin{split}\frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \leq &amp; \max_{\mathbf{e},\mathbf{b} \neq 0} \left\lbrace \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|}, \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \right\rbrace \\ = &amp; \max_{\mathbf{e}\neq 0} \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \max_{\mathbf{b}\neq 0} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \\
+= &amp; \max_{\mathbf{e}\neq 0} \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \max_{\mathbf{b}\neq 0} \frac{\|A\mathbf{x}\|}{\|\mathbf{x}\|} \\
+= &amp; \| A^{-1} \| \|A \| \equiv \kappa(A) \geq \| A^{-1} A \| = 1.\end{split}\]</div>
+<p>Consideriamo ora il seguente esempio artificiale</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}A \mathbf{x} = \begin{bmatrix}
+4.1 &amp; 2.8 \\
+9.7 &amp; 6.6
+\end{bmatrix}  \begin{bmatrix}
+x_1 \\ x_2
+\end{bmatrix} = \begin{bmatrix}
+4.1 \\ 9.7
+\end{bmatrix}\end{split}\]</div>
+<p>Proviamo a risolvere direttamente con MATLAB il sistema lineare</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mf">4.1</span><span class="w"> </span><span class="mf">2.8</span><span class="p">;</span><span class="w"> </span><span class="mf">9.7</span><span class="w"> </span><span class="mf">6.6</span><span class="p">];</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="p">(:,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="o">\</span><span class="n">b</span><span class="w"></span>
+</pre></div>
+</div>
+<p>da cui otteniamo come risposta:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span>
+
+   <span class="mf">1.000000000000002</span>
+  <span class="o">-</span><span class="mf">0.000000000000003</span>
+</pre></div>
+</div>
+<p>Ritracciamo i passi del bound sul termine noto, per cui introduciamo una
+perturbazione di <span class="math notranslate nohighlight">\(0.01\)</span> sulla prima componente di <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> e paragoniamo le
+due soluzioni</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">b2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mf">4.11</span><span class="p">;</span><span class="w"> </span><span class="mf">9.7</span><span class="p">];</span><span class="w"></span>
+<span class="n">x2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="o">\</span><span class="n">b</span><span class="w"></span>
+</pre></div>
+</div>
+<p>da cui otteniamo</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x2</span> <span class="o">=</span>
+
+   <span class="mf">0.339999999999957</span>
+   <span class="mf">0.970000000000064</span>
+</pre></div>
+</div>
+<p>Andiamo ora a verificare la limitazione che abbiamo mostrato in termini del
+numero di condizionamento. A questo scopo facciamo uso del comando <code class="docutils literal notranslate"><span class="pre">cond</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cond</span>   <span class="n">Condition</span> <span class="n">number</span> <span class="k">with</span> <span class="n">respect</span> <span class="n">to</span> <span class="n">inversion</span><span class="o">.</span>
+   <span class="n">cond</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="n">returns</span> <span class="n">the</span> <span class="mi">2</span><span class="o">-</span><span class="n">norm</span> <span class="n">condition</span> <span class="n">number</span> <span class="p">(</span><span class="n">the</span> <span class="n">ratio</span> <span class="n">of</span> <span class="n">the</span>
+   <span class="n">largest</span> <span class="n">singular</span> <span class="n">value</span> <span class="n">of</span> <span class="n">X</span> <span class="n">to</span> <span class="n">the</span> <span class="n">smallest</span><span class="p">)</span><span class="o">.</span>  <span class="n">Large</span> <span class="n">condition</span>
+   <span class="n">numbers</span> <span class="n">indicate</span> <span class="n">a</span> <span class="n">nearly</span> <span class="n">singular</span> <span class="n">matrix</span><span class="o">.</span>
+
+   <span class="n">cond</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">P</span><span class="p">)</span> <span class="n">returns</span> <span class="n">the</span> <span class="n">condition</span> <span class="n">number</span> <span class="n">of</span> <span class="n">X</span> <span class="ow">in</span> <span class="n">P</span><span class="o">-</span><span class="n">norm</span><span class="p">:</span>
+
+      <span class="n">NORM</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">P</span><span class="p">)</span> <span class="o">*</span> <span class="n">NORM</span><span class="p">(</span><span class="n">INV</span><span class="p">(</span><span class="n">X</span><span class="p">),</span><span class="n">P</span><span class="p">)</span><span class="o">.</span>
+
+   <span class="n">where</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">inf</span><span class="p">,</span> <span class="ow">or</span> <span class="s1">&#39;fro&#39;</span><span class="o">.</span>
+</pre></div>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">Pericolo</p>
+<p>Il calcolo del numero di condizionamento per una matrice è bene che sia eseguito
+tramite la funzione <code class="docutils literal notranslate"><span class="pre">cond</span></code>, la forma <code class="docutils literal notranslate"><span class="pre">NORM(X,P)</span> <span class="pre">*</span> <span class="pre">NORM(INV(X),P)</span></code> nella
+documentazione è identificativa di ciò che stiamo calcolando, ma <em>non</em> è
+rappresentativo del modo in cui è realmente calcolato.</p>
+</div>
+<p>Calcoliamo quindi</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">kappa</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">cond</span><span class="p">(</span><span class="n">A</span><span class="p">);</span><span class="w"></span>
+<span class="n">bound</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kappa</span><span class="o">*</span><span class="nb">norm</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">b2</span><span class="p">)</span><span class="o">/</span><span class="nb">norm</span><span class="p">(</span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+<span class="n">errore_relativo</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">norm</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span><span class="o">/</span><span class="nb">norm</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>e osserviamo che</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bound</span> <span class="o">=</span>
+
+   <span class="mf">1.54117722269025</span>
+<span class="n">errore_relativo</span> <span class="o">=</span>
+
+  <span class="mf">1.173243367763135</span>
+</pre></div>
+</div>
+<p>che quindi ci mostra che l’errore che abbiamo commesso è abbastanza vicino
+alla limitazione data dalla <a class="reference internal" href="#equation-bound">(3)</a>.</p>
+</div>
+<div class="section" id="bibliografia">
+<h2>Bibliografia<a class="headerlink" href="#bibliografia" title="Link a questa intestazione">¶</a></h2>
+<p id="id4"><dl class="citation">
+<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id2">Hig02</a></span></dt>
+<dd><p>Nicholas J. Higham. <em>Accuracy and stability of numerical algorithms</em>. Society for Industrial and Applied Mathematics (SIAM), Philadelphia, PA, second edition, 2002. ISBN 0-89871-521-0. URL: <a class="reference external" href="https://doi.org/10.1137/1.9780898718027">https://doi.org/10.1137/1.9780898718027</a>, <a class="reference external" href="https://doi.org/10.1137/1.9780898718027">doi:10.1137/1.9780898718027</a>.</p>
+</dd>
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id3">Kle06</a></span></dt>
+<dd><p>A. Klein. A generalized Kahan-Babuška-summation-algorithm. <em>Computing</em>, 76(3-4):279–293, 2006. URL: <a class="reference external" href="https://doi.org/10.1007/s00607-005-0139-x">https://doi.org/10.1007/s00607-005-0139-x</a>, <a class="reference external" href="https://doi.org/10.1007/s00607-005-0139-x">doi:10.1007/s00607-005-0139-x</a>.</p>
+</dd>
+<dt class="label" id="id6"><span class="brackets"><a class="fn-backref" href="#id3">Neu74</a></span></dt>
+<dd><p>A. Neumaier. Rundungsfehleranalyse einiger Verfahren zur Summation endlicher Summen. <em>Z. Angew. Math. Mech.</em>, 54:39–51, 1974. URL: <a class="reference external" href="https://doi.org/10.1002/zamm.19740540106">https://doi.org/10.1002/zamm.19740540106</a>, <a class="reference external" href="https://doi.org/10.1002/zamm.19740540106">doi:10.1002/zamm.19740540106</a>.</p>
+</dd>
+<dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id1">IEEE75419</a></span></dt>
+<dd><p>IEEE-754. <em>IEEE 754-2019, Standard for Floating-Point Arithmetic</em>. IEEE, New York, NY, USA, June 2019. ISBN 1-5044-5925-3 (print), 1-5044-5924-5 (e-PDF). <a class="reference external" href="https://doi.org/https://doi.org/10.1109/IEEESTD.2019.876622">doi:https://doi.org/10.1109/IEEESTD.2019.876622</a>.</p>
+</dd>
+</dl>
+</p>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
@@ -220,6 +682,7 @@
         <div class='prev-next-bottom'>
             
     <a class='left-prev' id="prev-link" href="laboratorio1.html" title="previous page">Laboratorio 1 : Introduzione a MATLAB</a>
+    <a class='right-next' id="next-link" href="laboratorio3.html" title="next page">Laboratorio 3 : Il Metodo di Bisezione</a>
 
         </div>
         

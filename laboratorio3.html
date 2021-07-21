@@ -1,0 +1,414 @@
+
+<!DOCTYPE html>
+
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Laboratorio 3 : Il Metodo di Bisezione &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.acff12b8f9c144ce68a297486a2fa670.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/translations.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="index" title="Indice" href="genindex.html" />
+    <link rel="search" title="Cerca" href="search.html" />
+    <link rel="next" title="Laboratorio 4 : Il Metodo di Newton" href="laboratorio4.html" />
+    <link rel="prev" title="Laboratorio 2 : L’Aritmetica di Precisione Finita" href="laboratorio2.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Calcolo Numerico - Esercitazioni di Laboratorio</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Cerca in questo libro ..." aria-label="Cerca in questo libro ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Calcolo Numerico - Esercitazioni di Laboratorio
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio1.html">
+   Laboratorio 1 : Introduzione a MATLAB
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio2.html">
+   Laboratorio 2 : L’Aritmetica di Precisione Finita
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Laboratorio 3 : Il Metodo di Bisezione
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio4.html">
+   Laboratorio 4 : Il Metodo di Newton
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio5.html">
+   Laboratorio 5 : Soluzione di Sistemi Triangolari
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio6.html">
+   Laboratorio 6 : L’Eliminazione di Gauss il Metodo LU
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio7.html">
+   Laboratorio 7 : Metodi Stazionari per Sistemi Lineari
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio8.html">
+   Laboratorio 8 : Metodi di Quadratura
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio9.html">
+   Laboratorio 9 : Metodi Espliciti per la Soluzione di ODE
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio10.html">
+   Laboratorio 10 : Metodi di Tipo Runge-Kutta
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Attiva / disattiva la navigazione" aria-controls="site-navigation"
+                title="Attiva / disattiva la navigazione" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Scarica questa pagina"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/laboratorio3.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Scarica il file sorgente" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Stampa in PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/Cirdans-Home/ingcn"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Repository di origine"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/Cirdans-Home/ingcn/issues/new?title=Issue%20on%20page%20%2Flaboratorio3.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Apri un problema"><i class="fas fa-lightbulb"></i>questione aperta</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Modalità schermo intero"
+        title="Modalità schermo intero"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contenuti
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#convergenza">
+   Convergenza
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="laboratorio-3-il-metodo-di-bisezione">
+<h1>Laboratorio 3 : Il Metodo di Bisezione<a class="headerlink" href="#laboratorio-3-il-metodo-di-bisezione" title="Link a questa intestazione">¶</a></h1>
+<p>In questo laboratorio ci occuperemo del problema dell’individuazione degli zeri
+di una funzione <strong>continua</strong> <span class="math notranslate nohighlight">\(f : \mathbb{R} \to \mathbb{R}\)</span>. Per farlo
+adopereremo il <em>metodo di bisezione</em>.</p>
+<p>Per applicare il metodo abbiamo bisogno di un intervallo <span class="math notranslate nohighlight">\([a,b] \subset \mathbb{R}\)</span>
+per cui abbiamo che <span class="math notranslate nohighlight">\(f(a)f(b) &lt; 0\)</span>, ovvero per cui <span class="math notranslate nohighlight">\(f(a)\)</span> e <span class="math notranslate nohighlight">\(f(b)\)</span> assumono
+segni opposti.</p>
+<div class="margin sidebar">
+<p class="sidebar-title">Function Handle</p>
+<p>Il modo più semplice di passare la funzione scalare <span class="math notranslate nohighlight">\(f\)</span> al nostro algoritmo è
+quello di utilizzare un <strong>function handle</strong>, ovvero un tipo di dato di MATLAB
+che conserva l’associazione ad una funzione.</p>
+<p>Questo può essere fatto in diversi modi, si definisce un file funzione</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>y<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">funzione</span><span class="p">(</span>x<span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="n">y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">x</span><span class="o">.^</span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>e poi si invoca la funzione <code class="docutils literal notranslate"><span class="pre">[c,residuo]</span> <span class="pre">=</span> <span class="pre">bisezione(&#64;funzione,a,b,maxit,tol)</span></code>.</p>
+<p>Oppure si definisce direttamente nello script di lancio (o nella <em>command window</em>)
+la funzione come</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="o">.^</span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>e poi si invoca la funzione semplicemente come <code class="docutils literal notranslate"><span class="pre">[c,residuo]</span> <span class="pre">=</span> <span class="pre">bisezione(f,a,b,maxit,tol)</span></code>.
+Si veda l’esempio di script di seguito.</p>
+</div>
+<div class="admonition-esercizio-1 admonition">
+<p class="admonition-title">Esercizio 1</p>
+<p>Si implementi in una funzione MATLAB l’algoritmo di bisezione:</p>
+<ol class="simple">
+<li><p>Calcolare <span class="math notranslate nohighlight">\(c\)</span>, punto medio dell’intervallo <span class="math notranslate nohighlight">\([a,b]\)</span>, <span class="math notranslate nohighlight">\(c = (a+b)/2\)</span>,</p></li>
+<li><p>Calcolare il valore della funzione al punto medio <span class="math notranslate nohighlight">\(f(c)\)</span>,</p></li>
+<li><p>Se il <em>criterio di convergenza</em> è soddisfatto, restituire <span class="math notranslate nohighlight">\(c\)</span> e terminare le
+iterazioni</p></li>
+<li><p>Esaminare il segno di <span class="math notranslate nohighlight">\(f(c)\)</span> e rimpiazzare <span class="math notranslate nohighlight">\((a,f(a))\)</span> o <span class="math notranslate nohighlight">\((b,f(b))\)</span> con
+<span class="math notranslate nohighlight">\((c,f(c))\)</span> in modo che ci sia uno zero all’interno del nuovo intervallo.</p></li>
+</ol>
+<p>Un <em>template</em> della funzione da implementare è il seguente:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[c,residuo]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">bisezione</span><span class="p">(</span>f,a,b,maxit,tol<span class="p">)</span><span class="w"></span>
+<span class="c">%%BISEZIONE applica il metodo di bisezione per il calcolo di f(x) = 0</span><span class="w"></span>
+<span class="c">% Input:  f function handle della funzione di cui si cerca lo zero</span><span class="w"></span>
+<span class="c">%         a estremo sinistro dell&#39;intervallo</span><span class="w"></span>
+<span class="c">%         b estremo destro dell&#39;intervallo</span><span class="w"></span>
+<span class="c">%         maxit numero massimo di iterazioni</span><span class="w"></span>
+<span class="c">%         tol tolleranza richiesta su abs(f(c))</span><span class="w"></span>
+<span class="c">% Output: c vettore dei valori trovato dall&#39;algoritmo</span><span class="w"></span>
+<span class="c">%         residuo vettore che contiene tutti i residui abs(f(c))</span><span class="w"></span>
+
+
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>È importante che la funzione implementata</p>
+<ul class="simple">
+<li><p>faccia il controllo degli input,</p></li>
+<li><p>pre-allochi la memoria per i vettori <code class="docutils literal notranslate"><span class="pre">c</span></code> e <code class="docutils literal notranslate"><span class="pre">residuo</span></code>,</p></li>
+<li><p>riduca al minimo le chiamate ad <span class="math notranslate nohighlight">\(f(\cdot)\)</span>.</p></li>
+</ul>
+<p>Per testare l’algoritmo possiamo usare il problema di test:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Test del metodo di bisezione</span><span class="w"></span>
+
+<span class="nb">clear</span><span class="p">;</span><span class="w"> </span><span class="nb">clc</span><span class="p">;</span><span class="w"> </span><span class="n">close</span><span class="w"> </span><span class="s">all</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="o">.^</span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="n">maxit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span><span class="w"></span>
+<span class="n">tol</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-6</span><span class="p">;</span><span class="w"></span>
+
+<span class="p">[</span><span class="n">c</span><span class="p">,</span><span class="n">residuo</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bisezione</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">maxit</span><span class="p">,</span><span class="n">tol</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="convergenza">
+<h2>Convergenza<a class="headerlink" href="#convergenza" title="Link a questa intestazione">¶</a></h2>
+<p>L’analisi di convergenza per questo metodo vista a lezione ci dice che, se
+chiamiamo <span class="math notranslate nohighlight">\(c_n\)</span> l’iterata <span class="math notranslate nohighlight">\(n\)</span>-ma prodotta dal metodo e <span class="math notranslate nohighlight">\(c\)</span> la radice dell’equazione
+<span class="math notranslate nohighlight">\(f(x) = 0\)</span>, allora</p>
+<div class="math notranslate nohighlight">
+\[| c_n - c | \leq \frac{|b-a|}{2^n}.\]</div>
+<p>Possiamo usare MATLAB per verificare che quanto abbiamo implementato sia
+consistente con quanto abbiamo dimostrato, per farlo elaboriamo ulteriormente
+l’esempio dell’Esercizio 1 con il seguente codice:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ctrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.52137970680456757</span><span class="p">;</span><span class="w"></span>
+<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">residuo</span><span class="p">);</span><span class="w"></span>
+<span class="nb">semilogy</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">residuo</span><span class="p">,</span><span class="s">&#39;x--&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="n">n</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">c</span><span class="o">-</span><span class="n">ctrue</span><span class="p">),</span><span class="s">&#39;ro--&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="n">n</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">./</span><span class="p">(</span><span class="mf">2.</span>^<span class="n">n</span><span class="p">),</span><span class="s">&#39;k-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Iterazione n&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">legend</span><span class="p">(</span><span class="s">&#39;Residuo del metodo&#39;</span><span class="p">,</span><span class="s">&#39;Errore Assoluto c&#39;</span><span class="p">,</span><span class="s">&#39;Bound&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">axis</span><span class="w"> </span><span class="s">tight</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Che ci permette di produrre la figura <a class="reference internal" href="#bisezione-errore"><span class="std std-numref">Fig. 4</span></a>, da cui osserviamo
+che l’errore assoluto sulla radice <span class="math notranslate nohighlight">\(c\)</span> segue l’andamento predetto dall’analisi
+teorica.</p>
+<div class="figure align-default" id="bisezione-errore">
+<img alt="_images/bisezione-errore.png" src="_images/bisezione-errore.png" />
+<p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">Errore nel metodo di bisezione per la soluzione del problema dell’Esercizio 1.</span><a class="headerlink" href="#bisezione-errore" title="Link a questa immagine">¶</a></p>
+</div>
+<p>Alcune note sul codice usato.</p>
+<ul class="simple">
+<li><p>Per confrontare la convergenza sulla <span class="math notranslate nohighlight">\(c_n\)</span> abbiamo avuto necessità di avere un
+valore di <span class="math notranslate nohighlight">\(c\)</span> che abbiamo calcolato per altre via con 16 cifre di accuratezza,</p></li>
+<li><p>Abbiamo usato la funzione <code class="docutils literal notranslate"><span class="pre">semilogy</span></code> per avere un grafico delle quantità in
+oggetto in cui abbiamo usato una scala logaritmica sull’asse delle <span class="math notranslate nohighlight">\(y\)</span> (in cui
+stavamo riportando gli errori).</p></li>
+</ul>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="laboratorio2.html" title="previous page">Laboratorio 2 : L’Aritmetica di Precisione Finita</a>
+    <a class='right-next' id="next-link" href="laboratorio4.html" title="next page">Laboratorio 4 : Il Metodo di Newton</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          Di F. Durastante<br/>
+        
+            &copy; Diritto d'autore 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
