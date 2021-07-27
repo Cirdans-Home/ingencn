@@ -110,3 +110,49 @@ valore di $c$ che abbiamo calcolato per altre via con 16 cifre di accuratezza,
 - Abbiamo usato la funzione `semilogy` per avere un grafico delle quantità in
 oggetto in cui abbiamo usato una scala logaritmica sull'asse delle $y$ (in cui
   stavamo riportando gli errori).
+
+## Applicazioni
+
+Consideriamo alcune applicazioni *ingegneristiche* del problema di trovare lo
+zero di una funzione.
+
+:::{admonition} Esercizio 2
+Le frequenze naturali di una trave a sbalzo (*cantilever*) uniforme sono legate
+alle radici $\beta_i$ dell'equazione
+```{math}
+f(\beta) = \cosh \beta \cos \beta + 1 = 0,
+```
+dove
+- $\beta_i^ = (2\pi f_i)^2 \frac{mL^3}{E I}$,
+- $f_i = i$ma frequenza naturale della trave (misurata in cps),
+- $m = $ massa della trave,
+- $L = $ lunghezza della trave,
+- $E = $ modulo di elasticità,
+- $I = $ momento di inerzia della sezione della trave.
+
+Si determinano le due frequenze più basse di una trave d'acciaio lunga $0.9 m$, con una sezione rettangolare con sezione rettangolare larga $25 mm$ e alta $2.5 mm$. La densità della trave è di $7850 kg/m^3$ e $E = 200 GPa$.
+:::
+
+:::{margin} Bernoulli
+```{figure} ./images/bernoulli.png
+:name: bernoulli
+
+Equazione di Bernoulli per il fluido attraverso un canale aperto.
+```
+:::
+:::{admonition} Esercizio 3
+L'equazione di Bernoulli per il flusso di un fluido attraverso un canale aperto
+con una piccola protuberanza ({numref}`bernoulli`) è
+```{math}
+\frac{Q^2}{2 g b^2 h_0^2} + h_0 = \frac{Q^2}{2 g b^2 h^2} + h + H,
+```
+dove
+- $Q = 1.2 m^3/s$ portata del flusso,
+- $g = 9.81 m/s^2$ accelerazione gravitazionale,
+- $b = 1.9m$ larghezza del canale,
+- $h_0 = 0.6m$ livello dell'acqua a monte,
+- $H = 0.075 m$ altezza della protuberanza,
+- $h$ = livello dell'acqua al di sopra della protuberanza.
+
+Si determini il valore di $h$.
+:::

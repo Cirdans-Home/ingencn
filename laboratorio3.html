@@ -235,6 +235,11 @@
    Convergenza
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#applicazioni">
+   Applicazioni
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -356,6 +361,52 @@ valore di <span class="math notranslate nohighlight">\(c\)</span> che abbiamo ca
 oggetto in cui abbiamo usato una scala logaritmica sull’asse delle <span class="math notranslate nohighlight">\(y\)</span> (in cui
 stavamo riportando gli errori).</p></li>
 </ul>
+</div>
+<div class="section" id="applicazioni">
+<h2>Applicazioni<a class="headerlink" href="#applicazioni" title="Link a questa intestazione">¶</a></h2>
+<p>Consideriamo alcune applicazioni <em>ingegneristiche</em> del problema di trovare lo
+zero di una funzione.</p>
+<div class="admonition-esercizio-2 admonition">
+<p class="admonition-title">Esercizio 2</p>
+<p>Le frequenze naturali di una trave a sbalzo (<em>cantilever</em>) uniforme sono legate
+alle radici <span class="math notranslate nohighlight">\(\beta_i\)</span> dell’equazione</p>
+<div class="math notranslate nohighlight">
+\[f(\beta) = \cosh \beta \cos \beta + 1 = 0,\]</div>
+<p>dove</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\beta_i^ = (2\pi f_i)^2 \frac{mL^3}{E I}\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(f_i = i\)</span>ma frequenza naturale della trave (misurata in cps),</p></li>
+<li><p><span class="math notranslate nohighlight">\(m = \)</span> massa della trave,</p></li>
+<li><p><span class="math notranslate nohighlight">\(L = \)</span> lunghezza della trave,</p></li>
+<li><p><span class="math notranslate nohighlight">\(E = \)</span> modulo di elasticità,</p></li>
+<li><p><span class="math notranslate nohighlight">\(I = \)</span> momento di inerzia della sezione della trave.</p></li>
+</ul>
+<p>Si determinano le due frequenze più basse di una trave d’acciaio lunga <span class="math notranslate nohighlight">\(0.9 m\)</span>, con una sezione rettangolare con sezione rettangolare larga <span class="math notranslate nohighlight">\(25 mm\)</span> e alta <span class="math notranslate nohighlight">\(2.5 mm\)</span>. La densità della trave è di <span class="math notranslate nohighlight">\(7850 kg/m^3\)</span> e <span class="math notranslate nohighlight">\(E = 200 GPa\)</span>.</p>
+</div>
+<div class="margin sidebar">
+<p class="sidebar-title">Bernoulli</p>
+<div class="figure align-default" id="bernoulli">
+<img alt="_images/bernoulli.png" src="_images/bernoulli.png" />
+<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">Equazione di Bernoulli per il fluido attraverso un canale aperto.</span><a class="headerlink" href="#bernoulli" title="Link a questa immagine">¶</a></p>
+</div>
+</div>
+<div class="admonition-esercizio-3 admonition">
+<p class="admonition-title">Esercizio 3</p>
+<p>L’equazione di Bernoulli per il flusso di un fluido attraverso un canale aperto
+con una piccola protuberanza (<a class="reference internal" href="#bernoulli"><span class="std std-numref">Fig. 5</span></a>) è</p>
+<div class="math notranslate nohighlight">
+\[\frac{Q^2}{2 g b^2 h_0^2} + h_0 = \frac{Q^2}{2 g b^2 h^2} + h + H,\]</div>
+<p>dove</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Q = 1.2 m^3/s\)</span> portata del flusso,</p></li>
+<li><p><span class="math notranslate nohighlight">\(g = 9.81 m/s^2\)</span> accelerazione gravitazionale,</p></li>
+<li><p><span class="math notranslate nohighlight">\(b = 1.9m\)</span> larghezza del canale,</p></li>
+<li><p><span class="math notranslate nohighlight">\(h_0 = 0.6m\)</span> livello dell’acqua a monte,</p></li>
+<li><p><span class="math notranslate nohighlight">\(H = 0.075 m\)</span> altezza della protuberanza,</p></li>
+<li><p><span class="math notranslate nohighlight">\(h\)</span> = livello dell’acqua al di sopra della protuberanza.</p></li>
+</ul>
+<p>Si determini il valore di <span class="math notranslate nohighlight">\(h\)</span>.</p>
+</div>
 </div>
 </div>
 
