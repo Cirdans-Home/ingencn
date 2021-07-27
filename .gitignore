@@ -1,1 +1,6 @@
 /src/_build/
+
+*.svg
+*.aux
+*.synctex.gz
+*.log

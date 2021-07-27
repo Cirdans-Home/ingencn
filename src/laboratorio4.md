@@ -163,3 +163,47 @@ Dalla teoria sappiamo che l'ordine di convergenza del metodo di Newton è
 ridotto quando la radice che $c$ di $f$ che cerchiamo è di ordine più elevato.
 Ricordiamo che se $c$ è una radice di $f$ il suo **ordine** è il più piccolo
 $q$ per cui $f^{(q)}(c) \neq 0$.
+
+
+## Esempi di applicazioni
+
+:::{margin} Entalpia
+L'**energia libera di Gibbs** (anche chiamata entalpia libera) è una funzione
+di stato termodinamica utilizzata per rappresentare l'energia libera nelle
+trasformazioni a pressione e temperatura costante. In termochimica è usata per
+determinare la spontaneità di una reazione.
+:::
+:::{admonition} Energia libera di Gibbs
+L'energia libera di Gibbs di una mole di idrogeno alla temperatura $T$ è
+```{math}
+	G = - R T \ln[ (T/T_0)^{5/2}]\,J,
+```
+dove $R = 8.31441\,J/K$ è la costante dei gas e la temperatura iniziale è
+$T_0 = 4.44418\,K$. Si determini la temperatura a cui $G = -10^{5}\,J$.
+:::
+
+:::{margin} Sistema molle--ammortizzatore
+```{figure} ./images/spring.png
+:width: 40%
+:name: spring
+
+Un modello accoppiato molla-ammortizzatore.
+```
+:::
+:::{admonition} Sistema molle--ammortizzatore
+Consideriamo il sistema accoppiato di molle e ammortizzatori in {numref}`spring`.
+I due blocchi di massa $m$ sono connessi tra di loro da due molle e da un
+ammortizzatore. Il coefficiente elastico di ognuna delle due molle è dato da
+$k$, mentre $c$ è il coefficiente che regola l'attenuazione causata dall'ammortizzatore. Quando il sistema è messo in posizione e rilasciato, la
+posizione di ogni blocco durante il moto ha la forma
+```{math}
+x_k(t) = A_k e^{\omega_r t} \cos(\omega_i t + \phi_k), \qquad k=1,2,
+```
+dove $A_k$ e $\phi_k$ sono costanti, e $\omega = \omega_r \pm i \omega_i$ sono le
+radici dell'equazione
+```{math}
+\omega^4 + 2 \frac{c}{m} \omega^3 + 3 \frac{k}{m}\omega^2 + \frac{ c k}{m^2} \omega + \left(\frac{k}{m}\right)^2 = 0.
+```
+Si determinino le possibili combinazioni di $w_r$ e $w_i$ se $c/m = 12\,s^{-1}$,
+e $k/m = 1500 s^{-2}$.
+:::
