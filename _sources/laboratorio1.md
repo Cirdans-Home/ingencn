@@ -68,7 +68,7 @@ essere adoperate:
 3. La lunghezza massima per il nome di una variabile è di 63 caratteri,
 4. MATLAB è **case sensitive**. La variabile di nome `pAlla` è diversa dalla
 variabile di nome `palla`,
-5 È buona norma evitare i seguenti nomi:  `i`, `j`, `pi`, e più in generale
+5. È buona norma evitare i seguenti nomi:  `i`, `j`, `pi`, e più in generale
 tutte i nomi di funzioni predefinite di MATLAB come, ad esempio, `length`,
 `char`, `size`, `plot`, `break`, `cos`, `log`, etc.
 6. È buona norma chiamare le variabili con nomi intellegibili, cioè con nomi che
