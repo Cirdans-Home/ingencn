@@ -236,8 +236,8 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#operazioni-artimetiche-e-ordine-delle-operazioni">
-   Operazioni artimetiche e ordine delle operazioni
+  <a class="reference internal nav-link" href="#operazioni-aritmetiche-e-ordine-delle-operazioni">
+   Operazioni aritmetiche e ordine delle operazioni
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -353,8 +353,8 @@ includendo anche le sessioni passate.</p></li>
 selezionata per essere la cartella corrente.</p></li>
 </ol>
 </div>
-<div class="section" id="operazioni-artimetiche-e-ordine-delle-operazioni">
-<h2>Operazioni artimetiche e ordine delle operazioni<a class="headerlink" href="#operazioni-artimetiche-e-ordine-delle-operazioni" title="Link a questa intestazione">¶</a></h2>
+<div class="section" id="operazioni-aritmetiche-e-ordine-delle-operazioni">
+<h2>Operazioni aritmetiche e ordine delle operazioni<a class="headerlink" href="#operazioni-aritmetiche-e-ordine-delle-operazioni" title="Link a questa intestazione">¶</a></h2>
 <ul>
 <li><p>Le operazioni di base sono l’addizione (<code class="docutils literal notranslate"><span class="pre">+</span></code>), sottrazione (<code class="docutils literal notranslate"><span class="pre">-</span></code>), la
 moltiplicazione (<code class="docutils literal notranslate"><span class="pre">*</span></code>), la divisione (<code class="docutils literal notranslate"><span class="pre">\</span></code>), l’elevamento a potenza (<code class="docutils literal notranslate"><span class="pre">^</span></code>),</p></li>
@@ -1576,13 +1576,13 @@ aiutatevi con <code class="docutils literal notranslate"><span class="pre">help<
 <img alt="Successione di Viswanath e Fibonacci e loro comportamento asintotico a confronto" src="_images/viswanath.png" /></p>
 </div>
 <div class="margin sidebar">
-<p class="sidebar-title">Insieme di Mandelbroot</p>
-<p><img alt="Insieme di Mandelbroot con 1000 iterazioni." src="_images/mandelbroot.png" /></p>
+<p class="sidebar-title">Insieme di Mandelbrot</p>
+<p><img alt="Insieme di Mandelbrot con 1000 iterazioni." src="_images/mandelbroot.png" /></p>
 </div>
 <div class="admonition-esercizio-3 admonition">
 <p class="admonition-title">Esercizio 3</p>
 <p>Esploriamo ancora le funzioni di <em>plot</em> di MATLAB. Cerchiamo di produrre una
-stampa dell’insieme <a class="reference external" href="https://en.wikipedia.org/wiki/Mandelbrot_set">frattale di Mandelbroot</a>. Questo insieme è l’insieme è l’insieme dei numeri complessi
+stampa dell’insieme <a class="reference external" href="https://en.wikipedia.org/wiki/Mandelbrot_set">frattale di Mandelbrot</a>. Questo insieme è l’insieme è l’insieme dei numeri complessi
 <span class="math notranslate nohighlight">\(c\)</span> per cui la funzione  <span class="math notranslate nohighlight">\(f_{c}(z)=z^{2}+c\)</span> non <em>diverge</em> quando viene iterata
 a partire da <span class="math notranslate nohighlight">\(z = 0\)</span>, cioè, l’insieme di quei punti <span class="math notranslate nohighlight">\(c\)</span> per cui la sequenza <span class="math notranslate nohighlight">\(f_{c}(0),f_{c}(f_{c}(0)),\ldots\)</span> resta limitata in valore assoluto. Possiamo
 costruire uno <em>script</em> MATLAB che ci permetta di disegnare un’approssimazione
@@ -1591,14 +1591,14 @@ di questo insieme.</p>
 <li><p>Utilizziamo la funzione <code class="docutils literal notranslate"><span class="pre">linspace</span></code> per costruire l’insieme dei numeri complessi <span class="math notranslate nohighlight">\(c\)</span> su cui vogliamo fare la valutazione. Poiché <code class="docutils literal notranslate"><span class="pre">linspace</span></code> produce
 per noi un vettore reali, dobbiamo costruirne due – uno per ciascuna direzione
 – e trasformarli in un insieme di coppie
-di valutazioni con la funzione <code class="docutils literal notranslate"><span class="pre">meshgrid</span></code>. Un buon insieme reale da valutare per disegnare l’insieme di Mandelbroot è <span class="math notranslate nohighlight">\([-2.1,0.6]\times[-1.1,1.1]\)</span>.</p></li>
+di valutazioni con la funzione <code class="docutils literal notranslate"><span class="pre">meshgrid</span></code>. Un buon insieme reale da valutare per disegnare l’insieme di Mandelbrot è <span class="math notranslate nohighlight">\([-2.1,0.6]\times[-1.1,1.1]\)</span>.</p></li>
 <li><p>Ora che abbiamo le valutazioni reali è necessario trasformare in numeri complessi <span class="math notranslate nohighlight">\(c\)</span>. Possiamo ottenere questo risultato utilizzando la funzione <code class="docutils literal notranslate"><span class="pre">complex</span></code>: <code class="docutils literal notranslate"><span class="pre">C</span> <span class="pre">=</span> <span class="pre">complex(X,Y)</span></code> sulla coppia di matrici di valutazioni ottenute
 da <code class="docutils literal notranslate"><span class="pre">meshgrid</span></code>.</p></li>
 <li><p>Possiamo ora implementare un certo numero fissato di iterazioni della funzione <span class="math notranslate nohighlight">\(f_{c}(z)=z^{2}+c\)</span> mediante un ciclo <code class="docutils literal notranslate"><span class="pre">for</span></code>.</p></li>
-<li><p>Concludiamo l’esercizio disegnando l’insieme di Mandelbroot con la funzione</p></li>
+<li><p>Concludiamo l’esercizio disegnando l’insieme di Mandelbrot con la funzione</p></li>
 </ol>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">contourf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="nb">double</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span><span class="o">&lt;</span><span class="mf">1e6</span><span class="p">))</span><span class="w"></span>
-<span class="nb">title</span><span class="p">(</span><span class="s">&#39;Insieme di Mandelbroot&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="nb">title</span><span class="p">(</span><span class="s">&#39;Insieme di Mandelbrot&#39;</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
 <p>che è una buona occasione per guardare cosa fa la funzione di <em>plot</em> <code class="docutils literal notranslate"><span class="pre">contourf</span></code>
