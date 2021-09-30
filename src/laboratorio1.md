@@ -28,7 +28,7 @@ includendo anche le sessioni passate.
 4. La **current folder** mostra tutti i file in qualsiasi cartella sia stata
 selezionata per essere la cartella corrente.
 
-## Operazioni artimetiche e ordine delle operazioni
+## Operazioni aritmetiche e ordine delle operazioni
 
 - Le operazioni di base sono l'addizione (`+`), sottrazione (`-`), la
 moltiplicazione (`*`), la divisione (`\`), l'elevamento a potenza (`^`),
@@ -1157,12 +1157,12 @@ aiutatevi con `help`. Un esempio del grafico ottenuto con lo script precedente
 ![Successione di Viswanath e Fibonacci e loro comportamento asintotico a confronto](./images/viswanath.png)
 :::
 
-:::{margin} Insieme di Mandelbroot
-![Insieme di Mandelbroot con 1000 iterazioni.](/images/mandelbroot.png)
+:::{margin} Insieme di Mandelbrot
+![Insieme di Mandelbrot con 1000 iterazioni.](/images/mandelbroot.png)
 :::
 :::{Admonition} Esercizio 3
 Esploriamo ancora le funzioni di *plot* di MATLAB. Cerchiamo di produrre una
-stampa dell'insieme [frattale di Mandelbroot](https://en.wikipedia.org/wiki/Mandelbrot_set). Questo insieme è l'insieme è l'insieme dei numeri complessi
+stampa dell'insieme [frattale di Mandelbrot](https://en.wikipedia.org/wiki/Mandelbrot_set). Questo insieme è l'insieme è l'insieme dei numeri complessi
 $c$ per cui la funzione  $f_{c}(z)=z^{2}+c$ non *diverge* quando viene iterata
 a partire da $z = 0$, cioè, l'insieme di quei punti $c$ per cui la sequenza $f_{c}(0),f_{c}(f_{c}(0)),\ldots$ resta limitata in valore assoluto. Possiamo
 costruire uno *script* MATLAB che ci permetta di disegnare un'approssimazione
@@ -1170,14 +1170,14 @@ di questo insieme.
 1. Utilizziamo la funzione `linspace` per costruire l'insieme dei numeri complessi $c$ su cui vogliamo fare la valutazione. Poiché `linspace` produce
 per noi un vettore reali, dobbiamo costruirne due -- uno per ciascuna direzione
 -- e trasformarli in un insieme di coppie
-di valutazioni con la funzione `meshgrid`. Un buon insieme reale da valutare per disegnare l'insieme di Mandelbroot è $[-2.1,0.6]\times[-1.1,1.1]$.
+di valutazioni con la funzione `meshgrid`. Un buon insieme reale da valutare per disegnare l'insieme di Mandelbrot è $[-2.1,0.6]\times[-1.1,1.1]$.
 2. Ora che abbiamo le valutazioni reali è necessario trasformare in numeri complessi $c$. Possiamo ottenere questo risultato utilizzando la funzione `complex`: `C = complex(X,Y)` sulla coppia di matrici di valutazioni ottenute
 da `meshgrid`.
 3. Possiamo ora implementare un certo numero fissato di iterazioni della funzione $f_{c}(z)=z^{2}+c$ mediante un ciclo `for`.
-4. Concludiamo l'esercizio disegnando l'insieme di Mandelbroot con la funzione
+4. Concludiamo l'esercizio disegnando l'insieme di Mandelbrot con la funzione
 ```matlab
 contourf(x,y,double(abs(Z)<1e6))
-title('Insieme di Mandelbroot')
+title('Insieme di Mandelbrot')
 ```
 che è una buona occasione per guardare cosa fa la funzione di *plot* `contourf`
 (`help contourf`).
