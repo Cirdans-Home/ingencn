@@ -6,12 +6,12 @@ MATLAB/Simulink è uno strumento software per:
 - Modellazione di sistemi e fenomeni fisici,
 - Test e simulazioni di progetti ingegneristici.
 
-## Il Desktop di Matlab
+## Il Desktop di MATLAB
 
 ```{figure} ./images/matlabdesktop.png
 :name: matlabdesktop
 
-Il Desktop di Matlab
+Il Desktop di MATLAB
 ```
 
 1. La **command window** è dove digiti i comandi MATLAB seguendo il prompt:
@@ -325,7 +325,7 @@ Si può salvare una funzione in
 - un file funzione che contiene solamente definizioni di funzione. Il nome del
 file *deve* corrispondere esattamente con il nome della prima funzione contenuta
 nel file;
-- uno script che toneiente comandi e definizioni di funzione. In questo caso le
+- uno script che contiene comandi e definizioni di funzione. In questo caso le
 funzioni *devono* essere contenute alla fine del file e lo *script* non può avere
 lo stesso nome di nessuna delle funzioni contenute al suo interno.
 
@@ -804,28 +804,362 @@ che è invece una matrice! Non esattamente quello che ci aspettavamo (riuscite
 * - Funzione di MATLAB
   - Descrizione
 * - `if, elseif, else`
-  - Execute statements if condition is true
+  - Esegue comando se la condizione `if` è verificata
 * - `switch, case, otherwise`
-  - Execute one of several groups of statements
+  - Esegue uno o più gruppi di comandi a seconda che la variabile `switch`
+  abbia il valore indicato nel `case`, altrimenti esegue il comando o gruppo di
+  comandi identificati da `otherwise`
 * - `try, catch`
-  - Execute statements and catch resulting errors
+  - Esegue i comandi nel gruppo `try`, se questi restituiscono errore non blocca
+  l'esecuzione e passa ai comandi racolti in `catch`
 ```
 
+Consideriamo il seguente esempio che simula il lancio di una moneta.
+```matlab
+a = rand();
+if a < 0.5
+  disp('Testa!')
+else
+  disp('Croce')
+end
+```
+Ad ogni nuova esecuzione `rand()` genera un numero casuale in $[0,1]$ con
+probabilità uniforme. Il comando `if` controlla se il numero casuale generato
+è $< 0.5$ ed in questo caso entra nel primo gruppo di codice. Altrimenti, abbiamo
+ottenuto un numero $> 0.5$ e rientriamo nel secondo gruppo di codice. Possiamo
+decidere di simulare anche un dado a tre facce nel seguente modo
+```matlab
+a = rand();
+if a < 1/3
+  disp('1')
+elseif a >= 1/3 & a < 2/3
+  disp('2')
+else
+  disp('3')
+end
+```
+in cui abbiamo utilizzato il comando `elseif` per avere un ramo aggiuntivo.
+
+```{note}
+All'interno dei nostri controlli di tipo `if` (e più in generale) possiamo combinare
+insieme il risultato di diverse operazioni logiche. Queste sono raccolte nella
+Tabella {numref}`logicalops`. Altre funzioni che agiscono sui vettori di logici
+e che potete esplorare richiamando la funzione `help` sono `any` e `all`.
+
+```{list-table} Operazioni logiche
+:header-rows: 1
+:name: logicalops
+
+* - Funzione di MATLAB
+  - Descrizione
+* - `&`
+  - AND Logico
+* - `~`
+  - NOT Logico
+* - `|`
+  - OR Logico
+* - `xor`	 
+  - OR Esclusivo Logico
+```
+
+Vediamo anche un esempio dell'istruzione di tipo `switch`.
+```matlab
+controllo = input("Inserisci un numero intero tra 0 e 3: ");
+switch controllo
+case 0
+ A = pascal(4,4);
+ disp(A);
+case 1
+ A = ones(4,4);
+ disp(A);
+case 2
+ A = eye(4,4);
+ disp(A);
+case 3
+ A = rand(4,4);
+ disp(A);
+otherwise
+ disp("Non so cosa fare con questo input!")
+end
+```
+Si sarebbe potuto implementare lo stesso codice con una serie di `if` e `elseif`
+ed un `else`, ma questo approccio è più rapido se non c'è la necessità di
+imporre molti controlli logici.
+
+L'ultimo controllo che vogliamo testare è `try`. Per cui potete provare il seguente
+codice.
+```matlab
+try
+ A = rand(5,5);
+ b = ones(1,5);
+ A*b
+catch
+ disp("C'è qualche problema con le dimensioni!");
+end
+```
+Poiché l'operazione algebrica che abbiamo richiesto non è ben posta (provate ad
+eseguirla al di fuori dell'operazione di `try`) il `try` cattura l'errore e
+invece di arrestare l'esecuzione esegue il codice nella clausola `catch`. Potete
+correggere il codice nel primo blocco e verificare che in tal caso non entrerete
+nel `catch`.
+
 ## Cicli e Cicli Innestati
+
+All'interno di qualsiasi programma, è possibile definire sezioni di codice che si ripetono in un ciclo.
 
 ```{list-table} Strutture Condizionali.
 :header-rows: 1
 :name: tabcicli
 * - Funzione di MATLAB
   - Descrizione
-* - for
-  - for loop to repeat specified number of times
-* - while
-  - while loop to repeat when condition is true
-* - break
-  - Terminate execution of for or while loop
-* - continue
-  - Pass control to next iteration of for or while loop
-* - pause
-  - Stop MATLAB execution temporarily
+* - `for`
+  - ciclo `for` per ripetere delle istruzioni un numero prefissato di volte
+* - `while`
+  - ciclo `while` ripete il suo codice fintanto che la condizione è `true`
+* - `break`
+  - Termina in maniera forzata l'esecuzione di un ciclo `for` o `while`
+* - `continue`
+  - Passa il controllo all'iterata successiva di un ciclo `for` o `while`
+* - `pause`
+  - Mette temporaneamente in pausa l'esecuzione di MATLAB.
+```
+
+:::{margin} Funzioni di stampa
+MATLAB fornisce un porting abbastanza trasparente delle funzioni di stampa
+a schermo (su stream di dati) del C. Ovvero la funzione `fprintf`. Per la stampa
+a schermo il prototipo di questa funzione è
+```
+fprintf(FORMAT, A, ...)
+```
+dove FORMAT è una stringa che contiene informazioni sul formato da stampare e
+`A` è un array che contiene i dati che devono essere stampati secondo il formato
+FORMAT. In generale questo è una stringa che può contenere del testo accompagnato
+da dei caratteri di *escape* che dicono come formattare il dato contenuto nella
+variabile `A`.
+![Caratteri di *escape* per il formato](./images/format.png)
+Come descritto nell'immagine l'*escape* per un operatore di formattazione
+comincia con il segno di percentuale, `%`, e finisce con un carattere di
+conversione ({numref}`carattereconversione`). Il carattere di conversione è richiesto. In maniera opzionale,
+si possono specificare un identificatore, delle flag, l'ampiezza del campo,
+la *precisione*, e un operatore di *sottotipo* tra il `%` ed il carattere di
+conversione.
+
+```{list-table} Caratteri di conversione
+:header-rows: 1
+:name: carattereconversione
+* - Carattere
+  - Conversione
+* - `%d` o `%i`
+  - Intero base 10
+* - `%f`
+  - Floating point a precisione fissa
+* - `%e`
+  - Floating point notazione scientifica
+* - `%c`
+  - Singolo carattere
+* - `%s`
+  - Stringa
+```
+Un esempio:
+```matlab
+fprintf("%f \n",pi);
+fprintf("%e \n",5*10^20);
+fprintf("%1.2f \n",pi);
+fprintf("%1.2e \n",5*10^20);
+fprintf("%c \n",'a')
+fprintf("%s \n",'Ciao, mondo!')
+```
+Nell'esempio abbiamo usato ripetutamente i caratteri `\n` che stanno a
+simboleggiare un carattere di fine linea. Altri caratteri utili di questo tipo
+sono in {numref}`carformattazione`.
+```{list-table} Caratteri di formattazione
+:header-rows: 1
+:name: carformattazione
+* - Risultato
+  - Stringa
+* - Singolo quotation mark
+  - `''`
+* - Simbolo percento
+  - `%%`
+* - Backslash
+  - `\\`
+* - Backspace
+  - `\b`
+* - Tab orizzontale
+  - `\t`
+* - Tab verticale
+  - `\v`
+```
+Ulteriori informazioni possono essere ottenuto scrivendo `help fprintf` nella
+*command line*.
+:::
+Utilizziamo un ciclo `for` per calcolare la somma dei primi `n` numeri interi.
+```matlab
+n = input("Inserisci un numero intero n: ");
+somma = 0;
+for i=1:n
+  somma = somma + i;
+end
+fprintf("La somma degli interi da 1 a %d è %d.\n",n,somma);
+```
+Questo non è ovviamente il modo migliore di fare questa operazione, avremmo
+ad esempio potuto calcolare la stessa quantità come `sum(1:10)`. Oppure, sfruttare
+un po' di idee matematiche per ricordarci che
+$\displaystyle S_n = \sum_{i=1}^{n} i = \frac{n(n+1)}{2}.$ Ma è servito al nostro
+scopo dimostrativo.
+
+Vediamo ora un esempio di ciclo `while`.
+```matlab
+somma = 0;
+while somma < 10
+  somma = somma + rand();
+end
+fprintf("Il valore finale della somma è: %f\n",somma);
+```
+Poiché abbiamo inizializzato la variabile `somma` a 0, la condizione di innesco
+del ciclo `while` è `true` e dunque cominciamo ad iterare. Ad ogni nuova istanza
+del ciclo un nuovo numero casuale viene generato e aggiunto alla variabile `somma`.
+Non appena il valore di `somma` supera 10, il ciclo viene interrotto e il messaggio
+viene stampato a schermo.
+
+## Alcuni esercizi
+
+Gli esercizi qui raccolti hanno per lo più lo scopo di verificare che abbiate
+assorbito queste informazioni generali sul linguaggio MATLAB, cosicché dal
+**prossimo laboratorio** ci si possa concentrare sull'implementazione di algoritmi
+prettamente numerici e sulle questioni affrontate nelle lezioni di teoria.
+
+:::{admonition} Esercizio 1
+La costante aurea $\varphi$ si può esprimere in forma compatta come
+```{math}
+\varphi = \frac{1+\sqrt{5}}{2}.
+```
+Ammettiamo di non avere un algoritmo per estrarre le radici quadrate, allora
+possiamo provare ad approssimare il valore di $\phi$ usando la sua espansione
+in frazione continua:
+```{math}
+\varphi = 1 + \frac{1}{1 + \frac{1}{1 + \frac{1}{1 + \frac{1}{1 + \frac{1}{1 + \frac{1}{1 + \vdots } } } } } }
+```
+Si scriva una funzione con il seguente prototipo:
+```matlab
+function phi = frazionephi(n)
+%%FRAZIONEPHI prende in input il numero di termini da utilizzare
+%nell'approssimazione con frazione continua della sezione aurea e
+%restituisce l'approssimazione.
+end
+```
+* Per costruire l'implementazione della funzione si usi un ciclo `for`.
+  **Suggerimento** si organizzi il calcolo partendo dal "livello più basso" verso
+  quello più alto.
+* Supponiamo di sapere che un valore esatto di $\varphi$ con 16 cifre
+  significative è `1.6180339887498949`. Si modifichi la funzione precedente in
+  una nuova funzione con il seguente prototipo
+  ```matlab
+  function [n,phi] = quantiterminiphi(tol)
+  %%QUANTITERMINIPHI data in input una tolleranza tol sulla distanza tra
+  %l'approssimazione della costante phi e il valore reale questa funzione
+  %ci restituisce il numero di termini necessari e il valore dell'approssimazione
+
+  phitrue = 1.6180339887498949;
+
+  end
+  ```
+  Per farlo si usi un ciclo `while` e la funzione `abs` (che implementa il
+  valore assoluto) per misurare l'**errore assoluto** tra la nostra
+  approssimazione e il valore vero.
+* Si usi la funzione `fprintf` per stampare a schermo una tabella con tolleranza,
+  numero di termini per raggiungerla, valore ottenuto ed errore per le tolleranze
+  da `1e-1`, `1e-2`, fino a `1e-10`.
+:::
+
+:::{admonition} Esercizio 2.
+Esercitiamoci ora nel costruire una *funzione ricorsiva*. Una sequenza collegata
+alla costante aurea $\varphi$ è la sequenza di Fibonacci, ovvero la sequenza di
+numeri interi $\{F_n\}_n = \{1,1,2,3,5,\ldots\}$ data da
+```{math}
+F_{n+1} = F_{n} + F_{n-1}, \text{ se } n \geq 1, \; F_{1} = 1,\;F_{0} = 1.
+```
+* Si implementi una *funzione ricorsiva* che calcola l'$n$mo numero di Fibonacci
+$n$ utilizzando solamente la struttura condizionale `switch`, di cui riportiamo
+al solito il prototipo.
+```matlab
+function f = fibonacci(n)
+%FIBONACCI Implementazione ricorsiva della successione di Fibonacci. Prende
+%in input il numero n e restituisce l'n-mo numero di Fibonacci Fn.
+end
+```
+* La funzione così costruita ha uno spiacevole difetto, se gli diamo in pasto
+$n$ ci fornisce l'$n$mo numero, tuttavia se successivamente chiediamo l'$n+1$mo
+il calcolo per ottenerlo non ha memoria di quello che abbiamo fatto e ricalcola
+comunque tutti i precedenti. Costruiamo ora una *versione non ricorsiva* della
+funzione `fibonacci`. Possiamo ottenerla in diversi modi, ma quasi sicuramente
+avremo bisogno di un ciclo `for`. Riportiamo come al solito il prototipo.
+```matlab
+function f = fibonaccinonrecursive(n)
+%FIBONACCINONRECURSIVE Implementazione non ricorsiva della successione
+% di Fibonacci. Prende in input il numero n e restituisce un vettore
+% che contiene tutti i numeri di Fibonacci da F0 a Fn.
+end
+```
+* Sfruttiamo ora la seconda implementazione che abbiamo fatto della funzione
+di Fibonacci per costruire una sequenza diversa. Consideriamo la sequenza di
+Viswanath {cite}`Viswanath` così definita
+```{math}
+v_{n+1} = v_{n} \pm v_{n-1}, \; n \geq 1,
+```
+dove $v_{0}$ e $V_{1}$ sono assegnati a piacere e il $\pm$ ha la seguente
+interpretazione: con probabilità $1/2$ sommiamo, con probabilità $1/2$
+sottraiamo. Un'idea per implementare questa funzione è quella di utilizzare la
+funzione `sign` (provate a vedere a cosa serve facendo `help sign`).
+Un prototipo per questa funzione è ad esempio
+```matlab
+function v = viswanath(n,v0,v1)
+%VISWANATH Implementazione non ricorsiva della successione
+% di Viswanath. Prende in input il numero n, i valori di v0 e v1 e
+% restituisce un vettore che contiene tutti i numeri di Viswanath da v0 a vn.
+end
+```
+* Una volta costruita la nostra funzione, possiamo visualizzare cosa otteniamo
+con essa (e confrontarlo con la successione di Fibonacci) tramite lo script:
+```matlab
+%% Test della successione di Viswanath
+
+n = 1000; % Numero di termini
+
+% Calcoliamo la successione di Fibonacci
+f = fibonaccinonrecursive(n);
+
+% Calcoliamo la successione di Viswanath
+v0 = 1;
+v1 = 1;
+v = viswanath(n,v0,v1);
+
+% Valore asintotico
+c = 1.13198824;
+phi = (1+sqrt(5))/2;
+figure(1)
+semilogy(0:n,abs(v),'o',0:n,c.^(1:n+1),'-',0:n,f,'x',0:n,phi.^(1:n+1),'-');
+legend({'Viswanath','Stima Asintotica','Fibonacci','Stima Asintotica'},...
+    'Location','northwest')
+```
+Nella parte terminale dello script `% Valore asintotico` andiamo a confrontare
+in scala semi-logaritmica sull'asse delle $y$ i valori assoluti dei numeri
+$\{v_n\}_n$ e gli $\{F_n\}_n$. In particolare possiamo osservare che per
+entrambe le sequenza troviamo un numero $k$ per cui queste crescono come
+$k^{n+1}$. In particolare, per la sequenza di Fibonacci questo $k$ è la costante
+aurea $\varphi$ dell'esercizio precedente, mentre per la sequenza di Viswanath
+è il valore $c = 1.13198824\ldots$ (per una dimostrazione si veda {cite}`Viswanath`).
+
+**Approfittiamo** di questo anche per guarda come si possono ottenere dei
+grafici di funzione su MATLAB, per decodificare i comandi di questa sezione
+aiutatevi con `help`. Un esempio del grafico ottenuto con lo script precedente
+è il seguente:
+![Successione di Viswanath e Fibonacci e loro comportamento asintotico a confronto](./images/viswanath.png)
+:::
+
+
+## Bibliografia
+
+```{bibliography}
+:filter: docname in docnames
 ```
