@@ -209,7 +209,7 @@ di quelle di più frequente utilizzo sono riportate nella {numref}`tabfunzionidi
 * - Arcotangente
   - `atan`
   - Arrotonda all'intero $\leq$
-  - `round`
+  - `floor`
 * - Arcocotangente
   - `acot`
   - Arrotonda all'intero $\geq$
