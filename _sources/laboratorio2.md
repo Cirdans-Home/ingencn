@@ -21,6 +21,7 @@ codificata nello standard IEEE-754 {cite}`IEEE-754:2019:ISF`, in cui
 (la maggior parte dei) i numeri *floating point* sono
 normalizzati, cioè possono essere espressi come
 ```{math}
+:label: rappresentazione
 x = \pm (1+f) 2^e, \qquad 0 \leq f < 1, \qquad -1022 \leq e \leq 1023,
 ```
 dove $f$ è detta la **mantissa**, e deve essere rappresentabile con al più 52 bits,
@@ -28,6 +29,58 @@ cioè $2^{52}f$ è un intero nell'intervallo $0 \leq 2^{52} f < 2^{53}$, abbiamo
 fissato la base a $2$ e chiamato l'esponente $e$.
 
 Il testo di riferimento per questi argomenti è {cite:p}`MR1927606`.
+
+MATLAB implementa diversi formati di numeri *floating point* e *interi*; si
+veda la {numref}`classiintere` per i diversi tipi di interi disponibili e le
+relative funzioni di conversione. In generale assumeremo di star lavorando con
+l'aritmetica in precisione doppia (`double`): cioè di usare una **rappresentazione
+con 64 bits**. Specificamente, il bit 63 assume valore $0$ o $1$ per indicare
+il segno ($0$ se positivo, $1$ se negativo). I bits da 62 a 52 contengono
+l'esponente $e$, mentre i bits da 51 a 0 contengo la mantissa $f$ come illustrato
+in {eq}`rappresentazione`.
+
+:::{warning}
+In alcuni casi MATLAB deciderà autonomamente se la variabile che stiamo usando
+è un *intero* e applicherà in tal caso l'aritmetica relativa. Alcune funzioni
+utili a verificare che tipo di aritmetica stiamo usando sono le funzioni
+`isfloat` e `isinteger` che restituiscono **vero** ($1$) se l'argomento è
+rispettivamente un *floating point* (`single` o `double`), oppure una delle
+tipologie di intero, **falso** ($0$) altrimenti.
+:::
+
+:::{margin} Classi Numeriche
+```{list-table} Classi di numeri interi
+:header-rows: 1
+:name: classiintere
+* - Classe
+  - Range
+  - Conversione
+* - Signed 8-bit integer
+  - $-2^7$ a $2^7-1$
+  - `int8`
+* - Signed 16-bit integer
+  - $-2^{15}$ a $2^{15}-1$
+  - `int16`
+* - Signed 32-bit integer
+  - $-2^{31}$ a $2^{31}-1$
+  - `int32`
+* - Signed 64-bit integer
+  - $-2^{63}$ a $2^{63}-1$
+  - `int64`
+* - Unsigned 8-bit integer
+  - $0$ a $2^{8}-1$
+  - `uint8`
+* - Unsigned 16-bit integer
+  - $0$ a $2^{16}-1$
+  - `uint16`
+* - Unsigned 32-bit integer
+  - $0$ a $2^{32}-1$
+  - `uint32`
+* - Unsigned 64-bit integer
+  - $0$ a $2^{64}-1$
+  - `uint64`
+```
+:::
 
 ## Rappresentazione dei numeri di macchina
 
@@ -37,7 +90,7 @@ forma $s \times 2^k$. Se proviamo ad eseguire l'operazione
 ```matlab
 e = 1 - 3*(4/3 - 1)
 ```
-da cui ci aspetteremo di ottenere un $1$, otteniamo invece
+da cui ci aspetteremo di ottenere uno $0$, otteniamo invece
 ```
 e =
    2.2204e-16
@@ -134,6 +187,32 @@ Alcune macchine permettono il trattamento di alcuni casi eccezionali di numeri
 Questi si trovano nell'intevallo [`eps*realmin`,`realmin`].
 :::
 
+L'ultimo caso che vogliamo discutere riguarda l'uso delle funzioni trigonometriche.
+Dalla goniometria di base sappiamo che $\sin(k \pi) = 0$ per ogni $k$ dispari.
+Tuttavia è immediato osservare che
+```matlab
+sin(3*pi)
+
+ans =
+
+     3.673940397442059e-16
+```
+Poiché di $\pi$ abbiamo solo un'**approssimazione**, l'algoritmo che calcola la
+funzione $\sin(x)$ propaga l'errore commesso nell'argomento anche sulla valutazione
+restituendoci un errore finale dell'ordine della precisione di macchina.
+
+D'altra parte, se usiamo la variante della funzione che lavora con i gradi,
+osserviamo che
+```matlab
+sind(3*180)
+
+ans =
+
+     0
+```
+questa volta l'input della funzione è un **intero**, per cui non commettiamo
+errore di **troncamento** e otteniamo alla fine il valore esatto.
+
 ## Associatività delle operazioni
 
 Mentre l'operazione di somma e di prodotto sono garantite essere commutative
@@ -164,6 +243,28 @@ Quando si calcola la somma di più termini di ordine diverso è opportuno valuta
 l'accumulazione ed agire di conseguenza.
 :::
 
+:::{margin} Precisione di stampa
+È utile in alcuni casi aumentare la precisione delle stampe in uscita di
+MATLAB, possiamo farlo per mezzo del comando `format`, in particolare:
+```matlab
+format long
+```
+farà in modo che l'output sia stampato con 15 cifre per una variabile
+di tipo `double` e con 7 cifre per una variabile di tipo `single`. Per tornare
+invece alla *notazione di default* si può usare il comando
+```matlab
+format short
+```
+che userà invece 5 cifre indipendentemente per i due tipi di variabili. Altre
+opzioni si possono leggere facendo `help format`.
+
+```{danger}
+L'uso del comando `format` **non** altera la precisione in cui le operazioni
+sono compiute, ma solo il formato di stampa a schermo.
+```
+
+:::
+
 Per correggere il problema precedente si può implementare l'**algoritmo delle somme
 compensate** di Kahan, per cui uno pseudocodice è dato da:
 
@@ -191,7 +292,7 @@ function KahanSomma(input)
 :::{admonition} Esercizio
 Si implementi l'algoritmo KahanSomma in una funzione MATLAB e se ne verifichino
 le proprietà numeriche.
-```
+```matlab
 function [somma] = KahanSomma(input)
 %%KAHANSOMMA algoritmo delle somme compensate di Kahan
 
@@ -299,6 +400,45 @@ $\mathbf{x}$ dopo che un qualunque algoritmo sarà stato applicato per la
 sua approssimazione ed in maniera indipendente dalla precisione *floating point*
 usata.
 
+:::{margin} Norma di una matrice
+Ricordiamo che una norma sullo spazio vettoriale $K^{m\times n}$ delle matrici
+a elementi nel campo $K$ è una funzione
+```{math}
+\| \cdot \|:K^{m \times n} \mapsto \mathbb{R}^{+}
+```
+tale che per ogni coppia di matrici $A$ e $B$ e per ogni scalare $\lambda \in K$ si verifica:
+
+- ${\displaystyle \|A\|=0}$ se e solo se ${\displaystyle A=0}$,
+- ${\displaystyle \|\lambda A\|=|\lambda |\|A\|}$.
+- ${\displaystyle \|A+B\|\leq \|A\|+\|B\|}$.
+
+Se è data una norma sullo spazio vettoriale $K^n$, si può costruire una **norma indotta**
+sullo spazio delle matrici in $K^{n \times n}$ considerando
+```{math}
+\|A\| = \sup_{x \neq \mathbf{0}} \frac{\| A \mathbf{x} \|}{\|\mathbf{x}\|},
+```
+ovvero
+```{math}
+\|A\| = \sup_{\|x\|  = 1} \| A \mathbf{x} \|.
+```
+Nei casi speciali in cui la norma vettoriale sia la norma  ${\displaystyle p=1,2,\infty ,}$
+la norma matriciale indotta può essere calcolata come
+```{math}
+{\displaystyle \|A\|_{1}=\max _{1\leq j\leq n}\sum _{i=1}^{m}|a_{ij}|,}
+```
+che è il massimo della somma dei valori assoluti delle colonne di $A$;
+```{math}
+{\displaystyle \|A\|_{\infty }=\max _{1\leq i\leq m}\sum _{j=1}^{n}|a_{ij}|,}
+```
+che è il massimo della somma dei valori assoluti delle righe di $A$;
+```{math}
+{\displaystyle \|A\|_{2}={\sqrt {\lambda _{\max }\left(A^{*}A\right)}}.}
+```
+che è detta **norma spettrale** della matrice ${\displaystyle A}$, ovver la
+radice quadrata the più grande autovalore di ${\displaystyle A^{* }A}$,
+dove $A^{* }$ denota la coniugata trasposta di $A$.
+:::
+
 Sia $\mathbf{e}$ l'errore commesso rispetto a $\mathbf{b}$, assumiamo che $A$ sia
 non singolare, allora l'errore sulla soluzione $A^{-1} \mathbf{b}$ è dato da
 $A^{-1} \mathbf{e}$. Allora il rapporto tra gli errori relativi è dato da
@@ -341,7 +481,7 @@ perturbazione di $0.01$ sulla prima componente di $\mathbf{b}$ e paragoniamo le
 due soluzioni
 ```matlab
 b2 = [4.11; 9.7];
-x2 = A\b
+x2 = A\b2
 ```
 da cui otteniamo
 ```
@@ -389,6 +529,22 @@ errore_relativo =
 ```
 che quindi ci mostra che l'errore che abbiamo commesso è abbastanza vicino
 alla limitazione data dalla {eq}`bound`.
+
+:::{warning}
+Per matrici di grandi dimensioni la funzione `cond` può risultare estremamente
+lenta o andare **out of memory**. Per questo motivo sono disponibili altre
+due funzioni chiamate `rcond` e `condest`.
+
+La funzione `rcond(A)` calcola il reciproco di `cond(A,1)`, per cui più questo è
+vicino a $0$ più la matrice è *malcondizionata*, più questo è vicino a $1$ più
+la matrice è *ben condizionata*. Questa funzione si basa sulla libreria [LAPACK](http://www.netlib.org/lapack/).
+Questa è una libreria di software in Fortran 90 che produce le implementazioni
+standard delle operazioni dell'algebra lineare per matrici dense.
+
+La funzione `condest` calcola un limite inferiore per il numero di condizionamento
+in norma $1$ di una matrice quadrata $A$. Informazioni sull'algoritmo applicato
+per ottenere questa approssimazione si trovano in {cite:p}`MR740850` e {cite:p}`MR1780268`.
+:::
 
 ## Bibliografia
 

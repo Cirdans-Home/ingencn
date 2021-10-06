@@ -282,15 +282,83 @@ Un numero che può essere rappresentato esattamente è della forma seguente:</p>
 <div class="math notranslate nohighlight" id="equation-eq-numeromacchina">
 <span class="eqno">(1)<a class="headerlink" href="#equation-eq-numeromacchina" title="Permalink a questa equazione">¶</a></span>\[ \text{significando} \times \text{base}^{\text{esponente}}.\]</div>
 <p>Di tutte le possibili costruzioni di questo tipo, noi adoperiamo quella
-codificata nello standard IEEE-754 <span id="id1">[<a class="reference internal" href="#id8">IEEE75419</a>]</span>, in cui
+codificata nello standard IEEE-754 <span id="id1">[<a class="reference internal" href="#id10">IEEE75419</a>]</span>, in cui
 (la maggior parte dei) i numeri <em>floating point</em> sono
 normalizzati, cioè possono essere espressi come</p>
-<div class="math notranslate nohighlight">
-\[x = \pm (1+f) 2^e, \qquad 0 \leq f &lt; 1, \qquad -1022 \leq e \leq 1023,\]</div>
+<div class="math notranslate nohighlight" id="equation-rappresentazione">
+<span class="eqno">(2)<a class="headerlink" href="#equation-rappresentazione" title="Permalink a questa equazione">¶</a></span>\[x = \pm (1+f) 2^e, \qquad 0 \leq f &lt; 1, \qquad -1022 \leq e \leq 1023,\]</div>
 <p>dove <span class="math notranslate nohighlight">\(f\)</span> è detta la <strong>mantissa</strong>, e deve essere rappresentabile con al più 52 bits,
 cioè <span class="math notranslate nohighlight">\(2^{52}f\)</span> è un intero nell’intervallo <span class="math notranslate nohighlight">\(0 \leq 2^{52} f &lt; 2^{53}\)</span>, abbiamo
 fissato la base a <span class="math notranslate nohighlight">\(2\)</span> e chiamato l’esponente <span class="math notranslate nohighlight">\(e\)</span>.</p>
-<p>Il testo di riferimento per questi argomenti è <span id="id2">[<a class="reference internal" href="#id5">Hig02</a>]</span>.</p>
+<p>Il testo di riferimento per questi argomenti è <span id="id2">[<a class="reference internal" href="#id7">Hig02</a>]</span>.</p>
+<p>MATLAB implementa diversi formati di numeri <em>floating point</em> e <em>interi</em>; si
+veda la <a class="reference internal" href="#classiintere"><span class="std std-numref">Tabella 8</span></a> per i diversi tipi di interi disponibili e le
+relative funzioni di conversione. In generale assumeremo di star lavorando con
+l’aritmetica in precisione doppia (<code class="docutils literal notranslate"><span class="pre">double</span></code>): cioè di usare una <strong>rappresentazione
+con 64 bits</strong>. Specificamente, il bit 63 assume valore <span class="math notranslate nohighlight">\(0\)</span> o <span class="math notranslate nohighlight">\(1\)</span> per indicare
+il segno (<span class="math notranslate nohighlight">\(0\)</span> se positivo, <span class="math notranslate nohighlight">\(1\)</span> se negativo). I bits da 62 a 52 contengono
+l’esponente <span class="math notranslate nohighlight">\(e\)</span>, mentre i bits da 51 a 0 contengo la mantissa <span class="math notranslate nohighlight">\(f\)</span> come illustrato
+in <a class="reference internal" href="#equation-rappresentazione">(2)</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Avvertimento</p>
+<p>In alcuni casi MATLAB deciderà autonomamente se la variabile che stiamo usando
+è un <em>intero</em> e applicherà in tal caso l’aritmetica relativa. Alcune funzioni
+utili a verificare che tipo di aritmetica stiamo usando sono le funzioni
+<code class="docutils literal notranslate"><span class="pre">isfloat</span></code> e <code class="docutils literal notranslate"><span class="pre">isinteger</span></code> che restituiscono <strong>vero</strong> (<span class="math notranslate nohighlight">\(1\)</span>) se l’argomento è
+rispettivamente un <em>floating point</em> (<code class="docutils literal notranslate"><span class="pre">single</span></code> o <code class="docutils literal notranslate"><span class="pre">double</span></code>), oppure una delle
+tipologie di intero, <strong>falso</strong> (<span class="math notranslate nohighlight">\(0\)</span>) altrimenti.</p>
+</div>
+<div class="margin sidebar">
+<p class="sidebar-title">Classi Numeriche</p>
+<table class="table" id="classiintere">
+<caption><span class="caption-number">Tabella 8 </span><span class="caption-text">Classi di numeri interi</span><a class="headerlink" href="#classiintere" title="Link a questa tabella">¶</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Classe</p></th>
+<th class="head"><p>Range</p></th>
+<th class="head"><p>Conversione</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Signed 8-bit integer</p></td>
+<td><p><span class="math notranslate nohighlight">\(-2^7\)</span> a <span class="math notranslate nohighlight">\(2^7-1\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int8</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Signed 16-bit integer</p></td>
+<td><p><span class="math notranslate nohighlight">\(-2^{15}\)</span> a <span class="math notranslate nohighlight">\(2^{15}-1\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int16</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Signed 32-bit integer</p></td>
+<td><p><span class="math notranslate nohighlight">\(-2^{31}\)</span> a <span class="math notranslate nohighlight">\(2^{31}-1\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int32</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Signed 64-bit integer</p></td>
+<td><p><span class="math notranslate nohighlight">\(-2^{63}\)</span> a <span class="math notranslate nohighlight">\(2^{63}-1\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int64</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Unsigned 8-bit integer</p></td>
+<td><p><span class="math notranslate nohighlight">\(0\)</span> a <span class="math notranslate nohighlight">\(2^{8}-1\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">uint8</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Unsigned 16-bit integer</p></td>
+<td><p><span class="math notranslate nohighlight">\(0\)</span> a <span class="math notranslate nohighlight">\(2^{16}-1\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">uint16</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Unsigned 32-bit integer</p></td>
+<td><p><span class="math notranslate nohighlight">\(0\)</span> a <span class="math notranslate nohighlight">\(2^{32}-1\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">uint32</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Unsigned 64-bit integer</p></td>
+<td><p><span class="math notranslate nohighlight">\(0\)</span> a <span class="math notranslate nohighlight">\(2^{64}-1\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">uint64</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="section" id="rappresentazione-dei-numeri-di-macchina">
 <h2>Rappresentazione dei numeri di macchina<a class="headerlink" href="#rappresentazione-dei-numeri-di-macchina" title="Link a questa intestazione">¶</a></h2>
 <p>In generale non tutti i numeri potranno essere espressi nella forma <a class="reference internal" href="#equation-eq-numeromacchina">(1)</a>,
@@ -299,7 +367,7 @@ forma <span class="math notranslate nohighlight">\(s \times 2^k\)</span>. Se pro
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">e</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="mi">4</span><span class="o">/</span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<p>da cui ci aspetteremo di ottenere un <span class="math notranslate nohighlight">\(1\)</span>, otteniamo invece</p>
+<p>da cui ci aspetteremo di ottenere uno <span class="math notranslate nohighlight">\(0\)</span>, otteniamo invece</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">e</span> <span class="o">=</span>
    <span class="mf">2.2204e-16</span>
 </pre></div>
@@ -393,6 +461,30 @@ un errore di <strong>underflow</strong>. In MATLAB questo è rappresento dai val
 <em>floating point</em>, cioè l’esistenza di numeri <em>denormalizzati</em> (o <em>subnormali</em>).
 Questi si trovano nell’intevallo [<code class="docutils literal notranslate"><span class="pre">eps*realmin</span></code>,<code class="docutils literal notranslate"><span class="pre">realmin</span></code>].</p>
 </div>
+<p>L’ultimo caso che vogliamo discutere riguarda l’uso delle funzioni trigonometriche.
+Dalla goniometria di base sappiamo che <span class="math notranslate nohighlight">\(\sin(k \pi) = 0\)</span> per ogni <span class="math notranslate nohighlight">\(k\)</span> dispari.
+Tuttavia è immediato osservare che</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">sin</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="nb">pi</span><span class="p">)</span><span class="w"></span>
+
+<span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">     </span><span class="mf">3.673940397442059e-16</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Poiché di <span class="math notranslate nohighlight">\(\pi\)</span> abbiamo solo un”<strong>approssimazione</strong>, l’algoritmo che calcola la
+funzione <span class="math notranslate nohighlight">\(\sin(x)\)</span> propaga l’errore commesso nell’argomento anche sulla valutazione
+restituendoci un errore finale dell’ordine della precisione di macchina.</p>
+<p>D’altra parte, se usiamo la variante della funzione che lavora con i gradi,
+osserviamo che</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">sind</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="mi">180</span><span class="p">)</span><span class="w"></span>
+
+<span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">     </span><span class="mi">0</span><span class="w"></span>
+</pre></div>
+</div>
+<p>questa volta l’input della funzione è un <strong>intero</strong>, per cui non commettiamo
+errore di <strong>troncamento</strong> e otteniamo alla fine il valore esatto.</p>
 </div>
 <div class="section" id="associativita-delle-operazioni">
 <h2>Associatività delle operazioni<a class="headerlink" href="#associativita-delle-operazioni" title="Link a questa intestazione">¶</a></h2>
@@ -423,6 +515,27 @@ non associativa. Si consideri infatti l’esempio:</p>
 <p>Quando si calcola la somma di più termini di ordine diverso è opportuno valutare
 l’accumulazione ed agire di conseguenza.</p>
 </div>
+<div class="margin sidebar">
+<p class="sidebar-title">Precisione di stampa</p>
+<p>È utile in alcuni casi aumentare la precisione delle stampe in uscita di
+MATLAB, possiamo farlo per mezzo del comando <code class="docutils literal notranslate"><span class="pre">format</span></code>, in particolare:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">format</span><span class="w"> </span><span class="n">long</span><span class="w"></span>
+</pre></div>
+</div>
+<p>farà in modo che l’output sia stampato con 15 cifre per una variabile
+di tipo <code class="docutils literal notranslate"><span class="pre">double</span></code> e con 7 cifre per una variabile di tipo <code class="docutils literal notranslate"><span class="pre">single</span></code>. Per tornare
+invece alla <em>notazione di default</em> si può usare il comando</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">format</span><span class="w"> </span><span class="n">short</span><span class="w"></span>
+</pre></div>
+</div>
+<p>che userà invece 5 cifre indipendentemente per i due tipi di variabili. Altre
+opzioni si possono leggere facendo <code class="docutils literal notranslate"><span class="pre">help</span> <span class="pre">format</span></code>.</p>
+<div class="admonition danger">
+<p class="admonition-title">Pericolo</p>
+<p>L’uso del comando <code class="docutils literal notranslate"><span class="pre">format</span></code> <strong>non</strong> altera la precisione in cui le operazioni
+sono compiute, ma solo il formato di stampa a schermo.</p>
+</div>
+</div>
 <p>Per correggere il problema precedente si può implementare l”<strong>algoritmo delle somme
 compensate</strong> di Kahan, per cui uno pseudocodice è dato da:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">KahanSomma</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
@@ -449,10 +562,10 @@ compensate</strong> di Kahan, per cui uno pseudocodice è dato da:</p>
 <p class="admonition-title">Esercizio</p>
 <p>Si implementi l’algoritmo KahanSomma in una funzione MATLAB e se ne verifichino
 le proprietà numeriche.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="p">[</span><span class="n">somma</span><span class="p">]</span> <span class="o">=</span> <span class="n">KahanSomma</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
-<span class="o">%%</span><span class="n">KAHANSOMMA</span> <span class="n">algoritmo</span> <span class="n">delle</span> <span class="n">somme</span> <span class="n">compensate</span> <span class="n">di</span> <span class="n">Kahan</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[somma]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">KahanSomma</span><span class="p">(</span>input<span class="p">)</span><span class="w"></span>
+<span class="c">%%KAHANSOMMA algoritmo delle somme compensate di Kahan</span><span class="w"></span>
 
-<span class="n">end</span>
+<span class="k">end</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Che possiamo testare sull’esempio precedente costruendo uno script con</p>
@@ -488,7 +601,7 @@ dall’algoritmo utilizzato per risolverlo.</p>
 </div>
 <p>dove la quantità <span class="math notranslate nohighlight">\(\kappa = \frac{\sum_{i=1}^{n} |\text{input}_i|}{\left| \sum_{i=1}^{n} \text{input}_i| \right|}\)</span>
 rappresenta il <strong>numero di condizionamento</strong> dell’operazione di somma. Esistono
-algoritmi per la somma che esibiscono migliori limitazioni dell’errore <span id="id3">[<a class="reference internal" href="#id7">Kle06</a>, <a class="reference internal" href="#id6">Neu74</a>]</span> , per i
+algoritmi per la somma che esibiscono migliori limitazioni dell’errore <span id="id3">[<a class="reference internal" href="#id9">Kle06</a>, <a class="reference internal" href="#id8">Neu74</a>]</span> , per i
 nostri scopi illustrativi questa versione è sufficiente.</p>
 </div>
 <div class="section" id="errori-di-cancellazione-roundoff">
@@ -528,18 +641,18 @@ di <span class="math notranslate nohighlight">\(x\)</span>.</p></li>
 <p>Consideriamo un altro esempio, produciamo uno script che valuti il seguente
 polinomio</p>
 <div class="math notranslate nohighlight" id="equation-eq-polinomio">
-<span class="eqno">(2)<a class="headerlink" href="#equation-eq-polinomio" title="Permalink a questa equazione">¶</a></span>\[p(x) = x^7 - 7x^6 + 21x^5 -35x^5 +35x^3 + 21x^2 +7x -1,\]</div>
+<span class="eqno">(3)<a class="headerlink" href="#equation-eq-polinomio" title="Permalink a questa equazione">¶</a></span>\[p(x) = x^7 - 7x^6 + 21x^5 -35x^5 +35x^3 + 21x^2 +7x -1,\]</div>
 <p>nell’intervallo <span class="math notranslate nohighlight">\([0.988,1.012]\)</span> su di una griglia con scansione <span class="math notranslate nohighlight">\(10^{-4}\)</span>. Come
 si vede dalla figura al margine questo produce il <em>plot</em> di una funzione che
 non sembra proprio essere un polinomio: non è liscia! Stiamo osservando di nuovo
 degli errori di <strong>roundoff</strong> dati dalla sottrazione di numeri dello stesso
 ordine (elevato), che infatti (come si legge dalla scala sull’asse delle <span class="math notranslate nohighlight">\(y\)</span>)
-hanno un ordine di <span class="math notranslate nohighlight">\(10^{-14}\)</span>. Se guardiamo meglio al polinomio in <a class="reference internal" href="#equation-eq-polinomio">(2)</a>
+hanno un ordine di <span class="math notranslate nohighlight">\(10^{-14}\)</span>. Se guardiamo meglio al polinomio in <a class="reference internal" href="#equation-eq-polinomio">(3)</a>
 possiamo osservare che questo non è nient’altro che l’espansione di <span class="math notranslate nohighlight">\(p(x) = (x-1)^7\)</span>,
 provate a fare un <em>plot</em> sullo stesso intervallo e confrontiamolo con il precedente</p>
 <div class="figure align-default" id="buonpolinomio">
 <img alt="_images/polynomialroundoffgood.png" src="_images/polynomialroundoffgood.png" />
-<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">Confronto del grafico del polinomio <a class="reference internal" href="#equation-eq-polinomio">(2)</a> calcolato nella forma <a class="reference internal" href="#equation-eq-polinomio">(2)</a>
+<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">Confronto del grafico del polinomio <a class="reference internal" href="#equation-eq-polinomio">(3)</a> calcolato nella forma <a class="reference internal" href="#equation-eq-polinomio">(3)</a>
 e a partire dalla forma  <span class="math notranslate nohighlight">\(p(x) = (x-1)^7\)</span>.</span><a class="headerlink" href="#buonpolinomio" title="Link a questa immagine">¶</a></p>
 </div>
 </div>
@@ -550,6 +663,39 @@ e a partire dalla forma  <span class="math notranslate nohighlight">\(p(x) = (x-
 <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> dopo che un qualunque algoritmo sarà stato applicato per la
 sua approssimazione ed in maniera indipendente dalla precisione <em>floating point</em>
 usata.</p>
+<div class="margin sidebar">
+<p class="sidebar-title">Norma di una matrice</p>
+<p>Ricordiamo che una norma sullo spazio vettoriale <span class="math notranslate nohighlight">\(K^{m\times n}\)</span> delle matrici
+a elementi nel campo <span class="math notranslate nohighlight">\(K\)</span> è una funzione</p>
+<div class="math notranslate nohighlight">
+\[\| \cdot \|:K^{m \times n} \mapsto \mathbb{R}^{+}\]</div>
+<p>tale che per ogni coppia di matrici <span class="math notranslate nohighlight">\(A\)</span> e <span class="math notranslate nohighlight">\(B\)</span> e per ogni scalare <span class="math notranslate nohighlight">\(\lambda \in K\)</span> si verifica:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\({\displaystyle \|A\|=0}\)</span> se e solo se <span class="math notranslate nohighlight">\({\displaystyle A=0}\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\({\displaystyle \|\lambda A\|=|\lambda |\|A\|}\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\({\displaystyle \|A+B\|\leq \|A\|+\|B\|}\)</span>.</p></li>
+</ul>
+<p>Se è data una norma sullo spazio vettoriale <span class="math notranslate nohighlight">\(K^n\)</span>, si può costruire una <strong>norma indotta</strong>
+sullo spazio delle matrici in <span class="math notranslate nohighlight">\(K^{n \times n}\)</span> considerando</p>
+<div class="math notranslate nohighlight">
+\[\|A\| = \sup_{x \neq \mathbf{0}} \frac{\| A \mathbf{x} \|}{\|\mathbf{x}\|},\]</div>
+<p>ovvero</p>
+<div class="math notranslate nohighlight">
+\[\|A\| = \sup_{\|x\|  = 1} \| A \mathbf{x} \|.\]</div>
+<p>Nei casi speciali in cui la norma vettoriale sia la norma  <span class="math notranslate nohighlight">\({\displaystyle p=1,2,\infty ,}\)</span>
+la norma matriciale indotta può essere calcolata come</p>
+<div class="math notranslate nohighlight">
+\[{\displaystyle \|A\|_{1}=\max _{1\leq j\leq n}\sum _{i=1}^{m}|a_{ij}|,}\]</div>
+<p>che è il massimo della somma dei valori assoluti delle colonne di <span class="math notranslate nohighlight">\(A\)</span>;</p>
+<div class="math notranslate nohighlight">
+\[{\displaystyle \|A\|_{\infty }=\max _{1\leq i\leq m}\sum _{j=1}^{n}|a_{ij}|,}\]</div>
+<p>che è il massimo della somma dei valori assoluti delle righe di <span class="math notranslate nohighlight">\(A\)</span>;</p>
+<div class="math notranslate nohighlight">
+\[{\displaystyle \|A\|_{2}={\sqrt {\lambda _{\max }\left(A^{*}A\right)}}.}\]</div>
+<p>che è detta <strong>norma spettrale</strong> della matrice <span class="math notranslate nohighlight">\({\displaystyle A}\)</span>, ovver la
+radice quadrata the più grande autovalore di <span class="math notranslate nohighlight">\({\displaystyle A^{* }A}\)</span>,
+dove <span class="math notranslate nohighlight">\(A^{* }\)</span> denota la coniugata trasposta di <span class="math notranslate nohighlight">\(A\)</span>.</p>
+</div>
 <p>Sia <span class="math notranslate nohighlight">\(\mathbf{e}\)</span> l’errore commesso rispetto a <span class="math notranslate nohighlight">\(\mathbf{b}\)</span>, assumiamo che <span class="math notranslate nohighlight">\(A\)</span> sia
 non singolare, allora l’errore sulla soluzione <span class="math notranslate nohighlight">\(A^{-1} \mathbf{b}\)</span> è dato da
 <span class="math notranslate nohighlight">\(A^{-1} \mathbf{e}\)</span>. Allora il rapporto tra gli errori relativi è dato da</p>
@@ -557,7 +703,7 @@ non singolare, allora l’errore sulla soluzione <span class="math notranslate n
 \[\frac{\| A^{-1} \mathbf{e} \|}{\| A^{-1} \mathbf{b} \|} / \frac{\|\mathbf{e}\|}{\|\mathbf{b}\|} = \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|},\]</div>
 <p>per cui possiamo esibire la limitazione per il termine destro come</p>
 <div class="math notranslate nohighlight" id="equation-bound">
-<span class="eqno">(3)<a class="headerlink" href="#equation-bound" title="Permalink a questa equazione">¶</a></span>\[\begin{split}\frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \leq &amp; \max_{\mathbf{e},\mathbf{b} \neq 0} \left\lbrace \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|}, \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \right\rbrace \\ = &amp; \max_{\mathbf{e}\neq 0} \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \max_{\mathbf{b}\neq 0} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \\
+<span class="eqno">(4)<a class="headerlink" href="#equation-bound" title="Permalink a questa equazione">¶</a></span>\[\begin{split}\frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \leq &amp; \max_{\mathbf{e},\mathbf{b} \neq 0} \left\lbrace \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|}, \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \right\rbrace \\ = &amp; \max_{\mathbf{e}\neq 0} \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \max_{\mathbf{b}\neq 0} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \\
 = &amp; \max_{\mathbf{e}\neq 0} \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \max_{\mathbf{b}\neq 0} \frac{\|A\mathbf{x}\|}{\|\mathbf{x}\|} \\
 = &amp; \| A^{-1} \| \|A \| \equiv \kappa(A) \geq \| A^{-1} A \| = 1.\end{split}\]</div>
 <p>Consideriamo ora il seguente esempio artificiale</p>
@@ -587,7 +733,7 @@ x_1 \\ x_2
 perturbazione di <span class="math notranslate nohighlight">\(0.01\)</span> sulla prima componente di <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> e paragoniamo le
 due soluzioni</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">b2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mf">4.11</span><span class="p">;</span><span class="w"> </span><span class="mf">9.7</span><span class="p">];</span><span class="w"></span>
-<span class="n">x2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="o">\</span><span class="n">b</span><span class="w"></span>
+<span class="n">x2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="o">\</span><span class="n">b2</span><span class="w"></span>
 </pre></div>
 </div>
 <p>da cui otteniamo</p>
@@ -634,21 +780,41 @@ rappresentativo del modo in cui è realmente calcolato.</p>
 </pre></div>
 </div>
 <p>che quindi ci mostra che l’errore che abbiamo commesso è abbastanza vicino
-alla limitazione data dalla <a class="reference internal" href="#equation-bound">(3)</a>.</p>
+alla limitazione data dalla <a class="reference internal" href="#equation-bound">(4)</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Avvertimento</p>
+<p>Per matrici di grandi dimensioni la funzione <code class="docutils literal notranslate"><span class="pre">cond</span></code> può risultare estremamente
+lenta o andare <strong>out of memory</strong>. Per questo motivo sono disponibili altre
+due funzioni chiamate <code class="docutils literal notranslate"><span class="pre">rcond</span></code> e <code class="docutils literal notranslate"><span class="pre">condest</span></code>.</p>
+<p>La funzione <code class="docutils literal notranslate"><span class="pre">rcond(A)</span></code> calcola il reciproco di <code class="docutils literal notranslate"><span class="pre">cond(A,1)</span></code>, per cui più questo è
+vicino a <span class="math notranslate nohighlight">\(0\)</span> più la matrice è <em>malcondizionata</em>, più questo è vicino a <span class="math notranslate nohighlight">\(1\)</span> più
+la matrice è <em>ben condizionata</em>. Questa funzione si basa sulla libreria <a class="reference external" href="http://www.netlib.org/lapack/">LAPACK</a>.
+Questa è una libreria di software in Fortran 90 che produce le implementazioni
+standard delle operazioni dell’algebra lineare per matrici dense.</p>
+<p>La funzione <code class="docutils literal notranslate"><span class="pre">condest</span></code> calcola un limite inferiore per il numero di condizionamento
+in norma <span class="math notranslate nohighlight">\(1\)</span> di una matrice quadrata <span class="math notranslate nohighlight">\(A\)</span>. Informazioni sull’algoritmo applicato
+per ottenere questa approssimazione si trovano in <span id="id4">[<a class="reference internal" href="#id12">Hag84</a>]</span> e <span id="id5">[<a class="reference internal" href="#id13">HT00</a>]</span>.</p>
+</div>
 </div>
 <div class="section" id="bibliografia">
 <h2>Bibliografia<a class="headerlink" href="#bibliografia" title="Link a questa intestazione">¶</a></h2>
-<p id="id4"><dl class="citation">
-<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id2">Hig02</a></span></dt>
+<p id="id6"><dl class="citation">
+<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id4">Hag84</a></span></dt>
+<dd><p>William W. Hager. Condition estimates. <em>SIAM J. Sci. Statist. Comput.</em>, 5(2):311–316, 1984. URL: <a class="reference external" href="https://doi.org/10.1137/0905023">https://doi.org/10.1137/0905023</a>, <a class="reference external" href="https://doi.org/10.1137/0905023">doi:10.1137/0905023</a>.</p>
+</dd>
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id2">Hig02</a></span></dt>
 <dd><p>Nicholas J. Higham. <em>Accuracy and stability of numerical algorithms</em>. Society for Industrial and Applied Mathematics (SIAM), Philadelphia, PA, second edition, 2002. ISBN 0-89871-521-0. URL: <a class="reference external" href="https://doi.org/10.1137/1.9780898718027">https://doi.org/10.1137/1.9780898718027</a>, <a class="reference external" href="https://doi.org/10.1137/1.9780898718027">doi:10.1137/1.9780898718027</a>.</p>
 </dd>
-<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id3">Kle06</a></span></dt>
+<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id5">HT00</a></span></dt>
+<dd><p>Nicholas J. Higham and Françoise Tisseur. A block algorithm for matrix 1-norm estimation, with an application to 1-norm pseudospectra. <em>SIAM J. Matrix Anal. Appl.</em>, 21(4):1185–1201, 2000. URL: <a class="reference external" href="https://doi.org/10.1137/S0895479899356080">https://doi.org/10.1137/S0895479899356080</a>, <a class="reference external" href="https://doi.org/10.1137/S0895479899356080">doi:10.1137/S0895479899356080</a>.</p>
+</dd>
+<dt class="label" id="id9"><span class="brackets"><a class="fn-backref" href="#id3">Kle06</a></span></dt>
 <dd><p>A. Klein. A generalized Kahan-Babuška-summation-algorithm. <em>Computing</em>, 76(3-4):279–293, 2006. URL: <a class="reference external" href="https://doi.org/10.1007/s00607-005-0139-x">https://doi.org/10.1007/s00607-005-0139-x</a>, <a class="reference external" href="https://doi.org/10.1007/s00607-005-0139-x">doi:10.1007/s00607-005-0139-x</a>.</p>
 </dd>
-<dt class="label" id="id6"><span class="brackets"><a class="fn-backref" href="#id3">Neu74</a></span></dt>
+<dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id3">Neu74</a></span></dt>
 <dd><p>A. Neumaier. Rundungsfehleranalyse einiger Verfahren zur Summation endlicher Summen. <em>Z. Angew. Math. Mech.</em>, 54:39–51, 1974. URL: <a class="reference external" href="https://doi.org/10.1002/zamm.19740540106">https://doi.org/10.1002/zamm.19740540106</a>, <a class="reference external" href="https://doi.org/10.1002/zamm.19740540106">doi:10.1002/zamm.19740540106</a>.</p>
 </dd>
-<dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id1">IEEE75419</a></span></dt>
+<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id1">IEEE75419</a></span></dt>
 <dd><p>IEEE-754. <em>IEEE 754-2019, Standard for Floating-Point Arithmetic</em>. IEEE, New York, NY, USA, June 2019. ISBN 1-5044-5925-3 (print), 1-5044-5924-5 (e-PDF). <a class="reference external" href="https://doi.org/https://doi.org/10.1109/IEEESTD.2019.876622">doi:https://doi.org/10.1109/IEEESTD.2019.876622</a>.</p>
 </dd>
 </dl>

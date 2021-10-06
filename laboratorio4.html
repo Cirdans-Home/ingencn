@@ -276,13 +276,13 @@ risolvere. Approssimiamo in quel punto la funzione con la tangente, calcoliamo
 la sua intercetta con l’asse delle <span class="math notranslate nohighlight">\(x\)</span> e quella è la nuova approssimazione
 per la radice. Possiamo iterare la procedura come:</p>
 <div class="math notranslate nohighlight" id="equation-eq-newton">
-<span class="eqno">(4)<a class="headerlink" href="#equation-eq-newton" title="Permalink a questa equazione">¶</a></span>\[x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}, \quad x_0 \text{ assegnato},  \quad k \geq 1,\]</div>
+<span class="eqno">(5)<a class="headerlink" href="#equation-eq-newton" title="Permalink a questa equazione">¶</a></span>\[x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}, \quad x_0 \text{ assegnato},  \quad k \geq 1,\]</div>
 <p>Per cui avete dimostrato il seguente teorema di convergenza.</p>
 <div class="admonition-teorema admonition">
 <p class="admonition-title">Teorema</p>
 <p>Sia <span class="math notranslate nohighlight">\(f \in \mathcal{C}^{2}([a,b])\)</span>, e supponiamo inoltre che <span class="math notranslate nohighlight">\(f(c) = 0\)</span>,
 <span class="math notranslate nohighlight">\(f'(c) = 0\)</span> per qualche <span class="math notranslate nohighlight">\(c \in [a,b]\)</span>. Allora esiste un <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> tale
-per cui l’iterata <a class="reference internal" href="#equation-eq-newton">(4)</a> applicata ad <span class="math notranslate nohighlight">\(f\)</span> converge a <span class="math notranslate nohighlight">\(c\)</span> per ogni
+per cui l’iterata <a class="reference internal" href="#equation-eq-newton">(5)</a> applicata ad <span class="math notranslate nohighlight">\(f\)</span> converge a <span class="math notranslate nohighlight">\(c\)</span> per ogni
 valore iniziale <span class="math notranslate nohighlight">\(x_0 \in [c-\delta,c+\delta]\)</span>.</p>
 </div>
 <p>Ricordate queste caratteristiche iniziali, possiamo procedere ad implementare
@@ -290,7 +290,7 @@ una versione MATLAB dell’algoritmo di Newton.</p>
 <div class="admonition-esercizio-1 admonition">
 <p class="admonition-title">Esercizio 1</p>
 <p>Si implementi in una funzione MATLAB l’algoritmo di Newton sfruttando l’iterata
-descritta in <a class="reference internal" href="#equation-eq-newton">(4)</a>. Un <em>template</em> della funzione da implementare che
+descritta in <a class="reference internal" href="#equation-eq-newton">(5)</a>. Un <em>template</em> della funzione da implementare che
 si può adottare è quindi il seguente:</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[c,residuo]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">newton</span><span class="p">(</span>f,fp,x0,maxit,tol<span class="p">)</span><span class="w"></span>
 <span class="c">%%NEWTON Implementazione del metodo di Newton</span><span class="w"></span>
@@ -404,13 +404,13 @@ funzione <span class="math notranslate nohighlight">\(f\)</span>. Può essere ut
 solo la <span class="math notranslate nohighlight">\(f\)</span>. Possiamo farlo in maniera numerica sfruttando la definizione stessa
 di derivata:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fd">
-<span class="eqno">(5)<a class="headerlink" href="#equation-eq-fd" title="Permalink a questa equazione">¶</a></span>\[f'(x_k) = \lim_{h \rightarrow 0} \frac{f(x+h)-f(x)}{h} \approx \frac{f(x+h)-f(x)}{h}\]</div>
+<span class="eqno">(6)<a class="headerlink" href="#equation-eq-fd" title="Permalink a questa equazione">¶</a></span>\[f'(x_k) = \lim_{h \rightarrow 0} \frac{f(x+h)-f(x)}{h} \approx \frac{f(x+h)-f(x)}{h}\]</div>
 <p>prendendo un <span class="math notranslate nohighlight">\(h\)</span> sufficientemente piccolo, una buona scelta è <span class="math notranslate nohighlight">\(h = \sqrt{\varepsilon}\)</span>
 per <span class="math notranslate nohighlight">\(\varepsilon\)</span> la precisione di macchina.</p>
 <div class="admonition-esercizio-2 admonition">
 <p class="admonition-title">Esercizio 2</p>
 <p>Si modifichi il codice dell’Esercizio 1 per utilizzare l’approssimazione della
-derivata in <a class="reference internal" href="#equation-eq-fd">(5)</a>.</p>
+derivata in <a class="reference internal" href="#equation-eq-fd">(6)</a>.</p>
 </div>
 </div>
 <div class="section" id="radici-multiple">
