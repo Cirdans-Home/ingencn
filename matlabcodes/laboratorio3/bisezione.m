@@ -49,5 +49,5 @@ for i=2:maxit
         return
     end
 end
-fprintf('\tRaggiunto il massimo numero di iterazioni');
+fprintf('\tRaggiunto il massimo numero di iterazioni\n');
 end
