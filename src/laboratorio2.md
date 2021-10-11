@@ -546,6 +546,43 @@ in norma $1$ di una matrice quadrata $A$. Informazioni sull'algoritmo applicato
 per ottenere questa approssimazione si trovano in {cite:p}`MR740850` e {cite:p}`MR1780268`.
 :::
 
+## Precisione mista
+
+La rivoluzione delle applicazioni di "apprendimento automatico" (*machine learning*) e dell'intelligenza artificiale (*AI*) ha suscitato negli ultimi anni un interesse per lo sviluppo di aritmetica a **mezza precisione** (formato in virgola mobile a 16 bit) che potesse rispondere al problema della necessità di
+avere alte prestazioni nelle fasi di addestramento delle reti neurali. L'idea
+nasce dall'osservazione (per lo più empirica) che dice che la maggior parte di
+queste applicazioni non richiede necessariamente l'accuratezza della precisione singola (`single`) o doppia (`double`). La mezza precisione (`half`) ha quindi
+un'aritmetica più veloce e produce una riduzione della memoria e del traffico di un fattore $2\times$ contro il formato  precisione in singola cifra e di un fattore $4\times$ contro la doppia precisione.
+
+In MATLAB questo è disponibile con il comando `half` per cui una buona parte delle
+funzioni di default è resa disponibile. Si può interrogare l'inseme delle funzioni
+disponibili con il comando:
+```matlab
+methods(half(1))
+```
+che vi restituirà una lista del tipo:
+```
+Methods for class half:
+
+abs         asinh       complex     double      floor       int16       islogical   le          logical     mod         plot3       real        scatter3    subsasgn    uint16      ylim        
+acos        atan        conj        end         fplot       int32       isnan       length      lt          mrdivide    plotmatrix  rem         sin         subsref     uint32      zlim        
+acosh       atanh       cos         eps         ge          int64       isnumeric   line        max         mtimes      plus        reshape     single      sum         uint64      
+all         bar         cosh        eq          gt          int8        isreal      log         mean        ndims       pow10       rgbplot     sinh        tan         uint8       
+any         barh        cospi       exp         half        isempty     isscalar    log10       min         ne          pow2        round       sinpi       tanh        uminus      
+area        ceil        ctranspose  expm1       hypot       isfinite    isvector    log1p       minus       numel       prod        rsqrt       size        times       uplus       
+asin        colon       display     fix         imag        isinf       ldivide     log2        mldivide    plot        rdivide     scatter     sqrt        transpose   xlim   
+```
+
+Per estrarre *performance* dall'utilizzo della precisione `half` e, più in
+generale, dall'utilizzo contemporaneo di dati in più precisioni (*mixed precision*) è necessario avere dell'hardware che possa lavorare in maniera
+diretta in questo formato, cioè senza adoperare continuamente conversioni o simulare la precisione ridotta. Per le alte performance parliamo di oggetti come
+le NVIDIA GPUs (CUDA Capabilitiy $\geq 7.0$), Google TPUs e diversi tipi di
+FPGA più o meno sperimentali.
+
+MATLAB ha un supporto limitato (ma in espansione) per lavorare sulle GPU, non
+esploreremo oltre questa direzione, ma è utile che sappiate che esistono questi
+possibili sviluppi.
+
 ## Bibliografia
 
  ```{bibliography}
