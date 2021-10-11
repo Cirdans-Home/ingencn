@@ -251,6 +251,11 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#precisione-mista">
+   Precisione mista
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#bibliografia">
    Bibliografia
   </a>
@@ -795,6 +800,40 @@ standard delle operazioni dell’algebra lineare per matrici dense.</p>
 in norma <span class="math notranslate nohighlight">\(1\)</span> di una matrice quadrata <span class="math notranslate nohighlight">\(A\)</span>. Informazioni sull’algoritmo applicato
 per ottenere questa approssimazione si trovano in <span id="id4">[<a class="reference internal" href="#id12">Hag84</a>]</span> e <span id="id5">[<a class="reference internal" href="#id13">HT00</a>]</span>.</p>
 </div>
+</div>
+<div class="section" id="precisione-mista">
+<h2>Precisione mista<a class="headerlink" href="#precisione-mista" title="Link a questa intestazione">¶</a></h2>
+<p>La rivoluzione delle applicazioni di «apprendimento automatico» (<em>machine learning</em>) e dell’intelligenza artificiale (<em>AI</em>) ha suscitato negli ultimi anni un interesse per lo sviluppo di aritmetica a <strong>mezza precisione</strong> (formato in virgola mobile a 16 bit) che potesse rispondere al problema della necessità di
+avere alte prestazioni nelle fasi di addestramento delle reti neurali. L’idea
+nasce dall’osservazione (per lo più empirica) che dice che la maggior parte di
+queste applicazioni non richiede necessariamente l’accuratezza della precisione singola (<code class="docutils literal notranslate"><span class="pre">single</span></code>) o doppia (<code class="docutils literal notranslate"><span class="pre">double</span></code>). La mezza precisione (<code class="docutils literal notranslate"><span class="pre">half</span></code>) ha quindi
+un’aritmetica più veloce e produce una riduzione della memoria e del traffico di un fattore <span class="math notranslate nohighlight">\(2\times\)</span> contro il formato  precisione in singola cifra e di un fattore <span class="math notranslate nohighlight">\(4\times\)</span> contro la doppia precisione.</p>
+<p>In MATLAB questo è disponibile con il comando <code class="docutils literal notranslate"><span class="pre">half</span></code> per cui una buona parte delle
+funzioni di default è resa disponibile. Si può interrogare l’inseme delle funzioni
+disponibili con il comando:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">methods</span><span class="p">(</span><span class="n">half</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+<p>che vi restituirà una lista del tipo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Methods</span> <span class="k">for</span> <span class="k">class</span> <span class="nc">half</span><span class="p">:</span>
+
+<span class="nb">abs</span>         <span class="n">asinh</span>       <span class="nb">complex</span>     <span class="n">double</span>      <span class="n">floor</span>       <span class="n">int16</span>       <span class="n">islogical</span>   <span class="n">le</span>          <span class="n">logical</span>     <span class="n">mod</span>         <span class="n">plot3</span>       <span class="n">real</span>        <span class="n">scatter3</span>    <span class="n">subsasgn</span>    <span class="n">uint16</span>      <span class="n">ylim</span>        
+<span class="n">acos</span>        <span class="n">atan</span>        <span class="n">conj</span>        <span class="n">end</span>         <span class="n">fplot</span>       <span class="n">int32</span>       <span class="n">isnan</span>       <span class="n">length</span>      <span class="n">lt</span>          <span class="n">mrdivide</span>    <span class="n">plotmatrix</span>  <span class="n">rem</span>         <span class="n">sin</span>         <span class="n">subsref</span>     <span class="n">uint32</span>      <span class="n">zlim</span>        
+<span class="n">acosh</span>       <span class="n">atanh</span>       <span class="n">cos</span>         <span class="n">eps</span>         <span class="n">ge</span>          <span class="n">int64</span>       <span class="n">isnumeric</span>   <span class="n">line</span>        <span class="nb">max</span>         <span class="n">mtimes</span>      <span class="n">plus</span>        <span class="n">reshape</span>     <span class="n">single</span>      <span class="nb">sum</span>         <span class="n">uint64</span>      
+<span class="nb">all</span>         <span class="n">bar</span>         <span class="n">cosh</span>        <span class="n">eq</span>          <span class="n">gt</span>          <span class="n">int8</span>        <span class="n">isreal</span>      <span class="n">log</span>         <span class="n">mean</span>        <span class="n">ndims</span>       <span class="n">pow10</span>       <span class="n">rgbplot</span>     <span class="n">sinh</span>        <span class="n">tan</span>         <span class="n">uint8</span>       
+<span class="nb">any</span>         <span class="n">barh</span>        <span class="n">cospi</span>       <span class="n">exp</span>         <span class="n">half</span>        <span class="n">isempty</span>     <span class="n">isscalar</span>    <span class="n">log10</span>       <span class="nb">min</span>         <span class="n">ne</span>          <span class="n">pow2</span>        <span class="nb">round</span>       <span class="n">sinpi</span>       <span class="n">tanh</span>        <span class="n">uminus</span>      
+<span class="n">area</span>        <span class="n">ceil</span>        <span class="n">ctranspose</span>  <span class="n">expm1</span>       <span class="n">hypot</span>       <span class="n">isfinite</span>    <span class="n">isvector</span>    <span class="n">log1p</span>       <span class="n">minus</span>       <span class="n">numel</span>       <span class="n">prod</span>        <span class="n">rsqrt</span>       <span class="n">size</span>        <span class="n">times</span>       <span class="n">uplus</span>       
+<span class="n">asin</span>        <span class="n">colon</span>       <span class="n">display</span>     <span class="n">fix</span>         <span class="n">imag</span>        <span class="n">isinf</span>       <span class="n">ldivide</span>     <span class="n">log2</span>        <span class="n">mldivide</span>    <span class="n">plot</span>        <span class="n">rdivide</span>     <span class="n">scatter</span>     <span class="n">sqrt</span>        <span class="n">transpose</span>   <span class="n">xlim</span>   
+</pre></div>
+</div>
+<p>Per estrarre <em>performance</em> dall’utilizzo della precisione <code class="docutils literal notranslate"><span class="pre">half</span></code> e, più in
+generale, dall’utilizzo contemporaneo di dati in più precisioni (<em>mixed precision</em>) è necessario avere dell’hardware che possa lavorare in maniera
+diretta in questo formato, cioè senza adoperare continuamente conversioni o simulare la precisione ridotta. Per le alte performance parliamo di oggetti come
+le NVIDIA GPUs (CUDA Capabilitiy <span class="math notranslate nohighlight">\(\geq 7.0\)</span>), Google TPUs e diversi tipi di
+FPGA più o meno sperimentali.</p>
+<p>MATLAB ha un supporto limitato (ma in espansione) per lavorare sulle GPU, non
+esploreremo oltre questa direzione, ma è utile che sappiate che esistono questi
+possibili sviluppi.</p>
 </div>
 <div class="section" id="bibliografia">
 <h2>Bibliografia<a class="headerlink" href="#bibliografia" title="Link a questa intestazione">¶</a></h2>
