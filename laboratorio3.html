@@ -366,6 +366,27 @@ stavamo riportando gli errori).</p></li>
 <h2>Applicazioni<a class="headerlink" href="#applicazioni" title="Link a questa intestazione">¶</a></h2>
 <p>Consideriamo alcune applicazioni <em>ingegneristiche</em> del problema di trovare lo
 zero di una funzione.</p>
+<div class="margin sidebar">
+<p class="sidebar-title">Secondo momento di inerzia</p>
+<p>Il secondo momento di inerzia per una figura arbitraria <span class="math notranslate nohighlight">\(R\)</span> (anche detto momento di inerzia areale) rispetto ad una coppia di assi <span class="math notranslate nohighlight">\(xy\)</span> è definito da</p>
+<div class="math notranslate nohighlight">
+\[J_{xy} = \iint_R \rho\,{\rm d}A,\]</div>
+<p>dove</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\rho\)</span> è la distanza radiale rispetto all’origine degli assi <span class="math notranslate nohighlight">\(xy\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\({\rm d}A\)</span> è un elemento infinitesimo di area.</p></li>
+</ul>
+<p>Per una sezione rettangolare:</p>
+<div class="figure align-default" id="id1">
+<img alt="_images/areamomentrectangle.png" src="_images/areamomentrectangle.png" />
+<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">:name: inerzia</span><a class="headerlink" href="#id1" title="Link a questa immagine">¶</a></p>
+<div class="legend">
+<p>Momento di inerzia areale per una sezione rettangolare.</p>
+</div>
+</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}I_x = \frac{b h^3}{12}, \quad I_y = \frac{b^3 h}{12},\\ J_z = I_x + Y_y = \frac{bh}{12}(b^2+h^2).\end{split}\]</div>
+</div>
 <div class="admonition-esercizio-2 admonition">
 <p class="admonition-title">Esercizio 2</p>
 <p>Le frequenze naturali di una trave a sbalzo (<em>cantilever</em>) uniforme sono legate
@@ -374,26 +395,26 @@ alle radici <span class="math notranslate nohighlight">\(\beta_i\)</span> dell�
 \[f(\beta) = \cosh \beta \cos \beta + 1 = 0,\]</div>
 <p>dove</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\beta_i^ = (2\pi f_i)^2 \frac{mL^3}{E I}\)</span>,</p></li>
-<li><p><span class="math notranslate nohighlight">\(f_i = i\)</span>ma frequenza naturale della trave (misurata in cps),</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_i^4 = (2\pi f_i)^2 \frac{mL^3}{E I}\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(f_i = i\)</span>ma frequenza naturale della trave (misurata in Hz),</p></li>
 <li><p><span class="math notranslate nohighlight">\(m = \)</span> massa della trave,</p></li>
 <li><p><span class="math notranslate nohighlight">\(L = \)</span> lunghezza della trave,</p></li>
 <li><p><span class="math notranslate nohighlight">\(E = \)</span> modulo di elasticità,</p></li>
 <li><p><span class="math notranslate nohighlight">\(I = \)</span> momento di inerzia della sezione della trave.</p></li>
 </ul>
-<p>Si determinano le due frequenze più basse di una trave d’acciaio lunga <span class="math notranslate nohighlight">\(0.9 m\)</span>, con una sezione rettangolare con sezione rettangolare larga <span class="math notranslate nohighlight">\(25 mm\)</span> e alta <span class="math notranslate nohighlight">\(2.5 mm\)</span>. La densità della trave è di <span class="math notranslate nohighlight">\(7850 kg/m^3\)</span> e <span class="math notranslate nohighlight">\(E = 200 GPa\)</span>.</p>
+<p>Si determinano le due frequenze più basse di una trave d’acciaio lunga <span class="math notranslate nohighlight">\(0.9 m\)</span>, con una sezione rettangolare larga <span class="math notranslate nohighlight">\(25 mm\)</span> e alta <span class="math notranslate nohighlight">\(2.5 mm\)</span>. La densità della trave è di <span class="math notranslate nohighlight">\(7850 kg/m^3\)</span> e <span class="math notranslate nohighlight">\(E = 200 GPa\)</span>.</p>
 </div>
 <div class="margin sidebar">
 <p class="sidebar-title">Bernoulli</p>
 <div class="figure align-default" id="bernoulli">
 <img alt="_images/bernoulli.png" src="_images/bernoulli.png" />
-<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">Equazione di Bernoulli per il fluido attraverso un canale aperto.</span><a class="headerlink" href="#bernoulli" title="Link a questa immagine">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Equazione di Bernoulli per il fluido attraverso un canale aperto.</span><a class="headerlink" href="#bernoulli" title="Link a questa immagine">¶</a></p>
 </div>
 </div>
 <div class="admonition-esercizio-3 admonition">
 <p class="admonition-title">Esercizio 3</p>
 <p>L’equazione di Bernoulli per il flusso di un fluido attraverso un canale aperto
-con una piccola protuberanza (<a class="reference internal" href="#bernoulli"><span class="std std-numref">Fig. 5</span></a>) è</p>
+con una piccola protuberanza (<a class="reference internal" href="#bernoulli"><span class="std std-numref">Fig. 6</span></a>) è</p>
 <div class="math notranslate nohighlight">
 \[\frac{Q^2}{2 g b^2 h_0^2} + h_0 = \frac{Q^2}{2 g b^2 h^2} + h + H,\]</div>
 <p>dove</p>

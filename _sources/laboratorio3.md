@@ -115,7 +115,26 @@ oggetto in cui abbiamo usato una scala logaritmica sull'asse delle $y$ (in cui
 
 Consideriamo alcune applicazioni *ingegneristiche* del problema di trovare lo
 zero di una funzione.
+:::{margin} Secondo momento di inerzia
+Il secondo momento di inerzia per una figura arbitraria $R$ (anche detto momento di inerzia areale) rispetto ad una coppia di assi $xy$ è definito da
+  ```{math}
+  J_{xy} = \iint_R \rho\,{\rm d}A,
+  ```
+dove
+- $\rho$ è la distanza radiale rispetto all'origine degli assi $xy$,
+- ${\rm d}A$ è un elemento infinitesimo di area.
 
+Per una sezione rettangolare:
+```{figure} ./images/areamomentrectangle.png
+
+:name: inerzia
+
+Momento di inerzia areale per una sezione rettangolare.
+```
+```{math}
+I_x = \frac{b h^3}{12}, \quad I_y = \frac{b^3 h}{12},\\ J_z = I_x + Y_y = \frac{bh}{12}(b^2+h^2).
+```
+:::
 :::{admonition} Esercizio 2
 Le frequenze naturali di una trave a sbalzo (*cantilever*) uniforme sono legate
 alle radici $\beta_i$ dell'equazione
@@ -123,14 +142,14 @@ alle radici $\beta_i$ dell'equazione
 f(\beta) = \cosh \beta \cos \beta + 1 = 0,
 ```
 dove
-- $\beta_i^ = (2\pi f_i)^2 \frac{mL^3}{E I}$,
-- $f_i = i$ma frequenza naturale della trave (misurata in cps),
+- $\beta_i^4 = (2\pi f_i)^2 \frac{mL^3}{E I}$,
+- $f_i = i$ma frequenza naturale della trave (misurata in Hz),
 - $m = $ massa della trave,
 - $L = $ lunghezza della trave,
 - $E = $ modulo di elasticità,
 - $I = $ momento di inerzia della sezione della trave.
 
-Si determinano le due frequenze più basse di una trave d'acciaio lunga $0.9 m$, con una sezione rettangolare con sezione rettangolare larga $25 mm$ e alta $2.5 mm$. La densità della trave è di $7850 kg/m^3$ e $E = 200 GPa$.
+Si determinano le due frequenze più basse di una trave d'acciaio lunga $0.9 m$, con una sezione rettangolare larga $25 mm$ e alta $2.5 mm$. La densità della trave è di $7850 kg/m^3$ e $E = 200 GPa$.
 :::
 
 :::{margin} Bernoulli
