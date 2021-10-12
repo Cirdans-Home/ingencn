@@ -374,7 +374,7 @@ Consideriamo un altro esempio, produciamo uno script che valuti il seguente
 polinomio
 ```{math}
 :label: eq-polinomio
-p(x) = x^7 - 7x^6 + 21x^5 -35x^5 +35x^3 + 21x^2 +7x -1,
+p(x) = x^7 - 7x^6 + 21x^5 -35x^4 +35x^3 - 21x^2 +7x -1,
 ```
 nell'intervallo $[0.988,1.012]$ su di una griglia con scansione $10^{-4}$. Come
 si vede dalla figura al margine questo produce il *plot* di una funzione che
