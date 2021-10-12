@@ -273,7 +273,7 @@ function KahanSomma(input)
     somma = 0.0                  // variabile che conterrà la somma finale
     c = 0.0                      // Compensazione per i bits che altrimenti andrebbero persi.
 
-    for i = 1 to length(length) do // L'array che ha in input le quantità da sommare va da input(1)
+    for i = 1 to length(input) do // L'array che ha in input le quantità da sommare va da input(1)
                                    // fino a input(length(input))
         y = input(i) - c           // Al primo passaggio c è zero
         t = somma + y              // Purtroppo, somma è "grande", y è piccolo, quindi alcuni bits
