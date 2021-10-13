@@ -366,6 +366,31 @@ stavamo riportando gli errori).</p></li>
 <h2>Applicazioni<a class="headerlink" href="#applicazioni" title="Link a questa intestazione">¶</a></h2>
 <p>Consideriamo alcune applicazioni <em>ingegneristiche</em> del problema di trovare lo
 zero di una funzione.</p>
+<div class="admonition-esercizio-2 admonition">
+<p class="admonition-title">Esercizio 2</p>
+<p>Un cavo d’acciao di lunghezza <span class="math notranslate nohighlight">\(L\)</span> è sospeso come mostrato nella figura:</p>
+<div class="figure align-default" id="id1">
+<img alt="_images/cavo.png" src="_images/cavo.png" />
+<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">:name: cavo</span><a class="headerlink" href="#id1" title="Link a questa immagine">¶</a></p>
+<div class="legend">
+<p>Sospensione di un cavo d’acciaio.</p>
+</div>
+</div>
+<p>La massima trazione (stress tensile) nel cavo, che si verifica in corrispondenza dei supporti, è data dall’espressione</p>
+<div class="math notranslate nohighlight">
+\[\sigma_{\text{max}} = \sigma_0 \cosh \beta, \qquad \beta = \frac{\gamma L}{2\sigma_0},\]</div>
+<p>dove</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\sigma_0 = \)</span> è la tensione del cavo nel punto di origine <span class="math notranslate nohighlight">\(O\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\gamma\)</span> peso del cavo per unità di volume,</p></li>
+<li><p><span class="math notranslate nohighlight">\(L\)</span> distanza tra i punti di supporto del cavo.
+Il rapporto lunghezza/spazio coperto dal cavo è correlato con <span class="math notranslate nohighlight">\(\beta\)</span> dall’espressione</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\frac{s}{L} = \frac{1}{\beta} \sinh \beta.\]</div>
+<p>Si calcoli <span class="math notranslate nohighlight">\(\sigma_{\text{max}}\)</span> se <span class="math notranslate nohighlight">\(\gamma = 77 \times 10^3\,N/m^3\)</span> (acciaio),
+<span class="math notranslate nohighlight">\(L = 1000\,m\)</span> e <span class="math notranslate nohighlight">\(s = 1100\,m\)</span>.</p>
+</div>
 <div class="margin sidebar">
 <p class="sidebar-title">Secondo momento di inerzia</p>
 <p>Il secondo momento di inerzia per una figura arbitraria <span class="math notranslate nohighlight">\(R\)</span> (anche detto momento di inerzia areale) rispetto ad una coppia di assi <span class="math notranslate nohighlight">\(xy\)</span> è definito da</p>
@@ -377,9 +402,9 @@ zero di una funzione.</p>
 <li><p><span class="math notranslate nohighlight">\({\rm d}A\)</span> è un elemento infinitesimo di area.</p></li>
 </ul>
 <p>Per una sezione rettangolare:</p>
-<div class="figure align-default" id="id1">
+<div class="figure align-default" id="id2">
 <img alt="_images/areamomentrectangle.png" src="_images/areamomentrectangle.png" />
-<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">:name: inerzia</span><a class="headerlink" href="#id1" title="Link a questa immagine">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">:name: inerzia</span><a class="headerlink" href="#id2" title="Link a questa immagine">¶</a></p>
 <div class="legend">
 <p>Momento di inerzia areale per una sezione rettangolare.</p>
 </div>
@@ -387,8 +412,8 @@ zero di una funzione.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}I_x = \frac{b h^3}{12}, \quad I_y = \frac{b^3 h}{12},\\ J_z = I_x + Y_y = \frac{bh}{12}(b^2+h^2).\end{split}\]</div>
 </div>
-<div class="admonition-esercizio-2 admonition">
-<p class="admonition-title">Esercizio 2</p>
+<div class="admonition-esercizio-3 admonition">
+<p class="admonition-title">Esercizio 3</p>
 <p>Le frequenze naturali di una trave a sbalzo (<em>cantilever</em>) uniforme sono legate
 alle radici <span class="math notranslate nohighlight">\(\beta_i\)</span> dell’equazione</p>
 <div class="math notranslate nohighlight">
@@ -408,13 +433,13 @@ alle radici <span class="math notranslate nohighlight">\(\beta_i\)</span> dell�
 <p class="sidebar-title">Bernoulli</p>
 <div class="figure align-default" id="bernoulli">
 <img alt="_images/bernoulli.png" src="_images/bernoulli.png" />
-<p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Equazione di Bernoulli per il fluido attraverso un canale aperto.</span><a class="headerlink" href="#bernoulli" title="Link a questa immagine">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">Equazione di Bernoulli per il fluido attraverso un canale aperto.</span><a class="headerlink" href="#bernoulli" title="Link a questa immagine">¶</a></p>
 </div>
 </div>
-<div class="admonition-esercizio-3 admonition">
-<p class="admonition-title">Esercizio 3</p>
+<div class="admonition-esercizio-4 admonition">
+<p class="admonition-title">Esercizio 4</p>
 <p>L’equazione di Bernoulli per il flusso di un fluido attraverso un canale aperto
-con una piccola protuberanza (<a class="reference internal" href="#bernoulli"><span class="std std-numref">Fig. 6</span></a>) è</p>
+con una piccola protuberanza (<a class="reference internal" href="#bernoulli"><span class="std std-numref">Fig. 7</span></a>) è</p>
 <div class="math notranslate nohighlight">
 \[\frac{Q^2}{2 g b^2 h_0^2} + h_0 = \frac{Q^2}{2 g b^2 h^2} + h + H,\]</div>
 <p>dove</p>

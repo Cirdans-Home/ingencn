@@ -115,6 +115,32 @@ oggetto in cui abbiamo usato una scala logaritmica sull'asse delle $y$ (in cui
 
 Consideriamo alcune applicazioni *ingegneristiche* del problema di trovare lo
 zero di una funzione.
+
+:::{admonition} Esercizio 2
+Un cavo d'acciao di lunghezza $L$ è sospeso come mostrato nella figura:
+```{figure} ./images/cavo.png
+
+:name: cavo
+
+Sospensione di un cavo d'acciaio.
+```
+La massima trazione (stress tensile) nel cavo, che si verifica in corrispondenza dei supporti, è data dall'espressione
+```{math}
+\sigma_{\text{max}} = \sigma_0 \cosh \beta, \qquad \beta = \frac{\gamma L}{2\sigma_0},
+```
+dove
+- $\sigma_0 = $ è la tensione del cavo nel punto di origine $O$,
+- $\gamma$ peso del cavo per unità di volume,
+- $L$ distanza tra i punti di supporto del cavo.
+Il rapporto lunghezza/spazio coperto dal cavo è correlato con $\beta$ dall'espressione
+```{math}
+\frac{s}{L} = \frac{1}{\beta} \sinh \beta.
+```
+Si calcoli $\sigma_{\text{max}}$ se $\gamma = 77 \times 10^3\,N/m^3$ (acciaio),
+$L = 1000\,m$ e $s = 1100\,m$.
+:::
+
+
 :::{margin} Secondo momento di inerzia
 Il secondo momento di inerzia per una figura arbitraria $R$ (anche detto momento di inerzia areale) rispetto ad una coppia di assi $xy$ è definito da
   ```{math}
@@ -135,7 +161,7 @@ Momento di inerzia areale per una sezione rettangolare.
 I_x = \frac{b h^3}{12}, \quad I_y = \frac{b^3 h}{12},\\ J_z = I_x + Y_y = \frac{bh}{12}(b^2+h^2).
 ```
 :::
-:::{admonition} Esercizio 2
+:::{admonition} Esercizio 3
 Le frequenze naturali di una trave a sbalzo (*cantilever*) uniforme sono legate
 alle radici $\beta_i$ dell'equazione
 ```{math}
@@ -159,7 +185,7 @@ Si determinano le due frequenze più basse di una trave d'acciaio lunga $0.9 m$,
 Equazione di Bernoulli per il fluido attraverso un canale aperto.
 ```
 :::
-:::{admonition} Esercizio 3
+:::{admonition} Esercizio 4
 L'equazione di Bernoulli per il flusso di un fluido attraverso un canale aperto
 con una piccola protuberanza ({numref}`bernoulli`) è
 ```{math}
