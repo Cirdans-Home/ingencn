@@ -18,7 +18,8 @@ semilogy(n,residuo,'x--',...
     n,abs(c-ctrue),'ro--',...
     n,abs(b-a)./(2.^n),'k-','LineWidth',2)
 xlabel('Iterazione n');
-legend('Residuo del metodo','Errore Assoluto c','Bound');
+legend({'Residuo del metodo','Errore Assoluto c','Bound'},...
+    'FontSize',16);
 axis tight
 
 %% Stima Numerica
