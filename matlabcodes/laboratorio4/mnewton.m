@@ -1,8 +1,9 @@
-function [c,residuo] = newton(f,fp,x0,maxit,tol)
+function [c,residuo] = mnewton(f,fp,x0,q,maxit,tol)
 %%NEWTON Implementazione del metodo di Newton
 % Input:  f function handle della funzione di cui si cerca lo zero
 %         fp function handle della derivata prima della funzione
 %         x0 approssimazione iniziale
+%         q ordine della radice da calcolare
 %         maxit numero massimo di iterazioni consentite
 %         tol tolleranza sul residuo
 % Output: c radici candidate prodotte dal metodo
@@ -23,7 +24,7 @@ if residuo(1) < tol
 end
 
 for i=2:maxit
-    c(i) = c(i-1) - fc/fp(c(i-1));
+    c(i) = c(i-1) - q*fc/fp(c(i-1));
     fc = f(c(i));
     residuo(i) = abs(fc);
     fprintf('Iterata %d\tc = %f\tresiduo = %e\n',...
