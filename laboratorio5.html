@@ -50,6 +50,8 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
     <link rel="next" title="Laboratorio 6 : L’Eliminazione di Gauss il Metodo LU" href="laboratorio6.html" />
@@ -223,6 +225,24 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contenuti
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sostituzione-in-avanti-e-all-indietro">
+   Sostituzione in avanti e all’indietro
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tempo-di-calcolo">
+   Tempo di calcolo
+  </a>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -233,6 +253,190 @@
                 
   <div class="section" id="laboratorio-5-soluzione-di-sistemi-triangolari">
 <h1>Laboratorio 5 : Soluzione di Sistemi Triangolari<a class="headerlink" href="#laboratorio-5-soluzione-di-sistemi-triangolari" title="Link a questa intestazione">¶</a></h1>
+<div class="section" id="sostituzione-in-avanti-e-all-indietro">
+<h2>Sostituzione in avanti e all’indietro<a class="headerlink" href="#sostituzione-in-avanti-e-all-indietro" title="Link a questa intestazione">¶</a></h2>
+<p>Chiamiamo di nuovo <span class="math notranslate nohighlight">\(L\)</span> una matrice triangolare inferiore, vogliamo risolvere un sistema della forma:</p>
+<div class="math notranslate nohighlight">
+\[L \mathbf{x} = \mathbf{b},\]</div>
+<p>che possiamo riscrivere in forma estesa come:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{bmatrix}
+l_{1,1} &amp; 0       &amp; 0      &amp; \cdots &amp; 0 \\
+l_{2,1} &amp; l_{2,2} &amp; 0      &amp; \cdots &amp; 0 \\
+\vdots  &amp; \ddots  &amp; \ddots &amp; \ddots &amp; \vdots \\
+l_{n-1,1} &amp; l_{n-1,2} &amp; \cdots &amp; l_{n-1,n} &amp; 0 \\
+l_{n,1} &amp; l_{n,2} &amp; \cdots &amp; \cdots &amp; l_{n,n}  \\
+\end{bmatrix} \begin{bmatrix}
+x_1 \\
+x_2 \\
+\vdots \\
+x_{n-1}\\
+x_n
+\end{bmatrix}
+= \begin{bmatrix}
+b_1 \\
+b_2 \\
+\vdots \\
+b_{n-1} \\
+b_n
+\end{bmatrix}\end{split}\]</div>
+<p>Da cui è facile ricavare che la componente <span class="math notranslate nohighlight">\(i\)</span>ma della soluzione è</p>
+<div class="math notranslate nohighlight">
+\[x_i = \frac{1}{l_{i,i}} \left( b_i - \sum_{j=1}^{i-1} l_{i,j} x_j \right), \qquad i=1,\ldots,n.\]</div>
+<div class="admonition-esercizio-1 admonition">
+<p class="admonition-title">Esercizio 1</p>
+<p>Si scriva una <em>function</em> che implementa il metodo di sostituzione in avanti con
+il seguente prototipo.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[x]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">forwardsolve</span><span class="p">(</span>A,b<span class="p">)</span><span class="w"></span>
+<span class="c">%FORWARDSOLVE Se A è una matrice triangolare inferiore risolve sistema</span><span class="w"></span>
+<span class="c">%Ax=b tramite metodo di sostituzione in avanti.</span><span class="w"></span>
+<span class="c">%   Input:</span><span class="w"></span>
+<span class="c">%   A = matrice triangolare inferiore</span><span class="w"></span>
+<span class="c">%   b = vettore del termine note</span><span class="w"></span>
+<span class="c">%   Output:</span><span class="w"></span>
+<span class="c">%   x = vettore della soluzione</span><span class="w"></span>
+
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Si presti attenzione:</p>
+<ul class="simple">
+<li><p>Alla verifica degli <em>input</em>, il sistema <strong>deve</strong> essere triangolare basso e
+quadrato;</p></li>
+<li><p>Ad utilizzare le <strong>operazioni vettorizzate</strong> di MATLAB, ovvero si ragioni su
+come evitare di usare un ciclo <code class="docutils literal notranslate"><span class="pre">for</span></code> per effettuare la somma che compare
+nella formula di soluzione.</p></li>
+</ul>
+<p>Si può testare il codice con il seguente problema:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Sostituzione in avanti</span><span class="w"></span>
+<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
+<span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">tril</span><span class="p">(</span><span class="nb">ones</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">));</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">).</span><span class="o">&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">forwardsolve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;Avanti: Errore sulla soluzione è: %1.2e\n&quot;</span><span class="p">,</span><span class="nb">norm</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x</span><span class="o">-</span><span class="n">b</span><span class="p">));</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<p>Chiamiamo di nuovo <span class="math notranslate nohighlight">\(U\)</span> una matrice triangolare superiore, vogliamo risolvere un sistema della forma:</p>
+<div class="math notranslate nohighlight">
+\[U \mathbf{x} = \mathbf{b},\]</div>
+<p>che possiamo riscrivere in forma estesa come:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{bmatrix}
+u_{1,1} &amp; u_{1,2} &amp; \cdots &amp; \cdots &amp; u_{1,n}  \\
+0 &amp; u_{2,2} &amp; u_{2,3} &amp; \cdots &amp; u_{2,n} \\
+\vdots  &amp; \ddots  &amp; \ddots &amp; \ddots &amp; \vdots \\
+0      &amp; \cdots &amp; 0 &amp; u_{n-1,n-1} &amp; u_{n-1,n}  \\
+0       &amp; 0      &amp; \cdots &amp; 0 &amp; u_{n,n} \\
+\end{bmatrix} \begin{bmatrix}
+x_1 \\
+x_2 \\
+\vdots \\
+x_{n-1}\\
+x_n
+\end{bmatrix}
+= \begin{bmatrix}
+b_1 \\
+b_2 \\
+\vdots \\
+b_{n-1} \\
+b_n
+\end{bmatrix}\end{split}\]</div>
+<p>Da cui di nuovo ricaviamo facilmente la componente <span class="math notranslate nohighlight">\(i\)</span>ma della soluzione come:</p>
+<div class="math notranslate nohighlight">
+\[x_i = \frac{1}{u_{i,i}} \left( b_i - \sum_{j=i+1}^{n} u_{i,j} x_j \right), \qquad i=n,n-1,\ldots,1.\]</div>
+<div class="admonition-esercizio-2 admonition">
+<p class="admonition-title">Esercizio 2</p>
+<p>Si scriva una <em>function</em> che implementa il metodo di sostituzione all’indietro con
+il seguente prototipo.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[x]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">backwardsolve</span><span class="p">(</span>A,b<span class="p">)</span><span class="w"></span>
+<span class="c">%BACKWARDSOLVE Se A è una matrice triangolare superiore risolve sistema</span><span class="w"></span>
+<span class="c">%Ax=b tramite metodo di sostituzione all&#39;indietro.</span><span class="w"></span>
+<span class="c">%   Input:</span><span class="w"></span>
+<span class="c">%   A = matrice triangolare inferiore</span><span class="w"></span>
+<span class="c">%   b = vettore del termine note</span><span class="w"></span>
+<span class="c">%   Output:</span><span class="w"></span>
+<span class="c">%   x = vettore della soluzione</span><span class="w"></span>
+
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Si presti attenzione:</p>
+<ul class="simple">
+<li><p>Alla verifica degli <em>input</em>, il sistema <strong>deve</strong> essere triangolare alto e
+quadrato;</p></li>
+<li><p>Ad utilizzare le <strong>operazioni vettorizzate</strong> di MATLAB, ovvero si ragioni su
+come evitare di usare un ciclo <code class="docutils literal notranslate"><span class="pre">for</span></code> per effettuare la somma che compare
+nella formula di soluzione.</p></li>
+</ul>
+<p>Si può testare il codice con il seguente problema:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Sostituzione all&#39;indietro</span><span class="w"></span>
+<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
+<span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">triu</span><span class="p">(</span><span class="nb">ones</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">));</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">).</span><span class="o">&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">backwardsolve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;Indietro: Errore sulla soluzione è: %1.2e\n&quot;</span><span class="p">,</span><span class="nb">norm</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x</span><span class="o">-</span><span class="n">b</span><span class="p">));</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="tempo-di-calcolo">
+<h2>Tempo di calcolo<a class="headerlink" href="#tempo-di-calcolo" title="Link a questa intestazione">¶</a></h2>
+<p>Avete mostrato a lezione che il numero di operazioni necessario a risolvere un
+sistema triangolare con l’algoritmo di sostituzione è un <span class="math notranslate nohighlight">\(O(n^2)\)</span> per <span class="math notranslate nohighlight">\(n\)</span> la
+dimensione del sistema. Proviamo ad indagare come si comporta a questo riguardo
+la nostra implementazione. Per farlo sfruttiamo i codici che abbiamo appena
+scritto per la sostituzione <em>forward</em> o <em>backward</em> e le funzioni <code class="docutils literal notranslate"><span class="pre">tic</span></code> e <code class="docutils literal notranslate"><span class="pre">toc</span></code>
+che abbiamo menzionato nel <a class="reference internal" href="laboratorio3.html#laboratorio3"><span class="std std-ref">Laboratorio 3 : Il Metodo di Bisezione</span></a>.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">sizes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">floor</span><span class="p">(</span><span class="nb">logspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">));</span><span class="w"></span>
+<span class="n">times</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">sizes</span><span class="p">));</span><span class="w"></span>
+<span class="n">h</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">waitbar</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s">&quot;Calcolo in corso...&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">sizes</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sizes</span><span class="p">(</span><span class="nb">i</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">triu</span><span class="p">(</span><span class="nb">ones</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">).</span><span class="o">&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nb">tic</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">backwardsolve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">);</span><span class="w"> </span><span class="c">% Allo stesso modo con forwardsolve</span><span class="w"></span>
+<span class="w">    </span><span class="n">times</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">toc</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nb">waitbar</span><span class="p">(</span><span class="nb">i</span><span class="o">/</span><span class="nb">length</span><span class="p">(</span><span class="n">sizes</span><span class="p">));</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Ora che abbiamo i tempi possiamo visualizzare quello che abbiamo ottenuto
+sfruttando alcune funzioni di MATLAB. Poiché sappiamo che il numero di
+operazioni è una funzione che scala come un <span class="math notranslate nohighlight">\(O(n^2)\)</span> possiamo assumere in
+prima approssimazione che anche il tempo si comporti allo stesso modo.
+Cerchiamo dunque di <em>fittare</em> un polinomio di secondo grado ai nostri dati:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">P</span><span class="p">,</span><span class="n">S</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">polyfit</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span><span class="n">times</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Con la mia macchina, questa procedure mi restituisce il polinomio:</p>
+<div class="math notranslate nohighlight">
+\[p(x) = 0.000005682501880 x^2  -0.015569138451058 x + 3.230452264767748\]</div>
+<p>insieme ad una struttura <span class="math notranslate nohighlight">\(S\)</span> che contiene informazioni relative all’algoritmo
+con cui questa procedura è stata eseguita. Possiamo usare tutto questo per
+confrontare i valori del <em>fit</em> con quelli dei dati</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">y_fit</span><span class="p">,</span><span class="n">delta</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">polyval</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="n">sizes</span><span class="p">,</span><span class="n">S</span><span class="p">);</span><span class="w"></span>
+<span class="nb">plot</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span><span class="n">times</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="n">sizes</span><span class="p">,</span><span class="n">y_fit</span><span class="p">,</span><span class="s">&#39;--&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="n">sizes</span><span class="p">,</span><span class="n">y_fit</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">delta</span><span class="p">,</span><span class="s">&#39;m--&#39;</span><span class="p">,</span><span class="n">sizes</span><span class="p">,</span><span class="n">y_fit</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">delta</span><span class="p">,</span><span class="s">&#39;m--&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="s">&#39;Linewidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Dimensione del sistema&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Tempo di calcolo (s)&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Tempo misurato&#39;</span><span class="p">,</span><span class="s">&#39;Stima asintotica&#39;</span><span class="p">,</span><span class="s">&#39;Intervallo di Confidenza&#39;</span><span class="p">},</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="s">&#39;Location&#39;</span><span class="p">,</span><span class="s">&#39;northwest&#39;</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>dove abbiamo stampato sia il tempo misurato, sia il <em>fit</em> con il suo
+<em>intervallo di confidenza</em> entro il 95%. Dalla <a class="reference internal" href="#triangularsolvetime"><span class="std std-numref">Fig. 12</span></a>
+vediamo che la predizione quadratica è piuttosto efficace.</p>
+<div class="figure align-default" id="triangularsolvetime">
+<img alt="_images/triangulartime.png" src="_images/triangulartime.png" />
+<p class="caption"><span class="caption-number">Fig. 12 </span><span class="caption-text">Tempo di calcolo come un <span class="math notranslate nohighlight">\(O(n^2)\)</span> della dimensione.</span><a class="headerlink" href="#triangularsolvetime" title="Link a questa immagine">¶</a></p>
+</div>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
