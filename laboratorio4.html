@@ -250,6 +250,11 @@
    Esempi di applicazioni
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bibliografia">
+   Bibliografia
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -336,7 +341,7 @@ si può adottare è quindi il seguente:</p>
 </div>
 </div>
 <div class="section" id="convergenza">
-<h2>Convergenza<a class="headerlink" href="#convergenza" title="Link a questa intestazione">¶</a></h2>
+<span id="newt-convergenza"></span><h2>Convergenza<a class="headerlink" href="#convergenza" title="Link a questa intestazione">¶</a></h2>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
 <div class="figure align-default" id="newtonconvergence">
@@ -416,12 +421,99 @@ derivata in <a class="reference internal" href="#equation-eq-fd">(6)</a>.</p>
 <div class="section" id="radici-multiple">
 <h2>Radici multiple<a class="headerlink" href="#radici-multiple" title="Link a questa intestazione">¶</a></h2>
 <p>Dalla teoria sappiamo che l’ordine di convergenza del metodo di Newton è
-ridotto quando la radice che <span class="math notranslate nohighlight">\(c\)</span> di <span class="math notranslate nohighlight">\(f\)</span> che cerchiamo è di ordine più elevato.
-Ricordiamo che se <span class="math notranslate nohighlight">\(c\)</span> è una radice di <span class="math notranslate nohighlight">\(f\)</span> il suo <strong>ordine</strong> è il più piccolo
+ridotto quando la radice che <span class="math notranslate nohighlight">\(c\)</span> di <span class="math notranslate nohighlight">\(f\)</span> che cerchiamo è di ordine più elevato.</p>
+<div class="admonition tip">
+<p class="admonition-title">Suggerimento</p>
+<p>Ricordiamo che se <span class="math notranslate nohighlight">\(c\)</span> è una radice di <span class="math notranslate nohighlight">\(f\)</span> il suo <strong>ordine</strong> è il più piccolo
 <span class="math notranslate nohighlight">\(q\)</span> per cui <span class="math notranslate nohighlight">\(f^{(q)}(c) \neq 0\)</span>.</p>
+<p>Ad <strong>esempio</strong> <span class="math notranslate nohighlight">\(f(x) = (x-2)^2\)</span>, <span class="math notranslate nohighlight">\(f(2) = 0\)</span>, <span class="math notranslate nohighlight">\(f'(x) = 2(x-2)\)</span>, <span class="math notranslate nohighlight">\(f'(2) = 0\)</span>, ma
+<span class="math notranslate nohighlight">\(f''(x) = 2\)</span> per cui <span class="math notranslate nohighlight">\(f''(2) \neq 0\)</span> e dunque l’ordine è <span class="math notranslate nohighlight">\(q=2\)</span>.</p>
+</div>
+<p>Possiamo <em>modificare il metodo di Newton</em> per recuperare l’ordine quadratico di
+convergenza <strong>se</strong> sappiamo l’ordine <span class="math notranslate nohighlight">\(q\)</span> della radice che stiamo cercando. Si
+tratta di modificare l’iterazione come:</p>
+<div class="math notranslate nohighlight" id="equation-eq-newton2">
+<span class="eqno">(7)<a class="headerlink" href="#equation-eq-newton2" title="Permalink a questa equazione">¶</a></span>\[x_{k+1} = x_k - q \frac{f(x_k)}{f'(x_k)}, \quad x_0 \text{ assegnato }, k \geq 1.\]</div>
+<div class="admonition-esercizio-3 admonition">
+<p class="admonition-title">Esercizio 3</p>
+<p>Si modifichi la funzione dell”<strong>Esercizio 1</strong> con una che implementi l’iterazione
+<a class="reference internal" href="#equation-eq-newton2">(7)</a>. Cioè con una funzione che abbiamo tra gli input anche l’ordine
+<span class="math notranslate nohighlight">\(q\)</span> della radice.</p>
+<p>Un prototipo della funzione è quindi</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[c,residuo]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">mnewton</span><span class="p">(</span>f,fp,x0,q,maxit,tol<span class="p">)</span><span class="w"></span>
+<span class="c">%%NEWTON Implementazione del metodo di Newton</span><span class="w"></span>
+<span class="c">% Input:  f function handle della funzione di cui si cerca lo zero</span><span class="w"></span>
+<span class="c">%         fp function handle della derivata prima della funzione</span><span class="w"></span>
+<span class="c">%         x0 approssimazione iniziale</span><span class="w"></span>
+<span class="c">%         q ordine della radice da calcolare</span><span class="w"></span>
+<span class="c">%         maxit numero massimo di iterazioni consentite</span><span class="w"></span>
+<span class="c">%         tol tolleranza sul residuo</span><span class="w"></span>
+<span class="c">% Output: c radici candidate prodotte dal metodo</span><span class="w"></span>
+<span class="c">%         residuo vettore dei residui prodotto dal metodo</span><span class="w"></span>
+
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Dopo averlo implementato possiamo testarlo con il seguente script</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Script di test per il metodo di Newton modificato</span><span class="w"></span>
+
+<span class="nb">clear</span><span class="p">;</span><span class="w"> </span><span class="nb">clc</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="o">.^</span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="w"> </span><span class="o">-</span><span class="mi">7</span><span class="o">*</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span>
+<span class="n">fp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="mi">3</span><span class="o">*</span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="mi">4</span><span class="o">*</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="mi">7</span><span class="p">;</span><span class="w"></span>
+<span class="n">maxit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span><span class="w"></span>
+<span class="n">tol</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-6</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">ctrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">x0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="p">[</span><span class="n">c</span><span class="p">,</span><span class="n">residuo</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">newton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">fp</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">maxit</span><span class="p">,</span><span class="n">tol</span><span class="p">);</span><span class="w"></span>
+
+<span class="n">x0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="n">q</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="p">[</span><span class="n">cm</span><span class="p">,</span><span class="n">residuom</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">mnewton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">fp</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">q</span><span class="p">,</span><span class="n">maxit</span><span class="p">,</span><span class="n">tol</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Per vedere la differenza nell’ordine di convergenza possiamo usare la funzione
+<code class="docutils literal notranslate"><span class="pre">convergenza</span></code> che abbiamo discusso nella sezione <a class="reference internal" href="#newt-convergenza"><span class="std std-ref">Convergenza</span></a> e
+rappresentare di nuovo in maniera grafica il residuo.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">q</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">convergenza</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">ctrue</span><span class="p">);</span><span class="w"></span>
+<span class="n">qm</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">convergenza</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span><span class="n">ctrue</span><span class="p">);</span><span class="w"></span>
+
+<span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="nb">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="nb">semilogy</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">residuo</span><span class="p">),</span><span class="n">residuo</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">residuom</span><span class="p">),</span><span class="n">residuom</span><span class="p">,</span><span class="s">&#39;x-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Iterazione&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Errore Assoluto&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Newton&#39;</span><span class="p">,</span><span class="s">&#39;Newton Modificato&#39;</span><span class="p">},</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="s">&#39;Location&#39;</span><span class="p">,</span><span class="s">&#39;southeast&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="nb">semilogy</span><span class="p">(</span><span class="mi">3</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">residuo</span><span class="p">),</span><span class="n">q</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="mi">3</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">residuom</span><span class="p">),</span><span class="n">qm</span><span class="p">,</span><span class="s">&#39;x-&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="mi">1</span><span class="p">:</span><span class="mi">14</span><span class="p">,</span><span class="nb">ones</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="s">&#39;k--&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="mi">1</span><span class="p">:</span><span class="mi">14</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="nb">ones</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="s">&#39;k--&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Iterazione&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Ordine di Convergenza Stimato&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Newton&#39;</span><span class="p">,</span><span class="s">&#39;Newton Modificato&#39;</span><span class="p">},</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="s">&#39;Location&#39;</span><span class="p">,</span><span class="s">&#39;southeast&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">axis</span><span class="p">([</span><span class="mi">1</span><span class="w"> </span><span class="mi">14</span><span class="w"> </span><span class="mf">0.8</span><span class="w"> </span><span class="mf">2.2</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Quello che osserviamo dalla <a class="reference internal" href="#newtonmodificatoconvergence"><span class="std std-numref">Fig. 10</span></a> è esattamente
+quanto previsto dalla teoria. La versione non modificata di Newton ha convergenza
+lineare, mentre la versione modificata ha un chiaro comportamento quadratico.</p>
+<div class="figure align-default" id="newtonmodificatoconvergence">
+<img alt="_images/newtonconvergencemultiple.png" src="_images/newtonconvergencemultiple.png" />
+<p class="caption"><span class="caption-number">Fig. 10 </span><span class="caption-text">Convergenza del metodo di Newton per radici multiple, confronto tra il caso
+standard e quello modificato.</span><a class="headerlink" href="#newtonmodificatoconvergence" title="Link a questa immagine">¶</a></p>
+</div>
+</div>
 </div>
 <div class="section" id="esempi-di-applicazioni">
 <h2>Esempi di applicazioni<a class="headerlink" href="#esempi-di-applicazioni" title="Link a questa intestazione">¶</a></h2>
+<p>Consideriamo alcune applicazioni <em>ingegneristiche</em> del problema di trovare lo
+zero di una funzione <span id="id1">[<a class="reference internal" href="#id10">Kiu15</a>]</span>.</p>
 <div class="margin sidebar">
 <p class="sidebar-title">Entalpia</p>
 <p>L”<strong>energia libera di Gibbs</strong> (anche chiamata entalpia libera) è una funzione
@@ -429,8 +521,8 @@ di stato termodinamica utilizzata per rappresentare l’energia libera nelle
 trasformazioni a pressione e temperatura costante. In termochimica è usata per
 determinare la spontaneità di una reazione.</p>
 </div>
-<div class="admonition-energia-libera-di-gibbs admonition">
-<p class="admonition-title">Energia libera di Gibbs</p>
+<div class="admonition-esercizio-4-energia-libera-di-gibbs admonition">
+<p class="admonition-title">Esercizio 4: Energia libera di Gibbs</p>
 <p>L’energia libera di Gibbs di una mole di idrogeno alla temperatura <span class="math notranslate nohighlight">\(T\)</span> è</p>
 <div class="math notranslate nohighlight">
 \[	G = - R T \ln[ (T/T_0)^{5/2}]\,J,\]</div>
@@ -441,12 +533,12 @@ determinare la spontaneità di una reazione.</p>
 <p class="sidebar-title">Sistema molle–ammortizzatore</p>
 <div class="figure align-default" id="spring">
 <a class="reference internal image-reference" href="_images/spring.png"><img alt="_images/spring.png" src="_images/spring.png" style="width: 40%;" /></a>
-<p class="caption"><span class="caption-number">Fig. 10 </span><span class="caption-text">Un modello accoppiato molla-ammortizzatore.</span><a class="headerlink" href="#spring" title="Link a questa immagine">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 11 </span><span class="caption-text">Un modello accoppiato molla-ammortizzatore.</span><a class="headerlink" href="#spring" title="Link a questa immagine">¶</a></p>
 </div>
 </div>
-<div class="admonition-sistema-molle-ammortizzatore admonition">
-<p class="admonition-title">Sistema molle–ammortizzatore</p>
-<p>Consideriamo il sistema accoppiato di molle e ammortizzatori in <a class="reference internal" href="#spring"><span class="std std-numref">Fig. 10</span></a>.
+<div class="admonition-esercizio-5-sistema-molle-ammortizzatore admonition">
+<p class="admonition-title">Esercizio 5: Sistema molle–ammortizzatore</p>
+<p>Consideriamo il sistema accoppiato di molle e ammortizzatori in <a class="reference internal" href="#spring"><span class="std std-numref">Fig. 11</span></a>.
 I due blocchi di massa <span class="math notranslate nohighlight">\(m\)</span> sono connessi tra di loro da due molle e da un
 ammortizzatore. Il coefficiente elastico di ognuna delle due molle è dato da
 <span class="math notranslate nohighlight">\(k\)</span>, mentre <span class="math notranslate nohighlight">\(c\)</span> è il coefficiente che regola l’attenuazione causata dall’ammortizzatore. Quando il sistema è messo in posizione e rilasciato, la
@@ -460,6 +552,20 @@ radici dell’equazione</p>
 <p>Si determinino le possibili combinazioni di <span class="math notranslate nohighlight">\(w_r\)</span> e <span class="math notranslate nohighlight">\(w_i\)</span> se <span class="math notranslate nohighlight">\(c/m = 12\,s^{-1}\)</span>,
 e <span class="math notranslate nohighlight">\(k/m = 1500 s^{-2}\)</span>.</p>
 </div>
+<div class="admonition-esercizio-6 admonition">
+<p class="admonition-title">Esercizio 6</p>
+<p>Si re-implementino/modifichino gli esercizi del <a class="reference internal" href="laboratorio3.html#laboratorio3"><span class="std std-ref">Laboratorio 3 : Il Metodo di Bisezione</span></a>
+cambiando dal metodo di Bisezione al metodo di Newton.</p>
+</div>
+</div>
+<div class="section" id="bibliografia">
+<h2>Bibliografia<a class="headerlink" href="#bibliografia" title="Link a questa intestazione">¶</a></h2>
+<p id="id2"><dl class="citation">
+<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id1">Kiu15</a></span></dt>
+<dd><p>Jaan Kiusalaas. <em>Numerical Methods in Engineering with MATLAB®</em>. Cambridge University Press, 3 edition, 2015. <a class="reference external" href="https://doi.org/10.1017/CBO9781316341599">doi:10.1017/CBO9781316341599</a>.</p>
+</dd>
+</dl>
+</p>
 </div>
 </div>
 

@@ -74,6 +74,8 @@ Iterata 6	c = 2.094551	residuo = 2.327027e-13
 ```
 :::
 
+
+(newt-convergenza)=
 ## Convergenza
 
 :::{margin}
@@ -161,11 +163,105 @@ derivata in {eq}`eq-fd`.
 
 Dalla teoria sappiamo che l'ordine di convergenza del metodo di Newton è
 ridotto quando la radice che $c$ di $f$ che cerchiamo è di ordine più elevato.
+
+:::{tip}
 Ricordiamo che se $c$ è una radice di $f$ il suo **ordine** è il più piccolo
 $q$ per cui $f^{(q)}(c) \neq 0$.
 
+Ad **esempio** $f(x) = (x-2)^2$, $f(2) = 0$, $f'(x) = 2(x-2)$, $f'(2) = 0$, ma
+$f''(x) = 2$ per cui $f''(2) \neq 0$ e dunque l'ordine è $q=2$.
+:::
+
+Possiamo _modificare il metodo di Newton_ per recuperare l'ordine quadratico di
+convergenza **se** sappiamo l'ordine $q$ della radice che stiamo cercando. Si
+tratta di modificare l'iterazione come:
+```{math}
+:label: eq_newton2
+x_{k+1} = x_k - q \frac{f(x_k)}{f'(x_k)}, \quad x_0 \text{ assegnato }, k \geq 1.
+```
+
+:::{admonition} Esercizio 3
+Si modifichi la funzione dell'**Esercizio 1** con una che implementi l'iterazione
+{eq}`eq_newton2`. Cioè con una funzione che abbiamo tra gli input anche l'ordine
+$q$ della radice.
+
+Un prototipo della funzione è quindi
+```matlab
+function [c,residuo] = mnewton(f,fp,x0,q,maxit,tol)
+%%NEWTON Implementazione del metodo di Newton
+% Input:  f function handle della funzione di cui si cerca lo zero
+%         fp function handle della derivata prima della funzione
+%         x0 approssimazione iniziale
+%         q ordine della radice da calcolare
+%         maxit numero massimo di iterazioni consentite
+%         tol tolleranza sul residuo
+% Output: c radici candidate prodotte dal metodo
+%         residuo vettore dei residui prodotto dal metodo
+
+end
+```
+Dopo averlo implementato possiamo testarlo con il seguente script
+```matlab
+%% Script di test per il metodo di Newton modificato
+
+clear; clc;
+
+f = @(x) x.^3 + 2*x.^2 -7*x + 4;
+fp = @(x) 3*x.^2 +4*x -7;
+maxit = 200;
+tol = 1e-6;
+
+ctrue = 1;
+
+x0 = 2;
+[c,residuo] = newton(f,fp,x0,maxit,tol);
+
+x0 = 2;
+q = 2;
+[cm,residuom] = mnewton(f,fp,x0,q,maxit,tol);
+```
+Per vedere la differenza nell'ordine di convergenza possiamo usare la funzione
+`convergenza` che abbiamo discusso nella sezione {ref}`newt-convergenza` e
+rappresentare di nuovo in maniera grafica il residuo.
+```matlab
+q = convergenza(c,ctrue);
+qm = convergenza(cm,ctrue);
+
+figure(1)
+subplot(1,2,1)
+semilogy(1:length(residuo),residuo,'o-',...
+    1:length(residuom),residuom,'x-','LineWidth',2);
+xlabel('Iterazione')
+ylabel('Errore Assoluto')
+legend({'Newton','Newton Modificato'},'FontSize',16,...
+    'Location','southeast');
+subplot(1,2,2)
+semilogy(3:length(residuo),q,'o-',...
+    3:length(residuom),qm,'x-',...
+    1:14,ones(14,1),'k--',...
+    1:14,2*ones(14,1),'k--','LineWidth',2);
+xlabel('Iterazione')
+ylabel('Ordine di Convergenza Stimato')
+legend({'Newton','Newton Modificato'},'FontSize',16,...
+    'Location','southeast');
+axis([1 14 0.8 2.2])
+```
+Quello che osserviamo dalla {numref}`newtonmodificatoconvergence` è esattamente
+quanto previsto dalla teoria. La versione non modificata di Newton ha convergenza
+lineare, mentre la versione modificata ha un chiaro comportamento quadratico.
+```{figure} ./images/newtonconvergencemultiple.png
+:name: newtonmodificatoconvergence
+
+Convergenza del metodo di Newton per radici multiple, confronto tra il caso
+standard e quello modificato.
+```
+:::
+
 
 ## Esempi di applicazioni
+
+Consideriamo alcune applicazioni *ingegneristiche* del problema di trovare lo
+zero di una funzione {cite}`kiusalaas2015`.
 
 :::{margin} Entalpia
 L'**energia libera di Gibbs** (anche chiamata entalpia libera) è una funzione
@@ -173,7 +269,7 @@ di stato termodinamica utilizzata per rappresentare l'energia libera nelle
 trasformazioni a pressione e temperatura costante. In termochimica è usata per
 determinare la spontaneità di una reazione.
 :::
-:::{admonition} Energia libera di Gibbs
+:::{admonition} Esercizio 4: Energia libera di Gibbs
 L'energia libera di Gibbs di una mole di idrogeno alla temperatura $T$ è
 ```{math}
 	G = - R T \ln[ (T/T_0)^{5/2}]\,J,
@@ -190,7 +286,7 @@ $T_0 = 4.44418\,K$. Si determini la temperatura a cui $G = -10^{5}\,J$.
 Un modello accoppiato molla-ammortizzatore.
 ```
 :::
-:::{admonition} Sistema molle--ammortizzatore
+:::{admonition} Esercizio 5: Sistema molle--ammortizzatore
 Consideriamo il sistema accoppiato di molle e ammortizzatori in {numref}`spring`.
 I due blocchi di massa $m$ sono connessi tra di loro da due molle e da un
 ammortizzatore. Il coefficiente elastico di ognuna delle due molle è dato da
@@ -207,3 +303,14 @@ radici dell'equazione
 Si determinino le possibili combinazioni di $w_r$ e $w_i$ se $c/m = 12\,s^{-1}$,
 e $k/m = 1500 s^{-2}$.
 :::
+
+:::{admonition} Esercizio 6
+Si re-implementino/modifichino gli esercizi del {ref}`laboratorio3`
+cambiando dal metodo di Bisezione al metodo di Newton.
+:::
+
+## Bibliografia
+
+ ```{bibliography}
+ :filter: docname in docnames
+ ```
