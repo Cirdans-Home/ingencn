@@ -26,8 +26,13 @@ for i=2:maxit
     c(i) = c(i-1) - fc/fp(c(i-1));
     fc = f(c(i));
     residuo(i) = abs(fc);
+    if isreal(c)
     fprintf('Iterata %d\tc = %f\tresiduo = %e\n',...
         i,c(i),residuo(i));
+    else
+        fprintf('Iterata %d\tc = %f + %f i\tresiduo = %e\n',...
+        i,real(c(i)),imag(c(i)),residuo(i));    
+    end
     if residuo(i) < tol
         c = c(1:i);
         residuo = residuo(1:i);
