@@ -16,7 +16,10 @@ oscillatore = @(w,t) exp(real(w).*t).*cos(imag(w).*t);
 newtonfractal(f,fp,[-100 100 -100 100],600,600)
 
 %% Applichiamo il metodo di Newton
-x0    = -11 +60i;
+%x0    = -11 +60i;
+%x0 = - 1i;
+%x0 = + 1i;
+x0    = -11 -60i;
 maxit = 200;
 tol   = 1e-6;
 [c,residuo] = newton(f,fp,x0,maxit,tol);
@@ -26,6 +29,11 @@ figure(2)
 t = linspace(0,2*pi,200);
 plot(t,oscillatore(c(end),t),'-','LineWidth',2);
 axis([min(t) max(t) -1 1]);
+
+figure(1)
+hold on
+plot(real(c(end)),imag(c(end)),'w+','MarkerSize',14);
+hold off
 
 %% Usiamo il comando roots per trovare tutte le radici
 

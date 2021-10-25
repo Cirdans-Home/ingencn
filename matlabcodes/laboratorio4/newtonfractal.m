@@ -31,7 +31,7 @@ imgMin = min(img(:));
 imgMax = max(img(:));
 colors = hot(imgMax);
 colormap(colors);
-imagesc(img);
+imagesc(x,y,img);
 colorbar;
 axis tight equal
 end
