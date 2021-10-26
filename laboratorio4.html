@@ -286,7 +286,7 @@ per la radice. Possiamo iterare la procedura come:</p>
 <div class="admonition-teorema admonition">
 <p class="admonition-title">Teorema</p>
 <p>Sia <span class="math notranslate nohighlight">\(f \in \mathcal{C}^{2}([a,b])\)</span>, e supponiamo inoltre che <span class="math notranslate nohighlight">\(f(c) = 0\)</span>,
-<span class="math notranslate nohighlight">\(f'(c) = 0\)</span> per qualche <span class="math notranslate nohighlight">\(c \in [a,b]\)</span>. Allora esiste un <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> tale
+<span class="math notranslate nohighlight">\(f'(c) \neq 0\)</span> per qualche <span class="math notranslate nohighlight">\(c \in [a,b]\)</span>. Allora esiste un <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> tale
 per cui l’iterata <a class="reference internal" href="#equation-eq-newton">(5)</a> applicata ad <span class="math notranslate nohighlight">\(f\)</span> converge a <span class="math notranslate nohighlight">\(c\)</span> per ogni
 valore iniziale <span class="math notranslate nohighlight">\(x_0 \in [c-\delta,c+\delta]\)</span>.</p>
 </div>
@@ -326,7 +326,6 @@ si può adottare è quindi il seguente:</p>
 <span class="n">ctrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.09455148154232659</span><span class="p">;</span><span class="w"></span>
 <span class="n">x0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
 <span class="p">[</span><span class="n">c</span><span class="p">,</span><span class="n">residuo</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">newton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">fp</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">maxit</span><span class="p">,</span><span class="n">tol</span><span class="p">);</span><span class="w"></span>
-<span class="p">[</span><span class="n">c2</span><span class="p">,</span><span class="n">residuo2</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Da cui otteniamo</p>

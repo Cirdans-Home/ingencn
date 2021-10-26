@@ -20,7 +20,7 @@ x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}, \quad x_0 \text{ assegnato},  \quad k 
 Per cui avete dimostrato il seguente teorema di convergenza.
 :::{admonition} Teorema
 Sia $f \in \mathcal{C}^{2}([a,b])$, e supponiamo inoltre che $f(c) = 0$,
-$f'(c) = 0$ per qualche $c \in [a,b]$. Allora esiste un $\delta > 0$ tale
+$f'(c) \neq 0$ per qualche $c \in [a,b]$. Allora esiste un $\delta > 0$ tale
 per cui l'iterata {eq}`eq-newton` applicata ad $f$ converge a $c$ per ogni
 valore iniziale $x_0 \in [c-\delta,c+\delta]$.
 :::
@@ -60,7 +60,6 @@ tol = 1e-6;
 ctrue = 2.09455148154232659;
 x0 = 3;
 [c,residuo] = newton(f,fp,x0,maxit,tol);
-[c2,residuo2] =
 ```
 Da cui otteniamo
 ```
