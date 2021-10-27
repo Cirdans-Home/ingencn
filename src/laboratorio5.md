@@ -216,3 +216,63 @@ vediamo che la predizione quadratica è piuttosto efficace.
 
 Tempo di calcolo come un $O(n^2)$ della dimensione.
 ```
+
+## Esercizi
+
+:::{admonition} Esercizio : Numeri di Bernoulli
+
+Consideriamo le condizioni
+```{math}
+B(x+1) - B(x) = n x^{n-1}, \quad \int_{0}^{1} B(x)\,{\rm d}x, \quad B(x)\, \text{polinomio}.
+```
+Queste definiscono in maniera unica la funzione $B(x)$. Se assumiamo che il grado
+del polinomio monico $B(x)$ sia $n$ abbiamo così costruito i **polinomi di Bernoulli**. Si possono calcolare esattamente i primi polinomi come:
+```{math}
+B_0(x) = 1, \quad B_1(x) = x - \frac{1}{2}, \quad B_2(x) = x(x-1)+\frac{1}{6}, \quad B_3(x) = x(x-\frac{1}{2})(x-1), \ldots
+```
+Si può dimostrare che i polinomi di Bernoulli definiscono i coefficienti della rappresentazione in serie di potenze di diverse funzioni, ad esepio:
+```{math}
+\frac{t e^{xt}}{e^t - 1} = \sum_{k=0}^{+\infty} \frac{B_n(x)}{n!}t^n.
+```
+In particolare, se scegliamo $x = 0$, abbiamo che
+```{math}
+:label: bernoulliexpansion
+\frac{t}{e^t - 1} = -\frac{1}{2}t + \sum_{k=0}^{+\infty} \frac{B_{2k}(0)}{(2k)!}t^{2k}.
+```
+Facciamo ora la seguente manipolazione algebrica, moltiplichiamo l'equazione
+a sinistra e a destra per $e^{t} - 1$, espandiamo $e^{t}$ con la sua serie
+di potenze, e poniamo uguale a zero i coefficienti di $t^i$ sul lato destro.
+Così otteniamo il seguente sistema di equazioni:
+```{math}
+- \frac{1}{2} j + \sum_{k=0}^{[\frac{j-1}{2}]} \binom{j}{2k} B_{2k}(0), \qquad j=2,3,4,\ldots
+```
+Da cui otteniamo, per gli $j$ pari, il seguente sistema di equazioni lineari
+```{math}
+\begin{bmatrix}
+\binom{2}{0} \\
+\binom{4}{0} & \binom{4}{2} \\
+\binom{6}{0} & \binom{6}{2} & \binom{6}{4} \\
+\binom{8}{0} & \binom{8}{2} & \binom{8}{4} & \binom{8}{6} \\
+\vdots & \vdots & \vdots & \vdots & \ddots \\
+\end{bmatrix}
+\begin{bmatrix}
+B_0(0)\\
+B_2(0)\\
+B_4(0)\\
+B_6(0)\\
+\vdots
+\end{bmatrix}
+= \begin{bmatrix}
+1\\
+2\\
+3\\
+4\\
+\vdots
+\end{bmatrix}.
+```
+1. Si implementi una funzione che dato un intero $k$ restituisca i numeri di
+Bernoulli $\{B_{2j}(0)\}_{j=0}^{k}$ risolvendo questo sistema lineare.
+2. Si usino i numeri così ottenuti per determinare lo sviluppo in {eq}`bernoulliexpansion` e disegnare
+- le due funzioni una accanto all'altra,
+- l'errore di approssimazione commesso in scala logaritmica.
+:::
