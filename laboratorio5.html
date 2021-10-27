@@ -467,8 +467,8 @@ vediamo che la predizione quadratica è piuttosto efficace.</p>
 </div>
 <div class="section" id="esercizi">
 <h2>Esercizi<a class="headerlink" href="#esercizi" title="Link a questa intestazione">¶</a></h2>
-<div class="admonition-esercizio-numeri-di-bernoulli admonition">
-<p class="admonition-title">Esercizio : Numeri di Bernoulli</p>
+<div class="admonition-esercizio-3-numeri-di-bernoulli admonition">
+<p class="admonition-title">Esercizio 3: Numeri di Bernoulli</p>
 <p>Consideriamo le condizioni</p>
 <div class="math notranslate nohighlight">
 \[B(x+1) - B(x) = n x^{n-1}, \quad \int_{0}^{1} B(x)\,{\rm d}x, \quad B(x)\, \text{polinomio}.\]</div>
@@ -520,6 +520,23 @@ Bernoulli <span class="math notranslate nohighlight">\(\{B_{2j}(0)\}_{j=0}^{k}\)
 <li><p>le due funzioni una accanto all’altra,</p></li>
 <li><p>l’errore di approssimazione commesso in scala logaritmica.</p></li>
 </ul>
+<p>Un prototipo della funzione è:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[Bk]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">nbernoulli</span><span class="p">(</span>k<span class="p">)</span><span class="w"></span>
+<span class="c">%BERNOULLI Produce i numeri di Bernoulli B_{2j}(0) per j=0,...,k risolvendo</span><span class="w"></span>
+<span class="c">%un sistema triangolare inferiore.</span><span class="w"></span>
+<span class="c">%   INPUT:</span><span class="w"></span>
+<span class="c">%   k =  Numero di termini (-1) da calcolare</span><span class="w"></span>
+<span class="c">%   OUTPUT:</span><span class="w"></span>
+<span class="c">%   Bk = Vettore di lunghezza k+1 che contiene i numeri richiesti</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Suggerimento</p>
+<p>La funzione binomiale in MATLAB è implementata come <code class="docutils literal notranslate"><span class="pre">nchoosek</span></code>. Potete inoltre
+confrontare i risultati ottenuti con la funzione nativa di MATLAB che calcola
+i numeri di Bernoulli dal medesimo nome (<code class="docutils literal notranslate"><span class="pre">help</span> <span class="pre">bernoulli</span></code> per le informazioni).</p>
+</div>
 </div>
 </div>
 </div>
