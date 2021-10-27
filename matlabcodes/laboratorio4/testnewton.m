@@ -10,14 +10,19 @@ tol = 1e-6;
 ctrue = 2.09455148154232659;
 
 x0 = 3;
+tic;
 [c,residuo] = newton(f,fp,x0,maxit,tol);
-
+tnewton = toc;
 %% Paragone con il metodo di bisezione
 a = 1;
 b = 3;
 maxit = 200;
 tol = 1e-6;
+tic;
 [c2,residuo2] = bisezione(f,a,b,maxit,tol);
+tbisezione = toc;
+
+fprintf('T Newton %e (s) T Bisezione %e (s)\n',tnewton,tbisezione);
 
 n = 1:length(residuo);
 n2 = 1:length(residuo2);
@@ -38,4 +43,13 @@ tol = 1e-6;
 ctrue = 2.09455148154232659;
 
 x0 = 3;
-[c,residuo] = newton(f,fp,x0,maxit,tol);
+[c3,residuo3] = newton(f,fp,x0,maxit,tol);
+
+figure(2)
+semilogy(1:length(residuo),residuo,'r-',...
+    1:length(residuo3),residuo3,'b--','LineWidth',2)
+xlabel('Iterazione');
+ylabel('Residui');
+legend({'Derivata esatta','Derivata approssimata'},...
+    'Location','southwest','FontSize',14);
+
