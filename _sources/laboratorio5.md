@@ -1,5 +1,11 @@
 # Laboratorio 5 : Soluzione di Sistemi Triangolari
 
+I sistemi triangolari giocano un ruolo fondamentale nei calcoli matriciali.
+Molti metodi sono costruiti sull'idea di ridurre un problema alla soluzione di uno o più sistemi triangolari, questo include praticamente tutti i **metodi diretti** per la risoluzione di sistemi lineari.
+
+Sui **computer seriali** i sistemi triangolari sono universalmente risolti dagli algoritmi standard di sostituzione in avanti e all'indietro. Sulle **macchine
+parallele** la situazione è sensibilmente più varia, ma questo trascende gli
+obiettivi di questo corso.
 
 ## Sostituzione in avanti e all'indietro
 
