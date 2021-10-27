@@ -7,6 +7,25 @@ Sui **computer seriali** i sistemi triangolari sono universalmente risolti dagli
 parallele** la situazione è sensibilmente più varia, ma questo trascende gli
 obiettivi di questo corso.
 
+Due funzioni utili per lavorare con i sisistemi triangolari sono le funzioni
+`triu` e `tril`. Dal loro `help`:
+```
+tril Extract lower triangular part.
+   tril(X) is the lower triangular part of X.
+   tril(X,K) is the elements on and below the K-th diagonal
+   of X .  K = 0 is the main diagonal, K > 0 is above the
+   main diagonal and K < 0 is below the main diagonal.
+```
+ed analogamente per `triu`:
+```
+triu Extract upper triangular part.
+   triu(X) is the upper triangular part of X.
+   triu(X,K) is the elements on and above the K-th diagonal of
+   X.  K = 0 is the main diagonal, K > 0 is above the main
+   diagonal and K < 0 is below the main diagonal.
+```
+Possiamo usarle per costruire sistemi triangolari a partire da sistemi densi.
+
 ## Sostituzione in avanti e all'indietro
 
 Chiamiamo di nuovo $L$ una matrice triangolare inferiore, vogliamo risolvere un sistema della forma:
