@@ -50,6 +50,8 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
     <link rel="next" title="Laboratorio 7 : Metodi Stazionari per Sistemi Lineari" href="laboratorio7.html" />
@@ -223,6 +225,19 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contenuti
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#esercizi">
+   Esercizi
+  </a>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -233,6 +248,38 @@
                 
   <div class="section" id="laboratorio-6-l-eliminazione-di-gauss-il-metodo-lu">
 <h1>Laboratorio 6 : L’Eliminazione di Gauss il Metodo LU<a class="headerlink" href="#laboratorio-6-l-eliminazione-di-gauss-il-metodo-lu" title="Link a questa intestazione">¶</a></h1>
+<div class="section" id="esercizi">
+<h2>Esercizi<a class="headerlink" href="#esercizi" title="Link a questa intestazione">¶</a></h2>
+<div class="admonition-esercizio admonition">
+<p class="admonition-title">Esercizio</p>
+<p>La formulazione per gli spostamenti di una trave reticolare piana è simile a
+quella di un sistema di masse e molle. Le differenze sono che</p>
+<ol class="simple">
+<li><p>i termini di rigidità sono dati da <span class="math notranslate nohighlight">\(k_{i} = (E A/L)_ {i}\)</span>, dove <span class="math notranslate nohighlight">\(E\)</span> è il modulo
+di elasticità, <span class="math notranslate nohighlight">\(A\)</span> rappresenta l’area della sezione di taglio e <span class="math notranslate nohighlight">\(L\)</span> è la
+lunghezza dell’elemento;</p></li>
+<li><p>ci sono due componenti dello scostamento in ogni punto di giuntura.</p></li>
+</ol>
+<p>Per la trave reticolare in figura:</p>
+<div class="figure align-default" id="id1">
+<img alt="_images/planetruss.png" src="_images/planetruss.png" />
+<p class="caption"><span class="caption-number">Fig. 13 </span><span class="caption-text">Profilo di un elemento della trave reticolare piana.</span><a class="headerlink" href="#id1" title="Link a questa immagine">¶</a></p>
+</div>
+<p>si ottiene quindi il seguente sistema di equazioni lineari</p>
+<div class="math notranslate nohighlight">
+\[K \mathbf{u} = \mathbf{p}\]</div>
+<p>dove</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">K</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mf">27.58</span><span class="w">  </span><span class="mf">7.004</span><span class="w"> </span><span class="o">-</span><span class="mf">7.004</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">     </span><span class="mf">7.004</span><span class="w"> </span><span class="mf">29.57</span><span class="w">  </span><span class="o">-</span><span class="mf">5.253</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">-</span><span class="mf">24.32</span><span class="w"></span>
+<span class="w">    </span><span class="o">-</span><span class="mf">7.004</span><span class="w"> </span><span class="o">-</span><span class="mf">5.253</span><span class="w"> </span><span class="mf">29.57</span><span class="w">  </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">    </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mf">27.58</span><span class="w"> </span><span class="o">-</span><span class="mf">7.004</span><span class="w"></span>
+<span class="w">    </span><span class="mi">0</span><span class="w"> </span><span class="o">-</span><span class="mf">24.32</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">-</span><span class="mf">7.004</span><span class="w"> </span><span class="mf">29.57</span><span class="p">];</span><span class="w"></span>
+<span class="n">p</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">-</span><span class="mi">45</span><span class="p">]</span><span class="o">&#39;</span><span class="p">;</span><span class="w"> </span><span class="c">% kN</span><span class="w"></span>
+</pre></div>
+</div>
+<p>si determinino tutti gli scostamenti <span class="math notranslate nohighlight">\(u_i\)</span> per il sistema.</p>
+</div>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
