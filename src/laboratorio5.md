@@ -219,7 +219,7 @@ Tempo di calcolo come un $O(n^2)$ della dimensione.
 
 ## Esercizi
 
-:::{admonition} Esercizio : Numeri di Bernoulli
+:::{admonition} Esercizio 3: Numeri di Bernoulli
 
 Consideriamo le condizioni
 ```{math}
@@ -275,4 +275,23 @@ Bernoulli $\{B_{2j}(0)\}_{j=0}^{k}$ risolvendo questo sistema lineare.
 2. Si usino i numeri così ottenuti per determinare lo sviluppo in {eq}`bernoulliexpansion` e disegnare
 - le due funzioni una accanto all'altra,
 - l'errore di approssimazione commesso in scala logaritmica.
+
+Un prototipo della funzione è:
+```matlab
+function [Bk] = nbernoulli(k)
+%BERNOULLI Produce i numeri di Bernoulli B_{2j}(0) per j=0,...,k risolvendo
+%un sistema triangolare inferiore.
+%   INPUT:
+%   k =  Numero di termini (-1) da calcolare
+%   OUTPUT:
+%   Bk = Vettore di lunghezza k+1 che contiene i numeri richiesti
+end
+```
+
+```{tip}
+La funzione binomiale in MATLAB è implementata come `nchoosek`. Potete inoltre
+confrontare i risultati ottenuti con la funzione nativa di MATLAB che calcola
+i numeri di Bernoulli dal medesimo nome (`help bernoulli` per le informazioni).
+```
+
 :::
