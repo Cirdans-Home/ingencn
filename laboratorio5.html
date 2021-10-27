@@ -240,6 +240,11 @@
    Tempo di calcolo
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#esercizi">
+   Esercizi
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -458,6 +463,63 @@ vediamo che la predizione quadratica è piuttosto efficace.</p>
 <div class="figure align-default" id="triangularsolvetime">
 <img alt="_images/triangulartime.png" src="_images/triangulartime.png" />
 <p class="caption"><span class="caption-number">Fig. 12 </span><span class="caption-text">Tempo di calcolo come un <span class="math notranslate nohighlight">\(O(n^2)\)</span> della dimensione.</span><a class="headerlink" href="#triangularsolvetime" title="Link a questa immagine">¶</a></p>
+</div>
+</div>
+<div class="section" id="esercizi">
+<h2>Esercizi<a class="headerlink" href="#esercizi" title="Link a questa intestazione">¶</a></h2>
+<div class="admonition-esercizio-numeri-di-bernoulli admonition">
+<p class="admonition-title">Esercizio : Numeri di Bernoulli</p>
+<p>Consideriamo le condizioni</p>
+<div class="math notranslate nohighlight">
+\[B(x+1) - B(x) = n x^{n-1}, \quad \int_{0}^{1} B(x)\,{\rm d}x, \quad B(x)\, \text{polinomio}.\]</div>
+<p>Queste definiscono in maniera unica la funzione <span class="math notranslate nohighlight">\(B(x)\)</span>. Se assumiamo che il grado
+del polinomio monico <span class="math notranslate nohighlight">\(B(x)\)</span> sia <span class="math notranslate nohighlight">\(n\)</span> abbiamo così costruito i <strong>polinomi di Bernoulli</strong>. Si possono calcolare esattamente i primi polinomi come:</p>
+<div class="math notranslate nohighlight">
+\[B_0(x) = 1, \quad B_1(x) = x - \frac{1}{2}, \quad B_2(x) = x(x-1)+\frac{1}{6}, \quad B_3(x) = x(x-\frac{1}{2})(x-1), \ldots\]</div>
+<p>Si può dimostrare che i polinomi di Bernoulli definiscono i coefficienti della rappresentazione in serie di potenze di diverse funzioni, ad esepio:</p>
+<div class="math notranslate nohighlight">
+\[\frac{t e^{xt}}{e^t - 1} = \sum_{k=0}^{+\infty} \frac{B_n(x)}{n!}t^n.\]</div>
+<p>In particolare, se scegliamo <span class="math notranslate nohighlight">\(x = 0\)</span>, abbiamo che</p>
+<div class="math notranslate nohighlight" id="equation-bernoulliexpansion">
+<span class="eqno">(8)<a class="headerlink" href="#equation-bernoulliexpansion" title="Permalink a questa equazione">¶</a></span>\[\frac{t}{e^t - 1} = -\frac{1}{2}t + \sum_{k=0}^{+\infty} \frac{B_{2k}(0)}{(2k)!}t^{2k}.\]</div>
+<p>Facciamo ora la seguente manipolazione algebrica, moltiplichiamo l’equazione
+a sinistra e a destra per <span class="math notranslate nohighlight">\(e^{t} - 1\)</span>, espandiamo <span class="math notranslate nohighlight">\(e^{t}\)</span> con la sua serie
+di potenze, e poniamo uguale a zero i coefficienti di <span class="math notranslate nohighlight">\(t^i\)</span> sul lato destro.
+Così otteniamo il seguente sistema di equazioni:</p>
+<div class="math notranslate nohighlight">
+\[- \frac{1}{2} j + \sum_{k=0}^{[\frac{j-1}{2}]} \binom{j}{2k} B_{2k}(0), \qquad j=2,3,4,\ldots\]</div>
+<p>Da cui otteniamo, per gli <span class="math notranslate nohighlight">\(j\)</span> pari, il seguente sistema di equazioni lineari</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{bmatrix}
+\binom{2}{0} \\
+\binom{4}{0} &amp; \binom{4}{2} \\
+\binom{6}{0} &amp; \binom{6}{2} &amp; \binom{6}{4} \\
+\binom{8}{0} &amp; \binom{8}{2} &amp; \binom{8}{4} &amp; \binom{8}{6} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \ddots \\
+\end{bmatrix}
+\begin{bmatrix}
+B_0(0)\\
+B_2(0)\\
+B_4(0)\\
+B_6(0)\\
+\vdots
+\end{bmatrix}
+= \begin{bmatrix}
+1\\
+2\\
+3\\
+4\\
+\vdots
+\end{bmatrix}.\end{split}\]</div>
+<ol class="simple">
+<li><p>Si implementi una funzione che dato un intero <span class="math notranslate nohighlight">\(k\)</span> restituisca i numeri di
+Bernoulli <span class="math notranslate nohighlight">\(\{B_{2j}(0)\}_{j=0}^{k}\)</span> risolvendo questo sistema lineare.</p></li>
+<li><p>Si usino i numeri così ottenuti per determinare lo sviluppo in <a class="reference internal" href="#equation-bernoulliexpansion">(8)</a> e disegnare</p></li>
+</ol>
+<ul class="simple">
+<li><p>le due funzioni una accanto all’altra,</p></li>
+<li><p>l’errore di approssimazione commesso in scala logaritmica.</p></li>
+</ul>
 </div>
 </div>
 </div>
