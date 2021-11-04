@@ -7,8 +7,8 @@ function [x] = forwardsolve(A,b)
 %   Output:
 %   x = vettore della soluzione
 
-if ~norm(tril(A)-A) < eps
-    error("La matrice deve essere triangolare superiore");
+if ~istril(A)
+    error("La matrice deve essere triangolare inferiore");
 end
 
 [n,m] = size(A);

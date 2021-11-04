@@ -7,7 +7,7 @@ function [x] = backwardsolve(A,b)
 %   Output:
 %   x = vettore della soluzione
 
-if ~norm(triu(A)-A) < eps
+if ~istriu(A)
     error("La matrice deve essere triangolare superiore");
 end
 
