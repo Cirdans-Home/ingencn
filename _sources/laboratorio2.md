@@ -391,7 +391,7 @@ name: buonpolinomio
 Confronto del grafico del polinomio {eq}`eq-polinomio` calcolato nella forma {eq}`eq-polinomio`
 e a partire dalla forma  $p(x) = (x-1)^7$.
 ```
-
+(condizionamento-spettrale)=
 ## Condizionamento di un sistema lineare
 
 Ricordiamo che il **numero di condizionamento** associato all'equazione lineare
