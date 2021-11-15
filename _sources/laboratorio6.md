@@ -354,6 +354,27 @@ che, se usiamo la formulazione di Doolittle si riduce quindi ad essere:
 ```{math}
 \det(A) = \det(LU) = \det(L)\det(U) = \prod_{i=1}^{n} l_{ii} \prod_{i=1}^n u_{ii} = 1 \prod_{i=1}^n u_{ii} = \prod_{i=1}^n u_{ii}.
 ```
+Che possiamo riportare facilmente su MATLAB come:
+```matlab
+function res = ludet(A)
+%%LUDET Calcola il determinante della matrice A sfruttando la sua fattorizzazione
+%LU in forma di Doolittle e senza pivoting.
+[~,U] = doolittlelu(A);
+res = prod(diag(U));
+end
+```
+e testare rapidamente con:
+```matlab
+A = pascal(5,2);
+fprintf('Errore relativo: %1.2e\n',abs(ludet(A) - det(A))/abs(det(A)));
+```
+che ci dovrebbe restituire un errore relativo, rispetto alla funzione `det`
+nativa di MATLAB dell'ordine di `3.33e-16`.
+
+:::{warning}
+Per costruire il calcolo del determinante anche nel caso in cui si utilizzi la fattorizzazione $LU$ con *pivoting* è necessario tenere traccia del numero di
+scambi di righe effettuati. 
+:::
 
 ## Esercizi
 

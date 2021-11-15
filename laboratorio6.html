@@ -622,6 +622,27 @@ matrici quadrate con il determinante:</p>
 <p>che, se usiamo la formulazione di Doolittle si riduce quindi ad essere:</p>
 <div class="math notranslate nohighlight">
 \[\det(A) = \det(LU) = \det(L)\det(U) = \prod_{i=1}^{n} l_{ii} \prod_{i=1}^n u_{ii} = 1 \prod_{i=1}^n u_{ii} = \prod_{i=1}^n u_{ii}.\]</div>
+<p>Che possiamo riportare facilmente su MATLAB come:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>res<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">ludet</span><span class="p">(</span>A<span class="p">)</span><span class="w"></span>
+<span class="c">%%LUDET Calcola il determinante della matrice A sfruttando la sua fattorizzazione</span><span class="w"></span>
+<span class="c">%LU in forma di Doolittle e senza pivoting.</span><span class="w"></span>
+<span class="p">[</span><span class="o">~</span><span class="p">,</span><span class="n">U</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">doolittlelu</span><span class="p">(</span><span class="n">A</span><span class="p">);</span><span class="w"></span>
+<span class="n">res</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">prod</span><span class="p">(</span><span class="nb">diag</span><span class="p">(</span><span class="n">U</span><span class="p">));</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>e testare rapidamente con:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">pascal</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&#39;Errore relativo: %1.2e\n&#39;</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">ludet</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">det</span><span class="p">(</span><span class="n">A</span><span class="p">))</span><span class="o">/</span><span class="nb">abs</span><span class="p">(</span><span class="nb">det</span><span class="p">(</span><span class="n">A</span><span class="p">)));</span><span class="w"></span>
+</pre></div>
+</div>
+<p>che ci dovrebbe restituire un errore relativo, rispetto alla funzione <code class="docutils literal notranslate"><span class="pre">det</span></code>
+nativa di MATLAB dell’ordine di <code class="docutils literal notranslate"><span class="pre">3.33e-16</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Avvertimento</p>
+<p>Per costruire il calcolo del determinante anche nel caso in cui si utilizzi la fattorizzazione <span class="math notranslate nohighlight">\(LU\)</span> con <em>pivoting</em> è necessario tenere traccia del numero di
+scambi di righe effettuati.</p>
+</div>
 </div>
 </div>
 <div class="section" id="esercizi">
