@@ -26,6 +26,7 @@ triu Extract upper triangular part.
 ```
 Possiamo usarle per costruire sistemi triangolari a partire da sistemi densi.
 
+(forwardandbacwardsolve)=
 ## Sostituzione in avanti e all'indietro
 
 Chiamiamo di nuovo $L$ una matrice triangolare inferiore, vogliamo risolvere un sistema della forma:
