@@ -189,9 +189,9 @@ end
 
 Per *testare* il metodo si usi il seguente programma
 ```matlab
-A = gallery('poisson',50); % Matrice di prova
-b = ones(250,1);           % rhs vettore di 1
-x = zeros(250,1);          % Tentativo iniziale vettore di 0
+A = gallery('poisson',10); % Matrice di prova
+b = ones(10^2,1);           % rhs vettore di 1
+x = zeros(10^2,1);          % Tentativo iniziale vettore di 0
 [x,res,it] = jacobi(A,b,x,1000,1e-6);
 
 figure(1)
@@ -238,9 +238,9 @@ end
 
 Per *testare* il metodo si usi il seguente programma
 ```matlab
-A = gallery('poisson',50); % Matrice di prova
-b = ones(250,1);           % rhs vettore di 1
-x = zeros(250,1);          % Tentativo iniziale vettore di 0
+A = gallery('poisson',10); % Matrice di prova
+b = ones(10^2,1);           % rhs vettore di 1
+x = zeros(10^2,1);          % Tentativo iniziale vettore di 0
 [x,res,it] = forwardgs(A,b,x,1000,1e-6);
 
 figure(1)
@@ -251,3 +251,64 @@ ylabel('Residuo relativo');
 :::
 
 ## Paragone tra i due metodi e velocità di convergenza
+
+Adesso che abbiamo implementato i due diversi metodi possiamo fare un confronto delle loro prestazioni. Possiamo paragonare in primo luogo le due storie di convergenza guardando all'evoluzione dei residui:
+```matlab
+A = gallery('poisson',10); % Matrice di prova
+b = ones(10^2,1);           % rhs vettore di 1
+x = zeros(10^2,1);          % Tentativo iniziale vettore di 0
+
+[xjacobi,resjacobi,itjacobi] = jacobi(A,b,x,1000,1e-6);
+[xforwardgs,resforwardgs,itforwardgs] = forwardgs(A,b,x,1000,1e-6);
+
+
+figure(1)
+semilogy(1:itjacobi,resjacobi,'o-',...
+    1:itforwardgs,resforwardgs,'x-', 'LineWidth',2);
+xlabel('Iterazione');
+ylabel('Residuo');
+legend({'Jacobi','Gauss-Seidel (Forward)'},...
+    'Location','northeast',...
+    'FontSize',14);
+ ```
+Da cui osserviamo che il metodo di Gauss-Seidel (forward) impiega meno iterazioni per raggiungere la convergenza desiderata ({numref}`gaussjac1`).
+
+```{figure} ./images/gaussjacobicomparison1.png
+---
+alt: convergenza-metodi
+width: 50%
+name: gaussjac1
+---
+Evoluzione del residuo per i metodi di Jacobi e Gauss-Seidel.
+```
+Possiamo indagare la cosa dal punto di vista teorico andando a guardare il raggio spettrale delle due matrici di iterazione, infatti
+```matlab
+M = diag(diag(A)); % Jacobi
+N = M - A;
+rhojacobi = eigs(N,M,1,'largestabs');
+
+M = tril(A); % Gauss-Seidel (forward)
+N = M - A;
+rhoforwardgs = eigs(N,M,1,'largestabs');
+
+fprintf('Il raggio spettrale per Jacobi è %f\n',abs(rhojacobi));
+fprintf('Il raggio spettrale per Gauss-Seidel è %f\n',abs(rhoforwardgs));
+```
+Da cui scopriamo che:
+```
+Il raggio spettrale per Jacobi è 0.959493
+Il raggio spettrale per Gauss-Seidel è 0.920627
+```
+dunque Gauss-Seidel (forward) ha un tasso di riduzione del residuo minore e una convergenza più rapida.
+
+Possiamo aggiungere delle istruzioni `tic` e `toc` per valutare anche il tempo impiegato dai due differenti metodi:
+```
+Il tempo per Jacobi è 0.008983 s
+Il tempo per Gauss-Seidel è 0.182575 s
+```
+ovvero il metodo di Jacobi è in questo caso circa due ordini di grandezza più rapido. Tuttavia, se andiamo a sostituire la nostra implementazione della funzione `forwardsolve` con il `\` implementato da MATLAB scopriamo che:
+```
+Il tempo per Jacobi è 0.008191 s
+Il tempo per Gauss-Seidel è 0.004435 s
+```
+ed ora Gauss-Seidel ha ampiamente recuperato su Jacobi. L'**implementazione** conta! Qui il vantaggio è dato dal fatto che la matrice $L$ associata al problema di test che stiamo guardando è una matrice *a banda* i non-zeri non riempiono tutto il triangolo. Il codice di MATLAB è in grado di accorgersene e adatto l'algoritmo di soluzione in modo che se ne tenga conto.
