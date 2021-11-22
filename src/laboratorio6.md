@@ -134,7 +134,7 @@ j > 1, & l_{ij} = \displaystyle \frac{a_{ij} - \sum_{k=1}^{j} l_{ik} u_{kj} }{u_
 \end{array}
 ```
 
-:::{admonition} Esercizio
+:::::{admonition} Esercizio
 Si usino le relazioni {eq}`lu1` e {eq}`lu2` per implementare la versione di
 Doolittle dell'algoritmo $LU$ per una matrice quadrata. Un prototipo della
 funzione è dato da:
@@ -189,7 +189,58 @@ osservare che in realtà possiamo sovrascrivere le entrate della matrice $A$
 con la fattorizzazione $LU$. Se avete concluso la prima parte pensate a come
 è possibile realizzare questa versione.
 ```
-:::
+::::{admonition} Un suggerimento più estensivo
+:class: tip, dropdown
+Possiamo sviluppare il ciclo di istruzioni sostanzialmente in due ordine, in un primo procediamo alla fattorizzazioni **colonna per colonna**, ovvero:
+```matlab
+for k=1:n
+    L(k:n,k) = A(k:n,k) / A(k,k); % Dividiamo per il Pivot
+    U(k,1:n) = A(k,1:n);          % Aggiorniamo le entrate della U
+    A(k+1:n,1:n) = A(k+1:n,1:n) - L(k+1:n,k)*A(k,1:n);
+end
+U(:,end) = A(:,end);
+```
+Nel caso dell'**esempio** vediamo:
+```{math}
+k = 0, \qquad L = \left(\begin{array}{ccc} 0 & 0 & 0\\ 0 & 0 & 0\\ 0 & 0 & 0 \end{array}\right) \qquad U = \left(\begin{array}{ccc} 0 & 0 & 0\\ 0 & 0 & 0\\ 0 & 0 & 0 \end{array}\right), \qquad A = \left(\begin{array}{ccc} 3 & -1 & 4\\ -2 & 0 & 5\\ 7 & 2 & -2 \end{array}\right)
+```
+```{math}
+k = 1, \qquad L^{(1)} = \left(\begin{array}{ccc} 1 & 0 & 0\\ -\frac{2}{3} & 0 & 0\\ \frac{7}{3} & 0 & 0 \end{array}\right), \qquad \left(\begin{array}{ccc} 3 & -1 & 4\\ 0 & 0 & 0\\ 0 & 0 & 0 \end{array}\right) \qquad A^{(1)} = \left(\begin{array}{ccc} 3 & -1 & 4\\ 0 & -\frac{2}{3} & \frac{23}{3}\\ 0 & \frac{13}{3} & -\frac{34}{3} \end{array}\right), \\
+```
+```{math}
+k = 2, \qquad L^{(2)} = \left(\begin{array}{ccc} 1 & 0 & 0\\ -\frac{2}{3} & 1 & 0\\ \frac{7}{3} & -\frac{13}{2} & 0 \end{array}\right), \qquad U^{(2)} = \left(\begin{array}{ccc} 3 & -1 & 4\\ 0 & -\frac{2}{3} & \frac{23}{3}\\ 0 & 0 & 0 \end{array}\right), \qquad A^{(2)} = \left(\begin{array}{ccc} 3 & -1 & 4\\ 0 & -\frac{2}{3} & \frac{23}{3}\\ 0 & 0 & \frac{77}{2} \end{array}\right), \\
+```
+```{math}
+k = 3, \qquad L^{(3)} = \left(\begin{array}{ccc} 1 & 0 & 0\\ -\frac{2}{3} & 1 & 0\\ \frac{7}{3} & -\frac{13}{2} & 1 \end{array}\right), \qquad U^{(3)} = \left(\begin{array}{ccc} 3 & -1 & 4\\ 0 & -\frac{2}{3} & \frac{23}{3}\\ 0 & 0 & \frac{77}{2} \end{array}\right), \qquad A^{(3)} = \left(\begin{array}{ccc} 3 & -1 & 4\\ 0 & -\frac{2}{3} & \frac{23}{3}\\ 0 & 0 & \frac{77}{2} \end{array}\right)
+```
+
+La **seconda alternativa** è quella di eseguire questo ciclo procedendo lungo le
+righe della matrice
+```matlab
+for i = 1:1:n
+    for j = 1:(i - 1)
+        L(i,j) = (A(i,j) - L(i,1:(j - 1))*U(1:(j - 1),j)) / U(j,j);
+    end
+    j = i:n;
+    U(i,j) = A(i,j) - L(i,1:(i - 1))*U(1:(i - 1),j);
+end
+```
+Nel caso dell'**esempio** vediamo:
+```{math}
+i = 0, \qquad L = \left(\begin{array}{ccc} 1 & 0 & 0\\ 0 & 1 & 0\\ 0 & 0 & 1 \end{array}\right), \qquad U = \left(\begin{array}{ccc} 0 & 0 & 0\\ 0 & 0 & 0\\ 0 & 0 & 0 \end{array}\right), \qquad A = \left(\begin{array}{ccc} 3 & -1 & 4\\ -2 & 0 & 5\\ 7 & 2 & -2 \end{array}\right),
+```
+```{math}
+i = 1, \qquad L^{(1)} = \left(\begin{array}{ccc} 1 & 0 & 0\\ 0 & 1 & 0\\ 0 & 0 & 1 \end{array}\right), \qquad U^{(1)} = \left(\begin{array}{ccc} 3 & -1 & 4\\ 0 & 0 & 0\\ 0 & 0 & 0 \end{array}\right),
+```
+```{math}
+i = 2, \qquad L^{(2)} = \left(\begin{array}{ccc} 1 & 0 & 0\\ -\frac{2}{3} & 1 & 0\\ 0 & 0 & 1 \end{array}\right), \qquad U^{(2)} = \left(\begin{array}{ccc} 3 & -1 & 4\\ 0 & -\frac{2}{3} & \frac{23}{3}\\ 0 & 0 & 0 \end{array}\right)',
+```
+```{math}
+i = 3, \qquad L^{(3)} = \left(\begin{array}{ccc} 1 & 0 & 0\\ -\frac{2}{3} & 1 & 0\\ \frac{7}{3} & -\frac{13}{2} & 1 \end{array}\right), \qquad U^{(3)} = \left(\begin{array}{ccc} 3 & -1 & 4\\ 0 & -\frac{2}{3} & \frac{23}{3}\\ 0 & 0 & \frac{77}{2} \end{array}\right)',
+```
+L'**unica differenza** tra le due implementazioni è l'ordine, per colonna e per riga rispettivamente, in cui facciamo le operazioni.
+::::
+:::::
 
 (pivoting)=
 ### La fattorizzazione con *pivoting*
@@ -270,7 +321,7 @@ e ci mostra anche come possiamo **permutare** due (o più) righe di una matrice
 MATLAB. Abbiamo ora tutti gli ingredienti necessari a costruire la nostra versione
 fatta in casa della fattorizzazione LU con pivoting in MATLAB.
 
-:::{admonition} Esercizio
+::::{admonition} Esercizio
 Si costruisca una funzione `ludecomp` per costruire la fattorizzazione $LU$ con
 pivoting parziale per una matrice $A$. Un prototipo della funzione è quindi:
 ```matlab
@@ -290,7 +341,17 @@ end
 - Si faccia un **controllo dell'input**: la matrice $A$ è quadrata?
 - Si utilizzino operazioni vettorizzate per le somme che compaiono in {eq}`lu1`
 e {eq}`lu2`.
+
+:::{tip}
+Se il ciclo esterno è per $k=1,\ldots,n$ possiamo **individuare il pivot** facendo:
+```matlab
+[~,r] = max(abs(A(k:end,k)));
+r = n-(n-k+1)+r; % Trasliamo l'indice in questione
+```
+Qual è l'effetto della traslazione di indice?
 :::
+
+::::
 
 Possiamo **verificare** l'implementazione della versione con *pivoting parziale*
 facendone un paragone con la versione dell'esercizio precedente con il seguente
@@ -373,7 +434,7 @@ nativa di MATLAB dell'ordine di `3.33e-16`.
 
 :::{warning}
 Per costruire il calcolo del determinante anche nel caso in cui si utilizzi la fattorizzazione $LU$ con *pivoting* è necessario tenere traccia del numero di
-scambi di righe effettuati. 
+scambi di righe effettuati.
 :::
 
 ## Esercizi
