@@ -166,14 +166,14 @@ ylabel('Errore');
 legend({'Errore Misurato','Stima'},'FontSize',14)
 ```
 :::{margin} Errore regola dei trapezi
-![fishy](/images/trapezoidal_error1.png)
+![Errore per trapezi non regolare](/images/trapezoidal_error1.png)
 
 Errore per l'integrale
 ```{math}
 \pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,
 ```
 
-![fishy](/images/trapezoidal_error2.png)
+![Errore per trapezi regolare](/images/trapezoidal_error2.png)
 
 Errore per l'integrale
 ```{math}
@@ -287,7 +287,7 @@ I(h) = \frac{1}{2}I(2h) + h \sum f(x_{\text{new}}), \quad h = \frac{H}{n-1}.
 
 :::{admonition} Esercizio  
 Separiamo la funzione ricorsiva in due parti, la prima è quella
-che calcola $I(h)$, dato $I(2h)$, usando l'equazione {eqref}`trapezir`
+che calcola $I(h)$, dato $I(2h)$, usando l'equazione {eq}`trapezir`
 e chiamiamola `trapezir`
 ```matlab
 function Ih = trapezir(f,a,b,I2h,k)
@@ -377,20 +377,88 @@ variabili ponendo l'origine dell'intervallo di integrazione su $x_2$.
 In questo modo i nodi diventano $\{-h,0,h\}$ e gli integrali sono più semplici da calcolare.
 :::
 
-:::{admonition} Esercizio.
+:::{danger}
+La regola di Simpson che abbiamo scritto richiede che il numero di
+intervalli sia pari, ovvero che il numero di nodi sia dispari. Se
+vogliamo ammettere un qualunque numero di intervalli $n$, è necessario
+che il primo (o l'ultimo) intervallo usi 4 invece che 3 punti.
+
+Per l'implementazione seguente ci limiteremo al caso di nodi dispari, ovvero di intervalli pari.
+:::
+
+Con calcoli analoghi a quelli che avete visto per la formula dei trapezi
+si può ottenere una prima stima dell'errore anche per la formula di
+Simpson. Infatti si ha che l'errore si comporta come
+```{math}
+E = O\left( (b-a)\frac{h^4}{180} f^{(4)}(\xi) \right),
+```
+per $\xi$ un punto nell'intervallo $[a,b]$.
+
+::::{admonition} Esercizio.
 Si implementi la versione composita della regola di Simpson per il
 calcolo di un integrale secondo il seguente prototipo
 ```matlab
-function simpson(f,a,b,n)
+function I = simpson(f,a,b,n)
 %%SIMPSON calcolo dell'integrale della funzione f tra a e b mediante la
 % formula di Simpson.
 %   INPUT:  f = handle della funzione di integrare,
 %           a,b = estremi di integrazione
 %           n numero di intervalli + 1
 
+if mod(n,2) ~= 1
+    error('n deve essere dispari');
+end
+
 end
 ```
-:::
+Che possiamo testare con:
+```matlab
+%% Test della formula di quadratura di Simpson
+
+f = @(x) x.^2.*sin(x).^3;
+a = 0;
+b = 3;
+Itrue = 3.615857833947287;
+
+n = logspace(1,4,4)+1;
+errore = [];
+
+for nval = n
+    I = simpson(f,a,b,nval);
+    errore = [errore,abs(I-Itrue)/Itrue];
+end
+
+h = (b-a)./n;
+err = 200*(b-a)*h.^4/180;
+
+figure(2)
+loglog(n,errore,'o-',n,err,'r--','LineWidth',2);
+xlabel('n');
+ylabel('Errore');
+legend({'Errore Misurato','Stima'},'FontSize',14)
+```
+
+Dove nella stima dell'errore `24*(b-a)*h.^4/180`, abbiamo sfruttato il fatto che
+```{math}
+\frac{d ^4\left(x^2 \sin (x)^3\right)}{d x^4} = x^2 \left(21 \sin ^3(x)-60 \sin (x) \cos ^2(x)\right)+8 x \left(6 \cos ^3(x)-21 \sin ^2(x) \cos (x)\right)+12 \left(6 \sin (x) \cos ^2(x)-3 \sin ^3(x)\right),
+```
+che in $[0,3]$ è maggiorata da $200$.
+::::
+```{margin} Errore di quadratura Simpson
+![Errore per Simpson regolare](/images/simpsonerror1.png)
+
+Errore per la formula di Simpson.
+```
+
+Possiamo quindi confrontare gli errori di quadratura ottenuti per le due
+formule stampandoli sullo stesso grafico
+```{figure} ./images/simpson_error2.png
+
+Confronto tra l'errore relativo compiuto con la formula dei Trapezi e
+quello ottenuto con la formula di Simpson.
+```
+da cui osserviamo il comportamento che ci aspettavamo considerata
+l'analisi dell'errore.
 
 ## Le funzioni di quadratura di MATLAB
 
@@ -458,14 +526,16 @@ integral  Numerically evaluate integral.
 
 Di questa funzione sono disponibili anche le funzioni per il calcolo di integrali di funzioni in 2 e 3 variabili chiamate, rispettivamente, `integral2` e `integral3`.
 
-## Applicazioni
+## Applicazioni ed esercizi
 
-:::{admonition} Accelerazione di una macchina
+Consideriamo alcuni esercizi sulla quadratura numerica da {cite}`kiusalaas2015`.
+
+:::::{admonition} Accelerazione di una macchina
 
 La {numref}`powertable` riporta la potenza $P$ fornita alle ruote motrici di una macchina come
 funzione della velocità $v$. Se la massa della macchina è $m = 2000\,kg$, si
 determini l'intervallo $\Delta t$ che serve alla macchina per accelerare da
-$1\,m/s$ a $6\,m/s$ utilizzando la regola dei trapezi.
+$1\,m/s$ a $6\,m/s$ utilizzando la regola dei trapezi implementata in `trapz`.
 
 ```{list-table} Potenza e velocità
 :header-rows: 1
@@ -490,6 +560,49 @@ $1\,m/s$ a $6\,m/s$ utilizzando la regola dei trapezi.
 * - 6.0
   - 43.2
 ```
-**Suggerimento:** La funzione di cui calcolare l'integrale si può ottenere dalla
-seconda legge della dinamica e dalla definizione di potenza.
+
+:::{admonition} Suggerimento
+:class: tip, dropdown
+La funzione di cui calcolare l'integrale si può ottenere dalla
+seconda legge della dinamica e dalla definizione di potenza:
+```{math}
+\Delta t = m \int_{1 s}^{6 s} (v/P)\,{\rm d}v.
+```
 :::
+
+:::::
+
+::::{admonition} Esercizio
+Si calcoli l'integrale
+```{math}
+I = \int_{1}^{+\infty} \frac{{\rm d}x}{1+x^4} = \frac{\pi -2 \coth ^{-1}\left(\sqrt{2}\right)}{4 \sqrt{2}},
+```
+con la regola dei trapezi e si paragoni il risultato con il valore
+esatto.
+
+:::{admonition} Si applichi un cambio di variabili...
+:class: tip, dropdown
+Per riportare l'integrale su di un intervallo finito si applichi
+il cambio di variabili $x^3 = 1/t$.
+:::
+
+::::
+
+:::{admonition} Esercizio
+Il periodo di un pendolo semplice di lunghezza $L$ è $\tau = 4 \sqrt{L/g} h(\theta_0)$, dove $g$ è l'accelerazione di gravità, $\theta_0$ rappresenta l'ampiezza angolare e
+```{math}
+h(\theta_0) = \int_{0}^{\pi/2} \frac{ {\rm d}\theta }{\sqrt{1- \sin^2(\theta_0/2)\sin^2(\theta)}}.
+```
+Si calcolino i periodi per $h(15 \text{ deg})$, $h(30 \text{ deg})$,
+$h(45 \text{ deg})$ con la formula di Simpson e si paragonino
+all'approssimazione per piccoli angoli con $h = \frac{\pi}{2}$.
+Cosa si osserva?
+:::
+
+
+
+## Bibliografia
+
+ ```{bibliography}
+ :filter: docname in docnames
+ ```
