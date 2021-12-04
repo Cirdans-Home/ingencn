@@ -261,8 +261,13 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#applicazioni">
-   Applicazioni
+  <a class="reference internal nav-link" href="#applicazioni-ed-esercizi">
+   Applicazioni ed esercizi
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bibliografia">
+   Bibliografia
   </a>
  </li>
 </ul>
@@ -426,11 +431,11 @@ comportamento che ci aspettiamo dalla teoria:</p>
 </div>
 <div class="margin sidebar">
 <p class="sidebar-title">Errore regola dei trapezi</p>
-<p><img alt="fishy" src="_images/trapezoidal_error1.png" /></p>
+<p><img alt="Errore per trapezi non regolare" src="_images/trapezoidal_error1.png" /></p>
 <p>Errore per l’integrale</p>
 <div class="math notranslate nohighlight">
 \[\pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,\]</div>
-<p><img alt="fishy" src="_images/trapezoidal_error2.png" /></p>
+<p><img alt="Errore per trapezi regolare" src="_images/trapezoidal_error2.png" /></p>
 <p>Errore per l’integrale</p>
 <div class="math notranslate nohighlight">
 \[\int_0^3 x^2 \sin ^3(x) \, {\rm d}x\]</div>
@@ -525,7 +530,7 @@ in termini del valore di <span class="math notranslate nohighlight">\(h\)</span>
 <div class="admonition-esercizio admonition">
 <p class="admonition-title">Esercizio</p>
 <p>Separiamo la funzione ricorsiva in due parti, la prima è quella
-che calcola <span class="math notranslate nohighlight">\(I(h)\)</span>, dato <span class="math notranslate nohighlight">\(I(2h)\)</span>, usando l’equazione <a href="#id1"><span class="problematic" id="id2">:eqref:`trapezir`</span></a>
+che calcola <span class="math notranslate nohighlight">\(I(h)\)</span>, dato <span class="math notranslate nohighlight">\(I(2h)\)</span>, usando l’equazione <a class="reference internal" href="#equation-trapezir">(11)</a>
 e chiamiamola <code class="docutils literal notranslate"><span class="pre">trapezir</span></code></p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>Ih<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">trapezir</span><span class="p">(</span>f,a,b,I2h,k<span class="p">)</span><span class="w"></span>
 <span class="c">%%TRAPEZIR implementa l&#39;algoritmo ricorsivo della regola dei</span><span class="w"></span>
@@ -612,21 +617,83 @@ interpolante quadratica attraverso tre nodi adiacenti.</p>
 variabili ponendo l’origine dell’intervallo di integrazione su <span class="math notranslate nohighlight">\(x_2\)</span>.
 In questo modo i nodi diventano <span class="math notranslate nohighlight">\(\{-h,0,h\}\)</span> e gli integrali sono più semplici da calcolare.</p>
 </div>
+<div class="admonition danger">
+<p class="admonition-title">Pericolo</p>
+<p>La regola di Simpson che abbiamo scritto richiede che il numero di
+intervalli sia pari, ovvero che il numero di nodi sia dispari. Se
+vogliamo ammettere un qualunque numero di intervalli <span class="math notranslate nohighlight">\(n\)</span>, è necessario
+che il primo (o l’ultimo) intervallo usi 4 invece che 3 punti.</p>
+<p>Per l’implementazione seguente ci limiteremo al caso di nodi dispari, ovvero di intervalli pari.</p>
+</div>
+<p>Con calcoli analoghi a quelli che avete visto per la formula dei trapezi
+si può ottenere una prima stima dell’errore anche per la formula di
+Simpson. Infatti si ha che l’errore si comporta come</p>
+<div class="math notranslate nohighlight">
+\[E = O\left( (b-a)\frac{h^4}{180} f^{(4)}(\xi) \right),\]</div>
+<p>per <span class="math notranslate nohighlight">\(\xi\)</span> un punto nell’intervallo <span class="math notranslate nohighlight">\([a,b]\)</span>.</p>
 <div class="admonition-esercizio admonition">
 <p class="admonition-title">Esercizio.</p>
 <p>Si implementi la versione composita della regola di Simpson per il
 calcolo di un integrale secondo il seguente prototipo</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span><span class="nf">simpson</span><span class="p">(</span>f,a,b,n<span class="p">)</span><span class="w"></span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>I<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">simpson</span><span class="p">(</span>f,a,b,n<span class="p">)</span><span class="w"></span>
 <span class="c">%%SIMPSON calcolo dell&#39;integrale della funzione f tra a e b mediante la</span><span class="w"></span>
 <span class="c">% formula di Simpson.</span><span class="w"></span>
 <span class="c">%   INPUT:  f = handle della funzione di integrare,</span><span class="w"></span>
 <span class="c">%           a,b = estremi di integrazione</span><span class="w"></span>
 <span class="c">%           n numero di intervalli + 1</span><span class="w"></span>
 
+<span class="k">if</span><span class="w"> </span><span class="nb">mod</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">    </span><span class="nb">error</span><span class="p">(</span><span class="s">&#39;n deve essere dispari&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
 <span class="k">end</span><span class="w"></span>
 </pre></div>
 </div>
+<p>Che possiamo testare con:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Test della formula di quadratura di Simpson</span><span class="w"></span>
+
+<span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="o">.*</span><span class="nb">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.^</span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+<span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+<span class="n">Itrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">3.615857833947287</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">logspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="n">errore</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[];</span><span class="w"></span>
+
+<span class="k">for</span><span class="w"> </span><span class="n">nval</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
+<span class="w">    </span><span class="n">I</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">simpson</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">nval</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">errore</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">errore</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="o">-</span><span class="n">Itrue</span><span class="p">)</span><span class="o">/</span><span class="n">Itrue</span><span class="p">];</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
+<span class="n">h</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">./</span><span class="n">n</span><span class="p">;</span><span class="w"></span>
+<span class="n">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">200</span><span class="o">*</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">h</span><span class="o">.^</span><span class="mi">4</span><span class="o">/</span><span class="mi">180</span><span class="p">;</span><span class="w"></span>
+
+<span class="nb">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="nb">loglog</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">errore</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">err</span><span class="p">,</span><span class="s">&#39;r--&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;n&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Errore&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Errore Misurato&#39;</span><span class="p">,</span><span class="s">&#39;Stima&#39;</span><span class="p">},</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">)</span><span class="w"></span>
+</pre></div>
 </div>
+<p>Dove nella stima dell’errore <code class="docutils literal notranslate"><span class="pre">24*(b-a)*h.^4/180</span></code>, abbiamo sfruttato il fatto che</p>
+<div class="math notranslate nohighlight">
+\[\frac{d ^4\left(x^2 \sin (x)^3\right)}{d x^4} = x^2 \left(21 \sin ^3(x)-60 \sin (x) \cos ^2(x)\right)+8 x \left(6 \cos ^3(x)-21 \sin ^2(x) \cos (x)\right)+12 \left(6 \sin (x) \cos ^2(x)-3 \sin ^3(x)\right),\]</div>
+<p>che in <span class="math notranslate nohighlight">\([0,3]\)</span> è maggiorata da <span class="math notranslate nohighlight">\(200\)</span>.</p>
+</div>
+<div class="margin sidebar">
+<p class="sidebar-title">Errore di quadratura Simpson</p>
+<p><img alt="Errore per Simpson regolare" src="_images/simpsonerror1.png" /></p>
+<p>Errore per la formula di Simpson.</p>
+</div>
+<p>Possiamo quindi confrontare gli errori di quadratura ottenuti per le due
+formule stampandoli sullo stesso grafico</p>
+<div class="figure align-default" id="id13">
+<img alt="_images/simpson_error2.png" src="_images/simpson_error2.png" />
+<p class="caption"><span class="caption-number">Fig. 18 </span><span class="caption-text">Confronto tra l’errore relativo compiuto con la formula dei Trapezi e
+quello ottenuto con la formula di Simpson.</span><a class="headerlink" href="#id13" title="Link a questa immagine">¶</a></p>
+</div>
+<p>da cui osserviamo il comportamento che ci aspettavamo considerata
+l’analisi dell’errore.</p>
 </div>
 <div class="section" id="le-funzioni-di-quadratura-di-matlab">
 <h2>Le funzioni di quadratura di MATLAB<a class="headerlink" href="#le-funzioni-di-quadratura-di-matlab" title="Link a questa intestazione">¶</a></h2>
@@ -691,14 +758,15 @@ integrali complessi, di funzioni con singolarità e regolare le tolleranze</p>
 </div>
 <p>Di questa funzione sono disponibili anche le funzioni per il calcolo di integrali di funzioni in 2 e 3 variabili chiamate, rispettivamente, <code class="docutils literal notranslate"><span class="pre">integral2</span></code> e <code class="docutils literal notranslate"><span class="pre">integral3</span></code>.</p>
 </div>
-<div class="section" id="applicazioni">
-<h2>Applicazioni<a class="headerlink" href="#applicazioni" title="Link a questa intestazione">¶</a></h2>
+<div class="section" id="applicazioni-ed-esercizi">
+<h2>Applicazioni ed esercizi<a class="headerlink" href="#applicazioni-ed-esercizi" title="Link a questa intestazione">¶</a></h2>
+<p>Consideriamo alcuni esercizi sulla quadratura numerica da <span id="id1">[<a class="reference internal" href="#id10">Kiu15</a>]</span>.</p>
 <div class="admonition-accelerazione-di-una-macchina admonition">
 <p class="admonition-title">Accelerazione di una macchina</p>
 <p>La <a class="reference internal" href="#powertable"><span class="std std-numref">Tabella 10</span></a> riporta la potenza <span class="math notranslate nohighlight">\(P\)</span> fornita alle ruote motrici di una macchina come
 funzione della velocità <span class="math notranslate nohighlight">\(v\)</span>. Se la massa della macchina è <span class="math notranslate nohighlight">\(m = 2000\,kg\)</span>, si
 determini l’intervallo <span class="math notranslate nohighlight">\(\Delta t\)</span> che serve alla macchina per accelerare da
-<span class="math notranslate nohighlight">\(1\,m/s\)</span> a <span class="math notranslate nohighlight">\(6\,m/s\)</span> utilizzando la regola dei trapezi.</p>
+<span class="math notranslate nohighlight">\(1\,m/s\)</span> a <span class="math notranslate nohighlight">\(6\,m/s\)</span> utilizzando la regola dei trapezi implementata in <code class="docutils literal notranslate"><span class="pre">trapz</span></code>.</p>
 <table class="table" id="powertable">
 <caption><span class="caption-number">Tabella 10 </span><span class="caption-text">Potenza e velocità</span><a class="headerlink" href="#powertable" title="Link a questa tabella">¶</a></caption>
 <colgroup>
@@ -737,9 +805,46 @@ determini l’intervallo <span class="math notranslate nohighlight">\(\Delta t\)
 </tr>
 </tbody>
 </table>
-<p><strong>Suggerimento:</strong> La funzione di cui calcolare l’integrale si può ottenere dalla
-seconda legge della dinamica e dalla definizione di potenza.</p>
+<div class="tip dropdown admonition">
+<p class="admonition-title">Suggerimento</p>
+<p>La funzione di cui calcolare l’integrale si può ottenere dalla
+seconda legge della dinamica e dalla definizione di potenza:</p>
+<div class="math notranslate nohighlight">
+\[\Delta t = m \int_{1 s}^{6 s} (v/P)\,{\rm d}v.\]</div>
 </div>
+</div>
+<div class="admonition-esercizio admonition">
+<p class="admonition-title">Esercizio</p>
+<p>Si calcoli l’integrale</p>
+<div class="math notranslate nohighlight">
+\[I = \int_{1}^{+\infty} \frac{{\rm d}x}{1+x^4} = \frac{\pi -2 \coth ^{-1}\left(\sqrt{2}\right)}{4 \sqrt{2}},\]</div>
+<p>con la regola dei trapezi e si paragoni il risultato con il valore
+esatto.</p>
+<div class="tip dropdown admonition">
+<p class="admonition-title">Si applichi un cambio di variabili…</p>
+<p>Per riportare l’integrale su di un intervallo finito si applichi
+il cambio di variabili <span class="math notranslate nohighlight">\(x^3 = 1/t\)</span>.</p>
+</div>
+</div>
+<div class="admonition-esercizio admonition">
+<p class="admonition-title">Esercizio</p>
+<p>Il periodo di un pendolo semplice di lunghezza <span class="math notranslate nohighlight">\(L\)</span> è <span class="math notranslate nohighlight">\(\tau = 4 \sqrt{L/g} h(\theta_0)\)</span>, dove <span class="math notranslate nohighlight">\(g\)</span> è l’accelerazione di gravità, <span class="math notranslate nohighlight">\(\theta_0\)</span> rappresenta l’ampiezza angolare e</p>
+<div class="math notranslate nohighlight">
+\[h(\theta_0) = \int_{0}^{\pi/2} \frac{ {\rm d}\theta }{\sqrt{1- \sin^2(\theta_0/2)\sin^2(\theta)}}.\]</div>
+<p>Si calcolino i periodi per <span class="math notranslate nohighlight">\(h(15 \text{ deg})\)</span>, <span class="math notranslate nohighlight">\(h(30 \text{ deg})\)</span>,
+<span class="math notranslate nohighlight">\(h(45 \text{ deg})\)</span> con la formula di Simpson e si paragonino
+all’approssimazione per piccoli angoli con <span class="math notranslate nohighlight">\(h = \frac{\pi}{2}\)</span>.
+Cosa si osserva?</p>
+</div>
+</div>
+<div class="section" id="bibliografia">
+<h2>Bibliografia<a class="headerlink" href="#bibliografia" title="Link a questa intestazione">¶</a></h2>
+<p id="id2"><dl class="citation">
+<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id1">Kiu15</a></span></dt>
+<dd><p>Jaan Kiusalaas. <em>Numerical Methods in Engineering with MATLAB®</em>. Cambridge University Press, 3 edition, 2015. <a class="reference external" href="https://doi.org/10.1017/CBO9781316341599">doi:10.1017/CBO9781316341599</a>.</p>
+</dd>
+</dl>
+</p>
 </div>
 </div>
 
