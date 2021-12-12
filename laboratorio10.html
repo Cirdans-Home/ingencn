@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Laboratorio 10 : Metodi di Tipo Runge-Kutta &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
+    <title>Laboratorio 10 : Metodi di tipo Runge-Kutta &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -44,6 +44,8 @@
     <script src="_static/translations.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -53,7 +55,7 @@
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
-    <link rel="prev" title="Laboratorio 9 : Metodi Espliciti per la Soluzione di ODE" href="laboratorio9.html" />
+    <link rel="prev" title="Laboratorio 9 : Metodi per la Soluzione di ODE" href="laboratorio9.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
     
@@ -140,12 +142,12 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio9.html">
-   Laboratorio 9 : Metodi Espliciti per la Soluzione di ODE
+   Laboratorio 9 : Metodi per la Soluzione di ODE
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Laboratorio 10 : Metodi di Tipo Runge-Kutta
+   Laboratorio 10 : Metodi di tipo Runge-Kutta
   </a>
  </li>
 </ul>
@@ -230,6 +232,24 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contenuti
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#costruzione">
+   Costruzione
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#implementazione">
+   Implementazione
+  </a>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -239,7 +259,154 @@
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="laboratorio-10-metodi-di-tipo-runge-kutta">
-<h1>Laboratorio 10 : Metodi di Tipo Runge-Kutta<a class="headerlink" href="#laboratorio-10-metodi-di-tipo-runge-kutta" title="Link a questa intestazione">¶</a></h1>
+<h1>Laboratorio 10 : Metodi di tipo Runge-Kutta<a class="headerlink" href="#laboratorio-10-metodi-di-tipo-runge-kutta" title="Link a questa intestazione">¶</a></h1>
+<p>Come abbiamo visto nello scorso laboratorio i metodi di Eulero in avanti
+e all’indietro, ovvero, esplicito ed implicito, hanno un ordine di
+convergenza di uno. Questo fa sì che per raggiungere una accuratezza
+maggiore sia necessario compiere un grande numero di passi di integrazione.</p>
+<p>Per risolvere questo problema avete visto a lezione come costruire metodi
+ad <strong>un passo</strong> di ordine <strong>più elevato</strong>, ovvero i metodi di Runge-Kutta.</p>
+<p>Un’altra buona proprietà dei metodi Runge-Kutta è quella di eliminare la
+necessità di differenziazioni ripetute delle equazioni differenziali, cosa
+che ad esempio richiedono le formule di integrazione basate sulla serie di
+Taylor.</p>
+<div class="section" id="costruzione">
+<h2>Costruzione<a class="headerlink" href="#costruzione" title="Link a questa intestazione">¶</a></h2>
+<p>Per costruire i metodi di Runge-Kutta si traspone il problema dalla forma
+differenziale alla forma integrale a cui si applicano poi opportune
+formule di quadratura dalle quali si ottiene l’approssimazione
+discreta della soluzione.</p>
+<p>Dato il problema di Cauchy per una equazione del primo ordine</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{cases}
+y'(t)=f(t,y(t))\\
+y(t_0)=y_0
+\end{cases}\end{split}\]</div>
+<p>scriviamo la sua formulazione in forma integrale</p>
+<div class="math notranslate nohighlight">
+\[y(t)=y_0 + \int_{t_0}^t y'(s)\, ds = y_0 + \int_{t_0}^t f(s,y(s))\,ds\]</div>
+<p>come nei casi dello scorso laboratorio scegliamo di nuovo una griglia
+uniforme</p>
+<div class="math notranslate nohighlight">
+\[\Delta = \{t_i\} = \{t_0+ih\}_{\{i=0,\dots,n\}},\]</div>
+<p>e approssimiamo il valore della soluzione nel punto <span class="math notranslate nohighlight">\(t_1\)</span> con</p>
+<div class="math notranslate nohighlight">
+\[y(t_1)=y_0 + \int_{t_0}^{t_0+h} f(s,y(s))\,ds\]</div>
+<p>applichiamo la sostituzione <span class="math notranslate nohighlight">\(s=t_0 + \theta h\)</span> e normalizziamo l’intervallo di integrazione</p>
+<div class="math notranslate nohighlight">
+\[y(t_1)=y_0 + h\int_0^1 f(t_0+\theta h,y(t_0 + \theta h))\,d\theta.\]</div>
+<p>Applicando ora una formula di quadratura su dei nodi <span class="math notranslate nohighlight">\(\theta_i\)</span> di pesi <span class="math notranslate nohighlight">\(b_i\)</span> otteniamo quindi una stima del valore <span class="math notranslate nohighlight">\(y_1\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[y_1 = y_0 + h \sum_{i=0}^\nu b_i f(t_0+\theta_i h, K_i)\]</div>
+<p>dove i valori <span class="math notranslate nohighlight">\(K_i\)</span> sono approssimazioni di <span class="math notranslate nohighlight">\(y(t_0+\theta_i h)\)</span> per cui
+dobbiamo ancora ricavare una approssimazione numerica. Applichiamo
+nuovamente la stessa procedura e scriviamo</p>
+<div class="math notranslate nohighlight">
+\[y(t_0+\theta_i h) =  y_0 + h\int_0^{\theta_i} f(t_0+v h,y(t_0 + v h))\,dv\]</div>
+<p>Scegliamo una nuova formula di quadratura, per semplicità sugli stessi nodi
+di quella per gli integrali «esterni», con pesi <span class="math notranslate nohighlight">\(a_{ij}\)</span> e otteniamo:</p>
+<div class="math notranslate nohighlight">
+\[K_i=y_0 + h\sum_{j=1}^\nu a_{ij}f(t_0+\theta_j h , K_j)\]</div>
+<p>In generale un metodo di Runge-Kutta così costruito è quindi
+caratterizzato da <strong>tre parametri</strong>: un vettore <span class="math notranslate nohighlight">\(b = (b_i)_
+{i=0,\ldots,s}\)</span>, una matrice <span class="math notranslate nohighlight">\(a=(a_{i,j})_ {i,j=0,\ldots,s}\)</span> e un vettore
+<span class="math notranslate nohighlight">\(\theta = (\theta_i)_ {i=0,\ldots,s}\)</span>.</p>
+<p>L’approssimazione è data dal sistema:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{cases}
+y_{n+1} = y_n + h\sum_{i=1}^s b_i f(t_n + \theta_i h, K_i) \\
+K_i = y_n + h \sum_{j=1}^s a_{ij} f(t_n+ \theta_j h, K_j) \quad i=1,\dots,s
+\end{cases}\end{split}\]</div>
+</div>
+<div class="section" id="implementazione">
+<h2>Implementazione<a class="headerlink" href="#implementazione" title="Link a questa intestazione">¶</a></h2>
+<p>La versione più popolare, spesso nota semplicemente come metodo
+Runge-Kutta, prevede la seguente sequenza di operazioni:</p>
+<div class="math notranslate nohighlight" id="equation-eq-rk4">
+<span class="eqno">(12)<a class="headerlink" href="#equation-eq-rk4" title="Permalink a questa equazione">¶</a></span>\[\begin{split}K_1 = &amp; h f(x,y),\\
+K_2 = &amp; h f\left(x + \frac{h}{2}, y + \frac{K_1}{2}\right),\\
+K_3 = &amp; h f\left(x + \frac{h}{2}, y + \frac{K_2}{2} \right),\\
+K_4 = &amp; h F(x+h,y+K_3),\\
+y(x+h) = &amp; y(x) + \frac{1}{6} (K_1 + 2K_2 + 2 K_3 + K_4),\end{split}\]</div>
+<p>si tratta di un <strong>metodo esplicito</strong> di ordine 4.</p>
+<div class="admonition-esercizio admonition">
+<p class="admonition-title">Esercizio</p>
+<p>Si implementi il metodo RK4 descritto in <a class="reference internal" href="#equation-eq-rk4">(12)</a> utilizzando il
+seguente prototipo di funzione</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[y,x]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">RK4</span><span class="p">(</span>f,y0,a,b,h<span class="p">)</span><span class="w"></span>
+<span class="c">%RK4 Implementazone del metodo di Runge-Kutta esplicito del quarto ordine.</span><span class="w"></span>
+<span class="c">% INPUT:</span><span class="w"></span>
+<span class="c">%        f   = handle della funzione che specifica l&#39;equazione</span><span class="w"></span>
+<span class="c">%            differenziale f(x,y) = [dy1/dx dy2/dx dy3/dx ...].</span><span class="w"></span>
+<span class="c">%        y0  = vettore dei valori iniziali</span><span class="w"></span>
+<span class="c">%        a,b = estremi dell&#39;intervallo di integrazione</span><span class="w"></span>
+<span class="c">%        h   = passo di integrazione</span><span class="w"></span>
+<span class="c">% OUTPUT:</span><span class="w"></span>
+<span class="c">%        y = valori calcolati della soluzione nei corrispondenti valori</span><span class="w"></span>
+<span class="c">%            della x</span><span class="w"></span>
+<span class="c">%        x = valori della x nei quali è stata calcolata la soluzione</span><span class="w"></span>
+
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Che possiamo testare sullo stesso problema che abbiamo usato per i metodi
+di Eulero impliciti/espliciti</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Il metodo di RK4</span><span class="w"></span>
+
+<span class="nb">clear</span><span class="p">;</span><span class="w"> </span><span class="nb">clc</span><span class="p">;</span><span class="w"> </span><span class="n">close</span><span class="w"> </span><span class="s">all</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">x</span>^<span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">y</span>^<span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+<span class="n">ytrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span><span class="o">./</span><span class="p">(</span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="o">.*</span><span class="p">(</span><span class="nb">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span><span class="w"></span>
+
+<span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="n">h</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-2</span><span class="p">;</span><span class="w"></span>
+<span class="n">y0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="p">[</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">RK4</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">h</span><span class="p">);</span><span class="w"></span>
+
+<span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s">&#39;r--&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">ytrue</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="s">&#39;b-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Computed Solution&#39;</span><span class="p">,</span><span class="s">&#39;True Solution&#39;</span><span class="p">},</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">);</span><span class="w"></span>
+<span class="nb">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="nb">semilogy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">ytrue</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span><span class="s">&#39;r-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Errore Assoluto&#39;</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<p>Possiamo di nuovo <strong>analizzare la convergenza</strong> di questo metodo e
+confrontarla con quella del metodo di Eulero in avanti che abbiamo visto
+durante lo scorso laboratorio</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Convergenza</span><span class="w"></span>
+<span class="n">k</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span><span class="w"></span>
+<span class="n">h</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">fliplr</span><span class="p">(</span><span class="nb">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">));</span><span class="w"></span>
+<span class="n">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="n">errRK</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">k</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">expliciteuler</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">h</span><span class="p">(</span><span class="nb">i</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="n">yrk</span><span class="p">,</span><span class="n">xrk</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">RK4</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">h</span><span class="p">(</span><span class="nb">i</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">yt</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ytrue</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">err</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">norm</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">yt</span><span class="p">)</span><span class="o">/</span><span class="nb">norm</span><span class="p">(</span><span class="n">yt</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">errRK</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">norm</span><span class="p">(</span><span class="n">yrk</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">yt</span><span class="p">)</span><span class="o">/</span><span class="nb">norm</span><span class="p">(</span><span class="n">yt</span><span class="p">);</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
+<span class="nb">figure</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+<span class="nb">loglog</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="n">err</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">errRK</span><span class="p">,</span><span class="s">&#39;x-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;h&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Errore Relativo&#39;</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Da cui otteniamo i risultati in <a class="reference internal" href="#fig-rk4"><span class="std std-numref">Fig. 22</span></a>.</p>
+<div class="figure align-default" id="fig-rk4">
+<img alt="_images/RK4_convergence.png" src="_images/RK4_convergence.png" />
+<p class="caption"><span class="caption-number">Fig. 22 </span><span class="caption-text">Paragone tra la convergenza del metodo di Eulero in avanti (esplicito) e
+il metodo esplicito di Runge-Kutta di ordine 4.</span><a class="headerlink" href="#fig-rk4" title="Link a questa immagine">¶</a></p>
+</div>
+<p>Con il metodo RK4 raggiungiamo più velocemente la precisione di macchina
+per un valore di <span class="math notranslate nohighlight">\(h\)</span> più elevato di quello del metodo di Eulero. Questo è
+l’effetto dell’ordine più alto.</p>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
@@ -271,7 +438,7 @@
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">precedente</p>
-            <p class="prev-next-title">Laboratorio 9 : Metodi Espliciti per la Soluzione di ODE</p>
+            <p class="prev-next-title">Laboratorio 9 : Metodi per la Soluzione di ODE</p>
         </div>
     </a>
 </div>
