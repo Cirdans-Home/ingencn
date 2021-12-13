@@ -451,10 +451,16 @@ Differenza in stabilità tra il metodo di Eulero implicito ed esplicito.
 
 ## Esercizi
 
+:::{margin} Condizione iniziale
+```{figure} ./images/spacecraft.png
+:name: fig:spacecraft
+
+Condizioni iniziali
+:::
 :::::{admonition} Esercizio
 Un veicolo spaziale è lanciato ad una altitudine di $H = 772 \text{ km}$
 sul livello del mare con velocità iniziale $v_0 = 6700\,\text{m/s}$ nella
-direzione illustrata in figura. Le equazioni differenziali che descrivono
+direzione illustrata in {numref}`fig:spacecraft`. Le equazioni differenziali che descrivono
 il moto dell'oggetto in coordinate polari sono
 ```{math}
 \ddot{r} = r \dot{\theta}^2 - \frac{G M_e}{r^2}, \quad \ddot{\theta} = - 2 \frac{\dot{r}\dot{\theta}}{r}.
