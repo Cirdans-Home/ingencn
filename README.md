@@ -1,2 +1,2 @@
-# ingcn
-Calcolo Numerico - Laurea Magistrale in Ingegneria Meccanica e dei Veicoli - Esercitazioni
+# ingencn
+Calcolo Numerico - Laurea Triennale in Ingegneria dell'Energia - Esercitazioni di Laboratorio
