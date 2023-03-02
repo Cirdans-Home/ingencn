@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Laboratorio 7 : Metodi Stazionari per Sistemi Lineari &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
+    <title>Laboratorio 7 : L’Eliminazione di Gauss il Metodo LU &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -56,8 +56,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
-    <link rel="next" title="Laboratorio 8 : Metodi di Quadratura" href="laboratorio8.html" />
-    <link rel="prev" title="Laboratorio 6 : L’Eliminazione di Gauss il Metodo LU" href="laboratorio6.html" />
+    <link rel="next" title="Laboratorio 8 : Metodi Stazionari per Sistemi Lineari" href="laboratorio8.html" />
+    <link rel="prev" title="Laboratorio 6 : Soluzione di Sistemi Triangolari" href="laboratorio6.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
     
@@ -125,47 +125,52 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio2.html">
-   Laboratorio 2 : L’Aritmetica di Precisione Finita
+   Laboratorio 2 : Introduzione a MATLAB - II
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio3.html">
-   Laboratorio 3 : Il Metodo di Bisezione
+   Laboratorio 3 : L’Aritmetica di Precisione Finita
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio4.html">
-   Laboratorio 4 : Il Metodo di Newton
+   Laboratorio 4 : Il Metodo di Bisezione
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio5.html">
-   Laboratorio 5 : Soluzione di Sistemi Triangolari
+   Laboratorio 5 : Il Metodo di Newton
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio6.html">
-   Laboratorio 6 : L’Eliminazione di Gauss il Metodo LU
+   Laboratorio 6 : Soluzione di Sistemi Triangolari
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Laboratorio 7 : Metodi Stazionari per Sistemi Lineari
+   Laboratorio 7 : L’Eliminazione di Gauss il Metodo LU
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio8.html">
-   Laboratorio 8 : Metodi di Quadratura
+   Laboratorio 8 : Metodi Stazionari per Sistemi Lineari
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio9.html">
-   Laboratorio 9 : Metodi per la Soluzione di ODE
+   Laboratorio 9 : Metodi di Quadratura
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio10.html">
-   Laboratorio 10 : Metodi di tipo Runge-Kutta
+   Laboratorio 10 : Metodi per la Soluzione di ODE
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio11.html">
+   Laboratorio 11 : Metodi di tipo Runge-Kutta
   </a>
  </li>
 </ul>
@@ -346,30 +351,38 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#metodi-di-tipo-stazionario">
-   Metodi di tipo stazionario
+  <a class="reference internal nav-link" href="#implementare-la-fattorizzazione-lu">
+   Implementare la fattorizzazione LU
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#metodi-per-il-calcolo-agli-autovalori-implementati-in-matlab">
-     Metodi per il calcolo agli autovalori implementati in MATLAB
+    <a class="reference internal nav-link" href="#la-fattorizzazione-con-pivoting">
+     La fattorizzazione con
+     <em>
+      pivoting
+     </em>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#calcolo-del-determinante">
+     Calcolo del determinante
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#metodo-di-jacobi">
-   Metodo di Jacobi
+  <a class="reference internal nav-link" href="#esercizi">
+   Esercizi
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#metodo-di-gauss-seidel">
-   Metodo di Gauss-Seidel
+  <a class="reference internal nav-link" href="#le-funzioni-di-matlab">
+   Le funzioni di MATLAB
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#paragone-tra-i-due-metodi-e-velocita-di-convergenza">
-   Paragone tra i due metodi e velocità di convergenza
+  <a class="reference internal nav-link" href="#bibliografia">
+   Bibliografia
   </a>
  </li>
 </ul>
@@ -381,7 +394,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Laboratorio 7 : Metodi Stazionari per Sistemi Lineari</h1>
+                <h1>Laboratorio 7 : L’Eliminazione di Gauss il Metodo LU</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -392,30 +405,38 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#metodi-di-tipo-stazionario">
-   Metodi di tipo stazionario
+  <a class="reference internal nav-link" href="#implementare-la-fattorizzazione-lu">
+   Implementare la fattorizzazione LU
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#metodi-per-il-calcolo-agli-autovalori-implementati-in-matlab">
-     Metodi per il calcolo agli autovalori implementati in MATLAB
+    <a class="reference internal nav-link" href="#la-fattorizzazione-con-pivoting">
+     La fattorizzazione con
+     <em>
+      pivoting
+     </em>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#calcolo-del-determinante">
+     Calcolo del determinante
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#metodo-di-jacobi">
-   Metodo di Jacobi
+  <a class="reference internal nav-link" href="#esercizi">
+   Esercizi
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#metodo-di-gauss-seidel">
-   Metodo di Gauss-Seidel
+  <a class="reference internal nav-link" href="#le-funzioni-di-matlab">
+   Le funzioni di MATLAB
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#paragone-tra-i-due-metodi-e-velocita-di-convergenza">
-   Paragone tra i due metodi e velocità di convergenza
+  <a class="reference internal nav-link" href="#bibliografia">
+   Bibliografia
   </a>
  </li>
 </ul>
@@ -428,302 +449,569 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-7-metodi-stazionari-per-sistemi-lineari">
-<h1>Laboratorio 7 : Metodi Stazionari per Sistemi Lineari<a class="headerlink" href="#laboratorio-7-metodi-stazionari-per-sistemi-lineari" title="Link a questa intestazione">#</a></h1>
-<p>Un <strong>metodo iterativo</strong> è una procedura matematica che a partire da un <em>valore iniziale</em> genera una sequenza di <em>soluzioni approssimate</em> migliorative per una
-determinata classe di problemi, in cui l’approssimazione <span class="math notranslate nohighlight">\(n\)</span>esima è derivata dai precedenti. Abbiamo già visto, <strong>ed implementato</strong>, metodi di questo tipo per la ricerca degli zeri di una funzione.</p>
-<p>In questo laboratorio vogliamo concentrarci invece sulla costruzione di alcuni
-metodi di questo tipo per la soluzione di sistemi lineari.</p>
-<p>La prima domanda che è legittimo porsi è perché mai vogliamo mettere in piedi
-dei metodi iterativi se abbiamo già dei metodi diretti che possono raggiungere
-la soluzione del problema cercato?</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-7-l-eliminazione-di-gauss-il-metodo-lu">
+<h1>Laboratorio 7 : L’Eliminazione di Gauss il Metodo LU<a class="headerlink" href="#laboratorio-7-l-eliminazione-di-gauss-il-metodo-lu" title="Link a questa intestazione">#</a></h1>
+<p>L”<strong>eliminazione gaussiana</strong> (Carl Friedrich Gauss, 1777-1855), noto anche come
+algoritmo di riduzione per le righe, è un algoritmo per risolvere sistemi
+quadrati di equazioni lineari. Come avete visto a lezione si riduce ad una
+sequenza di operazioni eseguite sulla corrispondente matrice di coefficienti.</p>
+<p>Alcune estensioni di questo metodo possono essere utilizzate anche per calcolare
+il <strong>rango</strong> di una matrice, il <strong>determinante</strong> di una matrice quadrata e
+l”<strong>inversa di una matrice</strong> invertibile.</p>
+<p>Come abbiamo visto nel secondo Laboratorio sul <a class="reference internal" href="laboratorio3.html#condizionamento-spettrale"><span class="std std-ref">Condizionamento di un sistema lineare</span></a>
+la precisione ottenuta in uscita da questa procedura. Ricordiamo che per
+valutare il <em>numero di condizionamento</em> di una matrice <span class="math notranslate nohighlight">\(A\)</span>, MATLAB mette a
+disposizione due comandi:</p>
 <ul class="simple">
-<li><p>A patto di richiedere una tolleranza minore (spesso sufficiente nelle applicazioni) sull’errore commesso sulla soluzione hanno un costo computazionale inferiore alle controparti dirette,</p></li>
-<li><p>Per le dimensioni dei problemi che si vogliono affrontare nelle applicazioni ingegneristiche attuali sono spesso l’unica opzione disponibile (problemi di fluidodinamica computazionale, combustione, meccanica del continuo, …)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cond</span></code>: Numero di condizione rispetto all’inversione. <code class="docutils literal notranslate"><span class="pre">cond(A)</span></code> restituisce
+il numero di condizionamento rispetto alla norma 2 (che ricordiamo essere il
+rapporto tra valore singolare più grande di <span class="math notranslate nohighlight">\(A\)</span> e di quello più piccolo);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rcond</span></code>: stimatore del reciproco del numero di condizionamento in norma 1.
+Utilizza lo stimatore implementato in LAPACK;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">condest</span></code>: calcola un limite inferiore <span class="math notranslate nohighlight">\(C\)</span> per il numero di condizionamento in
+norma 1 di una matrice quadrata <span class="math notranslate nohighlight">\(A\)</span>. Accetta come seconda opzione un parametro
+intero positivo <span class="math notranslate nohighlight">\(T\)</span> che rapprenta il numero di colonne utilizzate per l’iterazione
+dell’algoritmo di stima sottostante. L’aumentare del numero di colonne fornisce
+<em>di solito</em> una stima migliore del condizionamento, al prezzo di aumentarne il
+costo computazionale. Il valore predefinito è <span class="math notranslate nohighlight">\(T = 2\)</span>, che fornisce
+<em>quasi sempre</em> una stima corretta entro un fattore 2.</p></li>
 </ul>
-<p>Nel corso e in questo laboratorio ci focalizziamo su alcuni dei metodi più semplici e che, in genere, sono usati come i blocchi costituivi di metodi più complessi (e.g., metodi di tipo <em>multigrid</em> o <em>domain decomposition</em>) o come acceleratori per la convergenza (in gergo chiamati: <em>precondizionatori</em>).</p>
-<section id="metodi-di-tipo-stazionario">
-<h2>Metodi di tipo stazionario<a class="headerlink" href="#metodi-di-tipo-stazionario" title="Link a questa intestazione">#</a></h2>
-<p>Dato un sistema lineare della forma</p>
-<div class="math notranslate nohighlight">
-\[A \mathbf{x} = \mathbf{b}, \qquad A \in \mathbb{R}^{n \times n},\; \mathbf{x},\mathbf{b} \in \mathbb{R}^n\]</div>
-<p>siamo interessati a <strong>metodi di punto fisso</strong> basati sugli <em>splitting</em> della matrice <span class="math notranslate nohighlight">\(A\)</span>. Cioè metodi basati su una decomposizione additiva della matrice della forma</p>
-<div class="math notranslate nohighlight">
-\[A = M - N, \qquad\text{ con }\qquad \det(M) \neq 0.\]</div>
-<p>Da questa decomposizione si ottiene poi l’iterata di punto fisso come</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}A \mathbf{x} = \mathbf{b} \Rightarrow (M - N) \mathbf{x} = \mathbf{b} \Rightarrow M \mathbf{x} = N \mathbf{x} + \mathbf{b} \\
-\mathbf{x} = M^{-1} N \mathbf{x} + M^{-1} \mathbf{b}\end{split}\]</div>
-<p>e quindi</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\mathbf{x}^{(k+1)} = M^{-1} N \mathbf{x}^{(k)} + M^{-1} \mathbf{b}, \quad k = 0,1,2,\ldots, \\
-\mathbf{x}^{(0)} \text{ assegnato}.\end{split}\]</div>
-<p>Essendo questa un’iterata di punto fisso, la sua convergenza dipende dall’essere una <strong>procedura contrattiva</strong>, avete dimostrato a lezione che questo è equivalente alla richiesta che il <em>raggio spettrale</em> della matrice di iterazione <span class="math notranslate nohighlight">\(M^{-1}N\)</span> sia strettamente minore di <span class="math notranslate nohighlight">\(1\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[\rho(M^{-1}N) = \max_{1,\ldots,n }|\lambda_n(M^{-1}N)| &lt; 1.\]</div>
-<section id="metodi-per-il-calcolo-agli-autovalori-implementati-in-matlab">
-<h3>Metodi per il calcolo agli autovalori implementati in MATLAB<a class="headerlink" href="#metodi-per-il-calcolo-agli-autovalori-implementati-in-matlab" title="Link a questa intestazione">#</a></h3>
-<p>In alcuni casi data una matrice <span class="math notranslate nohighlight">\(A\)</span> e uno splitting <span class="math notranslate nohighlight">\(A = M - N\)</span> è possibile calcolare il <em>raggio spettrale</em> carta e penna, oppure inferire le proprietà di convergenza del metodo dalle proprietà della matrice <span class="math notranslate nohighlight">\(A\)</span> e della particolare forma dello splitting. Laddove questo non fosse possibile, o volessimo una stima più precisa di quello che sta accadendo, dobbiamo ricorrere a dei metodi numerici a questo scopo. La loro costruzione è al di fuori degli obiettivi di questo corso, tuttavia MATLAB ci fornisce delle <em>function</em> che fanno al nostro caso.</p>
-<p>Vediamo prima il <strong>caso generale</strong> in cui data una matrice <span class="math notranslate nohighlight">\(A\)</span> vogliamo calcolare <em>tutti</em> i suoi autovalori, costruiamo da principio una <em>matrice simmetrica</em> per
-cui possiamo sfruttare il <strong>Teorema Spettrale</strong> per interpretare i risultati:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"> </span><span class="c">% costruiamo una matrice casuale</span><span class="w"></span>
-<span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">A</span><span class="o">&#39;</span><span class="p">;</span><span class="w"> </span><span class="c">% e facciamo in modo che sia simmetrica</span><span class="w"></span>
-<span class="n">lambda</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">eig</span><span class="p">(</span><span class="n">A</span><span class="p">);</span><span class="w"> </span><span class="c">% calcoliamo *tutti* gli autovalori</span><span class="w"></span>
-<span class="nb">disp</span><span class="p">(</span><span class="n">lambda</span><span class="p">)</span><span class="w"></span>
+<p>Si provi ad eseguire il seguente comando:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">gallery</span><span class="p">(</span><span class="s">&#39;grcar&#39;</span><span class="p">,</span><span class="mi">8</span><span class="p">);</span><span class="w"></span>
+<span class="p">[</span><span class="nb">cond</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="nb">rcond</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="w"> </span><span class="nb">condest</span><span class="p">(</span><span class="n">A</span><span class="p">)]</span><span class="w"></span>
+<span class="p">[</span><span class="nb">cond</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="nb">rcond</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="w"> </span><span class="nb">condest</span><span class="p">(</span><span class="n">A</span><span class="p">)]</span><span class="w"></span>
 </pre></div>
 </div>
-<p>che ci restituisce il vettore:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="mf">2.1767</span>
-<span class="o">-</span><span class="mf">1.8198</span>
-<span class="o">-</span><span class="mf">0.7091</span>
-<span class="o">-</span><span class="mf">0.3270</span>
-<span class="o">-</span><span class="mf">0.1747</span>
- <span class="mf">0.7953</span>
- <span class="mf">0.9842</span>
- <span class="mf">1.3664</span>
- <span class="mf">1.9277</span>
- <span class="mf">9.4423</span>
-</pre></div>
-</div>
-<p>per cui abbiamo ottenuto 10 autovalori reali.</p>
-<p>Se guardiamo il manuale del comando <code class="docutils literal notranslate"><span class="pre">eig</span></code> leggiamo:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">eig</span>    <span class="n">Eigenvalues</span> <span class="ow">and</span> <span class="n">eigenvectors</span><span class="o">.</span>
-   <span class="n">E</span> <span class="o">=</span> <span class="n">eig</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="n">produces</span> <span class="n">a</span> <span class="n">column</span> <span class="n">vector</span> <span class="n">E</span> <span class="n">containing</span> <span class="n">the</span> <span class="n">eigenvalues</span> <span class="n">of</span>
-   <span class="n">a</span> <span class="n">square</span> <span class="n">matrix</span> <span class="n">A</span><span class="o">.</span>
-
-   <span class="p">[</span><span class="n">V</span><span class="p">,</span><span class="n">D</span><span class="p">]</span> <span class="o">=</span> <span class="n">eig</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="n">produces</span> <span class="n">a</span> <span class="n">diagonal</span> <span class="n">matrix</span> <span class="n">D</span> <span class="n">of</span> <span class="n">eigenvalues</span> <span class="ow">and</span>
-   <span class="n">a</span> <span class="n">full</span> <span class="n">matrix</span> <span class="n">V</span> <span class="n">whose</span> <span class="n">columns</span> <span class="n">are</span> <span class="n">the</span> <span class="n">corresponding</span> <span class="n">eigenvectors</span>  
-   <span class="n">so</span> <span class="n">that</span> <span class="n">A</span><span class="o">*</span><span class="n">V</span> <span class="o">=</span> <span class="n">V</span><span class="o">*</span><span class="n">D</span><span class="o">.</span>
-
-   <span class="p">[</span><span class="n">V</span><span class="p">,</span><span class="n">D</span><span class="p">,</span><span class="n">W</span><span class="p">]</span> <span class="o">=</span> <span class="n">eig</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="n">also</span> <span class="n">produces</span> <span class="n">a</span> <span class="n">full</span> <span class="n">matrix</span> <span class="n">W</span> <span class="n">whose</span> <span class="n">columns</span> <span class="n">are</span> <span class="n">the</span>
-   <span class="n">corresponding</span> <span class="n">left</span> <span class="n">eigenvectors</span> <span class="n">so</span> <span class="n">that</span> <span class="n">W</span><span class="s1">&#39;*A = D*W&#39;</span><span class="o">.</span>
-</pre></div>
-</div>
-<p>Possiamo quindi usarlo per ottenere anche le relativi matrici degli autovettori sinistri e destri per la matrice <span class="math notranslate nohighlight">\(A\)</span>, cioè le matrici <span class="math notranslate nohighlight">\(V\)</span> e <span class="math notranslate nohighlight">\(W\)</span> tali che:</p>
+<p>Come illustra questo esempio, <code class="docutils literal notranslate"><span class="pre">condest</span></code> non restituisce necessariamente lo
+stesso risultato ad ogni chiamata, poiché fa uso della funzione <code class="docutils literal notranslate"><span class="pre">rand</span></code> al suo
+interno (si tratta di uno stimatore stocastico).</p>
+<section id="implementare-la-fattorizzazione-lu">
+<h2>Implementare la fattorizzazione LU<a class="headerlink" href="#implementare-la-fattorizzazione-lu" title="Link a questa intestazione">#</a></h2>
+<p>Se <span class="math notranslate nohighlight">\(A\)</span> è una matrice <span class="math notranslate nohighlight">\(n\)</span> per <span class="math notranslate nohighlight">\(n\)</span> su un campo <span class="math notranslate nohighlight">\(\mathbb{K}\)</span> (<span class="math notranslate nohighlight">\(A  \in M_n(\mathbb{K})\)</span>),
+allora <span class="math notranslate nohighlight">\(A\)</span> si dice «avere una fattorizzazione <span class="math notranslate nohighlight">\(LU\)</span>» se esiste una matrice
+<strong>triangolare inferiore</strong> <span class="math notranslate nohighlight">\(L \in  M_n(\mathbb{K})\)</span> e una matrice <strong>triangolare
+superiore</strong> <span class="math notranslate nohighlight">\(U  \in M_n(\mathbb{K})\)</span> tale che</p>
 <div class="math notranslate nohighlight">
-\[A V = V D, \quad W^T A = D W^T.\]</div>
+\[A = LU.\]</div>
+<p>Questo è particolarmente utile, poiché, se <span class="math notranslate nohighlight">\(A = LU\)</span>, allora ogni soluzione <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>
+che sia soluzione di:</p>
+<div class="math notranslate nohighlight">
+\[U\mathbf{x} = \mathbf{y},\]</div>
+<p>per una soluzione <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> di</p>
+<div class="math notranslate nohighlight">
+\[L\mathbf{y} = \mathbf{b},\]</div>
+<p>e se <span class="math notranslate nohighlight">\(L\)</span> è invertibile, allora <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> è unicamente determinata; e se <span class="math notranslate nohighlight">\(U\)</span>
+è invertibile, allora ogni soluzione <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> di <span class="math notranslate nohighlight">\(L\mathbf{y} = \mathbf{b}\)</span>
+produrrà una soluzione <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> di <span class="math notranslate nohighlight">\(A\mathbf{x} = \mathbf{b}\)</span> via <span class="math notranslate nohighlight">\(U\mathbf{x} = \mathbf{y}\)</span>.</p>
 <div class="admonition danger">
 <p class="admonition-title">Pericolo</p>
-<p>MATLAB, e la maggior parte degli algoritmi che calcolano autovalori, non conoscono la forma canonica di Jordan e l’esistenza di matrici non diagonalizzabili. Per cui vi restituiranno sempre una diagonalizzazione, anche quando questa non esiste. Consideriamo ad esempio il blocco di Jordan:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">J</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">gallery</span><span class="p">(</span><span class="s">&#39;jordbloc&#39;</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span><span class="w"></span>
-<span class="p">[</span><span class="n">V</span><span class="p">,</span><span class="n">D</span><span class="p">,</span><span class="n">W</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">eig</span><span class="p">(</span><span class="n">J</span><span class="p">)</span><span class="w"></span>
-</pre></div>
-</div>
-<p>Otteniamo le due matrici, senza <em>warning</em> o altro… tuttavia se calcoliamo</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">cond</span><span class="p">(</span><span class="n">V</span><span class="p">)</span><span class="w"></span>
-
-<span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
-
-<span class="w">   </span><span class="mf">1.3009e+63</span><span class="w"></span>
-</pre></div>
-</div>
-<p>che è un <strong>valore enorme</strong> per una matrice <span class="math notranslate nohighlight">\(5 \times 5\)</span>. Questo ci deve far sospettare che c’è qualcosa che non va!</p>
-</div>
-<p>Per calcolare direttamente il raggio spettrale della matrice <span class="math notranslate nohighlight">\(M^{-1}N\)</span> non abbiamo in realtà la necessità di calcolare tutti gli autovalori della matrice e prendere il massimo. Possiamo accedere ad algoritmi che calcolano direttamente la quantità che ci interessa:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">gallery</span><span class="p">(</span><span class="s">&#39;poisson&#39;</span><span class="p">,</span><span class="mi">5</span><span class="p">);</span><span class="w"> </span><span class="c">% Discretizzazione del Laplaciano in 2D</span><span class="w"></span>
-<span class="n">M</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">diag</span><span class="p">(</span><span class="n">A</span><span class="p">);</span><span class="w"> </span><span class="c">% A = M - N</span><span class="w"></span>
-<span class="n">N</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">M</span><span class="o">-</span><span class="n">A</span><span class="p">;</span><span class="w">     </span><span class="c">% N = M - A</span><span class="w"></span>
-<span class="n">rho</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">eigs</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">M</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s">&#39;largestabs&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">disp</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">rho</span><span class="p">))</span><span class="w"></span>
-</pre></div>
-</div>
-<p>che ci restituisce il valore <code class="docutils literal notranslate"><span class="pre">0.8660</span></code> per il raggio spettrale, cioè abbiamo trovato uno <strong>splitting convergente</strong>.</p>
-<p>Vediamo il manuale del comando <code class="docutils literal notranslate"><span class="pre">eigs</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">eigs</span>   <span class="n">Find</span> <span class="n">a</span> <span class="n">few</span> <span class="n">eigenvalues</span> <span class="ow">and</span> <span class="n">eigenvectors</span> <span class="n">of</span> <span class="n">a</span> <span class="n">matrix</span>
- <span class="n">D</span> <span class="o">=</span> <span class="n">eigs</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="n">returns</span> <span class="n">a</span> <span class="n">vector</span> <span class="n">of</span> <span class="n">A</span><span class="s1">&#39;s 6 largest magnitude eigenvalues.</span>
- <span class="n">A</span> <span class="n">must</span> <span class="n">be</span> <span class="n">square</span> <span class="ow">and</span> <span class="n">should</span> <span class="n">be</span> <span class="n">large</span> <span class="ow">and</span> <span class="n">sparse</span><span class="o">.</span>
-
- <span class="p">[</span><span class="o">...</span><span class="p">]</span>
-
- <span class="n">eigs</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">K</span><span class="p">,</span><span class="n">SIGMA</span><span class="p">)</span> <span class="ow">and</span> <span class="n">eigs</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">K</span><span class="p">,</span><span class="n">SIGMA</span><span class="p">)</span> <span class="k">return</span> <span class="n">K</span> <span class="n">eigenvalues</span><span class="o">.</span> <span class="n">If</span> <span class="n">SIGMA</span> <span class="ow">is</span><span class="p">:</span>
-
-        <span class="s1">&#39;largestabs&#39;</span> <span class="ow">or</span> <span class="s1">&#39;smallestabs&#39;</span> <span class="o">-</span> <span class="n">largest</span> <span class="ow">or</span> <span class="n">smallest</span> <span class="n">magnitude</span>
-      <span class="s1">&#39;largestreal&#39;</span> <span class="ow">or</span> <span class="s1">&#39;smallestreal&#39;</span> <span class="o">-</span> <span class="n">largest</span> <span class="ow">or</span> <span class="n">smallest</span> <span class="n">real</span> <span class="n">part</span>
-                       <span class="s1">&#39;bothendsreal&#39;</span> <span class="o">-</span> <span class="n">K</span><span class="o">/</span><span class="mi">2</span> <span class="n">values</span> <span class="k">with</span> <span class="n">largest</span> <span class="ow">and</span>
-                                        <span class="n">smallest</span> <span class="n">real</span> <span class="n">part</span><span class="p">,</span> <span class="n">respectively</span>
-                                        <span class="p">(</span><span class="n">one</span> <span class="n">more</span> <span class="kn">from</span> <span class="nn">largest</span> <span class="k">if</span> <span class="n">K</span> <span class="ow">is</span> <span class="n">odd</span><span class="p">)</span>
-
-    <span class="n">For</span> <span class="n">nonsymmetric</span> <span class="n">problems</span><span class="p">,</span> <span class="n">SIGMA</span> <span class="n">can</span> <span class="n">also</span> <span class="n">be</span><span class="p">:</span>
-      <span class="s1">&#39;largestimag&#39;</span> <span class="ow">or</span> <span class="s1">&#39;smallestimag&#39;</span> <span class="o">-</span> <span class="n">largest</span> <span class="ow">or</span> <span class="n">smallest</span> <span class="n">imaginary</span> <span class="n">part</span>
-                       <span class="s1">&#39;bothendsimag&#39;</span> <span class="o">-</span> <span class="n">K</span><span class="o">/</span><span class="mi">2</span> <span class="n">values</span> <span class="k">with</span> <span class="n">largest</span> <span class="ow">and</span>
-                                       <span class="n">smallest</span> <span class="n">imaginary</span> <span class="n">part</span><span class="p">,</span> <span class="n">respectively</span>
-                                       <span class="p">(</span><span class="n">one</span> <span class="n">more</span> <span class="kn">from</span> <span class="nn">largest</span> <span class="k">if</span> <span class="n">K</span> <span class="ow">is</span> <span class="n">odd</span><span class="p">)</span>
-
-    <span class="n">If</span> <span class="n">SIGMA</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">real</span> <span class="ow">or</span> <span class="nb">complex</span> <span class="n">scalar</span> <span class="n">including</span> <span class="mi">0</span><span class="p">,</span> <span class="n">eigs</span> <span class="n">finds</span> <span class="n">the</span>
-    <span class="n">eigenvalues</span> <span class="n">closest</span> <span class="n">to</span> <span class="n">SIGMA</span><span class="o">.</span>
-
-</pre></div>
-</div>
-<p>da cui leggiamo che quello che abbiamo chiesto a MATLAB di calcolare è un autovalore (<code class="docutils literal notranslate"><span class="pre">1</span></code>) di massimo valore assoluto (<code class="docutils literal notranslate"><span class="pre">'largestabs'</span></code>) che risolva il problema</p>
+<p>In <strong>generale</strong> non tutte le matrici <span class="math notranslate nohighlight">\(A\)</span> ammettono una fattorizzazione <span class="math notranslate nohighlight">\(LU\)</span> di
+questa forma, si consideri ad esempio la matrice:</p>
 <div class="math notranslate nohighlight">
-\[N \mathbf{v} = \lambda M \mathbf{v},\]</div>
-<p>che, nel nostro caso, è equivalente alla richiesta</p>
+\[\begin{split}A = \begin{bmatrix}
+0 &amp; 1 \\
+1 &amp; 0
+\end{bmatrix} = \begin{bmatrix}
+l_{11} &amp; 0 \\
+l_{12} &amp; l_{22}
+\end{bmatrix} \begin{bmatrix}
+u_{11} &amp; u_{12} \\
+0 &amp; u_{22}
+\end{bmatrix} = LU,\end{split}\]</div>
+<p>questa richiederebbe di avere gli elementi diagonali <span class="math notranslate nohighlight">\(u_{ii}\)</span>, <span class="math notranslate nohighlight">\(l_{ii}\)</span>, <span class="math notranslate nohighlight">\(i=1,2\)</span>,
+diversi da <span class="math notranslate nohighlight">\(0\)</span>, ma questo contraddirebbe <span class="math notranslate nohighlight">\(0 = a_{11} = l_{11}u_{11}\)</span>.</p>
+<p>Una condizione <strong>necessaria e sufficiente</strong> affinché una fattorizzazione
+di questa forma esista per una matrice <span class="math notranslate nohighlight">\(A \in M_n(\mathbb{K})\)</span>,
+<span class="math notranslate nohighlight">\(\mathbb{K} = \mathbb{R},\mathbb{C}\)</span>, è che</p>
 <div class="math notranslate nohighlight">
-\[M^{-1}N \mathbf{v} = \lambda \mathbf{v},\]</div>
-<p>cioè quello che cercavamo. Problemi di questa forma sono detti <strong>problemi generalizzati agli autovalori</strong>, ma sono ben al di fuori degli obiettivi di questo corso.</p>
-<div class="admonition warning">
-<p class="admonition-title">Avvertimento</p>
-<p>Tutte le volte che volete risolvere un problema agli autovalori con matrice <span class="math notranslate nohighlight">\(M^{1}N\)</span> la soluzione opportuna è quella di usare la formulazione come problema generalizzato agli autovalori, sia da un punto di vista di stabilità numerica, sia da un punto di vista di velocità di esecuzione del codice.</p>
-</div>
-</section>
-</section>
-<section id="metodo-di-jacobi">
-<h2>Metodo di Jacobi<a class="headerlink" href="#metodo-di-jacobi" title="Link a questa intestazione">#</a></h2>
-<p>Il primo metodo che vogliamo implementare è il <strong>metodo di Jacobi</strong>, questo è basato sullo splitting additivo per la matrice <span class="math notranslate nohighlight">\(A\)</span> con <span class="math notranslate nohighlight">\(A = D - N\)</span> dove <span class="math notranslate nohighlight">\(D\)</span> è la diagonale della matrice <span class="math notranslate nohighlight">\(A\)</span>.</p>
-<div class="admonition-teorema admonition">
-<p class="admonition-title">Teorema</p>
-<p>Una condizione sufficiente (ma <strong>non necessaria</strong>) affinché il metodo di Jacobi sia convergente è che la matrice <span class="math notranslate nohighlight">\(A\)</span> sia a diagonale strettamente dominante, oppure a diagonale dominante e irriducibile.</p>
-</div>
-<p>Per trasformare il metodo in qualcosa di applicabile dobbiamo accoppiarlo ad un <strong>criterio d’arresto</strong>. Come sempre possiamo guardare al <strong>residuo assoluto</strong> oppure a quello <strong>relativo</strong> in una norma prefissata. Poiché abbiamo deciso di guardare alla convergenza attraverso informazioni spettrali scelta più naturale (e predittiva) è quella di usare la norma <span class="math notranslate nohighlight">\(\|\cdot\|_ 2\)</span>.</p>
+\[\begin{split}\operatorname{rank}(A_{11}) + k \geq \operatorname{rank}([A_{11}\,A_{12}]) + \operatorname{rank}\left(\begin{bmatrix}A_{11}\\A_{21}\end{bmatrix}\right),\end{split}\]</div>
+<p>per <span class="math notranslate nohighlight">\(k = 1,\ldots,n-1\)</span> e</p>
 <div class="math notranslate nohighlight">
-\[\|\mathbf{r}^{(k)}\|_2 = \| A \mathbf{x}^{(k)} - \mathbf{b}\|_2 \leq \varepsilon,\]</div>
-<p>ovvero, rispettivamente</p>
-<div class="math notranslate nohighlight">
-\[\|\mathbf{r}^{(k)}\|_2 = \| A \mathbf{x}^{(k)} - \mathbf{b}\|_2 \leq \varepsilon \|\mathbf{r}^{(0)}\|_2,\]</div>
-<p>dove <span class="math notranslate nohighlight">\(\varepsilon\)</span> è una tolleranza prefissata.</p>
-<div class="admonition-esercizio admonition">
-<p class="admonition-title">Esercizio</p>
-<p>Si scriva una <em>function</em> che implementi il metodo di Jacobi per la soluzione di un sistema lineare <span class="math notranslate nohighlight">\(A \mathbf{x} = \mathbf{y}\)</span> entro una tolleranza <span class="math notranslate nohighlight">\(\varepsilon\)</span> sfruttando il seguente prototipo:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[x,res,it]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">jacobi</span><span class="p">(</span>A,b,x,itmax,eps<span class="p">)</span><span class="w"></span>
-<span class="c">%%JACOBI implementa il metodo di Jacobi per la soluzione del sistema A x = b</span><span class="w"></span>
-<span class="c">%    INPUT:</span><span class="w"></span>
-<span class="c">%     A matrice quadrata</span><span class="w"></span>
-<span class="c">%     b termine destro del sistema lineare da risolvere</span><span class="w"></span>
-<span class="c">%     x innesco della strategia iterativa</span><span class="w"></span>
-<span class="c">%     itmax massimo numero di iterazioni lineari consentito</span><span class="w"></span>
-<span class="c">%    OUTPUT</span><span class="w"></span>
-<span class="c">%     x ultima soluzione calcolata dal metodo</span><span class="w"></span>
-<span class="c">%     res vettore dei residui</span><span class="w"></span>
-<span class="c">%     it numero di iterazioni</span><span class="w"></span>
-<span class="k">end</span><span class="w"></span>
-</pre></div>
+\[\begin{split}A = \begin{bmatrix}
+A_{11} &amp; A_{12} \\
+A_{21} &amp; A_{22}
+\end{bmatrix}, \qquad A_{11} \in M_k(\mathbb{K}).\end{split}\]</div>
 </div>
-<ul class="simple">
-<li><p>Si implementi in maniera vettoriale, cioè <strong>senza</strong> usare cicli <code class="docutils literal notranslate"><span class="pre">for</span></code> per scorrere le righe della matrice,</p></li>
-<li><p>Si usi il criterio d’arresto basato sull’errore relativo.</p></li>
-</ul>
-<p>Per <em>testare</em> il metodo si usi il seguente programma</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">gallery</span><span class="p">(</span><span class="s">&#39;poisson&#39;</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span><span class="w"> </span><span class="c">% Matrice di prova</span><span class="w"></span>
-<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">ones</span><span class="p">(</span><span class="mi">10</span>^<span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w">           </span><span class="c">% rhs vettore di 1</span><span class="w"></span>
-<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="mi">10</span>^<span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w">          </span><span class="c">% Tentativo iniziale vettore di 0</span><span class="w"></span>
-<span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">res</span><span class="p">,</span><span class="n">it</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">jacobi</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="mf">1e-6</span><span class="p">);</span><span class="w"></span>
-
-<span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="nb">semilogy</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">it</span><span class="p">,</span><span class="n">res</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Iterazione&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Residuo relativo&#39;</span><span class="p">);</span><span class="w"></span>
-</pre></div>
-</div>
-</div>
-</section>
-<section id="metodo-di-gauss-seidel">
-<h2>Metodo di Gauss-Seidel<a class="headerlink" href="#metodo-di-gauss-seidel" title="Link a questa intestazione">#</a></h2>
+<p>Quando esiste la decomposizione <span class="math notranslate nohighlight">\(LU\)</span> <strong>non è unica</strong> (le combinazioni di <span class="math notranslate nohighlight">\(L\)</span> e <span class="math notranslate nohighlight">\(U\)</span>
+per una data <span class="math notranslate nohighlight">\(A\)</span> sono infinite). Per determinare un algoritmo univoco è
+necessario porre determinati vincoli su <span class="math notranslate nohighlight">\(L\)</span> o <span class="math notranslate nohighlight">\(U\)</span> (<a class="reference internal" href="#tipidilu"><span class="std std-numref">Tabella 9</span></a>).</p>
 <aside class="margin sidebar">
-<p class="sidebar-title">Avanti/Indietro</p>
-<p>Si può utilizzare la stessa idea anche con la parte triangolare superiore <span class="math notranslate nohighlight">\(U\)</span> di <span class="math notranslate nohighlight">\(A\)</span>, in genere si distingue tra i due chiamandoli, rispettivamente, metodo di Gauss-Seidel in <em>avanti</em> (forward Gauss-Seidel) o all”<em>indietro</em> (backward Gauss-Seidel).</p>
+<p class="sidebar-title">Varianti dell’algoritmo <span class="math notranslate nohighlight">\(LU\)</span>.</p>
+<table class="table" id="tipidilu">
+<caption><span class="caption-number">Tabella 9 </span><span class="caption-text">Varianti dell’algoritmo <span class="math notranslate nohighlight">\(LU\)</span>.</span><a class="headerlink" href="#tipidilu" title="Link a questa tabella">#</a></caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Nome</p></th>
+<th class="head"><p>Vincoli</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Doolittle</p></td>
+<td><p><span class="math notranslate nohighlight">\(L_{ii} = 1\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Crout</p></td>
+<td><p><span class="math notranslate nohighlight">\(U_{ii} = 1\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>Choleski</p></td>
+<td><p><span class="math notranslate nohighlight">\(U = L^T\)</span></p></td>
+</tr>
+</tbody>
+</table>
 </aside>
-<p>Il secondo metodo di questo tipo che avete visto è il metodo di <strong>Gauss-Seidel</strong>,
-per questo metodo la decomposizione additiva della matrice <span class="math notranslate nohighlight">\(A\)</span> è <span class="math notranslate nohighlight">\(A = L - N\)</span>, dove <span class="math notranslate nohighlight">\(L\)</span> è la parte triangolare inferiore della matrice <span class="math notranslate nohighlight">\(A\)</span>.</p>
-<div class="admonition-teorema admonition">
-<p class="admonition-title">Teorema</p>
-<p>Una condizione sufficiente (ma <strong>non necessaria</strong>) affinché il metodo di Gauss-Seidel sia convergente è che la matrice <span class="math notranslate nohighlight">\(A\)</span> sia a diagonale strettamente dominante, oppure una matrice simmetrica e definita positiva.</p>
-</div>
-<p>Possiamo sfruttare di nuovo il <em>residuo relativo</em> per definire il criterio d’arresto.</p>
+<p>Come primo esercizio implementeremo la fattorizzazione <span class="math notranslate nohighlight">\(LU\)</span> nella forma di Doolittle,
+che è quella più strettamente legata all’algoritmo di eleminazione di Gauss che
+conoscete sin dal corso di <em>algebra lineare</em>.</p>
+<p>Se scriviamo l’uguaglianza <span class="math notranslate nohighlight">\(A = LU\)</span> con il vincolo aggiuntivo per cui
+<span class="math notranslate nohighlight">\(L_{ii} = 1\)</span>, <span class="math notranslate nohighlight">\(i=1,\ldots,n\)</span>, possiamo ricavare che i termini della matrice
+<span class="math notranslate nohighlight">\(U\)</span> sono dati da</p>
+<div class="math notranslate nohighlight" id="equation-lu1">
+<span class="eqno">(9)<a class="headerlink" href="#equation-lu1" title="Permalink a questa equazione">#</a></span>\[\begin{split}\forall\,j\quad &amp; \begin{array}{ll}
+i = 1, &amp; u_{i,j} = a_{i,j},\\
+i &gt; 1, &amp; u_{i,j} = \displaystyle a_{i,j} - \sum_{k=1}^{i} l_{ik} u_{k,j},
+\end{array}\end{split}\]</div>
+<p>mentre quelli della matrice <span class="math notranslate nohighlight">\(L\)</span> sono dati da:</p>
+<div class="math notranslate nohighlight" id="equation-lu2">
+<span class="eqno">(10)<a class="headerlink" href="#equation-lu2" title="Permalink a questa equazione">#</a></span>\[\begin{split}\forall\,i\quad &amp; \begin{array}{ll}
+j = 1, &amp; l_{ij} = \frac{a_{ij}}{u_{jj}}, \\
+j &gt; 1, &amp; l_{ij} = \displaystyle \frac{a_{ij} - \sum_{k=1}^{j} l_{ik} u_{kj} }{u_{jj}}.
+\end{array}\end{split}\]</div>
 <div class="admonition-esercizio admonition">
 <p class="admonition-title">Esercizio</p>
-<p>Si scriva una <em>function</em> che implementi il metodo di Gauss-Seidel in avanti per la soluzione di un sistema lineare <span class="math notranslate nohighlight">\(A \mathbf{x} = \mathbf{y}\)</span> entro una tolleranza <span class="math notranslate nohighlight">\(\varepsilon\)</span> sfruttando il seguente prototipo:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[x,res,it]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">forwardgs</span><span class="p">(</span>A,b,x,itmax,eps<span class="p">)</span><span class="w"></span>
-<span class="c">%%FORWARDGS implementa il metodo di Gauss-Seidel in avanti per la soluzione del</span><span class="w"></span>
-<span class="c">% sistema A x = b</span><span class="w"></span>
-<span class="c">%    INPUT:</span><span class="w"></span>
-<span class="c">%     A matrice quadrata</span><span class="w"></span>
-<span class="c">%     b termine destro del sistema lineare da risolvere</span><span class="w"></span>
-<span class="c">%     x innesco della strategia iterativa</span><span class="w"></span>
-<span class="c">%     itmax massimo numero di iterazioni lineari consentito</span><span class="w"></span>
-<span class="c">%    OUTPUT</span><span class="w"></span>
-<span class="c">%     x ultima soluzione calcolata dal metodo</span><span class="w"></span>
-<span class="c">%     res vettore dei residui</span><span class="w"></span>
-<span class="c">%     it numero di iterazioni</span><span class="w"></span>
+<p>Si usino le relazioni <a class="reference internal" href="#equation-lu1">(9)</a> e <a class="reference internal" href="#equation-lu2">(10)</a> per implementare la versione di
+Doolittle dell’algoritmo <span class="math notranslate nohighlight">\(LU\)</span> per una matrice quadrata. Un prototipo della
+funzione è dato da:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[L,U]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">doolittlelu</span><span class="p">(</span>A<span class="p">)</span><span class="w"></span>
+<span class="c">%%DOOLITTLELU Calcola la fattorizzazione LU della matrice A con i vincolo di</span><span class="w"></span>
+<span class="c">%Doolittle.</span><span class="w"></span>
+
+<span class="c">% Controllo degli input:</span><span class="w"></span>
+
+<span class="c">% Pre-allocazione memoria:</span><span class="w"></span>
+<span class="n">L</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">eye</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+<span class="n">U</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+<span class="c">%!! Questa potrebbe essere anche:</span><span class="w"></span>
+<span class="c">% L = zeros(n,n);</span><span class="w"></span>
+<span class="c">% U = zeros(n,n);</span><span class="w"></span>
+<span class="c">% Dipende da come decidete di utilizzare le formule...</span><span class="w"></span>
+
+<span class="c">% Utilizzo delle formule per l_{ij} e u_{ij}.</span><span class="w"></span>
+
 <span class="k">end</span><span class="w"></span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>Si implementi in maniera vettoriale, cioè <strong>senza</strong> usare cicli <code class="docutils literal notranslate"><span class="pre">for</span></code> per scorrere le righe della matrice,</p></li>
-<li><p>Si utilizzi la funzione <code class="docutils literal notranslate"><span class="pre">forwardsolve</span></code> vista in <a class="reference internal" href="laboratorio5.html#forwardandbacwardsolve"><span class="std std-ref">Sostituzione in avanti e all’indietro</span></a></p></li>
-<li><p>Si usi il criterio d’arresto basato sull’errore relativo.</p></li>
+<li><p>Si faccia un <strong>controllo dell’input</strong>: la matrice <span class="math notranslate nohighlight">\(A\)</span> è quadrata?</p></li>
+<li><p>Si utilizzino operazioni vettorizzate per le somme che compaiono in <a class="reference internal" href="#equation-lu1">(9)</a>
+e <a class="reference internal" href="#equation-lu2">(10)</a></p></li>
 </ul>
-<p>Per <em>testare</em> il metodo si usi il seguente programma</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">gallery</span><span class="p">(</span><span class="s">&#39;poisson&#39;</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span><span class="w"> </span><span class="c">% Matrice di prova</span><span class="w"></span>
-<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">ones</span><span class="p">(</span><span class="mi">10</span>^<span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w">           </span><span class="c">% rhs vettore di 1</span><span class="w"></span>
-<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="mi">10</span>^<span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w">          </span><span class="c">% Tentativo iniziale vettore di 0</span><span class="w"></span>
-<span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">res</span><span class="p">,</span><span class="n">it</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">forwardgs</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="mf">1e-6</span><span class="p">);</span><span class="w"></span>
+<p>Per verificare la buona riuscita dell’implementazione si può usare il seguente
+problema di test.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Test della versione di Doolittle dell&#39;algoritmo LU  </span><span class="w"></span>
 
-<span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="nb">semilogy</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">it</span><span class="p">,</span><span class="n">res</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Iterazione&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Residuo relativo&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">clear</span><span class="p">;</span><span class="w"> </span><span class="nb">clc</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="w">  </span><span class="mi">4</span><span class="p">;</span><span class="w"></span>
+<span class="w">     </span><span class="o">-</span><span class="mi">2</span><span class="w">  </span><span class="mi">0</span><span class="w">  </span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="n">7</span><span class="w">  </span><span class="s">2</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="w"> </span><span class="p">];</span><span class="w"></span>
+<span class="p">[</span><span class="n">L</span><span class="p">,</span><span class="n">U</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">doolittlelu</span><span class="p">(</span><span class="n">A</span><span class="p">);</span><span class="w"></span>
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;|| A - LU || = %1.2e\n&quot;</span><span class="p">,</span><span class="nb">norm</span><span class="p">(</span><span class="n">A</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">L</span><span class="o">*</span><span class="n">U</span><span class="p">,</span><span class="mi">2</span><span class="p">));</span><span class="w"></span>
+
+<span class="c">% Vediamone gli ingressi:</span><span class="w"></span>
+<span class="nb">format</span><span class="w"> </span><span class="nb">rat</span><span class="w"></span>
+<span class="nb">disp</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="w"></span>
+<span class="nb">disp</span><span class="p">(</span><span class="n">L</span><span class="p">)</span><span class="w"></span>
+<span class="nb">disp</span><span class="p">(</span><span class="n">U</span><span class="p">)</span><span class="w"></span>
+<span class="nb">disp</span><span class="p">(</span><span class="n">L</span><span class="o">*</span><span class="n">U</span><span class="p">)</span><span class="w"></span>
+<span class="nb">format</span><span class="w"> </span><span class="n">short</span><span class="w"></span>
 </pre></div>
 </div>
+<div class="admonition tip">
+<p class="admonition-title">Suggerimento</p>
+<p>Guardando alla formulazione delle equazioni <a class="reference internal" href="#equation-lu1">(9)</a> e <a class="reference internal" href="#equation-lu2">(10)</a> potremmo
+osservare che in realtà possiamo sovrascrivere le entrate della matrice <span class="math notranslate nohighlight">\(A\)</span>
+con la fattorizzazione <span class="math notranslate nohighlight">\(LU\)</span>. Se avete concluso la prima parte pensate a come
+è possibile realizzare questa versione.</p>
 </div>
-</section>
-<section id="paragone-tra-i-due-metodi-e-velocita-di-convergenza">
-<h2>Paragone tra i due metodi e velocità di convergenza<a class="headerlink" href="#paragone-tra-i-due-metodi-e-velocita-di-convergenza" title="Link a questa intestazione">#</a></h2>
-<p>Adesso che abbiamo implementato i due diversi metodi possiamo fare un confronto delle loro prestazioni. Possiamo paragonare in primo luogo le due storie di convergenza guardando all’evoluzione dei residui:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">gallery</span><span class="p">(</span><span class="s">&#39;poisson&#39;</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span><span class="w"> </span><span class="c">% Matrice di prova</span><span class="w"></span>
-<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">ones</span><span class="p">(</span><span class="mi">10</span>^<span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w">           </span><span class="c">% rhs vettore di 1</span><span class="w"></span>
-<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="mi">10</span>^<span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w">          </span><span class="c">% Tentativo iniziale vettore di 0</span><span class="w"></span>
-
-<span class="p">[</span><span class="n">xjacobi</span><span class="p">,</span><span class="n">resjacobi</span><span class="p">,</span><span class="n">itjacobi</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">jacobi</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="mf">1e-6</span><span class="p">);</span><span class="w"></span>
-<span class="p">[</span><span class="n">xforwardgs</span><span class="p">,</span><span class="n">resforwardgs</span><span class="p">,</span><span class="n">itforwardgs</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">forwardgs</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="mf">1e-6</span><span class="p">);</span><span class="w"></span>
-
-
-<span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="nb">semilogy</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">itjacobi</span><span class="p">,</span><span class="n">resjacobi</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
-<span class="w">    </span><span class="mi">1</span><span class="p">:</span><span class="n">itforwardgs</span><span class="p">,</span><span class="n">resforwardgs</span><span class="p">,</span><span class="s">&#39;x-&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Iterazione&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Residuo&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Jacobi&#39;</span><span class="p">,</span><span class="s">&#39;Gauss-Seidel (Forward)&#39;</span><span class="p">},</span><span class="k">...</span><span class="w"></span>
-<span class="w">    </span><span class="s">&#39;Location&#39;</span><span class="p">,</span><span class="s">&#39;northeast&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
-<span class="w">    </span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">);</span><span class="w"></span>
+<div class="tip dropdown admonition">
+<p class="admonition-title">Un suggerimento più estensivo</p>
+<p>Possiamo sviluppare il ciclo di istruzioni sostanzialmente in due ordine, in un primo procediamo alla fattorizzazioni <strong>colonna per colonna</strong>, ovvero:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="w"></span>
+<span class="w">    </span><span class="n">L</span><span class="p">(</span><span class="n">k</span><span class="p">:</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="n">k</span><span class="p">:</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">k</span><span class="p">);</span><span class="w"> </span><span class="c">% Dividiamo per il Pivot</span><span class="w"></span>
+<span class="w">    </span><span class="n">U</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">);</span><span class="w">          </span><span class="c">% Aggiorniamo le entrate della U</span><span class="w"></span>
+<span class="w">    </span><span class="n">A</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">L</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">A</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+<span class="n">U</span><span class="p">(:,</span><span class="k">end</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="p">(:,</span><span class="k">end</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
-<p>Da cui osserviamo che il metodo di Gauss-Seidel (forward) impiega meno iterazioni per raggiungere la convergenza desiderata (<a class="reference internal" href="#gaussjac1"><span class="std std-numref">Fig. 17</span></a>).</p>
-<figure class="align-default" id="gaussjac1">
-<a class="reference internal image-reference" href="_images/gaussjacobicomparison1.png"><img alt="convergenza-metodi" src="_images/gaussjacobicomparison1.png" style="width: 50%;" /></a>
+<p>Nel caso dell”<strong>esempio</strong> vediamo:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}k = 0, \qquad L = \left(\begin{array}{ccc} 0 &amp; 0 &amp; 0\\ 0 &amp; 0 &amp; 0\\ 0 &amp; 0 &amp; 0 \end{array}\right) \qquad U = \left(\begin{array}{ccc} 0 &amp; 0 &amp; 0\\ 0 &amp; 0 &amp; 0\\ 0 &amp; 0 &amp; 0 \end{array}\right), \qquad A = \left(\begin{array}{ccc} 3 &amp; -1 &amp; 4\\ -2 &amp; 0 &amp; 5\\ 7 &amp; 2 &amp; -2 \end{array}\right)\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}k = 1, \qquad L^{(1)} = \left(\begin{array}{ccc} 1 &amp; 0 &amp; 0\\ -\frac{2}{3} &amp; 0 &amp; 0\\ \frac{7}{3} &amp; 0 &amp; 0 \end{array}\right), \qquad \left(\begin{array}{ccc} 3 &amp; -1 &amp; 4\\ 0 &amp; 0 &amp; 0\\ 0 &amp; 0 &amp; 0 \end{array}\right) \qquad A^{(1)} = \left(\begin{array}{ccc} 3 &amp; -1 &amp; 4\\ 0 &amp; -\frac{2}{3} &amp; \frac{23}{3}\\ 0 &amp; \frac{13}{3} &amp; -\frac{34}{3} \end{array}\right), \\\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}k = 2, \qquad L^{(2)} = \left(\begin{array}{ccc} 1 &amp; 0 &amp; 0\\ -\frac{2}{3} &amp; 1 &amp; 0\\ \frac{7}{3} &amp; -\frac{13}{2} &amp; 0 \end{array}\right), \qquad U^{(2)} = \left(\begin{array}{ccc} 3 &amp; -1 &amp; 4\\ 0 &amp; -\frac{2}{3} &amp; \frac{23}{3}\\ 0 &amp; 0 &amp; 0 \end{array}\right), \qquad A^{(2)} = \left(\begin{array}{ccc} 3 &amp; -1 &amp; 4\\ 0 &amp; -\frac{2}{3} &amp; \frac{23}{3}\\ 0 &amp; 0 &amp; \frac{77}{2} \end{array}\right), \\\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}k = 3, \qquad L^{(3)} = \left(\begin{array}{ccc} 1 &amp; 0 &amp; 0\\ -\frac{2}{3} &amp; 1 &amp; 0\\ \frac{7}{3} &amp; -\frac{13}{2} &amp; 1 \end{array}\right), \qquad U^{(3)} = \left(\begin{array}{ccc} 3 &amp; -1 &amp; 4\\ 0 &amp; -\frac{2}{3} &amp; \frac{23}{3}\\ 0 &amp; 0 &amp; \frac{77}{2} \end{array}\right), \qquad A^{(3)} = \left(\begin{array}{ccc} 3 &amp; -1 &amp; 4\\ 0 &amp; -\frac{2}{3} &amp; \frac{23}{3}\\ 0 &amp; 0 &amp; \frac{77}{2} \end{array}\right)\end{split}\]</div>
+<p>La <strong>seconda alternativa</strong> è quella di eseguire questo ciclo procedendo lungo le
+righe della matrice</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nb">j</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:(</span><span class="nb">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">L</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">L</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="mi">1</span><span class="p">:(</span><span class="nb">j</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="n">U</span><span class="p">(</span><span class="mi">1</span><span class="p">:(</span><span class="nb">j</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="nb">j</span><span class="p">))</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">U</span><span class="p">(</span><span class="nb">j</span><span class="p">,</span><span class="nb">j</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">end</span><span class="w"></span>
+<span class="w">    </span><span class="nb">j</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">i</span><span class="p">:</span><span class="n">n</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">U</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="nb">j</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">L</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="mi">1</span><span class="p">:(</span><span class="nb">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="n">U</span><span class="p">(</span><span class="mi">1</span><span class="p">:(</span><span class="nb">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="nb">j</span><span class="p">);</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Nel caso dell”<strong>esempio</strong> vediamo:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}i = 0, \qquad L = \left(\begin{array}{ccc} 1 &amp; 0 &amp; 0\\ 0 &amp; 1 &amp; 0\\ 0 &amp; 0 &amp; 1 \end{array}\right), \qquad U = \left(\begin{array}{ccc} 0 &amp; 0 &amp; 0\\ 0 &amp; 0 &amp; 0\\ 0 &amp; 0 &amp; 0 \end{array}\right), \qquad A = \left(\begin{array}{ccc} 3 &amp; -1 &amp; 4\\ -2 &amp; 0 &amp; 5\\ 7 &amp; 2 &amp; -2 \end{array}\right),\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}i = 1, \qquad L^{(1)} = \left(\begin{array}{ccc} 1 &amp; 0 &amp; 0\\ 0 &amp; 1 &amp; 0\\ 0 &amp; 0 &amp; 1 \end{array}\right), \qquad U^{(1)} = \left(\begin{array}{ccc} 3 &amp; -1 &amp; 4\\ 0 &amp; 0 &amp; 0\\ 0 &amp; 0 &amp; 0 \end{array}\right),\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}i = 2, \qquad L^{(2)} = \left(\begin{array}{ccc} 1 &amp; 0 &amp; 0\\ -\frac{2}{3} &amp; 1 &amp; 0\\ 0 &amp; 0 &amp; 1 \end{array}\right), \qquad U^{(2)} = \left(\begin{array}{ccc} 3 &amp; -1 &amp; 4\\ 0 &amp; -\frac{2}{3} &amp; \frac{23}{3}\\ 0 &amp; 0 &amp; 0 \end{array}\right)',\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}i = 3, \qquad L^{(3)} = \left(\begin{array}{ccc} 1 &amp; 0 &amp; 0\\ -\frac{2}{3} &amp; 1 &amp; 0\\ \frac{7}{3} &amp; -\frac{13}{2} &amp; 1 \end{array}\right), \qquad U^{(3)} = \left(\begin{array}{ccc} 3 &amp; -1 &amp; 4\\ 0 &amp; -\frac{2}{3} &amp; \frac{23}{3}\\ 0 &amp; 0 &amp; \frac{77}{2} \end{array}\right)',\end{split}\]</div>
+<p>L”<strong>unica differenza</strong> tra le due implementazioni è l’ordine, per colonna e per riga rispettivamente, in cui facciamo le operazioni.</p>
+</div>
+</div>
+<section id="la-fattorizzazione-con-pivoting">
+<span id="pivoting"></span><h3>La fattorizzazione con <em>pivoting</em><a class="headerlink" href="#la-fattorizzazione-con-pivoting" title="Link a questa intestazione">#</a></h3>
+<p>Consideriamo il seguente esempio numerico in cui andiamo a confrontare gli errori
+assoluti e relativi,</p>
+<div class="math notranslate nohighlight">
+\[E_{\text{abs}} = \| A - LU\|_2, \qquad E_{\text{rel}} = \frac{\| A - LU\|_2}{\| A\|_2},\]</div>
+<p>tra la matrice <span class="math notranslate nohighlight">\(A\)</span> ed il prodotto dei termini <span class="math notranslate nohighlight">\(LU\)</span> ottenuto con l’algoritmo
+implementato nell’esercizio precedente.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">clear</span><span class="p">;</span><span class="w"> </span><span class="nb">clc</span><span class="p">;</span><span class="w"> </span><span class="n">close</span><span class="w"> </span><span class="s">all</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">sizes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">100</span><span class="p">:</span><span class="mi">100</span><span class="p">:</span><span class="mi">1500</span><span class="p">;</span><span class="w"></span>
+<span class="n">N</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">length</span><span class="p">(</span><span class="n">sizes</span><span class="p">);</span><span class="w"></span>
+<span class="n">maxerr</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="n">relerr</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="n">N</span><span class="w"></span>
+<span class="w">   </span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">rand</span><span class="p">(</span><span class="n">sizes</span><span class="p">(</span><span class="nb">i</span><span class="p">),</span><span class="n">sizes</span><span class="p">(</span><span class="nb">i</span><span class="p">));</span><span class="w"></span>
+<span class="w">   </span><span class="p">[</span><span class="n">L</span><span class="p">,</span><span class="n">U</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">doolittlelu</span><span class="p">(</span><span class="n">A</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="p">[</span><span class="n">Lm</span><span class="p">,</span><span class="n">Um</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">lu</span><span class="p">(</span><span class="n">A</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">normA</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">norm</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">maxerr</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">norm</span><span class="p">(</span><span class="n">A</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">L</span><span class="o">*</span><span class="n">U</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">relerr</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">maxerr</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="o">/</span><span class="n">normA</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;Dimensione %d\n\t || A - LU || = %1.2e\n&quot;</span><span class="p">,</span><span class="n">sizes</span><span class="p">(</span><span class="nb">i</span><span class="p">),</span><span class="n">maxerr</span><span class="p">(</span><span class="nb">i</span><span class="p">));</span><span class="w"></span>
+<span class="w">   </span><span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;\t || A - LU ||/||A|| = %1.2e\n&quot;</span><span class="p">,</span><span class="n">relerr</span><span class="p">(</span><span class="nb">i</span><span class="p">));</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
+<span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="nb">loglog</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span><span class="n">maxerr</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="n">sizes</span><span class="p">,</span><span class="n">relerr</span><span class="p">,</span><span class="s">&#39;x-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Dimensione&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Errore Assoluto&#39;</span><span class="p">,</span><span class="s">&#39;Errore Relativo&#39;</span><span class="p">},</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="s">&#39;Location&#39;</span><span class="p">,</span><span class="s">&#39;best&#39;</span><span class="p">,</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Quello che osserviamo nella figura è una crescita di più di un’ordine di
+grandezza nella costruzione fatta dalla fattorizzazione <span class="math notranslate nohighlight">\(LU\)</span> accompagnato da un
+certo numero di oscillazioni <a class="reference internal" href="#lunopivoting"><span class="std std-numref">Fig. 13</span></a>.</p>
+<figure class="align-default" id="lunopivoting">
+<img alt="_images/lunopivoting.png" src="_images/lunopivoting.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Evoluzione del residuo per i metodi di Jacobi e Gauss-Seidel.</span><a class="headerlink" href="#gaussjac1" title="Link a questa immagine">#</a></p>
+<p><span class="caption-number">Fig. 13 </span><span class="caption-text">Errori assoluti e relativi tra una matrice <span class="math notranslate nohighlight">\(A\)</span> ad entrate casuali
+uniformemente distribuite in <span class="math notranslate nohighlight">\([0,1]\)</span> e la relativa fattorizzazione <span class="math notranslate nohighlight">\(LU\)</span> calcolata
+<strong>senza</strong> pivoting.</span><a class="headerlink" href="#lunopivoting" title="Link a questa immagine">#</a></p>
 </figcaption>
 </figure>
-<p>Possiamo indagare la cosa dal punto di vista teorico andando a guardare il raggio spettrale delle due matrici di iterazione, infatti</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">M</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">diag</span><span class="p">(</span><span class="nb">diag</span><span class="p">(</span><span class="n">A</span><span class="p">));</span><span class="w"> </span><span class="c">% Jacobi</span><span class="w"></span>
-<span class="n">N</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">M</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">A</span><span class="p">;</span><span class="w"></span>
-<span class="n">rhojacobi</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">eigs</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">M</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s">&#39;largestabs&#39;</span><span class="p">);</span><span class="w"></span>
+<p>Ci aspetteremo che almeno l”<strong>errore relativo</strong> si comportasse meglio. Quello
+che sta accadendo è che la scelta dei <em>pivot</em> affidata alla forma originale della
+matrice sta introducendo dell’instabilità numerica che ci fa perdere in precisione
+relativa più di quanto sarebbe lecito aspettarsi guardando ai numeri di
+condizionamento delle operazioni in questione.</p>
+<p>Per <strong>migliorare la stabilità dell’algoritmo</strong> e fare sì che la fattorizzazione
+<span class="math notranslate nohighlight">\(LU\)</span> si possa calcolare per una <em>generica matrice</em> (ovvero anche
+quando si incontrano <em>pivot</em> nulli) possiamo introdurre una strategia di
+<strong>scambio delle righe</strong> della matrice detta, per l’appunto, di <em>pivoting parziale</em>.</p>
+<p>Formalmente, questo vuol dire che otterremo una fattorizzazione della forma</p>
+<div class="math notranslate nohighlight">
+\[P A = L U,\]</div>
+<p>in cui <span class="math notranslate nohighlight">\(P\)</span> è una <strong>matrice di permutazione</strong>. Strutturalmente una matrice di
+permutazione non è nient’altro che una matrice identità di cui abbiamo permutato
+le righe. Vediamo un <em>veloce esempio</em>:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">format</span><span class="w"> </span><span class="nb">rat</span><span class="w"></span>
+<span class="n">H</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">hilb</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="w"></span>
+<span class="n">P</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">eye</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="w"></span>
+<span class="n">P</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">P</span><span class="p">([</span><span class="mi">5</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">],:)</span><span class="w"></span>
+<span class="n">P</span><span class="o">*</span><span class="n">H</span><span class="w"></span>
+</pre></div>
+</div>
+<p>che costruisce le matrici</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}H = \left(\begin{array}{ccccc} 1 &amp; \frac{1}{2} &amp; \frac{1}{3} &amp; \frac{1}{4} &amp; \frac{1}{5}\\ \frac{1}{2} &amp; \frac{1}{3} &amp; \frac{1}{4} &amp; \frac{1}{5} &amp; \frac{1}{6}\\ \frac{1}{3} &amp; \frac{1}{4} &amp; \frac{1}{5} &amp; \frac{1}{6} &amp; \frac{1}{7}\\ \frac{1}{4} &amp; \frac{1}{5} &amp; \frac{1}{6} &amp; \frac{1}{7} &amp; \frac{1}{8}\\ \frac{1}{5} &amp; \frac{1}{6} &amp; \frac{1}{7} &amp; \frac{1}{8} &amp; \frac{1}{9} \end{array}\right), \quad P = \left(\begin{array}{ccccc} 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1\\ 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0\\ 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0\\ 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0\\ 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \end{array}\right), \quad PH = \left(\begin{array}{ccccc} \frac{1}{5} &amp; \frac{1}{6} &amp; \frac{1}{7} &amp; \frac{1}{8} &amp; \frac{1}{9}\\ \frac{1}{4} &amp; \frac{1}{5} &amp; \frac{1}{6} &amp; \frac{1}{7} &amp; \frac{1}{8}\\ \frac{1}{3} &amp; \frac{1}{4} &amp; \frac{1}{5} &amp; \frac{1}{6} &amp; \frac{1}{7}\\ \frac{1}{2} &amp; \frac{1}{3} &amp; \frac{1}{4} &amp; \frac{1}{5} &amp; \frac{1}{6}\\ 1 &amp; \frac{1}{2} &amp; \frac{1}{3} &amp; \frac{1}{4} &amp; \frac{1}{5} \end{array}\right),\end{split}\]</div>
+<p>e ci mostra anche come possiamo <strong>permutare</strong> due (o più) righe di una matrice
+MATLAB. Abbiamo ora tutti gli ingredienti necessari a costruire la nostra versione
+fatta in casa della fattorizzazione LU con pivoting in MATLAB.</p>
+<div class="admonition-esercizio admonition">
+<p class="admonition-title">Esercizio</p>
+<p>Si costruisca una funzione <code class="docutils literal notranslate"><span class="pre">ludecomp</span></code> per costruire la fattorizzazione <span class="math notranslate nohighlight">\(LU\)</span> con
+pivoting parziale per una matrice <span class="math notranslate nohighlight">\(A\)</span>. Un prototipo della funzione è quindi:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[L,U,P]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">ludecomp</span><span class="p">(</span>A<span class="p">)</span><span class="w"></span>
+<span class="c">%%LUDECOMPP Fattorizzazione LU con pivoting parziale.</span><span class="w"></span>
 
-<span class="n">M</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">tril</span><span class="p">(</span><span class="n">A</span><span class="p">);</span><span class="w"> </span><span class="c">% Gauss-Seidel (forward)</span><span class="w"></span>
-<span class="n">N</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">M</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">A</span><span class="p">;</span><span class="w"></span>
-<span class="n">rhoforwardgs</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">eigs</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">M</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s">&#39;largestabs&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="c">% Contrllo dell&#39;input:</span><span class="w"></span>
 
-<span class="nb">fprintf</span><span class="p">(</span><span class="s">&#39;Il raggio spettrale per Jacobi è %f\n&#39;</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">rhojacobi</span><span class="p">));</span><span class="w"></span>
-<span class="nb">fprintf</span><span class="p">(</span><span class="s">&#39;Il raggio spettrale per Gauss-Seidel è %f\n&#39;</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">rhoforwardgs</span><span class="p">));</span><span class="w"></span>
+<span class="c">% Allocazione della memoria:</span><span class="w"></span>
+<span class="n">L</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+<span class="n">U</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+<span class="n">P</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">eye</span><span class="p">(</span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Fattorizzazione con Pivoting</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
 </pre></div>
 </div>
-<p>Da cui scopriamo che:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Il</span> <span class="n">raggio</span> <span class="n">spettrale</span> <span class="n">per</span> <span class="n">Jacobi</span> <span class="n">è</span> <span class="mf">0.959493</span>
-<span class="n">Il</span> <span class="n">raggio</span> <span class="n">spettrale</span> <span class="n">per</span> <span class="n">Gauss</span><span class="o">-</span><span class="n">Seidel</span> <span class="n">è</span> <span class="mf">0.920627</span>
+<ul class="simple">
+<li><p>Si faccia un <strong>controllo dell’input</strong>: la matrice <span class="math notranslate nohighlight">\(A\)</span> è quadrata?</p></li>
+<li><p>Si utilizzino operazioni vettorizzate per le somme che compaiono in <a class="reference internal" href="#equation-lu1">(9)</a>
+e <a class="reference internal" href="#equation-lu2">(10)</a>.</p></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Suggerimento</p>
+<p>Se il ciclo esterno è per <span class="math notranslate nohighlight">\(k=1,\ldots,n\)</span> possiamo <strong>individuare il pivot</strong> facendo:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">~</span><span class="p">,</span><span class="n">r</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="n">k</span><span class="p">:</span><span class="k">end</span><span class="p">,</span><span class="n">k</span><span class="p">)));</span><span class="w"></span>
+<span class="n">r</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">n</span><span class="o">-</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">r</span><span class="p">;</span><span class="w"> </span><span class="c">% Trasliamo l&#39;indice in questione</span><span class="w"></span>
 </pre></div>
 </div>
-<p>dunque Gauss-Seidel (forward) ha un tasso di riduzione del residuo minore e una convergenza più rapida.</p>
-<p>Possiamo aggiungere delle istruzioni <code class="docutils literal notranslate"><span class="pre">tic</span></code> e <code class="docutils literal notranslate"><span class="pre">toc</span></code> per valutare anche il tempo impiegato dai due differenti metodi:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Il</span> <span class="n">tempo</span> <span class="n">per</span> <span class="n">Jacobi</span> <span class="n">è</span> <span class="mf">0.008983</span> <span class="n">s</span>
-<span class="n">Il</span> <span class="n">tempo</span> <span class="n">per</span> <span class="n">Gauss</span><span class="o">-</span><span class="n">Seidel</span> <span class="n">è</span> <span class="mf">0.182575</span> <span class="n">s</span>
+<p>Qual è l’effetto della traslazione di indice?</p>
+</div>
+</div>
+<p>Possiamo <strong>verificare</strong> l’implementazione della versione con <em>pivoting parziale</em>
+facendone un paragone con la versione dell’esercizio precedente con il seguente
+codice:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">sizes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">100</span><span class="p">:</span><span class="mi">100</span><span class="p">:</span><span class="mi">1500</span><span class="p">;</span><span class="w"></span>
+<span class="n">N</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">length</span><span class="p">(</span><span class="n">sizes</span><span class="p">);</span><span class="w"></span>
+<span class="n">maxerr</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="n">relerr</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="n">maxerrm</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="n">relerrm</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="n">N</span><span class="w"></span>
+<span class="w">   </span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">rand</span><span class="p">(</span><span class="n">sizes</span><span class="p">(</span><span class="nb">i</span><span class="p">),</span><span class="n">sizes</span><span class="p">(</span><span class="nb">i</span><span class="p">));</span><span class="w"></span>
+<span class="w">   </span><span class="p">[</span><span class="n">L</span><span class="p">,</span><span class="n">U</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">doolittlelu</span><span class="p">(</span><span class="n">A</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="p">[</span><span class="n">Lm</span><span class="p">,</span><span class="n">Um</span><span class="p">,</span><span class="n">P</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ludecomp</span><span class="p">(</span><span class="n">A</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">normA</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">norm</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">maxerr</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">norm</span><span class="p">(</span><span class="n">A</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">L</span><span class="o">*</span><span class="n">U</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">relerr</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">maxerr</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="o">/</span><span class="n">normA</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="n">maxerrm</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">norm</span><span class="p">(</span><span class="n">P</span><span class="o">*</span><span class="n">A</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Lm</span><span class="o">*</span><span class="n">Um</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="n">relerrm</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">maxerrm</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="o">/</span><span class="n">normA</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;Dimensione %d\n \t || A - LU || = %1.2e\n&quot;</span><span class="p">,</span><span class="n">sizes</span><span class="p">(</span><span class="nb">i</span><span class="p">),</span><span class="n">maxerr</span><span class="p">(</span><span class="nb">i</span><span class="p">));</span><span class="w"></span>
+<span class="w">   </span><span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;\t || A - LU ||/||A|| = %1.2e\n&quot;</span><span class="p">,</span><span class="n">relerr</span><span class="p">(</span><span class="nb">i</span><span class="p">));</span><span class="w"></span>
+<span class="w">   </span><span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;\t || P*A - LU ||/||A|| = %1.2e\n&quot;</span><span class="p">,</span><span class="n">maxerrm</span><span class="p">(</span><span class="nb">i</span><span class="p">));</span><span class="w"></span>
+<span class="w">   </span><span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;\t || P*A - LU ||/||A|| = %1.2e\n&quot;</span><span class="p">,</span><span class="n">relerrm</span><span class="p">(</span><span class="nb">i</span><span class="p">));</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
+<span class="nb">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="nb">loglog</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span><span class="n">maxerr</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="n">sizes</span><span class="p">,</span><span class="n">relerr</span><span class="p">,</span><span class="s">&#39;x-&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="n">sizes</span><span class="p">,</span><span class="n">maxerrm</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="n">sizes</span><span class="p">,</span><span class="n">relerrm</span><span class="p">,</span><span class="s">&#39;x-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Dimensione&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Errore Assoluto&#39;</span><span class="p">,</span><span class="s">&#39;Errore Relativo&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="s">&#39;Errore Assoluto (Pivoting)&#39;</span><span class="p">,</span><span class="s">&#39;Errore Relativo (Pivoting)&#39;</span><span class="p">},</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="s">&#39;Location&#39;</span><span class="p">,</span><span class="s">&#39;best&#39;</span><span class="p">,</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
-<p>ovvero il metodo di Jacobi è in questo caso circa due ordini di grandezza più rapido. Tuttavia, se andiamo a sostituire la nostra implementazione della funzione <code class="docutils literal notranslate"><span class="pre">forwardsolve</span></code> con il <code class="docutils literal notranslate"><span class="pre">\</span></code> implementato da MATLAB scopriamo che:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Il</span> <span class="n">tempo</span> <span class="n">per</span> <span class="n">Jacobi</span> <span class="n">è</span> <span class="mf">0.008191</span> <span class="n">s</span>
-<span class="n">Il</span> <span class="n">tempo</span> <span class="n">per</span> <span class="n">Gauss</span><span class="o">-</span><span class="n">Seidel</span> <span class="n">è</span> <span class="mf">0.004435</span> <span class="n">s</span>
+<p>Con questa esecuzione possiamo osservare che abbiamo mantenuto un errore
+relativo che è all’incirca della precisione di macchina, migliorando
+sensibilmente le performance rispetto alla versione che utilizzava
+l’ordinamento di partenza.</p>
+<figure class="align-default" id="lusipivoting">
+<img alt="_images/lusipivoting.png" src="_images/lusipivoting.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 14 </span><span class="caption-text">Errori assoluti e relativi tra una matrice <span class="math notranslate nohighlight">\(A\)</span> ad entrate casuali
+uniformemente distribuite in <span class="math notranslate nohighlight">\([0,1]\)</span> e la relativa fattorizzazione <span class="math notranslate nohighlight">\(LU\)</span>
+calcolata <strong>senza</strong> e <strong>con</strong> pivoting.</span><a class="headerlink" href="#lusipivoting" title="Link a questa immagine">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="calcolo-del-determinante">
+<h3>Calcolo del determinante<a class="headerlink" href="#calcolo-del-determinante" title="Link a questa intestazione">#</a></h3>
+<p>Dopo aver calcolato la fattorizzazione <span class="math notranslate nohighlight">\(LU\)</span> di una matrice <span class="math notranslate nohighlight">\(A\)</span> è possibile
+utilizzarla anche per calcolare il determinante della matrice <span class="math notranslate nohighlight">\(A\)</span>. Si può fare
+sfruttando il <strong>teorema di Binet</strong> che ricordiamo collega il prodotto fra
+matrici quadrate con il determinante:</p>
+<div class="math notranslate nohighlight">
+\[\det(AB) = \det(A)\det(B), \qquad \forall\,A,B \in M_n(\mathbb{K}),\]</div>
+<p>ed, in particolare,</p>
+<div class="math notranslate nohighlight">
+\[\det(A) = \det(LU) = \det(L)\det(U),\]</div>
+<p>che, se usiamo la formulazione di Doolittle si riduce quindi ad essere:</p>
+<div class="math notranslate nohighlight">
+\[\det(A) = \det(LU) = \det(L)\det(U) = \prod_{i=1}^{n} l_{ii} \prod_{i=1}^n u_{ii} = 1 \prod_{i=1}^n u_{ii} = \prod_{i=1}^n u_{ii}.\]</div>
+<p>Che possiamo riportare facilmente su MATLAB come:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>res<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">ludet</span><span class="p">(</span>A<span class="p">)</span><span class="w"></span>
+<span class="c">%%LUDET Calcola il determinante della matrice A sfruttando la sua fattorizzazione</span><span class="w"></span>
+<span class="c">%LU in forma di Doolittle e senza pivoting.</span><span class="w"></span>
+<span class="p">[</span><span class="o">~</span><span class="p">,</span><span class="n">U</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">doolittlelu</span><span class="p">(</span><span class="n">A</span><span class="p">);</span><span class="w"></span>
+<span class="n">res</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">prod</span><span class="p">(</span><span class="nb">diag</span><span class="p">(</span><span class="n">U</span><span class="p">));</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
 </pre></div>
 </div>
-<p>ed ora Gauss-Seidel ha ampiamente recuperato su Jacobi. L”<strong>implementazione</strong> conta! Qui il vantaggio è dato dal fatto che la matrice <span class="math notranslate nohighlight">\(L\)</span> associata al problema di test che stiamo guardando è una matrice <em>a banda</em> i non-zeri non riempiono tutto il triangolo. Il codice di MATLAB è in grado di accorgersene e adatto l’algoritmo di soluzione in modo che se ne tenga conto.</p>
+<p>e testare rapidamente con:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">pascal</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&#39;Errore relativo: %1.2e\n&#39;</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">ludet</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">det</span><span class="p">(</span><span class="n">A</span><span class="p">))</span><span class="o">/</span><span class="nb">abs</span><span class="p">(</span><span class="nb">det</span><span class="p">(</span><span class="n">A</span><span class="p">)));</span><span class="w"></span>
+</pre></div>
+</div>
+<p>che ci dovrebbe restituire un errore relativo, rispetto alla funzione <code class="docutils literal notranslate"><span class="pre">det</span></code>
+nativa di MATLAB dell’ordine di <code class="docutils literal notranslate"><span class="pre">3.33e-16</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Avvertimento</p>
+<p>Per costruire il calcolo del determinante anche nel caso in cui si utilizzi la fattorizzazione <span class="math notranslate nohighlight">\(LU\)</span> con <em>pivoting</em> è necessario tenere traccia del numero di
+scambi di righe effettuati.</p>
+</div>
+</section>
+</section>
+<section id="esercizi">
+<h2>Esercizi<a class="headerlink" href="#esercizi" title="Link a questa intestazione">#</a></h2>
+<p>Consideriamo alcune applicazioni <em>ingegneristiche</em> del problema calcolare le
+soluzione di un sistema <span id="id1">[<a class="reference internal" href="laboratorio9.html#id10" title="Jaan Kiusalaas. Numerical Methods in Engineering with MATLAB®. Cambridge University Press, 3 edition, 2015. doi:10.1017/CBO9781316341599.">Kiu15</a>]</span>.</p>
+<div class="admonition-esercizio admonition">
+<p class="admonition-title">Esercizio</p>
+<p>La formulazione per gli spostamenti di una trave reticolare piana è simile a
+quella di un sistema di masse e molle. Le differenze sono che</p>
+<ol class="simple">
+<li><p>i termini di rigidità sono dati da <span class="math notranslate nohighlight">\(k_{i} = (E A/L)_ {i}\)</span>, dove <span class="math notranslate nohighlight">\(E\)</span> è il modulo
+di elasticità, <span class="math notranslate nohighlight">\(A\)</span> rappresenta l’area della sezione di taglio e <span class="math notranslate nohighlight">\(L\)</span> è la
+lunghezza dell’elemento;</p></li>
+<li><p>ci sono due componenti dello scostamento in ogni punto di giuntura.</p></li>
+</ol>
+<p>Per la trave reticolare in figura:</p>
+<figure class="align-default" id="id13">
+<img alt="_images/planetruss.png" src="_images/planetruss.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 15 </span><span class="caption-text">Profilo di un elemento della trave reticolare piana.</span><a class="headerlink" href="#id13" title="Link a questa immagine">#</a></p>
+</figcaption>
+</figure>
+<p>si ottiene quindi il seguente sistema di equazioni lineari</p>
+<div class="math notranslate nohighlight">
+\[K \mathbf{u} = \mathbf{p}\]</div>
+<p>dove</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">K</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mf">27.58</span><span class="w">  </span><span class="mf">7.004</span><span class="w"> </span><span class="o">-</span><span class="mf">7.004</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">     </span><span class="mf">7.004</span><span class="w"> </span><span class="mf">29.57</span><span class="w">  </span><span class="o">-</span><span class="mf">5.253</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">-</span><span class="mf">24.32</span><span class="w"></span>
+<span class="w">    </span><span class="o">-</span><span class="mf">7.004</span><span class="w"> </span><span class="o">-</span><span class="mf">5.253</span><span class="w"> </span><span class="mf">29.57</span><span class="w">  </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">    </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mf">27.58</span><span class="w"> </span><span class="o">-</span><span class="mf">7.004</span><span class="w"></span>
+<span class="w">    </span><span class="mi">0</span><span class="w"> </span><span class="o">-</span><span class="mf">24.32</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">-</span><span class="mf">7.004</span><span class="w"> </span><span class="mf">29.57</span><span class="p">];</span><span class="w"></span>
+<span class="n">p</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">-</span><span class="mi">45</span><span class="p">]</span><span class="o">&#39;</span><span class="p">;</span><span class="w"> </span><span class="c">% kN</span><span class="w"></span>
+</pre></div>
+</div>
+<p>si determinino tutti gli scostamenti <span class="math notranslate nohighlight">\(u_i\)</span> per il sistema.</p>
+</div>
+<div class="admonition-esercizio admonition">
+<p class="admonition-title">Esercizio</p>
+<p>Riprendiamo l’esperimento fatto ne <a class="reference internal" href="#pivoting"><span class="std std-ref">La fattorizzazione con pivoting</span></a> con la <strong>matrice di Hilbert</strong></p>
+<div class="math notranslate nohighlight">
+\[(H_n)_{i,j} = \int_{0}^{1} x^{i+j-2}\,{\rm d}x = \frac{1}{i+j-1}, \qquad i,j=1,\ldots,n\]</div>
+<p>che è un noto esempio di matrice <em>malcondizionata</em>. Si scriva un programma
+specializzato nella risoluzione delle equazioni <span class="math notranslate nohighlight">\(H \mathbf{x} = \mathbf{b}\)</span>
+mediante il metodo di decomposizione <span class="math notranslate nohighlight">\(LU\)</span> <em>con</em> e <em>senza</em> pivoting, dove <span class="math notranslate nohighlight">\(H\)</span> è
+la matrice di Hilbert di dimensione arbitraria <span class="math notranslate nohighlight">\(n \times n\)</span>, e</p>
+<div class="math notranslate nohighlight">
+\[b_i = \sum_{j=1}^{n} (H_n)_{i,j},\]</div>
+<p>L’unico input del programma deve essere <span class="math notranslate nohighlight">\(n\)</span>. Eseguendo il programma, si determinino
+i più grandi valori di <span class="math notranslate nohighlight">\(n\)</span> per i due algoritmi per cui la soluzione è entro
+6 cifre significative della soluzione esatta.</p>
+</div>
+<aside class="margin sidebar">
+<p class="sidebar-title">Sistema di molle</p>
+<figure class="align-default" id="springlsys">
+<img alt="_images/springlsys.png" src="_images/springlsys.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 16 </span><span class="caption-text">Sistema lineare di molle.</span><a class="headerlink" href="#springlsys" title="Link a questa immagine">#</a></p>
+</figcaption>
+</figure>
+</aside>
+<div class="admonition-esercizio admonition">
+<p class="admonition-title">Esercizio</p>
+<p>Il sistema mostrato in <a class="reference internal" href="#springlsys"><span class="std std-numref">Fig. 16</span></a> è costituito da <span class="math notranslate nohighlight">\(n\)</span> molle lineari che supportano
+<span class="math notranslate nohighlight">\(n\)</span> masse. Le costanti elastiche delle molle sono indicate con <span class="math notranslate nohighlight">\(k_i\)</span>, i pesi
+delle masse sono <span class="math notranslate nohighlight">\(W_i\)</span>, e <span class="math notranslate nohighlight">\(x_i\)</span> sono gli spostamenti delle masse (misurati dalle
+posizioni in cui le molle sono indeformate). La cosiddetta formulazione dello
+spostamento si ottiene scrivendo l’equazione di equilibrio di ciascuna massa e
+sostituendo le forze elastiche con <span class="math notranslate nohighlight">\(F_i = k_i (x_{i+1} - x_{i} )\)</span>.</p>
+<p>Il risultato è il sistema simmetrico e tridiagonale di equazioni</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{split}
+(k_1 + k_2) x_1 - k_2 x_2 = &amp; W_1,\\
+- k_i x_{i-1} + (k_i + k_{i+1}) x_i - k_{i+1} x_{i+1} = &amp; W_i, \qquad i=2,3,\ldots,n-1,\\
+-k_n x_{n-1} + k_n x_n = &amp; W_n,
+\end{split}\end{split}\]</div>
+<p>si scriva un programma che risolve queste equazioni per dati valori di <span class="math notranslate nohighlight">\(n\)</span>, <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> e <span class="math notranslate nohighlight">\(\mathbf{W}\)</span>. Si risolva il problema con <span class="math notranslate nohighlight">\(n=5\)</span> e</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{split}
+k_1 = k_2 = k_3 = 10\, \text{N}/\text{mm}\;\; k_4 = k_5 = 5\, \text{N}/\text{mm}\\ W_1 = W_3 = W_5 = 100\,\text{N},\qquad W_2 = W_4 = 50\,\text{N}.
+\end{split}\end{split}\]</div>
+</div>
+</section>
+<section id="le-funzioni-di-matlab">
+<h2>Le funzioni di MATLAB<a class="headerlink" href="#le-funzioni-di-matlab" title="Link a questa intestazione">#</a></h2>
+<p>MATLAB implementa ovviamente una sua versione della fattorizzazione <span class="math notranslate nohighlight">\(LU\)</span> ed un
+suo algoritmo per la soluzione dei sistemi lineari.</p>
+<p>Per la fattorizzazione il comando ha il medesimo nome <code class="docutils literal notranslate"><span class="pre">lu</span></code> e permette una certa
+flessibilità.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[L,U]</span> <span class="pre">=</span> <span class="pre">lu(A)</span></code>, restituisce una matrice triangolare superiore in <span class="math notranslate nohighlight">\(U\)</span> e
+una matrice triangolare inferiore <strong>permutata</strong> in <span class="math notranslate nohighlight">\(L\)</span>, tale che <span class="math notranslate nohighlight">\(A = LU\)</span>.
+La matrice di input <span class="math notranslate nohighlight">\(A\)</span> può essere <em>densa</em> o <em>sparsa</em>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[L,U,P]</span> <span class="pre">=</span> <span class="pre">lu(A)</span></code>, restituisce una matrice triangolare inferiore <span class="math notranslate nohighlight">\(L\)</span> con
+diagonale di uno, matrice triangolare superiore <span class="math notranslate nohighlight">\(U\)</span> ed una matrice di
+permutazione <span class="math notranslate nohighlight">\(P\)</span> tale che <span class="math notranslate nohighlight">\(PA = LU\)</span>. Con un argomento di input <em>opzionale</em> è
+possibile scegliere il formato della <span class="math notranslate nohighlight">\(P\)</span>, ovvero se chiama <code class="docutils literal notranslate"><span class="pre">lu(A,</span> <span class="pre">outputForm)</span></code>
+con <code class="docutils literal notranslate"><span class="pre">outputForm</span></code> uguale a <code class="docutils literal notranslate"><span class="pre">'matrix'</span></code> (default) <span class="math notranslate nohighlight">\(P\)</span> è memorizzata come una matrice,
+se si chiama con l’opzione <code class="docutils literal notranslate"><span class="pre">'vector'</span></code> allora <span class="math notranslate nohighlight">\(P\)</span> è un vettore tale che <code class="docutils literal notranslate"><span class="pre">A(P,:)</span> <span class="pre">=</span> <span class="pre">L*U</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[L,U,P,Q]</span> <span class="pre">=</span> <span class="pre">lu(A)</span></code> restituisce una matrice triangolare inferiore <span class="math notranslate nohighlight">\(L\)</span> con
+diagonale di uno, matrice triangolare superiore <span class="math notranslate nohighlight">\(U\)</span> e due matrici di
+permutazione <span class="math notranslate nohighlight">\(P\)</span> e <span class="math notranslate nohighlight">\(Q\)</span> tali che <span class="math notranslate nohighlight">\(PAQ = LU\)</span>. Per una matrice sparsa questa opzione
+è significativamente più efficiente della versione con tre output.</p></li>
+</ul>
+<div class="proof definition admonition" id="definition-0">
+<p class="admonition-title"><span class="caption-number">Definition 1 </span></p>
+<section class="definition-content" id="proof-content">
+<p>Una <strong>matrice sparsa</strong> o <strong>array sparso</strong> è una matrice in cui la maggior parte
+degli elementi è zero. Per dare una definizione rigorosa riguardo alla
+proporzione di elementi di valore zero affinché una matrice sia qualificata
+come sparsa è tipicamente necessario considerare la sorgente del problema che la
+ha generata, e.g., la discretizzazione di una PDE. Un <strong>criterio comune</strong> è che
+il numero di elementi diversi da zero sia approssimativamente uguale al numero
+di righe o colonne.</p>
+<p>Al contrario, se la maggior parte degli elementi è diversa da zero, la matrice è
+considerata densa.</p>
+</section>
+</div><p>Informazioni sulle matrici sparse possono essere recuperate dal manuale di
+MATLAB (<code class="docutils literal notranslate"><span class="pre">help</span> <span class="pre">sparse</span></code>). Non scenderemo qui in ulteriori dettagli.</p>
+<p>La funzione per <strong>risolvere i sistemi lineari</strong> è la funzione <code class="docutils literal notranslate"><span class="pre">mldivide</span></code> <code class="docutils literal notranslate"><span class="pre">\</span></code>.
+Si tratta di una delle funzioni più elaborate di MATLAB, il comando <code class="docutils literal notranslate"><span class="pre">A\B</span></code> è la
+<em>divisione matriciale</em> di <code class="docutils literal notranslate"><span class="pre">A</span></code> in <code class="docutils literal notranslate"><span class="pre">B</span></code>, moralmente è la stessa operazione di
+<code class="docutils literal notranslate"><span class="pre">INV(A)*B</span></code>, ma è <strong>calcolata in modo diverso</strong>, <strong>stabile</strong> ed <strong>efficiente</strong>.</p>
+<p>Se <span class="math notranslate nohighlight">\(A\)</span> è una matrice <span class="math notranslate nohighlight">\(N\)</span> per <span class="math notranslate nohighlight">\(N\)</span> e <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> è un vettore colonna con <span class="math notranslate nohighlight">\(N\)</span>
+componenti, o una matrice con più di queste colonne, allora <code class="docutils literal notranslate"><span class="pre">X</span> <span class="pre">=</span> <span class="pre">A\b</span></code> è la
+soluzione dell’equazione <code class="docutils literal notranslate"><span class="pre">A*X</span> <span class="pre">=</span> <span class="pre">B</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Avvertimento</p>
+<p>Viene stampato un messaggio di avviso se A è scalata male o malcondizionata, ad
+<strong>esempio</strong></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">hilb</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span><span class="o">\</span><span class="nb">ones</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>restituisce</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ne">Warning</span><span class="p">:</span> <span class="n">Matrix</span> <span class="ow">is</span> <span class="n">close</span> <span class="n">to</span> <span class="n">singular</span> <span class="ow">or</span> <span class="n">badly</span> <span class="n">scaled</span><span class="o">.</span> <span class="n">Results</span> <span class="n">may</span> <span class="n">be</span> <span class="n">inaccurate</span><span class="o">.</span>
+<span class="n">RCOND</span> <span class="o">=</span>  <span class="mf">5.460912e-19</span><span class="o">.</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="bibliografia">
+<h2>Bibliografia<a class="headerlink" href="#bibliografia" title="Link a questa intestazione">#</a></h2>
+<div class="docutils container" id="id2">
+<dl class="citation">
+<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id1">Kiu15</a></span></dt>
+<dd><p>Jaan Kiusalaas. <em>Numerical Methods in Engineering with MATLAB®</em>. Cambridge University Press, 3 edition, 2015. <a class="reference external" href="https://doi.org/10.1017/CBO9781316341599">doi:10.1017/CBO9781316341599</a>.</p>
+</dd>
+</dl>
+</div>
 </section>
 </section>
 
@@ -758,13 +1046,13 @@ per questo metodo la decomposizione additiva della matrice <span class="math not
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">precedente</p>
-            <p class="prev-next-title">Laboratorio 6 : L’Eliminazione di Gauss il Metodo LU</p>
+            <p class="prev-next-title">Laboratorio 6 : Soluzione di Sistemi Triangolari</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="laboratorio8.html" title="successivo pagina">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">successivo</p>
-        <p class="prev-next-title">Laboratorio 8 : Metodi di Quadratura</p>
+        <p class="prev-next-title">Laboratorio 8 : Metodi Stazionari per Sistemi Lineari</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

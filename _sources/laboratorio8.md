@@ -1,608 +1,314 @@
-# Laboratorio 8 : Metodi di Quadratura
+# Laboratorio 8 : Metodi Stazionari per Sistemi Lineari
 
-Compito dell'integrazione numerica, o *quadrature* è quello di
-approssimare il valore dell'integrale
+Un **metodo iterativo** è una procedura matematica che a partire da un *valore iniziale* genera una sequenza di *soluzioni approssimate* migliorative per una
+determinata classe di problemi, in cui l'approssimazione $n$esima è derivata dai precedenti. Abbiamo già visto, **ed implementato**, metodi di questo tipo per la ricerca degli zeri di una funzione.
+
+In questo laboratorio vogliamo concentrarci invece sulla costruzione di alcuni
+metodi di questo tipo per la soluzione di sistemi lineari.
+
+La prima domanda che è legittimo porsi è perché mai vogliamo mettere in piedi
+dei metodi iterativi se abbiamo già dei metodi diretti che possono raggiungere
+la soluzione del problema cercato?
+- A patto di richiedere una tolleranza minore (spesso sufficiente nelle applicazioni) sull'errore commesso sulla soluzione hanno un costo computazionale inferiore alle controparti dirette,
+- Per le dimensioni dei problemi che si vogliono affrontare nelle applicazioni ingegneristiche attuali sono spesso l'unica opzione disponibile (problemi di fluidodinamica computazionale, combustione, meccanica del continuo, ...)
+
+Nel corso e in questo laboratorio ci focalizziamo su alcuni dei metodi più semplici e che, in genere, sono usati come i blocchi costituivi di metodi più complessi (e.g., metodi di tipo *multigrid* o *domain decomposition*) o come acceleratori per la convergenza (in gergo chiamati: *precondizionatori*).
+
+## Metodi di tipo stazionario
+
+Dato un sistema lineare della forma
 ```{math}
-\int_{a}^{b} f(x)\,{\rm d}x,
+A \mathbf{x} = \mathbf{b}, \qquad A \in \mathbb{R}^{n \times n},\; \mathbf{x},\mathbf{b} \in \mathbb{R}^n
 ```
-con la somma finita
+siamo interessati a **metodi di punto fisso** basati sugli *splitting* della matrice $A$. Cioè metodi basati su una decomposizione additiva della matrice della forma
 ```{math}
-I = \sum_{i=1}^{n} \omega_i f(x_i),
+A = M - N, \qquad\text{ con }\qquad \det(M) \neq 0.
 ```
-dove i **nodi** $\{x_i\}_{i=1}$ e i **pesi** $\{ \omega_i \}_{i=1}^{n}$
-dipendono dalla particolare forma scelta. Come avete visto a lezione, le
-regole di quadratura provengono dalla scelta di un particolare _polinomio
-interpolante_ per la funzione $f$. Delle diverse famiglie di formule
-quadrature che esistono ci focalizzeremo qui sull'implementazione delle
-**formule di Newton-Cotes**.
-
-Ricordiamo brevemente il funzionamento generale di questa procedura.
-Consideriamo l'integrale definito
+Da questa decomposizione si ottiene poi l'iterata di punto fisso come
 ```{math}
-\int_{a}^{b} f(x)\,{\rm d}x,
-```
-e dividiamo l'intervallo $(a,b)$ in $n-1$ intervalli di uguale lunghezza
-```{math}
-h = \frac{b-a}{n-1}, \quad x_{i+1} = a + i h, \; i=0,\ldots,n-1,
-```
-sostituiamo poi alla funzione $f$ il suo **polinomio interpolante** in
-forma di Lagrange sui valori $\{ (x_i,f(x_i))\}_{i=1}^{n}$
-```{math}
-P_{n-1}(x) = \sum_{i=1}^{n} f(x_i)L_i(x),
-```
-da cui otteniamo che
-```{math}
-I = \int_{a}^{b} P_{n-1}(x)\,{\rm d}x = \sum_{i=1}^{n}\left[ f(x_i) \int_{a}^{b} L_{i}(x) \right] = \sum_{i=1}^{n} \omega_i f(x_i),
-```
-dove i **pesi** non sono nient'altro che gli integrali
-```{math}
-\omega_i = \int_{a}^{b} L_i(x)\,{\rm d}x, \quad i=1,\ldots,n.
-```
-Vediamo e **implementiamo** ora alcune celebri formule di quadratura di
-questa forma.
-
-## Regola composita dei trapezi
-
-Supponiamo di scegliere $n=2$, ovvero $h = b-a$ e quindi $x_1 = a$,
-$x_2 = b$, e quindi
-```{math}
-w_1 = & -\frac{1}{h}\int_{a}^{b} (x-b)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},\\
-w_2 = & \frac{1}{h}\int_{a}^{b} (x-a)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},
-```
-da cui
-```{math}
-I = \sum_{i=1}^{2} \omega_i f(x_i) = \frac{h}{2}(f(a)+f(b)),
-```
-e che è **esattamente** l'area del trapezio di altezza $b-a$ e basi $f(a)$
-e $f(b)$. L'errore per questa approssimazione, se $f$ è due volte differenziabile, è dato da
-```{math}
-E = O\left( \frac{h^3}{12} f''(\xi) \right),
-```
-dove $\xi$ è un punto in $[a,b]$ e che quindi **possiamo maggiorare** con il massimo di $f''(x)$ in $[a,b]$.
-
-Facciamo una rapida verifica con MATLAB
-```matlab
-f = @(x) sin(x);
-Ix = @(x) -cos(x);
-a = 0;
-b = 1;
-h = b - a;
-I = h*(f(a)+f(b))/2;
-Itrue = Ix(b)-Ix(a);
-fprintf('|I - Itrue| = %e\n',abs(I-Itrue));
-fprintf("Dovrebbe essere dell'ordine di: %e\n", h^3/12);
-```
-Questo ovviamente non ci è sufficiente, poiché non appena andiamo ad
-aumentare l'intervallo $[a,b]$ ( e quindi $h$ ) su cui vogliamo calcolare
-l'integrale le cose peggiorano nettamente
-```matlab
-f = @(x) sin(x);
-Ix = @(x) -cos(x);
-a = 0;
-b = pi;
-h = b - a;
-I = h*(f(a)+f(b))/2;
-Itrue = Ix(b)-Ix(a);
-fprintf('|I - Itrue| = %e\n',abs(I-Itrue));
-fprintf("Dovrebbe essere dell'ordine di: %e\n", h^3/12);
-```
-non **abbiamo nemmeno una cifra significativa corretta**.
-
-Per *risolvere questo inconveniente*, possiamo passare ad utilizzare una
-composita. Dividiamo di nuovo l'intervallo $[a,b]$ in $n-1$
-sotto-intervalli di ampiezza $h = (b-a)/(n-1)$ e approssimiamo su ogni sotto-intervallo l'integrale con la formula dei trapezi locale
-```{math}
-I = \frac{h}{2} \sum_{i=1}^{n-1} f(x_i) + f(x_{i+1}),
-```
-per cui si può ricavare una **nuova stima dell'errore**:
-```{math}
-E = O\left( - \frac{(b-a)h^2}{12} f''(\xi) \right),
-```
-dove $\xi$ è sempre un valore nell'intervallo $[a,b]$.
-
-:::{admonition} Esercizio
-Implementiamo la **formula dei trapezi** per una funzione $f$ utilizzando
-il seguente prototipo
-```matlab
-function I = trapezi(f,a,b,n)
-%% TRAPEZI questa funzione implementa il metodo dei trapezi per la
-% funzione f sull'intervallo a,b con n-1 intervalli.
-%   INPUT: f function handle dell'integrando,
-%          a,b estremi dell'intervallo di integrazione
-%          n numero di intervalli + 1
-
-end
-```
-- Si cerchi di **minimizzare** il numero di **chiamate** alla funzione $f$ della routine,
-- Un comando utile per questo esercizio è il comando `linspace`,
-- Si scriva un codice che non utilizza cicli `for`.
-
-Per testare l'implementazione si può provare a valutare l'integrale:
-```{math}
-\pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,
-```
-con
-```matlab
-%% Test del metodo dei Trapezi
-
-clear; clc; close all;
-
-f = @(x) 4*sqrt(1-x.^2);
-a = 0;
-b = 1;
-
-n = 10;
-I = trapezi(f,a,b,n);
-
-fprintf('Errore: %e\n',abs(pi-I)/pi);
-```
-:::
-
-Cerchiamo ora di verificare il comportamento della formula rispetto
-alla stima dell'errore che abbiamo **ottenuto dalla teoria**. Valutiamo
-che succede per l'integrale dell'esempio:
-```{math}
-\pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,
-```
-Proviamo a stimare l'errore in maniera numerica e a confrontarlo con il
-comportamento che ci aspettiamo dalla teoria:
-
-```matlab
-n = logspace(1,4,4);
-errore = [];
-
-for nval = n
-    I = trapezi(f,a,b,nval);
-    errore = [errore,abs(I-pi)/pi];
-end
-
-h = (b-a)./n;
-err = (b-a)*h.^2/12;
-
-figure(1)
-loglog(n,errore,'o-',n,err/errore(1),'r--','LineWidth',2);
-xlabel('n');
-ylabel('Errore');
-legend({'Errore Misurato','Stima'},'FontSize',14)
-```
-:::{margin} Errore regola dei trapezi
-![Errore per trapezi non regolare](/images/trapezoidal_error1.png)
-
-Errore per l'integrale
-```{math}
-\pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,
-```
-
-![Errore per trapezi regolare](/images/trapezoidal_error2.png)
-
-Errore per l'integrale
-```{math}
-\int_0^3 x^2 \sin ^3(x) \, {\rm d}x
-```
-:::
-La stima non sembra particolarmente soddisfacente, ma siamo sicuri di
-poterla applicare? Calcoliamo la derivata seconda della nostra funzione
-integranda:
-```{math}
-f''(x) = 4 \left(-\frac{t^2}{\left(1-t^2\right)^{3/2}}-\frac{1}{\sqrt{1-t^2}}\right) = -\frac{4}{\left(1-t^2\right)^{3/2}}
-```
-per cui abbiamo che:
-```{math}
-\underset{t\to 1^-}{\text{lim}}-\frac{4}{\left(1-t^2\right)^{3/2}} = -\infty
-```
-ovvero, **non possiamo limitare $f''(\xi)$ nell'intervallo di
-integrazione**.
-
-Proviamo con una funzione diversa, ad esempio:
-```{math}
-I = \int_0^3 x^2 \sin ^3(x) \, {\rm d}x = & \frac{1}{108} \left.-81 \left(x^2-2\right) \cos (x)+\left(9 x^2-2\right) \cos (3 x)-6 x (\sin (3 x)-27 \sin (x))\right|_{0}^{3} \\
-= & \frac{1}{108} (-160+486 \sin (3)-18 \sin (9)-567 \cos (3)+79 \cos (9)),
-```
-per cui la derivata seconda ha la regolarità necessaria
-```{math}
-f''(x) = & x^2 \left(6 \sin (x) \cos ^2(x)-3 \sin ^3(x)\right)+2 \sin ^3(x)+12 x \sin ^2(x) \cos (x) \\
-= & \frac{1}{2} \sin (x) \left(3 x^2+\left(9 x^2-2\right) \cos (2 x)+12 x \sin (2 x)+2\right)
-```
-e si osserva che $|f''(x)| < 10$ per $x \in [0,3]$. Vediamo che succede
-numericamente:
-```matlab
-f = @(x) x.^2.*sin(x).^3;
-a = 0;
-b = 3;
-Itrue = 3.615857833947287;
-
-n = logspace(1,4,4);
-errore = [];
-
-for nval = n
-    I = trapezi(f,a,b,nval);
-    errore = [errore,abs(I-Itrue)/Itrue];
-end
-
-h = (b-a)./n;
-err = 10*(b-a)*h.^2/12;
-
-figure(2)
-loglog(n,errore,'o-',n,err,'r--','LineWidth',2);
-xlabel('n');
-ylabel('Errore');
-legend({'Errore Misurato','Stima'},'FontSize',14)
-```
-
-:::{warning}
-Questa stima dell'errore è solo una prima approssimazione, in realtà è
-possibile ottenere stime più precise coinvolgendo termini di ordine
-superiore. Per i nostri scopi è sufficiente, ma sappiate che si può indagare più in profondità la questione.
-:::
-
-### Una versione ricorsiva
-
-Supponiamo di aver scelto un valore di $n$ per il nostro integrale, ma che
-alla fine del calcolo il valore ottenuto non abbia l'accuratezza che
-desideravamo. Quello che possiamo fare è scegliere un nuovo valore di $n$
-e calcolare di nuovo l'integrale. Questo, tuttavia, ci richiede di
-fare di nuovo tutte le valutazioni di funzione perché ad un nuovo $n$
-corrispondono nodi nuovi.
-
-Possiamo recuperare in qualche modo parte dello sforzo?
-
-Chiamiamo $I_k$ l'integrale valutato con la regola composita dei
-trapezi usando $2^{k-1}$ intervalli. Ora, se passiamo da $k$ a $k+1$
-il **numero di intervalli è raddoppiato**.
-
-Chiamiamo $H = b - a$ e scriviamo la regola dei trapezi per i primi $k$
-```{math}
-k = 1, &\quad I_1 = \frac{H}{2}[f(a) + f(b)],\\
-k = 2, &\quad I_2 = \frac{H}{4}\left[ f(a) + 2 f\left(a + \frac{H}{2} \right) + f(b) \right] \\
-&\quad\; = \frac{1}{2} I_1 + f\left(a + \frac{H}{2}\right)\frac{H}{2}, \\
-k = 3, &\quad I_3 = \frac{H}{8}\left[ f(a) + 2 f\left(a + \frac{H}{4}\right) + 2 f\left(a + \frac{H}{2}\right) + 2 f\left(a + \frac{3H}{4}\right) + f(b) \right] \\
-&\quad\; = \frac{1}{2} I_2 + \frac{H}{4}\left[f\left(a + \frac{H}{4}\right) + f\left(a + \frac{3H}{4}\right)\right].
-```
-Con un po' di *intuizione*, possiamo scrivere per $k > 1$
-```{math}
-I_k = \frac{1}{2}I_{k-1} + \frac{H}{2^{k-1}} \sum_{i=1}^{2^{k-2}} f \left[ a + \frac{(2i-1)H}{2^{k-1}} \right], \quad k=2,3,\ldots
-```
-
-:::{tip}
-Qual è il vantaggio di questa scelta? La somma contiene solo nodi creati ad ogni nuovo raddoppio!
-
-Ovvero, il calcolo della sequenza $I_1, I_2, I_3, \ldots, I_k$ costa
-esattamente lo stesso numero di operazioni sia che si faccia il calcolo
-tutto insieme, sia che si calcolino separatamente tutti gli $I_k$ uno
-dopo l'altro.
-
-Il vantaggio dell'uso di questa forma della regola dei trapezi
-**ricorsiva** è che ci consente di monitorare la convergenza e
-terminare il processo quando la differenza tra $I_{k-1}$ e $I_k$
-diventa sufficientemente piccola.
-:::
-
-Per implementare l'algoritmo in modo ricorsivo, riscriviamo la formula
-in termini del valore di $h$ come:
-```{math}
-:label: trapezir
-
-I(h) = \frac{1}{2}I(2h) + h \sum f(x_{\text{new}}), \quad h = \frac{H}{n-1}.
-```
-
-:::{admonition} Esercizio  
-Separiamo la funzione ricorsiva in due parti, la prima è quella
-che calcola $I(h)$, dato $I(2h)$, usando l'equazione {eq}`trapezir`
-e chiamiamola `trapezir`
-```matlab
-function Ih = trapezir(f,a,b,I2h,k)
-%%TRAPEZIR implementa l'algoritmo ricorsivo della regola dei
-%trapezi.
-%   INPUT:  f = handle della funzione da integrare,
-%           a,b = limiti di integrazione
-%           I2h = integrale su 2^{k-1} intervalli
-%           Ih = integralae calcolo su 2^k intervalli
-%           k  = livello di ricorsione
-
-end
-```
-Una volta che la parte computazionale è stata completata possiamo
-mettere insieme la funzione ricorsiva
-```matlab
-function I = trapeziricorsiva(f,a,b,kmax,tol)
-%% TRAPEZIRICORSIVA calcola l'integrale di f tra a e b in modo
-% ricorsivo. L'integrazione si ferma quando la differenza tra due
-% ricorsioni successive è minore della tolleranza richiesta.
-%   INPUT:  f = handle della funzione di integrare,
-%           a,b = estremi di integrazione
-%           kmax = massimo numero di livello di ricorsione
-%           tol = tolleranza tra due livelli di ricorsione successivi
-
-I2h = 0; k = 1;
-
-Ih = trapezir(f,a,b,I2h,k);
-fprintf('k = 1 Ih = %1.16f\n',Ih);
-
-for k = 2:kmax
-   I2h = Ih;
-   Ih = trapezir(f,a,b,I2h,k);
-   fprintf('k = %d Ih = %1.16f\n',k,Ih);
-   if abs(Ih - I2h) < tol
-       I = Ih;
-       return
-   end
-end
-warning("Non abbiamo raggiunto la tolleranza richiesta!");
-I = Ih;
-
-end
-```
-Dopo averlo fatto la testiamo sullo stesso integrale del caso precedente
-```matlab
-%% Test della funzione ricorsiva dei trapezi
-
-clear; clc; close all;
-
-f = @(x) x.^2.*sin(x).^3;
-a = 0;
-b = 3;
-Itrue = 3.615857833947287;
-tol = 1e-9;
-kmax = 20;
-
-I = trapeziricorsiva(f,a,b,kmax,tol);
-fprintf("\n\tL'errore è %e\n",abs(I - Itrue)/Itrue);
-```
-:::
-
-## Formula di Simpson
-
-La formula di quadratura di Simpson può essere ottenuta di nuovo come una
-formula di Newton-Cotes con $n = 3$. Laddove nel caso dei trapezi avevamo
-fissato una interpolate lineare, questa volta abbiamo scelto una
-interpolante quadratica attraverso tre nodi adiacenti.
-
-Possiamo ricavarla direttamente dalla definizione su un solo intervallo $[a,b]$ con i nodi
-```{math}
-x_1 = a, \quad x_2 = \frac{a+b}{2}, \quad x_3 = b,
-```
-da cui abbiamo che i pesi si ottengono come
-```{math}
-\omega_1 = \int_{a}^{b} L_1(x)\,{\rm d}x = \frac{h}{3}, \\
-\omega_2 = \int_{a}^{b} L_2(x)\,{\rm d}x = \frac{4h}{3}, \\
-\omega_3 = \int_{a}^{b} L_3(x)\,{\rm d}x = \frac{h}{3},
+A \mathbf{x} = \mathbf{b} \Rightarrow (M - N) \mathbf{x} = \mathbf{b} \Rightarrow M \mathbf{x} = N \mathbf{x} + \mathbf{b} \\
+\mathbf{x} = M^{-1} N \mathbf{x} + M^{-1} \mathbf{b}
 ```
 e quindi
 ```{math}
-I = \sum_{i=1}^{3} \omega_i f(x_i) = \frac{h}{3}\left[ f(a) + 4f\left(\frac{a+b}{2}\right)+f(b)\right].
+\mathbf{x}^{(k+1)} = M^{-1} N \mathbf{x}^{(k)} + M^{-1} \mathbf{b}, \quad k = 0,1,2,\ldots, \\
+\mathbf{x}^{(0)} \text{ assegnato}.
 ```
-:::{tip}
-Per calcolare gli integrali $\omega_i$ è conveniente fare un cambio di
-variabili ponendo l'origine dell'intervallo di integrazione su $x_2$.
-In questo modo i nodi diventano $\{-h,0,h\}$ e gli integrali sono più semplici da calcolare.
-:::
+Essendo questa un'iterata di punto fisso, la sua convergenza dipende dall'essere una **procedura contrattiva**, avete dimostrato a lezione che questo è equivalente alla richiesta che il *raggio spettrale* della matrice di iterazione $M^{-1}N$ sia strettamente minore di $1$:
+```{math}
+\rho(M^{-1}N) = \max_{1,\ldots,n }|\lambda_n(M^{-1}N)| < 1.
+```
 
+### Metodi per il calcolo agli autovalori implementati in MATLAB
+
+In alcuni casi data una matrice $A$ e uno splitting $A = M - N$ è possibile calcolare il *raggio spettrale* carta e penna, oppure inferire le proprietà di convergenza del metodo dalle proprietà della matrice $A$ e della particolare forma dello splitting. Laddove questo non fosse possibile, o volessimo una stima più precisa di quello che sta accadendo, dobbiamo ricorrere a dei metodi numerici a questo scopo. La loro costruzione è al di fuori degli obiettivi di questo corso, tuttavia MATLAB ci fornisce delle *function* che fanno al nostro caso.
+
+Vediamo prima il **caso generale** in cui data una matrice $A$ vogliamo calcolare *tutti* i suoi autovalori, costruiamo da principio una *matrice simmetrica* per
+cui possiamo sfruttare il **Teorema Spettrale** per interpretare i risultati:
+```matlab
+A = rand(10); % costruiamo una matrice casuale
+A = A + A'; % e facciamo in modo che sia simmetrica
+lambda = eig(A); % calcoliamo *tutti* gli autovalori
+disp(lambda)
+```
+che ci restituisce il vettore:
+```
+-2.1767
+-1.8198
+-0.7091
+-0.3270
+-0.1747
+ 0.7953
+ 0.9842
+ 1.3664
+ 1.9277
+ 9.4423
+```
+per cui abbiamo ottenuto 10 autovalori reali.
+
+Se guardiamo il manuale del comando `eig` leggiamo:
+```
+eig    Eigenvalues and eigenvectors.
+   E = eig(A) produces a column vector E containing the eigenvalues of
+   a square matrix A.
+
+   [V,D] = eig(A) produces a diagonal matrix D of eigenvalues and
+   a full matrix V whose columns are the corresponding eigenvectors  
+   so that A*V = V*D.
+
+   [V,D,W] = eig(A) also produces a full matrix W whose columns are the
+   corresponding left eigenvectors so that W'*A = D*W'.
+```
+Possiamo quindi usarlo per ottenere anche le relativi matrici degli autovettori sinistri e destri per la matrice $A$, cioè le matrici $V$ e $W$ tali che:
+```{math}
+A V = V D, \quad W^T A = D W^T.
+```
 :::{danger}
-La regola di Simpson che abbiamo scritto richiede che il numero di
-intervalli sia pari, ovvero che il numero di nodi sia dispari. Se
-vogliamo ammettere un qualunque numero di intervalli $n$, è necessario
-che il primo (o l'ultimo) intervallo usi 4 invece che 3 punti.
-
-Per l'implementazione seguente ci limiteremo al caso di nodi dispari, ovvero di intervalli pari.
-:::
-
-Con calcoli analoghi a quelli che avete visto per la formula dei trapezi
-si può ottenere una prima stima dell'errore anche per la formula di
-Simpson. Infatti si ha che l'errore si comporta come
-```{math}
-E = O\left( (b-a)\frac{h^4}{180} f^{(4)}(\xi) \right),
-```
-per $\xi$ un punto nell'intervallo $[a,b]$.
-
-::::{admonition} Esercizio.
-Si implementi la versione composita della regola di Simpson per il
-calcolo di un integrale secondo il seguente prototipo
+MATLAB, e la maggior parte degli algoritmi che calcolano autovalori, non conoscono la forma canonica di Jordan e l'esistenza di matrici non diagonalizzabili. Per cui vi restituiranno sempre una diagonalizzazione, anche quando questa non esiste. Consideriamo ad esempio il blocco di Jordan:
 ```matlab
-function I = simpson(f,a,b,n)
-%%SIMPSON calcolo dell'integrale della funzione f tra a e b mediante la
-% formula di Simpson.
-%   INPUT:  f = handle della funzione di integrare,
-%           a,b = estremi di integrazione
-%           n numero di intervalli + 1
-
-if mod(n,2) ~= 1
-    error('n deve essere dispari');
-end
-
-end
+J = gallery('jordbloc',5)
+[V,D,W] = eig(J)
 ```
-Che possiamo testare con:
+Otteniamo le due matrici, senza *warning* o altro... tuttavia se calcoliamo
 ```matlab
-%% Test della formula di quadratura di Simpson
+cond(V)
 
-f = @(x) x.^2.*sin(x).^3;
-a = 0;
-b = 3;
-Itrue = 3.615857833947287;
+ans =
 
-n = logspace(1,4,4)+1;
-errore = [];
-
-for nval = n
-    I = simpson(f,a,b,nval);
-    errore = [errore,abs(I-Itrue)/Itrue];
-end
-
-h = (b-a)./n;
-err = 200*(b-a)*h.^4/180;
-
-figure(2)
-loglog(n,errore,'o-',n,err,'r--','LineWidth',2);
-xlabel('n');
-ylabel('Errore');
-legend({'Errore Misurato','Stima'},'FontSize',14)
+   1.3009e+63
 ```
-
-Dove nella stima dell'errore `24*(b-a)*h.^4/180`, abbiamo sfruttato il fatto che
-```{math}
-\frac{d ^4\left(x^2 \sin (x)^3\right)}{d x^4} = x^2 \left(21 \sin ^3(x)-60 \sin (x) \cos ^2(x)\right)+8 x \left(6 \cos ^3(x)-21 \sin ^2(x) \cos (x)\right)+12 \left(6 \sin (x) \cos ^2(x)-3 \sin ^3(x)\right),
-```
-che in $[0,3]$ è maggiorata da $200$.
-::::
-```{margin} Errore di quadratura Simpson
-![Errore per Simpson regolare](/images/simpsonerror1.png)
-
-Errore per la formula di Simpson.
-```
-
-Possiamo quindi confrontare gli errori di quadratura ottenuti per le due
-formule stampandoli sullo stesso grafico
-```{figure} ./images/simpson_error2.png
-
-Confronto tra l'errore relativo compiuto con la formula dei Trapezi e
-quello ottenuto con la formula di Simpson.
-```
-da cui osserviamo il comportamento che ci aspettavamo considerata
-l'analisi dell'errore.
-
-## Le funzioni di quadratura di MATLAB
-
-MATLAB offre diverse funzioni per il calcolo di integrali. La prima
-da considerare è la funzione `quad`, dal cui *help* leggiamo
-```
-quad   Numerically evaluate integral, adaptive Simpson quadrature.
-   Q = quad(FUN,A,B) tries to approximate the integral of scalar-valued
-   function FUN from A to B to within an error of 1.e-6 using recursive
-   adaptive Simpson quadrature. FUN is a function handle. The function
-   Y=FUN(X) should accept a vector argument X and return a vector result
-   Y, the integrand evaluated at each element of X.
-
-   Q = quad(FUN,A,B,TOL) uses an absolute error tolerance of TOL
-   instead of the default, which is 1.e-6.  Larger values of TOL
-   result in fewer function evaluations and faster computation,
-   but less accurate results.  The quad function in MATLAB 5.3 used
-   a less reliable algorithm and a default tolerance of 1.e-3.
-
-   Q = quad(FUN,A,B,TOL,TRACE) with non-zero TRACE shows the values
-   of [fcnt a b-a Q] during the recursion. Use [] as a placeholder to
-   obtain the default value of TOL.
-```
-Questa applica la quadratura di Simpson che abbiamo visto nella sezione
-precedente sfruttando la tecnica ricorsiva che abbiamo visto, applicato
-e implementato nel caso della regola dei trapezi.
-
-Quest'ultima invece è implementata dal comando `trapz`, dal cui `help`
-leggiamo
-```
-trapz  Trapezoidal numerical integration.
-   Z = trapz(Y) computes an approximation of the integral of Y via
-   the trapezoidal method (with unit spacing).  To compute the integral
-   for spacing different from one, multiply Z by the spacing increment.
-
-   For vectors, trapz(Y) is the integral of Y. For matrices, trapz(Y)
-   is a row vector with the integral over each column. For N-D
-   arrays, trapz(Y) works across the first non-singleton dimension.
-
-   Z = trapz(X,Y) computes the integral of Y with respect to X using the
-   trapezoidal method. X can be a scalar or a vector with the same length
-   as the first non-singleton dimension in Y. trapz operates along this
-   dimension. If X is scalar, then trapz(X,Y) is equivalent to X*trapz(Y).
-```
-
-L'ultima funzione che vogliamo menzionare è `integral` che, in realtà,
-sostituisce la funzione `quad` che è in realtà _deprecata_. Questa applica
-una formula di quadratura adattiva e permette in realtà di calcolare anche
-integrali complessi, di funzioni con singolarità e regolare le tolleranze
-```
-integral  Numerically evaluate integral.
-   Q = integral(FUN,A,B) approximates the integral of function FUN from A
-   to B using global adaptive quadrature and default error tolerances.
-
-   FUN must be a function handle. A and B can be -Inf or Inf. If both are
-   finite, they can be complex. If at least one is complex, integral
-   approximates the path integral from A to B over a straight line path.
-
-   For scalar-valued problems the function Y = FUN(X) must accept a vector
-   argument X and return a vector result Y, the integrand function
-   evaluated at each element of X. For array-valued problems (see the
-   'ArrayValued' option below) FUN must accept a scalar and return an
-   array of values.
-```
-
-Di questa funzione sono disponibili anche le funzioni per il calcolo di integrali di funzioni in 2 e 3 variabili chiamate, rispettivamente, `integral2` e `integral3`.
-
-## Applicazioni ed esercizi
-
-Consideriamo alcuni esercizi sulla quadratura numerica da {cite}`kiusalaas2015`.
-
-:::::{admonition} Accelerazione di una macchina
-
-La {numref}`powertable` riporta la potenza $P$ fornita alle ruote motrici di una macchina come
-funzione della velocità $v$. Se la massa della macchina è $m = 2000\,kg$, si
-determini l'intervallo $\Delta t$ che serve alla macchina per accelerare da
-$1\,m/s$ a $6\,m/s$ utilizzando la regola dei trapezi implementata in `trapz`.
-
-```{list-table} Potenza e velocità
-:header-rows: 1
-:name: powertable
-
-* - $v\,(m/s)$
-  - $P\,(kW)$
-* - 0
-  - 0
-* - 1.0
-  - 4.7
-* - 1.8
-  - 12.2
-* - 2.4
-  - 19.0
-* - 3.5
-  - 31.8
-* - 4.4
-  - 40.1
-* - 5.1
-  - 43.8
-* - 6.0
-  - 43.2
-```
-
-:::{admonition} Suggerimento
-:class: tip, dropdown
-La funzione di cui calcolare l'integrale si può ottenere dalla
-seconda legge della dinamica e dalla definizione di potenza:
-```{math}
-\Delta t = m \int_{1 s}^{6 s} (v/P)\,{\rm d}v.
-```
+che è un **valore enorme** per una matrice $5 \times 5$. Questo ci deve far sospettare che c'è qualcosa che non va!
 :::
 
-:::::
-
-::::{admonition} Esercizio
-Si calcoli l'integrale
-```{math}
-I = \int_{1}^{+\infty} \frac{{\rm d}x}{1+x^4} = \frac{\pi -2 \coth ^{-1}\left(\sqrt{2}\right)}{4 \sqrt{2}},
+Per calcolare direttamente il raggio spettrale della matrice $M^{-1}N$ non abbiamo in realtà la necessità di calcolare tutti gli autovalori della matrice e prendere il massimo. Possiamo accedere ad algoritmi che calcolano direttamente la quantità che ci interessa:
+```matlab
+A = gallery('poisson',5); % Discretizzazione del Laplaciano in 2D
+M = diag(A); % A = M - N
+N = M-A;     % N = M - A
+rho = eigs(N,M,1,'largestabs');
+disp(abs(rho))
 ```
-con la regola dei trapezi e si paragoni il risultato con il valore
-esatto.
+che ci restituisce il valore `0.8660` per il raggio spettrale, cioè abbiamo trovato uno **splitting convergente**.
 
-:::{admonition} Si applichi un cambio di variabili...
-:class: tip, dropdown
-Per riportare l'integrale su di un intervallo finito si applichi
-il cambio di variabili $x^3 = 1/t$.
+Vediamo il manuale del comando `eigs`.
+```
+eigs   Find a few eigenvalues and eigenvectors of a matrix
+ D = eigs(A) returns a vector of A's 6 largest magnitude eigenvalues.
+ A must be square and should be large and sparse.
+
+ [...]
+
+ eigs(A,K,SIGMA) and eigs(A,B,K,SIGMA) return K eigenvalues. If SIGMA is:
+
+        'largestabs' or 'smallestabs' - largest or smallest magnitude
+      'largestreal' or 'smallestreal' - largest or smallest real part
+                       'bothendsreal' - K/2 values with largest and
+                                        smallest real part, respectively
+                                        (one more from largest if K is odd)
+
+    For nonsymmetric problems, SIGMA can also be:
+      'largestimag' or 'smallestimag' - largest or smallest imaginary part
+                       'bothendsimag' - K/2 values with largest and
+                                       smallest imaginary part, respectively
+                                       (one more from largest if K is odd)
+
+    If SIGMA is a real or complex scalar including 0, eigs finds the
+    eigenvalues closest to SIGMA.
+
+```
+da cui leggiamo che quello che abbiamo chiesto a MATLAB di calcolare è un autovalore (`1`) di massimo valore assoluto (`'largestabs'`) che risolva il problema
+```{math}
+N \mathbf{v} = \lambda M \mathbf{v},
+```
+che, nel nostro caso, è equivalente alla richiesta
+```{math}
+M^{-1}N \mathbf{v} = \lambda \mathbf{v},
+```
+cioè quello che cercavamo. Problemi di questa forma sono detti **problemi generalizzati agli autovalori**, ma sono ben al di fuori degli obiettivi di questo corso.
+
+:::{warning}
+Tutte le volte che volete risolvere un problema agli autovalori con matrice $M^{1}N$ la soluzione opportuna è quella di usare la formulazione come problema generalizzato agli autovalori, sia da un punto di vista di stabilità numerica, sia da un punto di vista di velocità di esecuzione del codice.
 :::
 
-::::
+## Metodo di Jacobi
+
+Il primo metodo che vogliamo implementare è il **metodo di Jacobi**, questo è basato sullo splitting additivo per la matrice $A$ con $A = D - N$ dove $D$ è la diagonale della matrice $A$.
+
+:::{admonition} Teorema
+Una condizione sufficiente (ma **non necessaria**) affinché il metodo di Jacobi sia convergente è che la matrice $A$ sia a diagonale strettamente dominante, oppure a diagonale dominante e irriducibile.
+:::
+
+Per trasformare il metodo in qualcosa di applicabile dobbiamo accoppiarlo ad un **criterio d'arresto**. Come sempre possiamo guardare al **residuo assoluto** oppure a quello **relativo** in una norma prefissata. Poiché abbiamo deciso di guardare alla convergenza attraverso informazioni spettrali scelta più naturale (e predittiva) è quella di usare la norma $\|\cdot\|_ 2$.
+```{math}
+\|\mathbf{r}^{(k)}\|_2 = \| A \mathbf{x}^{(k)} - \mathbf{b}\|_2 \leq \varepsilon,
+```
+ovvero, rispettivamente
+```{math}
+\|\mathbf{r}^{(k)}\|_2 = \| A \mathbf{x}^{(k)} - \mathbf{b}\|_2 \leq \varepsilon \|\mathbf{r}^{(0)}\|_2,
+```
+dove $\varepsilon$ è una tolleranza prefissata.
 
 :::{admonition} Esercizio
-Il periodo di un pendolo semplice di lunghezza $L$ è $\tau = 4 \sqrt{L/g} h(\theta_0)$, dove $g$ è l'accelerazione di gravità, $\theta_0$ rappresenta l'ampiezza angolare e
-```{math}
-h(\theta_0) = \int_{0}^{\pi/2} \frac{ {\rm d}\theta }{\sqrt{1- \sin^2(\theta_0/2)\sin^2(\theta)}}.
+Si scriva una *function* che implementi il metodo di Jacobi per la soluzione di un sistema lineare $A \mathbf{x} = \mathbf{y}$ entro una tolleranza $\varepsilon$ sfruttando il seguente prototipo:
+```matlab
+function [x,res,it] = jacobi(A,b,x,itmax,eps)
+%%JACOBI implementa il metodo di Jacobi per la soluzione del sistema A x = b
+%    INPUT:
+%     A matrice quadrata
+%     b termine destro del sistema lineare da risolvere
+%     x innesco della strategia iterativa
+%     itmax massimo numero di iterazioni lineari consentito
+%    OUTPUT
+%     x ultima soluzione calcolata dal metodo
+%     res vettore dei residui
+%     it numero di iterazioni
+end
 ```
-Si calcolino i periodi per $h(15 \text{ deg})$, $h(30 \text{ deg})$,
-$h(45 \text{ deg})$ con la formula di Simpson e si paragonino
-all'approssimazione per piccoli angoli con $h = \frac{\pi}{2}$.
-Cosa si osserva?
+- Si implementi in maniera vettoriale, cioè **senza** usare cicli `for` per scorrere le righe della matrice,
+- Si usi il criterio d'arresto basato sull'errore relativo.
+
+Per *testare* il metodo si usi il seguente programma
+```matlab
+A = gallery('poisson',10); % Matrice di prova
+b = ones(10^2,1);           % rhs vettore di 1
+x = zeros(10^2,1);          % Tentativo iniziale vettore di 0
+[x,res,it] = jacobi(A,b,x,1000,1e-6);
+
+figure(1)
+semilogy(1:it,res,'o-','LineWidth',2);
+xlabel('Iterazione');
+ylabel('Residuo relativo');
+```
 :::
 
+## Metodo di Gauss-Seidel
+
+:::{margin} Avanti/Indietro
+Si può utilizzare la stessa idea anche con la parte triangolare superiore $U$ di $A$, in genere si distingue tra i due chiamandoli, rispettivamente, metodo di Gauss-Seidel in *avanti* (forward Gauss-Seidel) o all'*indietro* (backward Gauss-Seidel).
+:::
+Il secondo metodo di questo tipo che avete visto è il metodo di **Gauss-Seidel**,
+per questo metodo la decomposizione additiva della matrice $A$ è $A = L - N$, dove $L$ è la parte triangolare inferiore della matrice $A$.
+
+:::{admonition} Teorema
+Una condizione sufficiente (ma **non necessaria**) affinché il metodo di Gauss-Seidel sia convergente è che la matrice $A$ sia a diagonale strettamente dominante, oppure una matrice simmetrica e definita positiva.
+:::
+
+Possiamo sfruttare di nuovo il *residuo relativo* per definire il criterio d'arresto.
+
+:::{admonition} Esercizio
+Si scriva una *function* che implementi il metodo di Gauss-Seidel in avanti per la soluzione di un sistema lineare $A \mathbf{x} = \mathbf{y}$ entro una tolleranza $\varepsilon$ sfruttando il seguente prototipo:
+```matlab
+function [x,res,it] = forwardgs(A,b,x,itmax,eps)
+%%FORWARDGS implementa il metodo di Gauss-Seidel in avanti per la soluzione del
+% sistema A x = b
+%    INPUT:
+%     A matrice quadrata
+%     b termine destro del sistema lineare da risolvere
+%     x innesco della strategia iterativa
+%     itmax massimo numero di iterazioni lineari consentito
+%    OUTPUT
+%     x ultima soluzione calcolata dal metodo
+%     res vettore dei residui
+%     it numero di iterazioni
+end
+```
+- Si implementi in maniera vettoriale, cioè **senza** usare cicli `for` per scorrere le righe della matrice,
+- Si utilizzi la funzione `forwardsolve` vista in {ref}`forwardandbacwardsolve`
+- Si usi il criterio d'arresto basato sull'errore relativo.
+
+Per *testare* il metodo si usi il seguente programma
+```matlab
+A = gallery('poisson',10); % Matrice di prova
+b = ones(10^2,1);           % rhs vettore di 1
+x = zeros(10^2,1);          % Tentativo iniziale vettore di 0
+[x,res,it] = forwardgs(A,b,x,1000,1e-6);
+
+figure(1)
+semilogy(1:it,res,'o-','LineWidth',2);
+xlabel('Iterazione');
+ylabel('Residuo relativo');
+```
+:::
+
+## Paragone tra i due metodi e velocità di convergenza
+
+Adesso che abbiamo implementato i due diversi metodi possiamo fare un confronto delle loro prestazioni. Possiamo paragonare in primo luogo le due storie di convergenza guardando all'evoluzione dei residui:
+```matlab
+A = gallery('poisson',10); % Matrice di prova
+b = ones(10^2,1);           % rhs vettore di 1
+x = zeros(10^2,1);          % Tentativo iniziale vettore di 0
+
+[xjacobi,resjacobi,itjacobi] = jacobi(A,b,x,1000,1e-6);
+[xforwardgs,resforwardgs,itforwardgs] = forwardgs(A,b,x,1000,1e-6);
 
 
-## Bibliografia
-
- ```{bibliography}
- :filter: docname in docnames
+figure(1)
+semilogy(1:itjacobi,resjacobi,'o-',...
+    1:itforwardgs,resforwardgs,'x-', 'LineWidth',2);
+xlabel('Iterazione');
+ylabel('Residuo');
+legend({'Jacobi','Gauss-Seidel (Forward)'},...
+    'Location','northeast',...
+    'FontSize',14);
  ```
+Da cui osserviamo che il metodo di Gauss-Seidel (forward) impiega meno iterazioni per raggiungere la convergenza desiderata ({numref}`gaussjac1`).
+
+```{figure} ./images/gaussjacobicomparison1.png
+---
+alt: convergenza-metodi
+width: 50%
+name: gaussjac1
+---
+Evoluzione del residuo per i metodi di Jacobi e Gauss-Seidel.
+```
+Possiamo indagare la cosa dal punto di vista teorico andando a guardare il raggio spettrale delle due matrici di iterazione, infatti
+```matlab
+M = diag(diag(A)); % Jacobi
+N = M - A;
+rhojacobi = eigs(N,M,1,'largestabs');
+
+M = tril(A); % Gauss-Seidel (forward)
+N = M - A;
+rhoforwardgs = eigs(N,M,1,'largestabs');
+
+fprintf('Il raggio spettrale per Jacobi è %f\n',abs(rhojacobi));
+fprintf('Il raggio spettrale per Gauss-Seidel è %f\n',abs(rhoforwardgs));
+```
+Da cui scopriamo che:
+```
+Il raggio spettrale per Jacobi è 0.959493
+Il raggio spettrale per Gauss-Seidel è 0.920627
+```
+dunque Gauss-Seidel (forward) ha un tasso di riduzione del residuo minore e una convergenza più rapida.
+
+Possiamo aggiungere delle istruzioni `tic` e `toc` per valutare anche il tempo impiegato dai due differenti metodi:
+```
+Il tempo per Jacobi è 0.008983 s
+Il tempo per Gauss-Seidel è 0.182575 s
+```
+ovvero il metodo di Jacobi è in questo caso circa due ordini di grandezza più rapido. Tuttavia, se andiamo a sostituire la nostra implementazione della funzione `forwardsolve` con il `\` implementato da MATLAB scopriamo che:
+```
+Il tempo per Jacobi è 0.008191 s
+Il tempo per Gauss-Seidel è 0.004435 s
+```
+ed ora Gauss-Seidel ha ampiamente recuperato su Jacobi. L'**implementazione** conta! Qui il vantaggio è dato dal fatto che la matrice $L$ associata al problema di test che stiamo guardando è una matrice *a banda* i non-zeri non riempiono tutto il triangolo. Il codice di MATLAB è in grado di accorgersene e adatto l'algoritmo di soluzione in modo che se ne tenga conto.

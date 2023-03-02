@@ -1,506 +1,608 @@
-# Laboratorio 9 : Metodi per la Soluzione di ODE
+# Laboratorio 9 : Metodi di Quadratura
 
-In questo laboratorio ci vogliamo occupare di alcuni metodi per la
-soluzione di un'**equazione differenziale del primo ordine**, la cui forma
-generale è
+Compito dell'integrazione numerica, o *quadrature* è quello di
+approssimare il valore dell'integrale
 ```{math}
-y' = f(x,y)
+\int_{a}^{b} f(x)\,{\rm d}x,
 ```
-dove $y' = {\rm d}y/{\rm d}x$ e $f(x,y)$ è una funzione data. Come avete
-visto nei corsi di Analisi, la soluzione di questo tipo di equazioni
-contiene una costante arbitraria (detta *costante di integrazione*). Per
-trovare questa costante, e dunque determinare completamente una soluzione,
-dobbiamo sapere un punto sulla curva della soluzione:
+con la somma finita
 ```{math}
-y(a) = \alpha.
+I = \sum_{i=1}^{n} \omega_i f(x_i),
 ```
+dove i **nodi** $\{x_i\}_{i=1}$ e i **pesi** $\{ \omega_i \}_{i=1}^{n}$
+dipendono dalla particolare forma scelta. Come avete visto a lezione, le
+regole di quadratura provengono dalla scelta di un particolare _polinomio
+interpolante_ per la funzione $f$. Delle diverse famiglie di formule
+quadrature che esistono ci focalizzeremo qui sull'implementazione delle
+**formule di Newton-Cotes**.
 
-In modo **più formale**, un’**equazione differenziale ordinaria di ordine $n$**, in *forma
-normale*, è un’equazione del tipo
-
+Ricordiamo brevemente il funzionamento generale di questa procedura.
+Consideriamo l'integrale definito
 ```{math}
-y^{(n)}=f(x,y,y',y'',\ldots,y^{(n-1)}),
+\int_{a}^{b} f(x)\,{\rm d}x,
 ```
-
-che lega una funzione $y=y(x)$ e le sue derivate fino
-all’ordine $n$.
-
-Soluzione dell’equazione è una funzione $y(x)$, continua e
-derivabile fino all’ordine $n$ in un intervallo opportuno, che
-soddisfa l’equazione.
-
-In generale, un’equazione differenziale ha infinite soluzioni.
-Solitamente si impongono delle condizioni aggiuntive e si determinano
-le soluzioni che soddisfano le condizioni assegnate.
-
-## Problema ai valori iniziali
-
-Nel problema ai valori iniziali, detto anche di Cauchy, all’equazione
-
+e dividiamo l'intervallo $(a,b)$ in $n-1$ intervalli di uguale lunghezza
 ```{math}
-y^{(n)}=f(x,y,y',y'',\ldots,y^{(n-1)}),
+h = \frac{b-a}{n-1}, \quad x_{i+1} = a + i h, \; i=0,\ldots,n-1,
 ```
-si assegnano $n$ condizioni iniziali
+sostituiamo poi alla funzione $f$ il suo **polinomio interpolante** in
+forma di Lagrange sui valori $\{ (x_i,f(x_i))\}_{i=1}^{n}$
 ```{math}
- y(x_0)=\eta_0,\quad y'(x_0)=\eta_1,\quad\ldots\quad,y^{(n-1)}(x_0)=\eta_{n-1}.
+P_{n-1}(x) = \sum_{i=1}^{n} f(x_i)L_i(x),
 ```
- Sotto **opportune condizioni**, si dimostrano l’esistenza e l’unicità
- della soluzione. In particolare, nel caso $n=1$
+da cui otteniamo che
 ```{math}
-    \left\{\begin{array}{l}
-    y'=f(x,y)\quad\\y(x_0)=\eta
-    \end{array}
-    \right.
+I = \int_{a}^{b} P_{n-1}(x)\,{\rm d}x = \sum_{i=1}^{n}\left[ f(x_i) \int_{a}^{b} L_{i}(x) \right] = \sum_{i=1}^{n} \omega_i f(x_i),
 ```
- valgono risultati di esistenza e unicità della soluzione nell’ipotesi
- che $f(x,y)$ sia continua rispetto a $x$ e *uniformemente
- lipschitziana* rispetto a $y$.
+dove i **pesi** non sono nient'altro che gli integrali
+```{math}
+\omega_i = \int_{a}^{b} L_i(x)\,{\rm d}x, \quad i=1,\ldots,n.
+```
+Vediamo e **implementiamo** ora alcune celebri formule di quadratura di
+questa forma.
 
-Più in generale, possiamo guardare ad un sistema $n$ equazioni differenziali del primo ordine
-```{math}
-  \left\{\begin{array}{l}
-  y_1'=f_1(x,y_1,\ldots,y_n)\\
-  y_2'=f_2(x,y_1,\ldots,y_n)\\
-  \ldots\\
-  y_n'=f_n(x,y_1,\ldots,y_n)\\
-  \end{array}\right.
-```
-dove $f_1,\ldots,f_n$ sono $n$ funzioni di $n+1$
-variabili e $y_1(x), y_2(x),\ldots,y_n(x)$ sono le $n$ incognite.
+## Regola composita dei trapezi
 
-In **forma compatta**:
+Supponiamo di scegliere $n=2$, ovvero $h = b-a$ e quindi $x_1 = a$,
+$x_2 = b$, e quindi
 ```{math}
-{\bf y}'={\bf f}(x,{\bf y}),
+w_1 = & -\frac{1}{h}\int_{a}^{b} (x-b)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},\\
+w_2 = & \frac{1}{h}\int_{a}^{b} (x-a)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},
 ```
-dove ${\bf y}$, ${\bf y}'$ e ${\bf f}$ sono *vettori di funzioni*.
+da cui
+```{math}
+I = \sum_{i=1}^{2} \omega_i f(x_i) = \frac{h}{2}(f(a)+f(b)),
+```
+e che è **esattamente** l'area del trapezio di altezza $b-a$ e basi $f(a)$
+e $f(b)$. L'errore per questa approssimazione, se $f$ è due volte differenziabile, è dato da
+```{math}
+E = O\left( \frac{h^3}{12} f''(\xi) \right),
+```
+dove $\xi$ è un punto in $[a,b]$ e che quindi **possiamo maggiorare** con il massimo di $f''(x)$ in $[a,b]$.
 
-Se a questo sistema associamo le **condizioni iniziali**
-```{math}
-{\bf y}(x_0)=(\eta_0,\eta_1,\ldots,\eta_{n-1})^T,
-```
-otteniamo il corrispondente problema ai valori iniziali, che, sotto
-ipotesi simili a quelle già viste, ammette una e una sola soluzione.
-
-:::{admonition} Equazione differenziale $\leadsto$ sistema di ordine 1
-:class: tip
-Data
- un’equazione differenziale di ordine :math:`n`
-```{math}
-y^{(n)}=f(x,y,y',y'',\ldots,y^{(n-1)}),
-```
- poniamo
-```{math}
-y_1(x)=y(x),\quad y_2(x)=y'(x),\quad\ldots\quad y_n(x)=y^{(n-1)}(x).
-```
- Allora l’equazione si trasforma in un sistema di equazioni del primo
- ordine
-```{math}
-    \left\{\begin{array}{l}
-    y_1'=y_2\\
-    y_2'=y_3\\
-    \ldots\\
-    y_{n-1}'=y_n\\
-    y_n'=f(x,y_1,y_2,\ldots,y_n)
-    \end{array}\right.
-```
-:::
-
-## Metodi numerici
-
-Determinare la soluzione di un’equazione
-differenziale per via analitica è generalmente difficile e spesso
-impossibile. Per esempio, l’equazione
-```{math}
-y'=x^2+y^2,
-```
-nonostante l’aspetto apparentemente semplice, non è risolubile in
-termini di funzioni elementari. Dobbiamo quindi cercare una soluzione
-approssimata usando un metodo numerico.
-
-La letteratura che tratta i metodi numerici per equazioni
-differenziali con condizioni iniziali è molto vasta. Come primi
-esempi studieremo
-
--  il metodo di Eulero esplicito,
--  il metodi di Eulero implicito,
--  il metodo di Runge-Kutta classico.
-
-### Il metodo di Eulero esplicito
-
-Il metodo di Eulero esplicito Consideriamo il problema di Cauchy
-```{math}
-  \left\{\begin{array}{l}
-  y'=f(x,y)\\y(a)=\eta
-  \end{array}
-  \right.
-```
-che vogliamo risolvere numericamente nell’intervallo $[a,b]$
-Discretizziamo la variabile $x$ fissando nell’intervallo
-$[a,b]$ una **griglia di nodi** $\{x_i\}_{i=0,\ldots,N}$
-**equidistanti** di passo $h>0$:
-```{math}
- x_0=a,\quad x_i=x_{i-1}+h,\quad x_N=b.
-```
-Il comportamento della soluzione
-$y(x)$ tra $x_{i-1}$ e $x_{i}$ può essere stimato come
-```{math}
- y(x_{i})\sim y(x_{i-1})+hf(x_{i-1},y(x_{i-1})).
-```
-Per cui si
-approssima la funzione $y(x)$ per mezzo dei suoi valori
-$y_i$ nei nodi $x_i$, calcolati tramite la formula
-```{math}
-y_0=\eta,\quad y_i=y_{i-1}+hf(x_{i-1},y_{i-1}),\quad i=1,\ldots,N.
-```
-Abbiamo ora tutti gli strumenti necessari ad implementare il metodo di
-Eulero esplicito.
-:::{admonition} Esercizio
-Si usi il seguente prototipo per implementare il **metodo di Eulero
-esplicito** per un sistema di equazioni differenziali del primo ordine.
+Facciamo una rapida verifica con MATLAB
 ```matlab
-function [y,x] = expliciteuler(f,y0,a,b,h)
-%%EXPLICITEULER implementa il metodo di Eulero esplicito per la soluzione
-% di un sistema di equazioni differenziali del primo ordine.
-%   INPUT: f function handle della dinamica del sistema f(x,y)
-%          y0 vettore delle condizioni iniziali
-%          a,b estremi dell'intervallo di integrazione
-%          h ampiezza del passo di integrazione
-%   OUTPUT: y vettore (matrice) che contiene le soluzioni calcolate nei
-%           punti x(i),
-%           x vettore dei nodi
-
-end
+f = @(x) sin(x);
+Ix = @(x) -cos(x);
+a = 0;
+b = 1;
+h = b - a;
+I = h*(f(a)+f(b))/2;
+Itrue = Ix(b)-Ix(a);
+fprintf('|I - Itrue| = %e\n',abs(I-Itrue));
+fprintf("Dovrebbe essere dell'ordine di: %e\n", h^3/12);
 ```
-- Si verifichino gli *input*,
-- Si minimizzi il numero di chiamate alla funzione $f$.
-
-Per testare il codice si può usare il seguente **problema di test**
-```{math}
-  \left\{\begin{array}{l}
-  y'=-\frac{2y+x^2y^2}{x}\\
-  y(1)=1
-  \end{array}\right.
-```
-per $x\in [1,2]$. In questo caso la **soluzione esatta** è nota e vale
-```{math}
-y=\frac{1}{x^2(\log x+1)}.
-```
+Questo ovviamente non ci è sufficiente, poiché non appena andiamo ad
+aumentare l'intervallo $[a,b]$ ( e quindi $h$ ) su cui vogliamo calcolare
+l'integrale le cose peggiorano nettamente
 ```matlab
-%% Il metodo di Eulero esplicito
-f = @(x,y) - (2*y + (x^2)*(y^2))/(x);
-ytrue = @(x) 1./(x.^2.*(log(x)+1));
-
-a = 1;
-b = 2;
-h  = 1e-2;
-y0 = 1;
-[y,x] = expliciteuler(f,y0,a,b,h);
-
-figure(1)
-plot(x,y,'r--',x,ytrue(x),'b-','LineWidth',2);
-xlabel('x');
-legend({'Computed Solution','True Solution'},'FontSize',14);
-figure(2)
-semilogy(x,abs(y-ytrue(x)),'r-','LineWidth',2);
-xlabel('x');
-ylabel('Errore Assoluto');
+f = @(x) sin(x);
+Ix = @(x) -cos(x);
+a = 0;
+b = pi;
+h = b - a;
+I = h*(f(a)+f(b))/2;
+Itrue = Ix(b)-Ix(a);
+fprintf('|I - Itrue| = %e\n',abs(I-Itrue));
+fprintf("Dovrebbe essere dell'ordine di: %e\n", h^3/12);
 ```
-:::
+non **abbiamo nemmeno una cifra significativa corretta**.
 
-Possiamo studiare la convergenza del metodo guardando all'errore rispetto
-alla soluzione esatta e sfruttando la *function* `convergenza2` che
-abbiamo visto quando abbiamo discusso del metodo di Newton ({ref}`newt-convergenza`)
-per stimare numericamente l'ordine di convergenza:
-```matlab
-function q = convergenza2(x)
-%%CONVERGENZA produce una stima dell'ordine di convergenza della
-%%successione x_n ad xtrue.
-    q = zeros(length(x)-3,1);
-    for n = 3:(length(x)-1)
-        q(n-1) = real(log((x(n+1)-x(n))/(x(n)-x(n-1)))/log((x(n)-x(n-1))/(x(n-1)-x(n-2))));       
-    end
-end
-```
-Con questa osserviamo che:
-```matlab
-%% Convergenza
-k = 9;
-h = fliplr(logspace(-6,-1,k));
-err = zeros(k,1);
-for i=1:k
-    [y,x] = expliciteuler(f,y0,a,b,h(i));
-    yt = ytrue(x);
-    err(i) = norm(y - yt)/norm(yt);
-end
-
-figure(3)
-loglog(h,err,'o-');
-xlabel('h')
-ylabel('Errore Assoluto');
-
-q = convergenza2(err);
-```
-
-```{figure} ./images/forward_euler_error.png
-
-Errore del metodo di Eulero in avanti.
-```
-ed il valore di $q = [0.9784, 0.9972, 1.0000, 1.0001, 1.0000, 1.0000]$ ed
-il previsto ordine di convergenza per questo metodo.
-
-Infatti, se supponiamo che $f(x,y)$ abbia derivate continue rispetto a
-$x$ e $y$. In questo caso si ha $y(x)\in\mathcal{C}^2([a,b])$. Possiamo
-quindi applicare la formula di Taylor (con resto in forma di Lagrange):
+Per *risolvere questo inconveniente*, possiamo passare ad utilizzare una
+composita. Dividiamo di nuovo l'intervallo $[a,b]$ in $n-1$
+sotto-intervalli di ampiezza $h = (b-a)/(n-1)$ e approssimiamo su ogni sotto-intervallo l'integrale con la formula dei trapezi locale
 ```{math}
-y(x_i)-y(x_{i-1})=hy'(x_{i-1})+\frac{h^2}{2}y''(\xi),\quad \xi\in (x_{i-1},x_i)
+I = \frac{h}{2} \sum_{i=1}^{n-1} f(x_i) + f(x_{i+1}),
 ```
-da cui si deduce
+per cui si può ricavare una **nuova stima dell'errore**:
 ```{math}
-|\tau_i|=\frac{h}{2}|y''(\xi)|.
+E = O\left( - \frac{(b-a)h^2}{12} f''(\xi) \right),
 ```
-Quindi in ogni intervallo $[x_{i-1},x_i]$ l’**errore locale** è
-approssimativamente lineare in $h$. Poiché $|y''(\xi)|$ è
-limitato in $[a,b]$, si ha che $\tau_i$ tende a zero con
-$h$ e si scrive $\tau_i=\mathcal{O}(h)$.
-
-Posto $\tau=\max_{i=1,\ldots,N}|\tau_i|$, esiste una costante
-$M\neq 0$ per cui $\tau\leq Mh$, e quindi
-```{math}
- \lim_{h\rightarrow 0}\tau=0,\qquad \tau=\mathcal{O}(h).
-```
-Si dice allora che il metodo di Eulero è consistente di ordine 1.
-
-Si può dimostrare che, sotto le stesse ipotesi su $f$, anche
-l’errore globale tende a zero con $h\rightarrow 0$. Concludiamo
-quindi che il metodo di Eulero è convergente.
-
-Proviamo ora a **cambiare le condizioni iniziali** per la nostra ODE.
-```{math}
-\left\{\begin{array}{l}
-y'=-\frac{2y+x^2y^2}{x}\\
-y(1)=10
-\end{array}\right.,\quad x\in [1,2].
-```
-La soluzione generale è data da
-```{math}
-y(x) = \frac{1}{x^2 (c_1+\log (x))}
-```
-e sostituendo la condizione iniziale
-```{math}
-y(x) = \frac{10}{x^2 (10 \log (x)+1)}.
-```
-Tuttavia se ripetiamo l'analisi di convergenza
-```matlab
-%% Convergenza per diverse condizioni iniziali
-a = 1;
-b = 2;
-y0 = 10;
-
-ytrue = @(x) 10./(x.^2.*(10*log(x)+1));
-
-k = 9;
-h = fliplr(logspace(-6,-1,k));
-err = zeros(k,1);
-for i=1:k
-    [y,x] = expliciteuler(f,y0,a,b,h(i));
-    yt = ytrue(x);
-    err(i) = norm(y - yt)/norm(yt);
-end
-
-figure(3)
-loglog(h,err,'o-');
-xlabel('h')
-ylabel('Errore Assoluto');
-```
-Osserviamo:
-```{figure} ./images/forward_euler_error2.png
-
-Convergenza del metodo di Eulero per diverse condizioni iniziali.
-```
-Quello che vediamo è che per il valore di $h$ più grande, ovvero $h =
-0.1$, l'errore relativo è maggiore di $1$, cioè **non abbiamo
-convergenza**. Nell’esempio il metodo di Eulero ha quindi un
-comportamento instabile.
-
-La stabilità di un metodo numerico per problemi differenziali viene
-valutata applicando il metodo ad un particolare problema test ed
-esaminando se l’errore, introdotto ad un passo per effetto del
-calcolo, aumenta o diminuisce quando viene propagato al passo
-successivo.
-
-Nel caso generale del problema
-```{math}
-  \left\{\begin{array}{l}
-  y'=f(x,y)\\y(a)=\eta
-  \end{array}
-  \right.
-```
-la limitazione sul passo $h$ diventa
-```{math}
-0<h<\frac{2}{|f_y(x,y)|}
-```
-e quindi cambia punto per punto. Nell’esempio con $f(x,y)=-\frac{2y+x^2y^2}{x}$ e condizione iniziale $y(1)=1$ si ha
-```{math}
-f_y(x,y)=-2\,\frac{1+x^2y}{x},\quad f_y(x_0,y_0)=f_y(1,1)=-4.
-```
-Perciò al primo passo il metodo di Eulero è stabile per
-$0<h<1/2$; questa proprietà vale anche ai passi successivi
-perché si ha $|f_y(x_i,y_i)|<|f_y(x_0,y_0)|$ e $i>1$.
-
-Quando invece si modifica la condizione iniziale si ha
-```{math}
-f_y(x_0,u_0)=f_y(1,10)=-22,
-```
-quindi per avere stabilità si richiede $0<h<1/11$ al primo
-passo. Ai passi successivi, vista la decrescenza della soluzione,
-questa limitazione risulta indebolita e si può scegliere un valore di
-$h$ un più grande e questo è ben descritto dalla figura.
-
-### Il metodo di Eulero implicito
-
-Da quanto detto finora sembra
-che scelte piccole del passo $h$ siano indispensabili per
-assicurare convergenza e stabilità. Tuttavia, a un $h$ piccolo
-corrisponde un numero elevato di nodi di integrazione, e
-quindi un notevole volume di calcolo per approssimare la soluzione in
-tutto l’intervallo richiesto, con un conseguente elevato accumulo
-dell’errore di arrotondamento.
-
-La scelta di $h$ deve quindi trovare un **compromesso** tra due
-esigenze: passo sufficientemente piccolo per ragioni di convergenza e
-stabilità, ma al contempo non troppo piccolo per non rendere
-eccessivo l’errore di arrotondamento.
-
-Per ridurre le richieste su $h$, introduciamo quindi i metodi impliciti.
-
+dove $\xi$ è sempre un valore nell'intervallo $[a,b]$.
 
 :::{admonition} Esercizio
-Si implementi il metodo di Eulero implicito.
+Implementiamo la **formula dei trapezi** per una funzione $f$ utilizzando
+il seguente prototipo
 ```matlab
-function [y,x] = impliciteuler(f,y0,a,b,h)
-%%IMPLICITEULER implementa il metodo di Eulero implicito per la soluzione
-% di un sistema di equazioni differenziali del primo ordine.
-%   INPUT: f function handle della dinamica del sistema f(x,y)
-%          y0 vettore delle condizioni iniziali
+function I = trapezi(f,a,b,n)
+%% TRAPEZI questa funzione implementa il metodo dei trapezi per la
+% funzione f sull'intervallo a,b con n-1 intervalli.
+%   INPUT: f function handle dell'integrando,
 %          a,b estremi dell'intervallo di integrazione
-%          h ampiezza del passo di integrazione
-%   OUTPUT: y vettore (matrice) che contiene le soluzioni calcolate nei
-%           punti x(i),
-%           x vettore dei nodi
+%          n numero di intervalli + 1
 
 end
 ```
-- Si usi il comando `fsolve` per risolvere il sistema (possibilmente) non
-lineare, per sopprimere le stampe di controllo di `fsolve` si possono
-usare le opzioni generate con `optimoptions('fsolve','Display','none')`.
+- Si cerchi di **minimizzare** il numero di **chiamate** alla funzione $f$ della routine,
+- Un comando utile per questo esercizio è il comando `linspace`,
+- Si scriva un codice che non utilizza cicli `for`.
 
-Per verificare l'implementazione possiamo usare lo stesso problema test
-```matlab
-%% Il metodo di Eulero implicito
-f = @(x,y) - (2*y + (x^2)*(y^2))/(x);
-ytrue = @(x) 1./(x.^2.*(log(x)+1));
-
-a = 1;
-b = 2;
-h  = 1e-2;
-y0 = 1;
-[y,x] = impliciteuler(f,y0,a,b,h);
-
-figure(1)
-plot(x,y,'r--',x,ytrue(x),'b-','LineWidth',2);
-xlabel('x');
-legend({'Computed Solution','True Solution'},'FontSize',14);
-figure(2)
-semilogy(x,abs(y-ytrue(x)),'r-','LineWidth',2);
-xlabel('x');
-ylabel('Errore Assoluto');
-```
-:::
-
-Controlliamo ora che succede nel caso che prima ci restituiva dei
-problemi confrontando la soluzione con il metodo di Eulero esplicito
-ed implicito.
-```matlab
-%% Errore di stabilità
-a = 1;
-b = 2;
-h  = 1e-1;
-y0 = 10;
-
-ytrue = @(x) 10./(x.^2.*(10*log(x)+1));
-
-[y,x] = impliciteuler(f,y0,a,b,h);
-[yexp,xexp] = expliciteuler(f,y0,a,b,h);
-
-figure(1)
-subplot(1,2,1);
-plot(x,y,'r--',x,ytrue(x),'b-','LineWidth',2);
-xlabel('x');
-legend({'Computed Solution','True Solution'},'FontSize',14);
-title('Eulero implicito');
-subplot(1,2,2);
-plot(xexp,yexp,'r--',xexp,ytrue(xexp),'b-','LineWidth',2);
-xlabel('x');
-legend({'Computed Solution','True Solution'},'FontSize',14);
-title('Eulero esplicito')
-```
-```{figure} ./images/implicit_euler_error.png
-
-Differenza in stabilità tra il metodo di Eulero implicito ed esplicito.
-```
-
-## Esercizi
-
-:::{margin} Condizione iniziale
-```{figure} ./images/spacecraft.png
-:name: fig:spacecraft
-
-Condizioni iniziali
-:::
-:::::{admonition} Esercizio
-Un veicolo spaziale è lanciato ad una altitudine di $H = 772 \text{ km}$
-sul livello del mare con velocità iniziale $v_0 = 6700\,\text{m/s}$ nella
-direzione illustrata in {numref}`fig:spacecraft`. Le equazioni differenziali che descrivono
-il moto dell'oggetto in coordinate polari sono
+Per testare l'implementazione si può provare a valutare l'integrale:
 ```{math}
-\ddot{r} = r \dot{\theta}^2 - \frac{G M_e}{r^2}, \quad \ddot{\theta} = - 2 \frac{\dot{r}\dot{\theta}}{r}.
+\pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,
 ```
-Rispetto alle costanti
-- $G = 6.672 \times 10^{-11}$ $\text{m}^3\text{kg}^{-1}\text{s}^{-2}$ per la costante di gravitazione universale,
-- $M_e = 5.9742 \times 10^{24} \text{ kg}$, per la massa della terra,
-- $R_e = 6378.14 \text{ km}$ per il raggio della terra a livello del mare,
+con
+```matlab
+%% Test del metodo dei Trapezi
 
-Si ottengano le equazioni differenziali del **primo ordine** per questo
-sistema e si integri numericamente fino a che il veicolo non tocca terra.
-Si determini il valore di $\theta$ del sito di impatto.
+clear; clc; close all;
+
+f = @(x) 4*sqrt(1-x.^2);
+a = 0;
+b = 1;
+
+n = 10;
+I = trapezi(f,a,b,n);
+
+fprintf('Errore: %e\n',abs(pi-I)/pi);
+```
+:::
+
+Cerchiamo ora di verificare il comportamento della formula rispetto
+alla stima dell'errore che abbiamo **ottenuto dalla teoria**. Valutiamo
+che succede per l'integrale dell'esempio:
+```{math}
+\pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,
+```
+Proviamo a stimare l'errore in maniera numerica e a confrontarlo con il
+comportamento che ci aspettiamo dalla teoria:
+
+```matlab
+n = logspace(1,4,4);
+errore = [];
+
+for nval = n
+    I = trapezi(f,a,b,nval);
+    errore = [errore,abs(I-pi)/pi];
+end
+
+h = (b-a)./n;
+err = (b-a)*h.^2/12;
+
+figure(1)
+loglog(n,errore,'o-',n,err/errore(1),'r--','LineWidth',2);
+xlabel('n');
+ylabel('Errore');
+legend({'Errore Misurato','Stima'},'FontSize',14)
+```
+:::{margin} Errore regola dei trapezi
+![Errore per trapezi non regolare](/images/trapezoidal_error1.png)
+
+Errore per l'integrale
+```{math}
+\pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,
+```
+
+![Errore per trapezi regolare](/images/trapezoidal_error2.png)
+
+Errore per l'integrale
+```{math}
+\int_0^3 x^2 \sin ^3(x) \, {\rm d}x
+```
+:::
+La stima non sembra particolarmente soddisfacente, ma siamo sicuri di
+poterla applicare? Calcoliamo la derivata seconda della nostra funzione
+integranda:
+```{math}
+f''(x) = 4 \left(-\frac{t^2}{\left(1-t^2\right)^{3/2}}-\frac{1}{\sqrt{1-t^2}}\right) = -\frac{4}{\left(1-t^2\right)^{3/2}}
+```
+per cui abbiamo che:
+```{math}
+\underset{t\to 1^-}{\text{lim}}-\frac{4}{\left(1-t^2\right)^{3/2}} = -\infty
+```
+ovvero, **non possiamo limitare $f''(\xi)$ nell'intervallo di
+integrazione**.
+
+Proviamo con una funzione diversa, ad esempio:
+```{math}
+I = \int_0^3 x^2 \sin ^3(x) \, {\rm d}x = & \frac{1}{108} \left.-81 \left(x^2-2\right) \cos (x)+\left(9 x^2-2\right) \cos (3 x)-6 x (\sin (3 x)-27 \sin (x))\right|_{0}^{3} \\
+= & \frac{1}{108} (-160+486 \sin (3)-18 \sin (9)-567 \cos (3)+79 \cos (9)),
+```
+per cui la derivata seconda ha la regolarità necessaria
+```{math}
+f''(x) = & x^2 \left(6 \sin (x) \cos ^2(x)-3 \sin ^3(x)\right)+2 \sin ^3(x)+12 x \sin ^2(x) \cos (x) \\
+= & \frac{1}{2} \sin (x) \left(3 x^2+\left(9 x^2-2\right) \cos (2 x)+12 x \sin (2 x)+2\right)
+```
+e si osserva che $|f''(x)| < 10$ per $x \in [0,3]$. Vediamo che succede
+numericamente:
+```matlab
+f = @(x) x.^2.*sin(x).^3;
+a = 0;
+b = 3;
+Itrue = 3.615857833947287;
+
+n = logspace(1,4,4);
+errore = [];
+
+for nval = n
+    I = trapezi(f,a,b,nval);
+    errore = [errore,abs(I-Itrue)/Itrue];
+end
+
+h = (b-a)./n;
+err = 10*(b-a)*h.^2/12;
+
+figure(2)
+loglog(n,errore,'o-',n,err,'r--','LineWidth',2);
+xlabel('n');
+ylabel('Errore');
+legend({'Errore Misurato','Stima'},'FontSize',14)
+```
+
+:::{warning}
+Questa stima dell'errore è solo una prima approssimazione, in realtà è
+possibile ottenere stime più precise coinvolgendo termini di ordine
+superiore. Per i nostri scopi è sufficiente, ma sappiate che si può indagare più in profondità la questione.
+:::
+
+### Una versione ricorsiva
+
+Supponiamo di aver scelto un valore di $n$ per il nostro integrale, ma che
+alla fine del calcolo il valore ottenuto non abbia l'accuratezza che
+desideravamo. Quello che possiamo fare è scegliere un nuovo valore di $n$
+e calcolare di nuovo l'integrale. Questo, tuttavia, ci richiede di
+fare di nuovo tutte le valutazioni di funzione perché ad un nuovo $n$
+corrispondono nodi nuovi.
+
+Possiamo recuperare in qualche modo parte dello sforzo?
+
+Chiamiamo $I_k$ l'integrale valutato con la regola composita dei
+trapezi usando $2^{k-1}$ intervalli. Ora, se passiamo da $k$ a $k+1$
+il **numero di intervalli è raddoppiato**.
+
+Chiamiamo $H = b - a$ e scriviamo la regola dei trapezi per i primi $k$
+```{math}
+k = 1, &\quad I_1 = \frac{H}{2}[f(a) + f(b)],\\
+k = 2, &\quad I_2 = \frac{H}{4}\left[ f(a) + 2 f\left(a + \frac{H}{2} \right) + f(b) \right] \\
+&\quad\; = \frac{1}{2} I_1 + f\left(a + \frac{H}{2}\right)\frac{H}{2}, \\
+k = 3, &\quad I_3 = \frac{H}{8}\left[ f(a) + 2 f\left(a + \frac{H}{4}\right) + 2 f\left(a + \frac{H}{2}\right) + 2 f\left(a + \frac{3H}{4}\right) + f(b) \right] \\
+&\quad\; = \frac{1}{2} I_2 + \frac{H}{4}\left[f\left(a + \frac{H}{4}\right) + f\left(a + \frac{3H}{4}\right)\right].
+```
+Con un po' di *intuizione*, possiamo scrivere per $k > 1$
+```{math}
+I_k = \frac{1}{2}I_{k-1} + \frac{H}{2^{k-1}} \sum_{i=1}^{2^{k-2}} f \left[ a + \frac{(2i-1)H}{2^{k-1}} \right], \quad k=2,3,\ldots
+```
+
+:::{tip}
+Qual è il vantaggio di questa scelta? La somma contiene solo nodi creati ad ogni nuovo raddoppio!
+
+Ovvero, il calcolo della sequenza $I_1, I_2, I_3, \ldots, I_k$ costa
+esattamente lo stesso numero di operazioni sia che si faccia il calcolo
+tutto insieme, sia che si calcolino separatamente tutti gli $I_k$ uno
+dopo l'altro.
+
+Il vantaggio dell'uso di questa forma della regola dei trapezi
+**ricorsiva** è che ci consente di monitorare la convergenza e
+terminare il processo quando la differenza tra $I_{k-1}$ e $I_k$
+diventa sufficientemente piccola.
+:::
+
+Per implementare l'algoritmo in modo ricorsivo, riscriviamo la formula
+in termini del valore di $h$ come:
+```{math}
+:label: trapezir
+
+I(h) = \frac{1}{2}I(2h) + h \sum f(x_{\text{new}}), \quad h = \frac{H}{n-1}.
+```
+
+:::{admonition} Esercizio  
+Separiamo la funzione ricorsiva in due parti, la prima è quella
+che calcola $I(h)$, dato $I(2h)$, usando l'equazione {eq}`trapezir`
+e chiamiamola `trapezir`
+```matlab
+function Ih = trapezir(f,a,b,I2h,k)
+%%TRAPEZIR implementa l'algoritmo ricorsivo della regola dei
+%trapezi.
+%   INPUT:  f = handle della funzione da integrare,
+%           a,b = limiti di integrazione
+%           I2h = integrale su 2^{k-1} intervalli
+%           Ih = integralae calcolo su 2^k intervalli
+%           k  = livello di ricorsione
+
+end
+```
+Una volta che la parte computazionale è stata completata possiamo
+mettere insieme la funzione ricorsiva
+```matlab
+function I = trapeziricorsiva(f,a,b,kmax,tol)
+%% TRAPEZIRICORSIVA calcola l'integrale di f tra a e b in modo
+% ricorsivo. L'integrazione si ferma quando la differenza tra due
+% ricorsioni successive è minore della tolleranza richiesta.
+%   INPUT:  f = handle della funzione di integrare,
+%           a,b = estremi di integrazione
+%           kmax = massimo numero di livello di ricorsione
+%           tol = tolleranza tra due livelli di ricorsione successivi
+
+I2h = 0; k = 1;
+
+Ih = trapezir(f,a,b,I2h,k);
+fprintf('k = 1 Ih = %1.16f\n',Ih);
+
+for k = 2:kmax
+   I2h = Ih;
+   Ih = trapezir(f,a,b,I2h,k);
+   fprintf('k = %d Ih = %1.16f\n',k,Ih);
+   if abs(Ih - I2h) < tol
+       I = Ih;
+       return
+   end
+end
+warning("Non abbiamo raggiunto la tolleranza richiesta!");
+I = Ih;
+
+end
+```
+Dopo averlo fatto la testiamo sullo stesso integrale del caso precedente
+```matlab
+%% Test della funzione ricorsiva dei trapezi
+
+clear; clc; close all;
+
+f = @(x) x.^2.*sin(x).^3;
+a = 0;
+b = 3;
+Itrue = 3.615857833947287;
+tol = 1e-9;
+kmax = 20;
+
+I = trapeziricorsiva(f,a,b,kmax,tol);
+fprintf("\n\tL'errore è %e\n",abs(I - Itrue)/Itrue);
+```
+:::
+
+## Formula di Simpson
+
+La formula di quadratura di Simpson può essere ottenuta di nuovo come una
+formula di Newton-Cotes con $n = 3$. Laddove nel caso dei trapezi avevamo
+fissato una interpolate lineare, questa volta abbiamo scelto una
+interpolante quadratica attraverso tre nodi adiacenti.
+
+Possiamo ricavarla direttamente dalla definizione su un solo intervallo $[a,b]$ con i nodi
+```{math}
+x_1 = a, \quad x_2 = \frac{a+b}{2}, \quad x_3 = b,
+```
+da cui abbiamo che i pesi si ottengono come
+```{math}
+\omega_1 = \int_{a}^{b} L_1(x)\,{\rm d}x = \frac{h}{3}, \\
+\omega_2 = \int_{a}^{b} L_2(x)\,{\rm d}x = \frac{4h}{3}, \\
+\omega_3 = \int_{a}^{b} L_3(x)\,{\rm d}x = \frac{h}{3},
+```
+e quindi
+```{math}
+I = \sum_{i=1}^{3} \omega_i f(x_i) = \frac{h}{3}\left[ f(a) + 4f\left(\frac{a+b}{2}\right)+f(b)\right].
+```
+:::{tip}
+Per calcolare gli integrali $\omega_i$ è conveniente fare un cambio di
+variabili ponendo l'origine dell'intervallo di integrazione su $x_2$.
+In questo modo i nodi diventano $\{-h,0,h\}$ e gli integrali sono più semplici da calcolare.
+:::
+
+:::{danger}
+La regola di Simpson che abbiamo scritto richiede che il numero di
+intervalli sia pari, ovvero che il numero di nodi sia dispari. Se
+vogliamo ammettere un qualunque numero di intervalli $n$, è necessario
+che il primo (o l'ultimo) intervallo usi 4 invece che 3 punti.
+
+Per l'implementazione seguente ci limiteremo al caso di nodi dispari, ovvero di intervalli pari.
+:::
+
+Con calcoli analoghi a quelli che avete visto per la formula dei trapezi
+si può ottenere una prima stima dell'errore anche per la formula di
+Simpson. Infatti si ha che l'errore si comporta come
+```{math}
+E = O\left( (b-a)\frac{h^4}{180} f^{(4)}(\xi) \right),
+```
+per $\xi$ un punto nell'intervallo $[a,b]$.
+
+::::{admonition} Esercizio.
+Si implementi la versione composita della regola di Simpson per il
+calcolo di un integrale secondo il seguente prototipo
+```matlab
+function I = simpson(f,a,b,n)
+%%SIMPSON calcolo dell'integrale della funzione f tra a e b mediante la
+% formula di Simpson.
+%   INPUT:  f = handle della funzione di integrare,
+%           a,b = estremi di integrazione
+%           n numero di intervalli + 1
+
+if mod(n,2) ~= 1
+    error('n deve essere dispari');
+end
+
+end
+```
+Che possiamo testare con:
+```matlab
+%% Test della formula di quadratura di Simpson
+
+f = @(x) x.^2.*sin(x).^3;
+a = 0;
+b = 3;
+Itrue = 3.615857833947287;
+
+n = logspace(1,4,4)+1;
+errore = [];
+
+for nval = n
+    I = simpson(f,a,b,nval);
+    errore = [errore,abs(I-Itrue)/Itrue];
+end
+
+h = (b-a)./n;
+err = 200*(b-a)*h.^4/180;
+
+figure(2)
+loglog(n,errore,'o-',n,err,'r--','LineWidth',2);
+xlabel('n');
+ylabel('Errore');
+legend({'Errore Misurato','Stima'},'FontSize',14)
+```
+
+Dove nella stima dell'errore `24*(b-a)*h.^4/180`, abbiamo sfruttato il fatto che
+```{math}
+\frac{d ^4\left(x^2 \sin (x)^3\right)}{d x^4} = x^2 \left(21 \sin ^3(x)-60 \sin (x) \cos ^2(x)\right)+8 x \left(6 \cos ^3(x)-21 \sin ^2(x) \cos (x)\right)+12 \left(6 \sin (x) \cos ^2(x)-3 \sin ^3(x)\right),
+```
+che in $[0,3]$ è maggiorata da $200$.
+::::
+```{margin} Errore di quadratura Simpson
+![Errore per Simpson regolare](/images/simpsonerror1.png)
+
+Errore per la formula di Simpson.
+```
+
+Possiamo quindi confrontare gli errori di quadratura ottenuti per le due
+formule stampandoli sullo stesso grafico
+```{figure} ./images/simpson_error2.png
+
+Confronto tra l'errore relativo compiuto con la formula dei Trapezi e
+quello ottenuto con la formula di Simpson.
+```
+da cui osserviamo il comportamento che ci aspettavamo considerata
+l'analisi dell'errore.
+
+## Le funzioni di quadratura di MATLAB
+
+MATLAB offre diverse funzioni per il calcolo di integrali. La prima
+da considerare è la funzione `quad`, dal cui *help* leggiamo
+```
+quad   Numerically evaluate integral, adaptive Simpson quadrature.
+   Q = quad(FUN,A,B) tries to approximate the integral of scalar-valued
+   function FUN from A to B to within an error of 1.e-6 using recursive
+   adaptive Simpson quadrature. FUN is a function handle. The function
+   Y=FUN(X) should accept a vector argument X and return a vector result
+   Y, the integrand evaluated at each element of X.
+
+   Q = quad(FUN,A,B,TOL) uses an absolute error tolerance of TOL
+   instead of the default, which is 1.e-6.  Larger values of TOL
+   result in fewer function evaluations and faster computation,
+   but less accurate results.  The quad function in MATLAB 5.3 used
+   a less reliable algorithm and a default tolerance of 1.e-3.
+
+   Q = quad(FUN,A,B,TOL,TRACE) with non-zero TRACE shows the values
+   of [fcnt a b-a Q] during the recursion. Use [] as a placeholder to
+   obtain the default value of TOL.
+```
+Questa applica la quadratura di Simpson che abbiamo visto nella sezione
+precedente sfruttando la tecnica ricorsiva che abbiamo visto, applicato
+e implementato nel caso della regola dei trapezi.
+
+Quest'ultima invece è implementata dal comando `trapz`, dal cui `help`
+leggiamo
+```
+trapz  Trapezoidal numerical integration.
+   Z = trapz(Y) computes an approximation of the integral of Y via
+   the trapezoidal method (with unit spacing).  To compute the integral
+   for spacing different from one, multiply Z by the spacing increment.
+
+   For vectors, trapz(Y) is the integral of Y. For matrices, trapz(Y)
+   is a row vector with the integral over each column. For N-D
+   arrays, trapz(Y) works across the first non-singleton dimension.
+
+   Z = trapz(X,Y) computes the integral of Y with respect to X using the
+   trapezoidal method. X can be a scalar or a vector with the same length
+   as the first non-singleton dimension in Y. trapz operates along this
+   dimension. If X is scalar, then trapz(X,Y) is equivalent to X*trapz(Y).
+```
+
+L'ultima funzione che vogliamo menzionare è `integral` che, in realtà,
+sostituisce la funzione `quad` che è in realtà _deprecata_. Questa applica
+una formula di quadratura adattiva e permette in realtà di calcolare anche
+integrali complessi, di funzioni con singolarità e regolare le tolleranze
+```
+integral  Numerically evaluate integral.
+   Q = integral(FUN,A,B) approximates the integral of function FUN from A
+   to B using global adaptive quadrature and default error tolerances.
+
+   FUN must be a function handle. A and B can be -Inf or Inf. If both are
+   finite, they can be complex. If at least one is complex, integral
+   approximates the path integral from A to B over a straight line path.
+
+   For scalar-valued problems the function Y = FUN(X) must accept a vector
+   argument X and return a vector result Y, the integrand function
+   evaluated at each element of X. For array-valued problems (see the
+   'ArrayValued' option below) FUN must accept a scalar and return an
+   array of values.
+```
+
+Di questa funzione sono disponibili anche le funzioni per il calcolo di integrali di funzioni in 2 e 3 variabili chiamate, rispettivamente, `integral2` e `integral3`.
+
+## Applicazioni ed esercizi
+
+Consideriamo alcuni esercizi sulla quadratura numerica da {cite}`kiusalaas2015`.
+
+:::::{admonition} Accelerazione di una macchina
+
+La {numref}`powertable` riporta la potenza $P$ fornita alle ruote motrici di una macchina come
+funzione della velocità $v$. Se la massa della macchina è $m = 2000\,kg$, si
+determini l'intervallo $\Delta t$ che serve alla macchina per accelerare da
+$1\,m/s$ a $6\,m/s$ utilizzando la regola dei trapezi implementata in `trapz`.
+
+```{list-table} Potenza e velocità
+:header-rows: 1
+:name: powertable
+
+* - $v\,(m/s)$
+  - $P\,(kW)$
+* - 0
+  - 0
+* - 1.0
+  - 4.7
+* - 1.8
+  - 12.2
+* - 2.4
+  - 19.0
+* - 3.5
+  - 31.8
+* - 4.4
+  - 40.1
+* - 5.1
+  - 43.8
+* - 6.0
+  - 43.2
+```
 
 :::{admonition} Suggerimento
 :class: tip, dropdown
-
-Si può usare il seguente prototipo per implementare la dinamica. In questa
-implementazione assumiamo di aver ordinato le variabili $\mathbf{y}$ del sistema riscritto al primo ordine come $\mathbf{y} = [y_1,y_2,y_3,y_4]^T = [r,\dot{r},\theta,\dot{\theta}]^T$.
-```matlab
-function ydot = veicolo(x,y)
-%VEICOLO Dinamica per il veicolo in coordinate polari.
-%   INPUT:  x variabile muta
-%           y vettore delle variabili y = [r rdot theta thetadot]
-%   OUTPUT: dinamica del sistema
-
-end
+La funzione di cui calcolare l'integrale si può ottenere dalla
+seconda legge della dinamica e dalla definizione di potenza:
+```{math}
+\Delta t = m \int_{1 s}^{6 s} (v/P)\,{\rm d}v.
 ```
 :::
 
 :::::
 
-:::{admonition} Esercizio
-
-Un paracadutista di massa $m$ in caduta libera verticale subisce una
-resistenza aerodinamica $F_D = c_D \dot{y}^2$, dove $y$ è misurata
-verso il basso dall'inizio della caduta. L'equazione differenziale che descrive la caduta è
+::::{admonition} Esercizio
+Si calcoli l'integrale
 ```{math}
-\ddot{y} = g - \frac{c_D}{m} \dot{y}^2.
+I = \int_{1}^{+\infty} \frac{{\rm d}x}{1+x^4} = \frac{\pi -2 \coth ^{-1}\left(\sqrt{2}\right)}{4 \sqrt{2}},
 ```
-Si determnini il tempo di una caduta di $500 \text{ m}$ utilizzando
-$g = 9.80665 \text{ m/}\text{s}^2$, $c_D = 0.2028 \text{ kg/m}$ e
-$m = 80 \,\text{kg}$.
+con la regola dei trapezi e si paragoni il risultato con il valore
+esatto.
+
+:::{admonition} Si applichi un cambio di variabili...
+:class: tip, dropdown
+Per riportare l'integrale su di un intervallo finito si applichi
+il cambio di variabili $x^3 = 1/t$.
 :::
+
+::::
+
+:::{admonition} Esercizio
+Il periodo di un pendolo semplice di lunghezza $L$ è $\tau = 4 \sqrt{L/g} h(\theta_0)$, dove $g$ è l'accelerazione di gravità, $\theta_0$ rappresenta l'ampiezza angolare e
+```{math}
+h(\theta_0) = \int_{0}^{\pi/2} \frac{ {\rm d}\theta }{\sqrt{1- \sin^2(\theta_0/2)\sin^2(\theta)}}.
+```
+Si calcolino i periodi per $h(15 \text{ deg})$, $h(30 \text{ deg})$,
+$h(45 \text{ deg})$ con la formula di Simpson e si paragonino
+all'approssimazione per piccoli angoli con $h = \frac{\pi}{2}$.
+Cosa si osserva?
+:::
+
+
+
+## Bibliografia
+
+ ```{bibliography}
+ :filter: docname in docnames
+ ```

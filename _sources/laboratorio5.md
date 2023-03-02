@@ -1,298 +1,315 @@
-# Laboratorio 5 : Soluzione di Sistemi Triangolari
+# Laboratorio 5 : Il Metodo di Newton
 
-I sistemi triangolari giocano un ruolo fondamentale nei calcoli matriciali.
-Molti metodi sono costruiti sull'idea di ridurre un problema alla soluzione di uno o più sistemi triangolari, questo include praticamente tutti i **metodi diretti** per la risoluzione di sistemi lineari.
+Nello scorso laboratorio abbiamo affrontato il problema di trovare lo zero di
+una funzione continua $f : \mathbb{R} \to \mathbb{R}$ utilizzando il metodo di
+bisezione. Il passo successivo visto a lezione è quello di costruire un metodo
+che, a patto di avere funzioni di regolarità più alta,
+$f \in \mathcal{C}^{2}(\mathbb{R})$, permette di ottenere una velocità di
+convergenza maggiore.
 
-Sui **computer seriali** i sistemi triangolari sono universalmente risolti dagli algoritmi standard di sostituzione in avanti e all'indietro. Sulle **macchine
-parallele** la situazione è sensibilmente più varia, ma questo trascende gli
-obiettivi di questo corso.
-
-Due funzioni utili per lavorare con i sisistemi triangolari sono le funzioni
-`triu` e `tril`. Dal loro `help`:
-```
-tril Extract lower triangular part.
-   tril(X) is the lower triangular part of X.
-   tril(X,K) is the elements on and below the K-th diagonal
-   of X .  K = 0 is the main diagonal, K > 0 is above the
-   main diagonal and K < 0 is below the main diagonal.
-```
-ed analogamente per `triu`:
-```
-triu Extract upper triangular part.
-   triu(X) is the upper triangular part of X.
-   triu(X,K) is the elements on and above the K-th diagonal of
-   X.  K = 0 is the main diagonal, K > 0 is above the main
-   diagonal and K < 0 is below the main diagonal.
-```
-Possiamo usarle per costruire sistemi triangolari a partire da sistemi densi.
-
-(forwardandbacwardsolve)=
-## Sostituzione in avanti e all'indietro
-
-Chiamiamo di nuovo $L$ una matrice triangolare inferiore, vogliamo risolvere un sistema della forma:
+Prima di dedicarci all'implementazione, riprendiamo brevemente l'idea e la
+costruzione del metodo. L'idea è di cominciare con una approssimazione iniziale
+che sia *ragionevolmente vicina* alla radice dell'equazione che vogliamo
+risolvere. Approssimiamo in quel punto la funzione con la tangente, calcoliamo
+la sua intercetta con l'asse delle $x$ e quella è la nuova approssimazione
+per la radice. Possiamo iterare la procedura come:
 ```{math}
-L \mathbf{x} = \mathbf{b},
+:label: eq-newton
+x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}, \quad x_0 \text{ assegnato},  \quad k \geq 1,
 ```
-che possiamo riscrivere in forma estesa come:
-```{math}
-\begin{bmatrix}
-l_{1,1} & 0       & 0      & \cdots & 0 \\
-l_{2,1} & l_{2,2} & 0      & \cdots & 0 \\
-\vdots  & \ddots  & \ddots & \ddots & \vdots \\
-l_{n-1,1} & l_{n-1,2} & \cdots & l_{n-1,n} & 0 \\
-l_{n,1} & l_{n,2} & \cdots & \cdots & l_{n,n}  \\
-\end{bmatrix} \begin{bmatrix}
-x_1 \\
-x_2 \\
-\vdots \\
-x_{n-1}\\
-x_n
-\end{bmatrix}
-= \begin{bmatrix}
-b_1 \\
-b_2 \\
-\vdots \\
-b_{n-1} \\
-b_n
-\end{bmatrix}
-```
-Da cui è facile ricavare che la componente $i$ma della soluzione è
-```{math}
-x_i = \frac{1}{l_{i,i}} \left( b_i - \sum_{j=1}^{i-1} l_{i,j} x_j \right), \qquad i=1,\ldots,n.
-```
+Per cui avete dimostrato il seguente teorema di convergenza.
+:::{admonition} Teorema
+Sia $f \in \mathcal{C}^{2}([a,b])$, e supponiamo inoltre che $f(c) = 0$,
+$f'(c) \neq 0$ per qualche $c \in [a,b]$. Allora esiste un $\delta > 0$ tale
+per cui l'iterata {eq}`eq-newton` applicata ad $f$ converge a $c$ per ogni
+valore iniziale $x_0 \in [c-\delta,c+\delta]$.
+:::
 
+Ricordate queste caratteristiche iniziali, possiamo procedere ad implementare
+una versione MATLAB dell'algoritmo di Newton.
 :::{admonition} Esercizio 1
-Si scriva una *function* che implementa il metodo di sostituzione in avanti con
-il seguente prototipo.
+Si implementi in una funzione MATLAB l'algoritmo di Newton sfruttando l'iterata
+descritta in {eq}`eq-newton`. Un *template* della funzione da implementare che
+si può adottare è quindi il seguente:
 ```matlab
-function [x] = forwardsolve(A,b)
-%FORWARDSOLVE Se A è una matrice triangolare inferiore risolve sistema
-%Ax=b tramite metodo di sostituzione in avanti.
-%   Input:
-%   A = matrice triangolare inferiore
-%   b = vettore del termine note
-%   Output:
-%   x = vettore della soluzione
+function [c,residuo] = newton(f,fp,x0,maxit,tol)
+%%NEWTON Implementazione del metodo di Newton
+% Input:  f function handle della funzione di cui si cerca lo zero
+%         fp function handle della derivata prima della funzione
+%         x0 approssimazione iniziale
+%         maxit numero massimo di iterazioni consentite
+%         tol tolleranza sul residuo
+% Output: c radici candidate prodotte dal metodo
+%         residuo vettore dei residui prodotto dal metodo
 
 end
 ```
-Si presti attenzione:
-- Alla verifica degli *input*, il sistema **deve** essere triangolare basso e
-quadrato;
-- Ad utilizzare le **operazioni vettorizzate** di MATLAB, ovvero si ragioni su
-come evitare di usare un ciclo `for` per effettuare la somma che compare
-nella formula di soluzione.
+È importante che la funzione implementata
+- faccia il controllo degli input,
+- pre-allochi la memoria per i vettori `c` e `residuo`,
+- riduca al minimo le chiamate ad $f(\cdot)$.
 
-Si può testare il codice con il seguente problema:
+Per testare l'algoritmo implementato si può usare
 ```matlab
-%% Sostituzione in avanti
-n = 10;
-A = tril(ones(n,n));
-b = (1:n).';
-x = forwardsolve(A,b);
-
-fprintf("Avanti: Errore sulla soluzione è: %1.2e\n",norm(A*x-b));
+%% Script di test per il metodo di Newton
+clear; clc;
+f = @(x) x.^3 - 2*x - 5;
+fp = @(x) 3*x.^2 -2;
+maxit = 200;
+tol = 1e-6;
+ctrue = 2.09455148154232659;
+x0 = 3;
+[c,residuo] = newton(f,fp,x0,maxit,tol);
+```
+Da cui otteniamo
+```
+Iterata 1	c = 3.000000	residuo = 1.600000e+01
+Iterata 2	c = 2.360000	residuo = 3.424256e+00
+Iterata 3	c = 2.127197	residuo = 3.710998e-01
+Iterata 4	c = 2.095136	residuo = 6.526626e-03
+Iterata 5	c = 2.094552	residuo = 2.146143e-06
+Iterata 6	c = 2.094551	residuo = 2.327027e-13
+	Convergenza raggiunta in 6 iterazioni
 ```
 :::
 
-Chiamiamo di nuovo $U$ una matrice triangolare superiore, vogliamo risolvere un sistema della forma:
-```{math}
-U \mathbf{x} = \mathbf{b},
+
+(newt-convergenza)=
+## Convergenza
+
+:::{margin}
+```{figure} ./images/newtonconvergence.png
+:name: newtonconvergence
+
+Paragone tra la convergenza del metodo di Newton e il metodo di bisezione per
+calcolare una radice di $f(x) = x^3-2x-5$.
 ```
-che possiamo riscrivere in forma estesa come:
-```{math}
-\begin{bmatrix}
-u_{1,1} & u_{1,2} & \cdots & \cdots & u_{1,n}  \\
-0 & u_{2,2} & u_{2,3} & \cdots & u_{2,n} \\
-\vdots  & \ddots  & \ddots & \ddots & \vdots \\
-0      & \cdots & 0 & u_{n-1,n-1} & u_{n-1,n}  \\
-0       & 0      & \cdots & 0 & u_{n,n} \\
-\end{bmatrix} \begin{bmatrix}
-x_1 \\
-x_2 \\
-\vdots \\
-x_{n-1}\\
-x_n
-\end{bmatrix}
-= \begin{bmatrix}
-b_1 \\
-b_2 \\
-\vdots \\
-b_{n-1} \\
-b_n
-\end{bmatrix}
+:::
+Possiamo confrontare il metodo di Newton con il metodo di bisezione implementato
+nella scorsa lezione, sfruttiamo lo stesso caso di test dell'Esercizio 1 e
+aggiungiamo allo script di test del metodo di Newton:
+```matlab
+a = 1;
+b = 3;
+maxit = 200;
+tol = 1e-6;
+[c2,residuo2] = bisezione(f,a,b,maxit,tol);
+
+n = 1:length(residuo);
+n2 = 1:length(residuo2);
+semilogy(n,abs(c-ctrue),'ro-',...
+    n2,abs(c2-ctrue),'bx-','LineWidth',2);
+legend({'Metodo di Newton','Metodo di Bisezione'},'FontSize',14);
+xlabel('Iterazione')
 ```
-Da cui di nuovo ricaviamo facilmente la componente $i$ma della soluzione come:
+per cui vediamo una rappresentazione in {numref}`newtonconvergence`. Come ci
+aspettavamo dall'analisi teorica, il metodo di Newton è in questo caso di ordine
+$2$. Possiamo investigare l'ordine di convergenza anche in maniera numerica.
+
+Per farlo ricordiamo che una successione di approssimate $\{x_n\}_n$ che converge
+ad $x$ ha ordine di convergenza $p \geq 1$ se
 ```{math}
-x_i = \frac{1}{u_{i,i}} \left( b_i - \sum_{j=i+1}^{n} u_{i,j} x_j \right), \qquad i=n,n-1,\ldots,1.
+\lim_{n \rightarrow +\infty} \frac{|x_{n+1}-x|}{|x_n -x|^p} = \mu, \text{ con } \mu \in (0,1).
 ```
+Possiamo sfruttare la definizione per ottenere una stima dell'ordine di
+convergenza mediante i rapporti:
+
+che possiamo implementare in una funzione MATLAB come
+```matlab
+function q = convergenza(xn, xtrue)
+%%CONVERGENZA produce una stima dell'ordine di convergenza della
+%%successione x_n ad xtrue.
+  e = abs(xn - xtrue);
+  q = zeros(length(e)-2,1);
+  for n = 2:(length(e)-1)
+      q(n-1) = log(e(n+1)/e(n))/log(e(n)/e(n-1));       
+  end
+end
+```
+E se lo applichiamo al vettore `c` e alla `ctrue` prodotta dal metodo di Newton
+otteniamo i valori
+```matlab
+>> p = convergenza(c,ctrue)
+
+p =
+
+    1.7080
+    1.9194
+    1.9936
+    1.9996
+```
+che ci conferma che l'ordine di convergenza si avvicina a $2$.
+
+## Approssimare la derivata prima
+
+Non sempre possediamo o possiamo calcolare in forma chiusa la derivata della
+funzione $f$. Può essere utile approssimarla direttamente a partire utilizzando
+solo la $f$. Possiamo farlo in maniera numerica sfruttando la definizione stessa
+di derivata:
+```{math}
+:label: eq-fd
+f'(x_k) = \lim_{h \rightarrow 0} \frac{f(x+h)-f(x)}{h} \approx \frac{f(x+h)-f(x)}{h}
+```
+prendendo un $h$ sufficientemente piccolo, una buona scelta è $h = \sqrt{\varepsilon}$
+per $\varepsilon$ la precisione di macchina.
 
 :::{admonition} Esercizio 2
-Si scriva una *function* che implementa il metodo di sostituzione all'indietro con
-il seguente prototipo.
+Si modifichi il codice dell'Esercizio 1 per utilizzare l'approssimazione della
+derivata in {eq}`eq-fd`.
+:::
+
+## Radici multiple
+
+Dalla teoria sappiamo che l'ordine di convergenza del metodo di Newton è
+ridotto quando la radice che $c$ di $f$ che cerchiamo è di ordine più elevato.
+
+:::{tip}
+Ricordiamo che se $c$ è una radice di $f$ il suo **ordine** è il più piccolo
+$q$ per cui $f^{(q)}(c) \neq 0$.
+
+Ad **esempio** $f(x) = (x-2)^2$, $f(2) = 0$, $f'(x) = 2(x-2)$, $f'(2) = 0$, ma
+$f''(x) = 2$ per cui $f''(2) \neq 0$ e dunque l'ordine è $q=2$.
+:::
+
+Possiamo _modificare il metodo di Newton_ per recuperare l'ordine quadratico di
+convergenza **se** sappiamo l'ordine $q$ della radice che stiamo cercando. Si
+tratta di modificare l'iterazione come:
+```{math}
+:label: eq_newton2
+x_{k+1} = x_k - q \frac{f(x_k)}{f'(x_k)}, \quad x_0 \text{ assegnato }, k \geq 1.
+```
+
+:::{admonition} Esercizio 3
+Si modifichi la funzione dell'**Esercizio 1** con una che implementi l'iterazione
+{eq}`eq_newton2`. Cioè con una funzione che abbiamo tra gli input anche l'ordine
+$q$ della radice.
+
+Un prototipo della funzione è quindi
 ```matlab
-function [x] = backwardsolve(A,b)
-%BACKWARDSOLVE Se A è una matrice triangolare superiore risolve sistema
-%Ax=b tramite metodo di sostituzione all'indietro.
-%   Input:
-%   A = matrice triangolare inferiore
-%   b = vettore del termine note
-%   Output:
-%   x = vettore della soluzione
+function [c,residuo] = mnewton(f,fp,x0,q,maxit,tol)
+%%NEWTON Implementazione del metodo di Newton
+% Input:  f function handle della funzione di cui si cerca lo zero
+%         fp function handle della derivata prima della funzione
+%         x0 approssimazione iniziale
+%         q ordine della radice da calcolare
+%         maxit numero massimo di iterazioni consentite
+%         tol tolleranza sul residuo
+% Output: c radici candidate prodotte dal metodo
+%         residuo vettore dei residui prodotto dal metodo
 
 end
 ```
-Si presti attenzione:
-- Alla verifica degli *input*, il sistema **deve** essere triangolare alto e
-quadrato;
-- Ad utilizzare le **operazioni vettorizzate** di MATLAB, ovvero si ragioni su
-come evitare di usare un ciclo `for` per effettuare la somma che compare
-nella formula di soluzione.
-
-Si può testare il codice con il seguente problema:
+Dopo averlo implementato possiamo testarlo con il seguente script
 ```matlab
-%% Sostituzione all'indietro
-n = 10;
-A = triu(ones(n,n));
-b = (1:n).';
-x = backwardsolve(A,b);
+%% Script di test per il metodo di Newton modificato
 
-fprintf("Indietro: Errore sulla soluzione è: %1.2e\n",norm(A*x-b));
+clear; clc;
+
+f = @(x) x.^3 + 2*x.^2 -7*x + 4;
+fp = @(x) 3*x.^2 +4*x -7;
+maxit = 200;
+tol = 1e-6;
+
+ctrue = 1;
+
+x0 = 2;
+[c,residuo] = newton(f,fp,x0,maxit,tol);
+
+x0 = 2;
+q = 2;
+[cm,residuom] = mnewton(f,fp,x0,q,maxit,tol);
+```
+Per vedere la differenza nell'ordine di convergenza possiamo usare la funzione
+`convergenza` che abbiamo discusso nella sezione {ref}`newt-convergenza` e
+rappresentare di nuovo in maniera grafica il residuo.
+```matlab
+q = convergenza(c,ctrue);
+qm = convergenza(cm,ctrue);
+
+figure(1)
+subplot(1,2,1)
+semilogy(1:length(residuo),residuo,'o-',...
+    1:length(residuom),residuom,'x-','LineWidth',2);
+xlabel('Iterazione')
+ylabel('Errore Assoluto')
+legend({'Newton','Newton Modificato'},'FontSize',16,...
+    'Location','southeast');
+subplot(1,2,2)
+semilogy(3:length(residuo),q,'o-',...
+    3:length(residuom),qm,'x-',...
+    1:14,ones(14,1),'k--',...
+    1:14,2*ones(14,1),'k--','LineWidth',2);
+xlabel('Iterazione')
+ylabel('Ordine di Convergenza Stimato')
+legend({'Newton','Newton Modificato'},'FontSize',16,...
+    'Location','southeast');
+axis([1 14 0.8 2.2])
+```
+Quello che osserviamo dalla {numref}`newtonmodificatoconvergence` è esattamente
+quanto previsto dalla teoria. La versione non modificata di Newton ha convergenza
+lineare, mentre la versione modificata ha un chiaro comportamento quadratico.
+```{figure} ./images/newtonconvergencemultiple.png
+:name: newtonmodificatoconvergence
+
+Convergenza del metodo di Newton per radici multiple, confronto tra il caso
+standard e quello modificato.
 ```
 :::
 
-## Tempo di calcolo
 
-Avete mostrato a lezione che il numero di operazioni necessario a risolvere un
-sistema triangolare con l'algoritmo di sostituzione è un $O(n^2)$ per $n$ la
-dimensione del sistema. Proviamo ad indagare come si comporta a questo riguardo
-la nostra implementazione. Per farlo sfruttiamo i codici che abbiamo appena
-scritto per la sostituzione _forward_ o _backward_ e le funzioni `tic` e `toc`
-che abbiamo menzionato nel {ref}`laboratorio3`.
-```matlab
-sizes = floor(logspace(1,4,10));
-times = zeros(size(sizes));
-h = waitbar(0,"Calcolo in corso...");
-for i=1:length(sizes)
-    n = sizes(i);
-    A = triu(ones(n,n));
-    b = (1:n).';
-    tic;
-    x = backwardsolve(A,b); % Allo stesso modo con forwardsolve
-    times(i) = toc;
-    waitbar(i/length(sizes));
-end
-```
-Ora che abbiamo i tempi possiamo visualizzare quello che abbiamo ottenuto
-sfruttando alcune funzioni di MATLAB. Poiché sappiamo che il numero di
-operazioni è una funzione che scala come un $O(n^2)$ possiamo assumere in
-prima approssimazione che anche il tempo si comporti allo stesso modo.
-Cerchiamo dunque di *fittare* un polinomio di secondo grado ai nostri dati:
-```matlab
-[P,S] = polyfit(sizes,times,2);
-```
-Con la mia macchina, questa procedure mi restituisce il polinomio:
-```{math}
-p(x) = 0.000005682501880 x^2  -0.015569138451058 x + 3.230452264767748
-```
-insieme ad una struttura $S$ che contiene informazioni relative all'algoritmo
-con cui questa procedura è stata eseguita. Possiamo usare tutto questo per
-confrontare i valori del *fit* con quelli dei dati
-```matlab
-[y_fit,delta] = polyval(P,sizes,S);
-plot(sizes,times,'o-',...
-    sizes,y_fit,'--',...
-    sizes,y_fit+2*delta,'m--',sizes,y_fit-2*delta,'m--',...
-    'Linewidth',2);
-xlabel('Dimensione del sistema')
-ylabel('Tempo di calcolo (s)')
-legend({'Tempo misurato','Stima asintotica','Intervallo di Confidenza'},...
-    'FontSize',14,'Location','northwest');
-```
-dove abbiamo stampato sia il tempo misurato, sia il *fit* con il suo
-*intervallo di confidenza* entro il 95%. Dalla {numref}`triangularsolvetime`
-vediamo che la predizione quadratica è piuttosto efficace.
-```{figure} ./images/triangulartime.png
-:name: triangularsolvetime
+## Esempi di applicazioni
 
-Tempo di calcolo come un $O(n^2)$ della dimensione.
-```
+Consideriamo alcune applicazioni *ingegneristiche* del problema di trovare lo
+zero di una funzione {cite}`kiusalaas2015`.
 
-## Esercizi
-
-:::{admonition} Esercizio 3: Numeri di Bernoulli
-
-Consideriamo le condizioni
-```{math}
-B(x+1) - B(x) = n x^{n-1}, \quad \int_{0}^{1} B(x)\,{\rm d}x, \quad B(x)\, \text{polinomio}.
-```
-Queste definiscono in maniera unica la funzione $B(x)$. Se assumiamo che il grado
-del polinomio monico $B(x)$ sia $n$ abbiamo così costruito i **polinomi di Bernoulli**. Si possono calcolare esattamente i primi polinomi come:
-```{math}
-B_0(x) = 1, \quad B_1(x) = x - \frac{1}{2}, \quad B_2(x) = x(x-1)+\frac{1}{6}, \quad B_3(x) = x(x-\frac{1}{2})(x-1), \ldots
-```
-Si può dimostrare che i polinomi di Bernoulli definiscono i coefficienti della rappresentazione in serie di potenze di diverse funzioni, ad esepio:
-```{math}
-\frac{t e^{xt}}{e^t - 1} = \sum_{k=0}^{+\infty} \frac{B_n(x)}{n!}t^n.
-```
-In particolare, se scegliamo $x = 0$, abbiamo che
-```{math}
-:label: bernoulliexpansion
-\frac{t}{e^t - 1} = -\frac{1}{2}t + \sum_{k=0}^{+\infty} \frac{B_{2k}(0)}{(2k)!}t^{2k}.
-```
-Facciamo ora la seguente manipolazione algebrica, moltiplichiamo l'equazione
-a sinistra e a destra per $e^{t} - 1$, espandiamo $e^{t}$ con la sua serie
-di potenze, e poniamo uguale a zero i coefficienti di $t^i$ sul lato destro.
-Così otteniamo il seguente sistema di equazioni:
-```{math}
-- \frac{1}{2} j + \sum_{k=0}^{[\frac{j-1}{2}]} \binom{j}{2k} B_{2k}(0), \qquad j=2,3,4,\ldots
-```
-Da cui otteniamo, per gli $j$ pari, il seguente sistema di equazioni lineari
-```{math}
-\begin{bmatrix}
-\binom{2}{0} \\
-\binom{4}{0} & \binom{4}{2} \\
-\binom{6}{0} & \binom{6}{2} & \binom{6}{4} \\
-\binom{8}{0} & \binom{8}{2} & \binom{8}{4} & \binom{8}{6} \\
-\vdots & \vdots & \vdots & \vdots & \ddots \\
-\end{bmatrix}
-\begin{bmatrix}
-B_0(0)\\
-B_2(0)\\
-B_4(0)\\
-B_6(0)\\
-\vdots
-\end{bmatrix}
-= \begin{bmatrix}
-1\\
-2\\
-3\\
-4\\
-\vdots
-\end{bmatrix}.
-```
-1. Si implementi una funzione che dato un intero $k$ restituisca i numeri di
-Bernoulli $\{B_{2j}(0)\}_{j=0}^{k}$ risolvendo questo sistema lineare.
-2. Si usino i numeri così ottenuti per determinare lo sviluppo in {eq}`bernoulliexpansion` e disegnare
-- le due funzioni una accanto all'altra,
-- l'errore di approssimazione commesso in scala logaritmica.
-
-Un prototipo della funzione è:
-```matlab
-function [Bk] = nbernoulli(k)
-%BERNOULLI Produce i numeri di Bernoulli B_{2j}(0) per j=0,...,k risolvendo
-%un sistema triangolare inferiore.
-%   INPUT:
-%   k =  Numero di termini (-1) da calcolare
-%   OUTPUT:
-%   Bk = Vettore di lunghezza k+1 che contiene i numeri richiesti
-end
-```
-
-```{tip}
-La funzione binomiale in MATLAB è implementata come `nchoosek`. Potete inoltre
-confrontare i risultati ottenuti con la funzione nativa di MATLAB che calcola
-i numeri di Bernoulli dal medesimo nome (`help bernoulli` per le informazioni).
-```
-
+:::{margin} Entalpia
+L'**energia libera di Gibbs** (anche chiamata entalpia libera) è una funzione
+di stato termodinamica utilizzata per rappresentare l'energia libera nelle
+trasformazioni a pressione e temperatura costante. In termochimica è usata per
+determinare la spontaneità di una reazione.
 :::
+:::{admonition} Esercizio 4: Energia libera di Gibbs
+L'energia libera di Gibbs di una mole di idrogeno alla temperatura $T$ è
+```{math}
+	G = - R T \ln[ (T/T_0)^{5/2}]\,J,
+```
+dove $R = 8.31441\,J/K$ è la costante dei gas e la temperatura iniziale è
+$T_0 = 4.44418\,K$. Si determini la temperatura a cui $G = -10^{5}\,J$.
+:::
+
+:::{margin} Sistema molle--ammortizzatore
+```{figure} ./images/spring.png
+:width: 40%
+:name: spring
+
+Un modello accoppiato molla-ammortizzatore.
+```
+:::
+:::{admonition} Esercizio 5: Sistema molle--ammortizzatore
+Consideriamo il sistema accoppiato di molle e ammortizzatori in {numref}`spring`.
+I due blocchi di massa $m$ sono connessi tra di loro da due molle e da un
+ammortizzatore. Il coefficiente elastico di ognuna delle due molle è dato da
+$k$, mentre $c$ è il coefficiente che regola l'attenuazione causata dall'ammortizzatore. Quando il sistema è messo in posizione e rilasciato, la
+posizione di ogni blocco durante il moto ha la forma
+```{math}
+x_k(t) = A_k e^{\omega_r t} \cos(\omega_i t + \phi_k), \qquad k=1,2,
+```
+dove $A_k$ e $\phi_k$ sono costanti, e $\omega = \omega_r \pm i \omega_i$ sono le
+radici dell'equazione
+```{math}
+\omega^4 + 2 \frac{c}{m} \omega^3 + 3 \frac{k}{m}\omega^2 + \frac{ c k}{m^2} \omega + \left(\frac{k}{m}\right)^2 = 0.
+```
+Si determinino le possibili combinazioni di $w_r$ e $w_i$ se $c/m = 12\,s^{-1}$,
+e $k/m = 1500 s^{-2}$.
+:::
+
+:::{admonition} Esercizio 6
+Si re-implementino/modifichino gli esercizi del {ref}`laboratorio3`
+cambiando dal metodo di Bisezione al metodo di Newton.
+:::
+
+## Bibliografia
+
+ ```{bibliography}
+ :filter: docname in docnames
+ ```

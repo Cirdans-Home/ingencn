@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Laboratorio 5 : Soluzione di Sistemi Triangolari &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
+    <title>Laboratorio 5 : Il Metodo di Newton &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -56,8 +56,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
-    <link rel="next" title="Laboratorio 6 : L’Eliminazione di Gauss il Metodo LU" href="laboratorio6.html" />
-    <link rel="prev" title="Laboratorio 4 : Il Metodo di Newton" href="laboratorio4.html" />
+    <link rel="next" title="Laboratorio 6 : Soluzione di Sistemi Triangolari" href="laboratorio6.html" />
+    <link rel="prev" title="Laboratorio 4 : Il Metodo di Bisezione" href="laboratorio4.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
     
@@ -125,47 +125,52 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio2.html">
-   Laboratorio 2 : L’Aritmetica di Precisione Finita
+   Laboratorio 2 : Introduzione a MATLAB - II
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio3.html">
-   Laboratorio 3 : Il Metodo di Bisezione
+   Laboratorio 3 : L’Aritmetica di Precisione Finita
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio4.html">
-   Laboratorio 4 : Il Metodo di Newton
+   Laboratorio 4 : Il Metodo di Bisezione
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Laboratorio 5 : Soluzione di Sistemi Triangolari
+   Laboratorio 5 : Il Metodo di Newton
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio6.html">
-   Laboratorio 6 : L’Eliminazione di Gauss il Metodo LU
+   Laboratorio 6 : Soluzione di Sistemi Triangolari
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio7.html">
-   Laboratorio 7 : Metodi Stazionari per Sistemi Lineari
+   Laboratorio 7 : L’Eliminazione di Gauss il Metodo LU
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio8.html">
-   Laboratorio 8 : Metodi di Quadratura
+   Laboratorio 8 : Metodi Stazionari per Sistemi Lineari
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio9.html">
-   Laboratorio 9 : Metodi per la Soluzione di ODE
+   Laboratorio 9 : Metodi di Quadratura
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio10.html">
-   Laboratorio 10 : Metodi di tipo Runge-Kutta
+   Laboratorio 10 : Metodi per la Soluzione di ODE
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio11.html">
+   Laboratorio 11 : Metodi di tipo Runge-Kutta
   </a>
  </li>
 </ul>
@@ -346,18 +351,28 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sostituzione-in-avanti-e-all-indietro">
-   Sostituzione in avanti e all’indietro
+  <a class="reference internal nav-link" href="#convergenza">
+   Convergenza
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#tempo-di-calcolo">
-   Tempo di calcolo
+  <a class="reference internal nav-link" href="#approssimare-la-derivata-prima">
+   Approssimare la derivata prima
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#esercizi">
-   Esercizi
+  <a class="reference internal nav-link" href="#radici-multiple">
+   Radici multiple
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#esempi-di-applicazioni">
+   Esempi di applicazioni
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bibliografia">
+   Bibliografia
   </a>
  </li>
 </ul>
@@ -369,7 +384,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Laboratorio 5 : Soluzione di Sistemi Triangolari</h1>
+                <h1>Laboratorio 5 : Il Metodo di Newton</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -380,18 +395,28 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sostituzione-in-avanti-e-all-indietro">
-   Sostituzione in avanti e all’indietro
+  <a class="reference internal nav-link" href="#convergenza">
+   Convergenza
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#tempo-di-calcolo">
-   Tempo di calcolo
+  <a class="reference internal nav-link" href="#approssimare-la-derivata-prima">
+   Approssimare la derivata prima
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#esercizi">
-   Esercizi
+  <a class="reference internal nav-link" href="#radici-multiple">
+   Radici multiple
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#esempi-di-applicazioni">
+   Esempi di applicazioni
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bibliografia">
+   Bibliografia
   </a>
  </li>
 </ul>
@@ -404,289 +429,311 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-5-soluzione-di-sistemi-triangolari">
-<h1>Laboratorio 5 : Soluzione di Sistemi Triangolari<a class="headerlink" href="#laboratorio-5-soluzione-di-sistemi-triangolari" title="Link a questa intestazione">#</a></h1>
-<p>I sistemi triangolari giocano un ruolo fondamentale nei calcoli matriciali.
-Molti metodi sono costruiti sull’idea di ridurre un problema alla soluzione di uno o più sistemi triangolari, questo include praticamente tutti i <strong>metodi diretti</strong> per la risoluzione di sistemi lineari.</p>
-<p>Sui <strong>computer seriali</strong> i sistemi triangolari sono universalmente risolti dagli algoritmi standard di sostituzione in avanti e all’indietro. Sulle <strong>macchine
-parallele</strong> la situazione è sensibilmente più varia, ma questo trascende gli
-obiettivi di questo corso.</p>
-<p>Due funzioni utili per lavorare con i sisistemi triangolari sono le funzioni
-<code class="docutils literal notranslate"><span class="pre">triu</span></code> e <code class="docutils literal notranslate"><span class="pre">tril</span></code>. Dal loro <code class="docutils literal notranslate"><span class="pre">help</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tril</span> <span class="n">Extract</span> <span class="n">lower</span> <span class="n">triangular</span> <span class="n">part</span><span class="o">.</span>
-   <span class="n">tril</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">lower</span> <span class="n">triangular</span> <span class="n">part</span> <span class="n">of</span> <span class="n">X</span><span class="o">.</span>
-   <span class="n">tril</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">K</span><span class="p">)</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">elements</span> <span class="n">on</span> <span class="ow">and</span> <span class="n">below</span> <span class="n">the</span> <span class="n">K</span><span class="o">-</span><span class="n">th</span> <span class="n">diagonal</span>
-   <span class="n">of</span> <span class="n">X</span> <span class="o">.</span>  <span class="n">K</span> <span class="o">=</span> <span class="mi">0</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">main</span> <span class="n">diagonal</span><span class="p">,</span> <span class="n">K</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">is</span> <span class="n">above</span> <span class="n">the</span>
-   <span class="n">main</span> <span class="n">diagonal</span> <span class="ow">and</span> <span class="n">K</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">is</span> <span class="n">below</span> <span class="n">the</span> <span class="n">main</span> <span class="n">diagonal</span><span class="o">.</span>
-</pre></div>
+  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-5-il-metodo-di-newton">
+<h1>Laboratorio 5 : Il Metodo di Newton<a class="headerlink" href="#laboratorio-5-il-metodo-di-newton" title="Link a questa intestazione">#</a></h1>
+<p>Nello scorso laboratorio abbiamo affrontato il problema di trovare lo zero di
+una funzione continua <span class="math notranslate nohighlight">\(f : \mathbb{R} \to \mathbb{R}\)</span> utilizzando il metodo di
+bisezione. Il passo successivo visto a lezione è quello di costruire un metodo
+che, a patto di avere funzioni di regolarità più alta,
+<span class="math notranslate nohighlight">\(f \in \mathcal{C}^{2}(\mathbb{R})\)</span>, permette di ottenere una velocità di
+convergenza maggiore.</p>
+<p>Prima di dedicarci all’implementazione, riprendiamo brevemente l’idea e la
+costruzione del metodo. L’idea è di cominciare con una approssimazione iniziale
+che sia <em>ragionevolmente vicina</em> alla radice dell’equazione che vogliamo
+risolvere. Approssimiamo in quel punto la funzione con la tangente, calcoliamo
+la sua intercetta con l’asse delle <span class="math notranslate nohighlight">\(x\)</span> e quella è la nuova approssimazione
+per la radice. Possiamo iterare la procedura come:</p>
+<div class="math notranslate nohighlight" id="equation-eq-newton">
+<span class="eqno">(5)<a class="headerlink" href="#equation-eq-newton" title="Permalink a questa equazione">#</a></span>\[x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}, \quad x_0 \text{ assegnato},  \quad k \geq 1,\]</div>
+<p>Per cui avete dimostrato il seguente teorema di convergenza.</p>
+<div class="admonition-teorema admonition">
+<p class="admonition-title">Teorema</p>
+<p>Sia <span class="math notranslate nohighlight">\(f \in \mathcal{C}^{2}([a,b])\)</span>, e supponiamo inoltre che <span class="math notranslate nohighlight">\(f(c) = 0\)</span>,
+<span class="math notranslate nohighlight">\(f'(c) \neq 0\)</span> per qualche <span class="math notranslate nohighlight">\(c \in [a,b]\)</span>. Allora esiste un <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> tale
+per cui l’iterata <a class="reference internal" href="#equation-eq-newton">(5)</a> applicata ad <span class="math notranslate nohighlight">\(f\)</span> converge a <span class="math notranslate nohighlight">\(c\)</span> per ogni
+valore iniziale <span class="math notranslate nohighlight">\(x_0 \in [c-\delta,c+\delta]\)</span>.</p>
 </div>
-<p>ed analogamente per <code class="docutils literal notranslate"><span class="pre">triu</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">triu</span> <span class="n">Extract</span> <span class="n">upper</span> <span class="n">triangular</span> <span class="n">part</span><span class="o">.</span>
-   <span class="n">triu</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">upper</span> <span class="n">triangular</span> <span class="n">part</span> <span class="n">of</span> <span class="n">X</span><span class="o">.</span>
-   <span class="n">triu</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">K</span><span class="p">)</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">elements</span> <span class="n">on</span> <span class="ow">and</span> <span class="n">above</span> <span class="n">the</span> <span class="n">K</span><span class="o">-</span><span class="n">th</span> <span class="n">diagonal</span> <span class="n">of</span>
-   <span class="n">X</span><span class="o">.</span>  <span class="n">K</span> <span class="o">=</span> <span class="mi">0</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">main</span> <span class="n">diagonal</span><span class="p">,</span> <span class="n">K</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">is</span> <span class="n">above</span> <span class="n">the</span> <span class="n">main</span>
-   <span class="n">diagonal</span> <span class="ow">and</span> <span class="n">K</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">is</span> <span class="n">below</span> <span class="n">the</span> <span class="n">main</span> <span class="n">diagonal</span><span class="o">.</span>
-</pre></div>
-</div>
-<p>Possiamo usarle per costruire sistemi triangolari a partire da sistemi densi.</p>
-<section id="sostituzione-in-avanti-e-all-indietro">
-<span id="forwardandbacwardsolve"></span><h2>Sostituzione in avanti e all’indietro<a class="headerlink" href="#sostituzione-in-avanti-e-all-indietro" title="Link a questa intestazione">#</a></h2>
-<p>Chiamiamo di nuovo <span class="math notranslate nohighlight">\(L\)</span> una matrice triangolare inferiore, vogliamo risolvere un sistema della forma:</p>
-<div class="math notranslate nohighlight">
-\[L \mathbf{x} = \mathbf{b},\]</div>
-<p>che possiamo riscrivere in forma estesa come:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{bmatrix}
-l_{1,1} &amp; 0       &amp; 0      &amp; \cdots &amp; 0 \\
-l_{2,1} &amp; l_{2,2} &amp; 0      &amp; \cdots &amp; 0 \\
-\vdots  &amp; \ddots  &amp; \ddots &amp; \ddots &amp; \vdots \\
-l_{n-1,1} &amp; l_{n-1,2} &amp; \cdots &amp; l_{n-1,n} &amp; 0 \\
-l_{n,1} &amp; l_{n,2} &amp; \cdots &amp; \cdots &amp; l_{n,n}  \\
-\end{bmatrix} \begin{bmatrix}
-x_1 \\
-x_2 \\
-\vdots \\
-x_{n-1}\\
-x_n
-\end{bmatrix}
-= \begin{bmatrix}
-b_1 \\
-b_2 \\
-\vdots \\
-b_{n-1} \\
-b_n
-\end{bmatrix}\end{split}\]</div>
-<p>Da cui è facile ricavare che la componente <span class="math notranslate nohighlight">\(i\)</span>ma della soluzione è</p>
-<div class="math notranslate nohighlight">
-\[x_i = \frac{1}{l_{i,i}} \left( b_i - \sum_{j=1}^{i-1} l_{i,j} x_j \right), \qquad i=1,\ldots,n.\]</div>
+<p>Ricordate queste caratteristiche iniziali, possiamo procedere ad implementare
+una versione MATLAB dell’algoritmo di Newton.</p>
 <div class="admonition-esercizio-1 admonition">
 <p class="admonition-title">Esercizio 1</p>
-<p>Si scriva una <em>function</em> che implementa il metodo di sostituzione in avanti con
-il seguente prototipo.</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[x]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">forwardsolve</span><span class="p">(</span>A,b<span class="p">)</span><span class="w"></span>
-<span class="c">%FORWARDSOLVE Se A è una matrice triangolare inferiore risolve sistema</span><span class="w"></span>
-<span class="c">%Ax=b tramite metodo di sostituzione in avanti.</span><span class="w"></span>
-<span class="c">%   Input:</span><span class="w"></span>
-<span class="c">%   A = matrice triangolare inferiore</span><span class="w"></span>
-<span class="c">%   b = vettore del termine note</span><span class="w"></span>
-<span class="c">%   Output:</span><span class="w"></span>
-<span class="c">%   x = vettore della soluzione</span><span class="w"></span>
+<p>Si implementi in una funzione MATLAB l’algoritmo di Newton sfruttando l’iterata
+descritta in <a class="reference internal" href="#equation-eq-newton">(5)</a>. Un <em>template</em> della funzione da implementare che
+si può adottare è quindi il seguente:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[c,residuo]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">newton</span><span class="p">(</span>f,fp,x0,maxit,tol<span class="p">)</span><span class="w"></span>
+<span class="c">%%NEWTON Implementazione del metodo di Newton</span><span class="w"></span>
+<span class="c">% Input:  f function handle della funzione di cui si cerca lo zero</span><span class="w"></span>
+<span class="c">%         fp function handle della derivata prima della funzione</span><span class="w"></span>
+<span class="c">%         x0 approssimazione iniziale</span><span class="w"></span>
+<span class="c">%         maxit numero massimo di iterazioni consentite</span><span class="w"></span>
+<span class="c">%         tol tolleranza sul residuo</span><span class="w"></span>
+<span class="c">% Output: c radici candidate prodotte dal metodo</span><span class="w"></span>
+<span class="c">%         residuo vettore dei residui prodotto dal metodo</span><span class="w"></span>
 
 <span class="k">end</span><span class="w"></span>
 </pre></div>
 </div>
-<p>Si presti attenzione:</p>
+<p>È importante che la funzione implementata</p>
 <ul class="simple">
-<li><p>Alla verifica degli <em>input</em>, il sistema <strong>deve</strong> essere triangolare basso e
-quadrato;</p></li>
-<li><p>Ad utilizzare le <strong>operazioni vettorizzate</strong> di MATLAB, ovvero si ragioni su
-come evitare di usare un ciclo <code class="docutils literal notranslate"><span class="pre">for</span></code> per effettuare la somma che compare
-nella formula di soluzione.</p></li>
+<li><p>faccia il controllo degli input,</p></li>
+<li><p>pre-allochi la memoria per i vettori <code class="docutils literal notranslate"><span class="pre">c</span></code> e <code class="docutils literal notranslate"><span class="pre">residuo</span></code>,</p></li>
+<li><p>riduca al minimo le chiamate ad <span class="math notranslate nohighlight">\(f(\cdot)\)</span>.</p></li>
 </ul>
-<p>Si può testare il codice con il seguente problema:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Sostituzione in avanti</span><span class="w"></span>
-<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
-<span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">tril</span><span class="p">(</span><span class="nb">ones</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">));</span><span class="w"></span>
-<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">).</span><span class="o">&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">forwardsolve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">);</span><span class="w"></span>
-
-<span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;Avanti: Errore sulla soluzione è: %1.2e\n&quot;</span><span class="p">,</span><span class="nb">norm</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x</span><span class="o">-</span><span class="n">b</span><span class="p">));</span><span class="w"></span>
+<p>Per testare l’algoritmo implementato si può usare</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Script di test per il metodo di Newton</span><span class="w"></span>
+<span class="nb">clear</span><span class="p">;</span><span class="w"> </span><span class="nb">clc</span><span class="p">;</span><span class="w"></span>
+<span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="o">.^</span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
+<span class="n">fp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="mi">3</span><span class="o">*</span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="n">maxit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span><span class="w"></span>
+<span class="n">tol</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-6</span><span class="p">;</span><span class="w"></span>
+<span class="n">ctrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.09455148154232659</span><span class="p">;</span><span class="w"></span>
+<span class="n">x0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+<span class="p">[</span><span class="n">c</span><span class="p">,</span><span class="n">residuo</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">newton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">fp</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">maxit</span><span class="p">,</span><span class="n">tol</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Da cui otteniamo</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Iterata</span> <span class="mi">1</span>	<span class="n">c</span> <span class="o">=</span> <span class="mf">3.000000</span>	<span class="n">residuo</span> <span class="o">=</span> <span class="mf">1.600000e+01</span>
+<span class="n">Iterata</span> <span class="mi">2</span>	<span class="n">c</span> <span class="o">=</span> <span class="mf">2.360000</span>	<span class="n">residuo</span> <span class="o">=</span> <span class="mf">3.424256e+00</span>
+<span class="n">Iterata</span> <span class="mi">3</span>	<span class="n">c</span> <span class="o">=</span> <span class="mf">2.127197</span>	<span class="n">residuo</span> <span class="o">=</span> <span class="mf">3.710998e-01</span>
+<span class="n">Iterata</span> <span class="mi">4</span>	<span class="n">c</span> <span class="o">=</span> <span class="mf">2.095136</span>	<span class="n">residuo</span> <span class="o">=</span> <span class="mf">6.526626e-03</span>
+<span class="n">Iterata</span> <span class="mi">5</span>	<span class="n">c</span> <span class="o">=</span> <span class="mf">2.094552</span>	<span class="n">residuo</span> <span class="o">=</span> <span class="mf">2.146143e-06</span>
+<span class="n">Iterata</span> <span class="mi">6</span>	<span class="n">c</span> <span class="o">=</span> <span class="mf">2.094551</span>	<span class="n">residuo</span> <span class="o">=</span> <span class="mf">2.327027e-13</span>
+	<span class="n">Convergenza</span> <span class="n">raggiunta</span> <span class="ow">in</span> <span class="mi">6</span> <span class="n">iterazioni</span>
 </pre></div>
 </div>
 </div>
-<p>Chiamiamo di nuovo <span class="math notranslate nohighlight">\(U\)</span> una matrice triangolare superiore, vogliamo risolvere un sistema della forma:</p>
-<div class="math notranslate nohighlight">
-\[U \mathbf{x} = \mathbf{b},\]</div>
-<p>che possiamo riscrivere in forma estesa come:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{bmatrix}
-u_{1,1} &amp; u_{1,2} &amp; \cdots &amp; \cdots &amp; u_{1,n}  \\
-0 &amp; u_{2,2} &amp; u_{2,3} &amp; \cdots &amp; u_{2,n} \\
-\vdots  &amp; \ddots  &amp; \ddots &amp; \ddots &amp; \vdots \\
-0      &amp; \cdots &amp; 0 &amp; u_{n-1,n-1} &amp; u_{n-1,n}  \\
-0       &amp; 0      &amp; \cdots &amp; 0 &amp; u_{n,n} \\
-\end{bmatrix} \begin{bmatrix}
-x_1 \\
-x_2 \\
-\vdots \\
-x_{n-1}\\
-x_n
-\end{bmatrix}
-= \begin{bmatrix}
-b_1 \\
-b_2 \\
-\vdots \\
-b_{n-1} \\
-b_n
-\end{bmatrix}\end{split}\]</div>
-<p>Da cui di nuovo ricaviamo facilmente la componente <span class="math notranslate nohighlight">\(i\)</span>ma della soluzione come:</p>
-<div class="math notranslate nohighlight">
-\[x_i = \frac{1}{u_{i,i}} \left( b_i - \sum_{j=i+1}^{n} u_{i,j} x_j \right), \qquad i=n,n-1,\ldots,1.\]</div>
-<div class="admonition-esercizio-2 admonition">
-<p class="admonition-title">Esercizio 2</p>
-<p>Si scriva una <em>function</em> che implementa il metodo di sostituzione all’indietro con
-il seguente prototipo.</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[x]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">backwardsolve</span><span class="p">(</span>A,b<span class="p">)</span><span class="w"></span>
-<span class="c">%BACKWARDSOLVE Se A è una matrice triangolare superiore risolve sistema</span><span class="w"></span>
-<span class="c">%Ax=b tramite metodo di sostituzione all&#39;indietro.</span><span class="w"></span>
-<span class="c">%   Input:</span><span class="w"></span>
-<span class="c">%   A = matrice triangolare inferiore</span><span class="w"></span>
-<span class="c">%   b = vettore del termine note</span><span class="w"></span>
-<span class="c">%   Output:</span><span class="w"></span>
-<span class="c">%   x = vettore della soluzione</span><span class="w"></span>
-
-<span class="k">end</span><span class="w"></span>
-</pre></div>
-</div>
-<p>Si presti attenzione:</p>
-<ul class="simple">
-<li><p>Alla verifica degli <em>input</em>, il sistema <strong>deve</strong> essere triangolare alto e
-quadrato;</p></li>
-<li><p>Ad utilizzare le <strong>operazioni vettorizzate</strong> di MATLAB, ovvero si ragioni su
-come evitare di usare un ciclo <code class="docutils literal notranslate"><span class="pre">for</span></code> per effettuare la somma che compare
-nella formula di soluzione.</p></li>
-</ul>
-<p>Si può testare il codice con il seguente problema:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Sostituzione all&#39;indietro</span><span class="w"></span>
-<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
-<span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">triu</span><span class="p">(</span><span class="nb">ones</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">));</span><span class="w"></span>
-<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">).</span><span class="o">&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">backwardsolve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">);</span><span class="w"></span>
-
-<span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;Indietro: Errore sulla soluzione è: %1.2e\n&quot;</span><span class="p">,</span><span class="nb">norm</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x</span><span class="o">-</span><span class="n">b</span><span class="p">));</span><span class="w"></span>
-</pre></div>
-</div>
-</div>
-</section>
-<section id="tempo-di-calcolo">
-<h2>Tempo di calcolo<a class="headerlink" href="#tempo-di-calcolo" title="Link a questa intestazione">#</a></h2>
-<p>Avete mostrato a lezione che il numero di operazioni necessario a risolvere un
-sistema triangolare con l’algoritmo di sostituzione è un <span class="math notranslate nohighlight">\(O(n^2)\)</span> per <span class="math notranslate nohighlight">\(n\)</span> la
-dimensione del sistema. Proviamo ad indagare come si comporta a questo riguardo
-la nostra implementazione. Per farlo sfruttiamo i codici che abbiamo appena
-scritto per la sostituzione <em>forward</em> o <em>backward</em> e le funzioni <code class="docutils literal notranslate"><span class="pre">tic</span></code> e <code class="docutils literal notranslate"><span class="pre">toc</span></code>
-che abbiamo menzionato nel <a class="reference internal" href="laboratorio3.html#laboratorio3"><span class="std std-ref">Laboratorio 3 : Il Metodo di Bisezione</span></a>.</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">sizes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">floor</span><span class="p">(</span><span class="nb">logspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">));</span><span class="w"></span>
-<span class="n">times</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">sizes</span><span class="p">));</span><span class="w"></span>
-<span class="n">h</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">waitbar</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s">&quot;Calcolo in corso...&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">sizes</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sizes</span><span class="p">(</span><span class="nb">i</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">triu</span><span class="p">(</span><span class="nb">ones</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">));</span><span class="w"></span>
-<span class="w">    </span><span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">).</span><span class="o">&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="nb">tic</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">backwardsolve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">);</span><span class="w"> </span><span class="c">% Allo stesso modo con forwardsolve</span><span class="w"></span>
-<span class="w">    </span><span class="n">times</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">toc</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="nb">waitbar</span><span class="p">(</span><span class="nb">i</span><span class="o">/</span><span class="nb">length</span><span class="p">(</span><span class="n">sizes</span><span class="p">));</span><span class="w"></span>
-<span class="k">end</span><span class="w"></span>
-</pre></div>
-</div>
-<p>Ora che abbiamo i tempi possiamo visualizzare quello che abbiamo ottenuto
-sfruttando alcune funzioni di MATLAB. Poiché sappiamo che il numero di
-operazioni è una funzione che scala come un <span class="math notranslate nohighlight">\(O(n^2)\)</span> possiamo assumere in
-prima approssimazione che anche il tempo si comporti allo stesso modo.
-Cerchiamo dunque di <em>fittare</em> un polinomio di secondo grado ai nostri dati:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">P</span><span class="p">,</span><span class="n">S</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">polyfit</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span><span class="n">times</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-</pre></div>
-</div>
-<p>Con la mia macchina, questa procedure mi restituisce il polinomio:</p>
-<div class="math notranslate nohighlight">
-\[p(x) = 0.000005682501880 x^2  -0.015569138451058 x + 3.230452264767748\]</div>
-<p>insieme ad una struttura <span class="math notranslate nohighlight">\(S\)</span> che contiene informazioni relative all’algoritmo
-con cui questa procedura è stata eseguita. Possiamo usare tutto questo per
-confrontare i valori del <em>fit</em> con quelli dei dati</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">y_fit</span><span class="p">,</span><span class="n">delta</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">polyval</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="n">sizes</span><span class="p">,</span><span class="n">S</span><span class="p">);</span><span class="w"></span>
-<span class="nb">plot</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span><span class="n">times</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
-<span class="w">    </span><span class="n">sizes</span><span class="p">,</span><span class="n">y_fit</span><span class="p">,</span><span class="s">&#39;--&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
-<span class="w">    </span><span class="n">sizes</span><span class="p">,</span><span class="n">y_fit</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">delta</span><span class="p">,</span><span class="s">&#39;m--&#39;</span><span class="p">,</span><span class="n">sizes</span><span class="p">,</span><span class="n">y_fit</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">delta</span><span class="p">,</span><span class="s">&#39;m--&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
-<span class="w">    </span><span class="s">&#39;Linewidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Dimensione del sistema&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Tempo di calcolo (s)&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Tempo misurato&#39;</span><span class="p">,</span><span class="s">&#39;Stima asintotica&#39;</span><span class="p">,</span><span class="s">&#39;Intervallo di Confidenza&#39;</span><span class="p">},</span><span class="k">...</span><span class="w"></span>
-<span class="w">    </span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="s">&#39;Location&#39;</span><span class="p">,</span><span class="s">&#39;northwest&#39;</span><span class="p">);</span><span class="w"></span>
-</pre></div>
-</div>
-<p>dove abbiamo stampato sia il tempo misurato, sia il <em>fit</em> con il suo
-<em>intervallo di confidenza</em> entro il 95%. Dalla <a class="reference internal" href="#triangularsolvetime"><span class="std std-numref">Fig. 12</span></a>
-vediamo che la predizione quadratica è piuttosto efficace.</p>
-<figure class="align-default" id="triangularsolvetime">
-<img alt="_images/triangulartime.png" src="_images/triangulartime.png" />
+<section id="convergenza">
+<span id="newt-convergenza"></span><h2>Convergenza<a class="headerlink" href="#convergenza" title="Link a questa intestazione">#</a></h2>
+<aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<figure class="align-default" id="newtonconvergence">
+<img alt="_images/newtonconvergence.png" src="_images/newtonconvergence.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 12 </span><span class="caption-text">Tempo di calcolo come un <span class="math notranslate nohighlight">\(O(n^2)\)</span> della dimensione.</span><a class="headerlink" href="#triangularsolvetime" title="Link a questa immagine">#</a></p>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Paragone tra la convergenza del metodo di Newton e il metodo di bisezione per
+calcolare una radice di <span class="math notranslate nohighlight">\(f(x) = x^3-2x-5\)</span>.</span><a class="headerlink" href="#newtonconvergence" title="Link a questa immagine">#</a></p>
 </figcaption>
 </figure>
-</section>
-<section id="esercizi">
-<h2>Esercizi<a class="headerlink" href="#esercizi" title="Link a questa intestazione">#</a></h2>
-<div class="admonition-esercizio-3-numeri-di-bernoulli admonition">
-<p class="admonition-title">Esercizio 3: Numeri di Bernoulli</p>
-<p>Consideriamo le condizioni</p>
+</aside>
+<p>Possiamo confrontare il metodo di Newton con il metodo di bisezione implementato
+nella scorsa lezione, sfruttiamo lo stesso caso di test dell’Esercizio 1 e
+aggiungiamo allo script di test del metodo di Newton:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+<span class="n">maxit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span><span class="w"></span>
+<span class="n">tol</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-6</span><span class="p">;</span><span class="w"></span>
+<span class="p">[</span><span class="n">c2</span><span class="p">,</span><span class="n">residuo2</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bisezione</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">maxit</span><span class="p">,</span><span class="n">tol</span><span class="p">);</span><span class="w"></span>
+
+<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">residuo</span><span class="p">);</span><span class="w"></span>
+<span class="n">n2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">residuo2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">semilogy</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">c</span><span class="o">-</span><span class="n">ctrue</span><span class="p">),</span><span class="s">&#39;ro-&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="n">n2</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">c2</span><span class="o">-</span><span class="n">ctrue</span><span class="p">),</span><span class="s">&#39;bx-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Metodo di Newton&#39;</span><span class="p">,</span><span class="s">&#39;Metodo di Bisezione&#39;</span><span class="p">},</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">);</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Iterazione&#39;</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>per cui vediamo una rappresentazione in <a class="reference internal" href="#newtonconvergence"><span class="std std-numref">Fig. 9</span></a>. Come ci
+aspettavamo dall’analisi teorica, il metodo di Newton è in questo caso di ordine
+<span class="math notranslate nohighlight">\(2\)</span>. Possiamo investigare l’ordine di convergenza anche in maniera numerica.</p>
+<p>Per farlo ricordiamo che una successione di approssimate <span class="math notranslate nohighlight">\(\{x_n\}_n\)</span> che converge
+ad <span class="math notranslate nohighlight">\(x\)</span> ha ordine di convergenza <span class="math notranslate nohighlight">\(p \geq 1\)</span> se</p>
 <div class="math notranslate nohighlight">
-\[B(x+1) - B(x) = n x^{n-1}, \quad \int_{0}^{1} B(x)\,{\rm d}x, \quad B(x)\, \text{polinomio}.\]</div>
-<p>Queste definiscono in maniera unica la funzione <span class="math notranslate nohighlight">\(B(x)\)</span>. Se assumiamo che il grado
-del polinomio monico <span class="math notranslate nohighlight">\(B(x)\)</span> sia <span class="math notranslate nohighlight">\(n\)</span> abbiamo così costruito i <strong>polinomi di Bernoulli</strong>. Si possono calcolare esattamente i primi polinomi come:</p>
-<div class="math notranslate nohighlight">
-\[B_0(x) = 1, \quad B_1(x) = x - \frac{1}{2}, \quad B_2(x) = x(x-1)+\frac{1}{6}, \quad B_3(x) = x(x-\frac{1}{2})(x-1), \ldots\]</div>
-<p>Si può dimostrare che i polinomi di Bernoulli definiscono i coefficienti della rappresentazione in serie di potenze di diverse funzioni, ad esepio:</p>
-<div class="math notranslate nohighlight">
-\[\frac{t e^{xt}}{e^t - 1} = \sum_{k=0}^{+\infty} \frac{B_n(x)}{n!}t^n.\]</div>
-<p>In particolare, se scegliamo <span class="math notranslate nohighlight">\(x = 0\)</span>, abbiamo che</p>
-<div class="math notranslate nohighlight" id="equation-bernoulliexpansion">
-<span class="eqno">(8)<a class="headerlink" href="#equation-bernoulliexpansion" title="Permalink a questa equazione">#</a></span>\[\frac{t}{e^t - 1} = -\frac{1}{2}t + \sum_{k=0}^{+\infty} \frac{B_{2k}(0)}{(2k)!}t^{2k}.\]</div>
-<p>Facciamo ora la seguente manipolazione algebrica, moltiplichiamo l’equazione
-a sinistra e a destra per <span class="math notranslate nohighlight">\(e^{t} - 1\)</span>, espandiamo <span class="math notranslate nohighlight">\(e^{t}\)</span> con la sua serie
-di potenze, e poniamo uguale a zero i coefficienti di <span class="math notranslate nohighlight">\(t^i\)</span> sul lato destro.
-Così otteniamo il seguente sistema di equazioni:</p>
-<div class="math notranslate nohighlight">
-\[- \frac{1}{2} j + \sum_{k=0}^{[\frac{j-1}{2}]} \binom{j}{2k} B_{2k}(0), \qquad j=2,3,4,\ldots\]</div>
-<p>Da cui otteniamo, per gli <span class="math notranslate nohighlight">\(j\)</span> pari, il seguente sistema di equazioni lineari</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{bmatrix}
-\binom{2}{0} \\
-\binom{4}{0} &amp; \binom{4}{2} \\
-\binom{6}{0} &amp; \binom{6}{2} &amp; \binom{6}{4} \\
-\binom{8}{0} &amp; \binom{8}{2} &amp; \binom{8}{4} &amp; \binom{8}{6} \\
-\vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \ddots \\
-\end{bmatrix}
-\begin{bmatrix}
-B_0(0)\\
-B_2(0)\\
-B_4(0)\\
-B_6(0)\\
-\vdots
-\end{bmatrix}
-= \begin{bmatrix}
-1\\
-2\\
-3\\
-4\\
-\vdots
-\end{bmatrix}.\end{split}\]</div>
-<ol class="simple">
-<li><p>Si implementi una funzione che dato un intero <span class="math notranslate nohighlight">\(k\)</span> restituisca i numeri di
-Bernoulli <span class="math notranslate nohighlight">\(\{B_{2j}(0)\}_{j=0}^{k}\)</span> risolvendo questo sistema lineare.</p></li>
-<li><p>Si usino i numeri così ottenuti per determinare lo sviluppo in <a class="reference internal" href="#equation-bernoulliexpansion">(8)</a> e disegnare</p></li>
-</ol>
-<ul class="simple">
-<li><p>le due funzioni una accanto all’altra,</p></li>
-<li><p>l’errore di approssimazione commesso in scala logaritmica.</p></li>
-</ul>
-<p>Un prototipo della funzione è:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[Bk]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">nbernoulli</span><span class="p">(</span>k<span class="p">)</span><span class="w"></span>
-<span class="c">%BERNOULLI Produce i numeri di Bernoulli B_{2j}(0) per j=0,...,k risolvendo</span><span class="w"></span>
-<span class="c">%un sistema triangolare inferiore.</span><span class="w"></span>
-<span class="c">%   INPUT:</span><span class="w"></span>
-<span class="c">%   k =  Numero di termini (-1) da calcolare</span><span class="w"></span>
-<span class="c">%   OUTPUT:</span><span class="w"></span>
-<span class="c">%   Bk = Vettore di lunghezza k+1 che contiene i numeri richiesti</span><span class="w"></span>
+\[\lim_{n \rightarrow +\infty} \frac{|x_{n+1}-x|}{|x_n -x|^p} = \mu, \text{ con } \mu \in (0,1).\]</div>
+<p>Possiamo sfruttare la definizione per ottenere una stima dell’ordine di
+convergenza mediante i rapporti:</p>
+<p>che possiamo implementare in una funzione MATLAB come</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>q<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">convergenza</span><span class="p">(</span>xn, xtrue<span class="p">)</span><span class="w"></span>
+<span class="c">%%CONVERGENZA produce una stima dell&#39;ordine di convergenza della</span><span class="w"></span>
+<span class="c">%%successione x_n ad xtrue.</span><span class="w"></span>
+<span class="w">  </span><span class="n">e</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">xn</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">xtrue</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">q</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="nb">length</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">:(</span><span class="nb">length</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">q</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">log</span><span class="p">(</span><span class="n">e</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">e</span><span class="p">(</span><span class="n">n</span><span class="p">))</span><span class="o">/</span><span class="nb">log</span><span class="p">(</span><span class="n">e</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">/</span><span class="n">e</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span><span class="w">       </span>
+<span class="w">  </span><span class="k">end</span><span class="w"></span>
 <span class="k">end</span><span class="w"></span>
 </pre></div>
 </div>
+<p>E se lo applichiamo al vettore <code class="docutils literal notranslate"><span class="pre">c</span></code> e alla <code class="docutils literal notranslate"><span class="pre">ctrue</span></code> prodotta dal metodo di Newton
+otteniamo i valori</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">convergenza</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">ctrue</span><span class="p">)</span><span class="w"></span>
+
+<span class="n">p</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">    </span><span class="mf">1.7080</span><span class="w"></span>
+<span class="w">    </span><span class="mf">1.9194</span><span class="w"></span>
+<span class="w">    </span><span class="mf">1.9936</span><span class="w"></span>
+<span class="w">    </span><span class="mf">1.9996</span><span class="w"></span>
+</pre></div>
+</div>
+<p>che ci conferma che l’ordine di convergenza si avvicina a <span class="math notranslate nohighlight">\(2\)</span>.</p>
+</section>
+<section id="approssimare-la-derivata-prima">
+<h2>Approssimare la derivata prima<a class="headerlink" href="#approssimare-la-derivata-prima" title="Link a questa intestazione">#</a></h2>
+<p>Non sempre possediamo o possiamo calcolare in forma chiusa la derivata della
+funzione <span class="math notranslate nohighlight">\(f\)</span>. Può essere utile approssimarla direttamente a partire utilizzando
+solo la <span class="math notranslate nohighlight">\(f\)</span>. Possiamo farlo in maniera numerica sfruttando la definizione stessa
+di derivata:</p>
+<div class="math notranslate nohighlight" id="equation-eq-fd">
+<span class="eqno">(6)<a class="headerlink" href="#equation-eq-fd" title="Permalink a questa equazione">#</a></span>\[f'(x_k) = \lim_{h \rightarrow 0} \frac{f(x+h)-f(x)}{h} \approx \frac{f(x+h)-f(x)}{h}\]</div>
+<p>prendendo un <span class="math notranslate nohighlight">\(h\)</span> sufficientemente piccolo, una buona scelta è <span class="math notranslate nohighlight">\(h = \sqrt{\varepsilon}\)</span>
+per <span class="math notranslate nohighlight">\(\varepsilon\)</span> la precisione di macchina.</p>
+<div class="admonition-esercizio-2 admonition">
+<p class="admonition-title">Esercizio 2</p>
+<p>Si modifichi il codice dell’Esercizio 1 per utilizzare l’approssimazione della
+derivata in <a class="reference internal" href="#equation-eq-fd">(6)</a>.</p>
+</div>
+</section>
+<section id="radici-multiple">
+<h2>Radici multiple<a class="headerlink" href="#radici-multiple" title="Link a questa intestazione">#</a></h2>
+<p>Dalla teoria sappiamo che l’ordine di convergenza del metodo di Newton è
+ridotto quando la radice che <span class="math notranslate nohighlight">\(c\)</span> di <span class="math notranslate nohighlight">\(f\)</span> che cerchiamo è di ordine più elevato.</p>
 <div class="admonition tip">
 <p class="admonition-title">Suggerimento</p>
-<p>La funzione binomiale in MATLAB è implementata come <code class="docutils literal notranslate"><span class="pre">nchoosek</span></code>. Potete inoltre
-confrontare i risultati ottenuti con la funzione nativa di MATLAB che calcola
-i numeri di Bernoulli dal medesimo nome (<code class="docutils literal notranslate"><span class="pre">help</span> <span class="pre">bernoulli</span></code> per le informazioni).</p>
+<p>Ricordiamo che se <span class="math notranslate nohighlight">\(c\)</span> è una radice di <span class="math notranslate nohighlight">\(f\)</span> il suo <strong>ordine</strong> è il più piccolo
+<span class="math notranslate nohighlight">\(q\)</span> per cui <span class="math notranslate nohighlight">\(f^{(q)}(c) \neq 0\)</span>.</p>
+<p>Ad <strong>esempio</strong> <span class="math notranslate nohighlight">\(f(x) = (x-2)^2\)</span>, <span class="math notranslate nohighlight">\(f(2) = 0\)</span>, <span class="math notranslate nohighlight">\(f'(x) = 2(x-2)\)</span>, <span class="math notranslate nohighlight">\(f'(2) = 0\)</span>, ma
+<span class="math notranslate nohighlight">\(f''(x) = 2\)</span> per cui <span class="math notranslate nohighlight">\(f''(2) \neq 0\)</span> e dunque l’ordine è <span class="math notranslate nohighlight">\(q=2\)</span>.</p>
 </div>
+<p>Possiamo <em>modificare il metodo di Newton</em> per recuperare l’ordine quadratico di
+convergenza <strong>se</strong> sappiamo l’ordine <span class="math notranslate nohighlight">\(q\)</span> della radice che stiamo cercando. Si
+tratta di modificare l’iterazione come:</p>
+<div class="math notranslate nohighlight" id="equation-eq-newton2">
+<span class="eqno">(7)<a class="headerlink" href="#equation-eq-newton2" title="Permalink a questa equazione">#</a></span>\[x_{k+1} = x_k - q \frac{f(x_k)}{f'(x_k)}, \quad x_0 \text{ assegnato }, k \geq 1.\]</div>
+<div class="admonition-esercizio-3 admonition">
+<p class="admonition-title">Esercizio 3</p>
+<p>Si modifichi la funzione dell”<strong>Esercizio 1</strong> con una che implementi l’iterazione
+<a class="reference internal" href="#equation-eq-newton2">(7)</a>. Cioè con una funzione che abbiamo tra gli input anche l’ordine
+<span class="math notranslate nohighlight">\(q\)</span> della radice.</p>
+<p>Un prototipo della funzione è quindi</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[c,residuo]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">mnewton</span><span class="p">(</span>f,fp,x0,q,maxit,tol<span class="p">)</span><span class="w"></span>
+<span class="c">%%NEWTON Implementazione del metodo di Newton</span><span class="w"></span>
+<span class="c">% Input:  f function handle della funzione di cui si cerca lo zero</span><span class="w"></span>
+<span class="c">%         fp function handle della derivata prima della funzione</span><span class="w"></span>
+<span class="c">%         x0 approssimazione iniziale</span><span class="w"></span>
+<span class="c">%         q ordine della radice da calcolare</span><span class="w"></span>
+<span class="c">%         maxit numero massimo di iterazioni consentite</span><span class="w"></span>
+<span class="c">%         tol tolleranza sul residuo</span><span class="w"></span>
+<span class="c">% Output: c radici candidate prodotte dal metodo</span><span class="w"></span>
+<span class="c">%         residuo vettore dei residui prodotto dal metodo</span><span class="w"></span>
+
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Dopo averlo implementato possiamo testarlo con il seguente script</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Script di test per il metodo di Newton modificato</span><span class="w"></span>
+
+<span class="nb">clear</span><span class="p">;</span><span class="w"> </span><span class="nb">clc</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="o">.^</span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="w"> </span><span class="o">-</span><span class="mi">7</span><span class="o">*</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span>
+<span class="n">fp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="mi">3</span><span class="o">*</span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="mi">4</span><span class="o">*</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="mi">7</span><span class="p">;</span><span class="w"></span>
+<span class="n">maxit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span><span class="w"></span>
+<span class="n">tol</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-6</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">ctrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">x0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="p">[</span><span class="n">c</span><span class="p">,</span><span class="n">residuo</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">newton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">fp</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">maxit</span><span class="p">,</span><span class="n">tol</span><span class="p">);</span><span class="w"></span>
+
+<span class="n">x0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="n">q</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="p">[</span><span class="n">cm</span><span class="p">,</span><span class="n">residuom</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">mnewton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">fp</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">q</span><span class="p">,</span><span class="n">maxit</span><span class="p">,</span><span class="n">tol</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Per vedere la differenza nell’ordine di convergenza possiamo usare la funzione
+<code class="docutils literal notranslate"><span class="pre">convergenza</span></code> che abbiamo discusso nella sezione <a class="reference internal" href="#newt-convergenza"><span class="std std-ref">Convergenza</span></a> e
+rappresentare di nuovo in maniera grafica il residuo.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">q</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">convergenza</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">ctrue</span><span class="p">);</span><span class="w"></span>
+<span class="n">qm</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">convergenza</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span><span class="n">ctrue</span><span class="p">);</span><span class="w"></span>
+
+<span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="nb">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="nb">semilogy</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">residuo</span><span class="p">),</span><span class="n">residuo</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">residuom</span><span class="p">),</span><span class="n">residuom</span><span class="p">,</span><span class="s">&#39;x-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Iterazione&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Errore Assoluto&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Newton&#39;</span><span class="p">,</span><span class="s">&#39;Newton Modificato&#39;</span><span class="p">},</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="s">&#39;Location&#39;</span><span class="p">,</span><span class="s">&#39;southeast&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="nb">semilogy</span><span class="p">(</span><span class="mi">3</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">residuo</span><span class="p">),</span><span class="n">q</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="mi">3</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">residuom</span><span class="p">),</span><span class="n">qm</span><span class="p">,</span><span class="s">&#39;x-&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="mi">1</span><span class="p">:</span><span class="mi">14</span><span class="p">,</span><span class="nb">ones</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="s">&#39;k--&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="mi">1</span><span class="p">:</span><span class="mi">14</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="nb">ones</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="s">&#39;k--&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Iterazione&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Ordine di Convergenza Stimato&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Newton&#39;</span><span class="p">,</span><span class="s">&#39;Newton Modificato&#39;</span><span class="p">},</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="s">&#39;Location&#39;</span><span class="p">,</span><span class="s">&#39;southeast&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">axis</span><span class="p">([</span><span class="mi">1</span><span class="w"> </span><span class="mi">14</span><span class="w"> </span><span class="mf">0.8</span><span class="w"> </span><span class="mf">2.2</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Quello che osserviamo dalla <a class="reference internal" href="#newtonmodificatoconvergence"><span class="std std-numref">Fig. 10</span></a> è esattamente
+quanto previsto dalla teoria. La versione non modificata di Newton ha convergenza
+lineare, mentre la versione modificata ha un chiaro comportamento quadratico.</p>
+<figure class="align-default" id="newtonmodificatoconvergence">
+<img alt="_images/newtonconvergencemultiple.png" src="_images/newtonconvergencemultiple.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Convergenza del metodo di Newton per radici multiple, confronto tra il caso
+standard e quello modificato.</span><a class="headerlink" href="#newtonmodificatoconvergence" title="Link a questa immagine">#</a></p>
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="esempi-di-applicazioni">
+<h2>Esempi di applicazioni<a class="headerlink" href="#esempi-di-applicazioni" title="Link a questa intestazione">#</a></h2>
+<p>Consideriamo alcune applicazioni <em>ingegneristiche</em> del problema di trovare lo
+zero di una funzione <span id="id1">[<a class="reference internal" href="laboratorio9.html#id10" title="Jaan Kiusalaas. Numerical Methods in Engineering with MATLAB®. Cambridge University Press, 3 edition, 2015. doi:10.1017/CBO9781316341599.">Kiu15</a>]</span>.</p>
+<aside class="margin sidebar">
+<p class="sidebar-title">Entalpia</p>
+<p>L”<strong>energia libera di Gibbs</strong> (anche chiamata entalpia libera) è una funzione
+di stato termodinamica utilizzata per rappresentare l’energia libera nelle
+trasformazioni a pressione e temperatura costante. In termochimica è usata per
+determinare la spontaneità di una reazione.</p>
+</aside>
+<div class="admonition-esercizio-4-energia-libera-di-gibbs admonition">
+<p class="admonition-title">Esercizio 4: Energia libera di Gibbs</p>
+<p>L’energia libera di Gibbs di una mole di idrogeno alla temperatura <span class="math notranslate nohighlight">\(T\)</span> è</p>
+<div class="math notranslate nohighlight">
+\[	G = - R T \ln[ (T/T_0)^{5/2}]\,J,\]</div>
+<p>dove <span class="math notranslate nohighlight">\(R = 8.31441\,J/K\)</span> è la costante dei gas e la temperatura iniziale è
+<span class="math notranslate nohighlight">\(T_0 = 4.44418\,K\)</span>. Si determini la temperatura a cui <span class="math notranslate nohighlight">\(G = -10^{5}\,J\)</span>.</p>
+</div>
+<aside class="margin sidebar">
+<p class="sidebar-title">Sistema molle–ammortizzatore</p>
+<figure class="align-default" id="spring">
+<a class="reference internal image-reference" href="_images/spring.png"><img alt="_images/spring.png" src="_images/spring.png" style="width: 40%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Un modello accoppiato molla-ammortizzatore.</span><a class="headerlink" href="#spring" title="Link a questa immagine">#</a></p>
+</figcaption>
+</figure>
+</aside>
+<div class="admonition-esercizio-5-sistema-molle-ammortizzatore admonition">
+<p class="admonition-title">Esercizio 5: Sistema molle–ammortizzatore</p>
+<p>Consideriamo il sistema accoppiato di molle e ammortizzatori in <a class="reference internal" href="#spring"><span class="std std-numref">Fig. 11</span></a>.
+I due blocchi di massa <span class="math notranslate nohighlight">\(m\)</span> sono connessi tra di loro da due molle e da un
+ammortizzatore. Il coefficiente elastico di ognuna delle due molle è dato da
+<span class="math notranslate nohighlight">\(k\)</span>, mentre <span class="math notranslate nohighlight">\(c\)</span> è il coefficiente che regola l’attenuazione causata dall’ammortizzatore. Quando il sistema è messo in posizione e rilasciato, la
+posizione di ogni blocco durante il moto ha la forma</p>
+<div class="math notranslate nohighlight">
+\[x_k(t) = A_k e^{\omega_r t} \cos(\omega_i t + \phi_k), \qquad k=1,2,\]</div>
+<p>dove <span class="math notranslate nohighlight">\(A_k\)</span> e <span class="math notranslate nohighlight">\(\phi_k\)</span> sono costanti, e <span class="math notranslate nohighlight">\(\omega = \omega_r \pm i \omega_i\)</span> sono le
+radici dell’equazione</p>
+<div class="math notranslate nohighlight">
+\[\omega^4 + 2 \frac{c}{m} \omega^3 + 3 \frac{k}{m}\omega^2 + \frac{ c k}{m^2} \omega + \left(\frac{k}{m}\right)^2 = 0.\]</div>
+<p>Si determinino le possibili combinazioni di <span class="math notranslate nohighlight">\(w_r\)</span> e <span class="math notranslate nohighlight">\(w_i\)</span> se <span class="math notranslate nohighlight">\(c/m = 12\,s^{-1}\)</span>,
+e <span class="math notranslate nohighlight">\(k/m = 1500 s^{-2}\)</span>.</p>
+</div>
+<div class="admonition-esercizio-6 admonition">
+<p class="admonition-title">Esercizio 6</p>
+<p>Si re-implementino/modifichino gli esercizi del <a class="reference internal" href="laboratorio4.html#laboratorio3"><span class="std std-ref">Laboratorio 4 : Il Metodo di Bisezione</span></a>
+cambiando dal metodo di Bisezione al metodo di Newton.</p>
+</div>
+</section>
+<section id="bibliografia">
+<h2>Bibliografia<a class="headerlink" href="#bibliografia" title="Link a questa intestazione">#</a></h2>
+<div class="docutils container" id="id2">
+<dl class="citation">
+<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id1">Kiu15</a></span></dt>
+<dd><p>Jaan Kiusalaas. <em>Numerical Methods in Engineering with MATLAB®</em>. Cambridge University Press, 3 edition, 2015. <a class="reference external" href="https://doi.org/10.1017/CBO9781316341599">doi:10.1017/CBO9781316341599</a>.</p>
+</dd>
+</dl>
 </div>
 </section>
 </section>
@@ -722,13 +769,13 @@ i numeri di Bernoulli dal medesimo nome (<code class="docutils literal notransla
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">precedente</p>
-            <p class="prev-next-title">Laboratorio 4 : Il Metodo di Newton</p>
+            <p class="prev-next-title">Laboratorio 4 : Il Metodo di Bisezione</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="laboratorio6.html" title="successivo pagina">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">successivo</p>
-        <p class="prev-next-title">Laboratorio 6 : L’Eliminazione di Gauss il Metodo LU</p>
+        <p class="prev-next-title">Laboratorio 6 : Soluzione di Sistemi Triangolari</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
