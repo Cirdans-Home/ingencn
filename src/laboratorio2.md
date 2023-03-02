@@ -1,590 +1,828 @@
-# Laboratorio 2 : L'Aritmetica di Precisione Finita
+# Laboratorio 2 : Introduzione a MATLAB - II
 
-Ricordiamo che l'artimetica **floating point** (floating-point arithmetic) è
-l'artimetica che fornisce una rappresentazione approssimata dei numeri reali
-per supportare un compromesso tra l'intervallo dei numeri rappresentati e la
-precisione ottenibile nei calcoli. Per questo motivo, il calcolo in virgola
-mobile viene spesso utilizzato in sistemi in cui si deve coniugare la
-rappresentazione di numeri in un ampio range richiedendo tuttavia tempi di
-elaborazione rapidi.
+## Array e Matrici
 
-Un numero in virgola mobile è rappresentato approssimativamente da un numero
-fisso di cifre significative (il significando) e scalato usando un esponente
-in una qualche base fissata. Tale base è normalmente due, dieci o sedici.
-Un numero che può essere rappresentato esattamente è della forma seguente:
-```{math}
-:label: eq-numeromacchina
- \text{significando} \times \text{base}^{\text{esponente}}.
+Abbiamo discusso fino ad ora l'utilizzo di variabili scalari, tuttavia in MATLAB
+i dati sono rappresentati in maniera naturale come **matrici**, **array** e, più
+in generale, **tensori**. È possibile applicare tutte le operazioni dell'algebra
+lineare agli array, in più si possono creare griglie comuni, combinare array
+esistenti, manipolare la forma e il contenuto di un array e utilizzare diverse
+modalità di indicizzazione per accedere ai loro elementi.
+
+In realtà, abbiamo già surrettiziamente lavorato con degli array, poiché in MATLAB
+anche le variabili scalari non sono nient'altro che array unidimensionali, in
+notazione matematica un $a \in \mathbb{R}$ è sempre un $a \in \mathbb{R}^{1\times 1}$.
+Infatti se scriviamo nella **command window**:
+```matlab
+a = 100;
+whos a
 ```
-Di tutte le possibili costruzioni di questo tipo, noi adoperiamo quella
-codificata nello standard IEEE-754 {cite}`IEEE-754:2019:ISF`, in cui
-(la maggior parte dei) i numeri *floating point* sono
-normalizzati, cioè possono essere espressi come
-```{math}
-:label: rappresentazione
-x = \pm (1+f) 2^e, \qquad 0 \leq f < 1, \qquad -1022 \leq e \leq 1023,
+il sistema ci restituirà
 ```
-dove $f$ è detta la **mantissa**, e deve essere rappresentabile con al più 52 bits,
-cioè $2^{52}f$ è un intero nell'intervallo $0 \leq 2^{52} f < 2^{53}$, abbiamo
-fissato la base a $2$ e chiamato l'esponente $e$.
+Name      Size            Bytes  Class     Attributes
 
-Il testo di riferimento per questi argomenti è {cite:p}`MR1927606`.
+a         1x1                 8  double   
+```
+Immaginiamo ora di disporre di uno specifico insieme di dati, che vogliamo disporre
+in una matrice. Possiamo farlo utilizzando la semantica delle parentesi quadre `[ ]`.
 
-MATLAB implementa diversi formati di numeri *floating point* e *interi*; si
-veda la {numref}`classiintere` per i diversi tipi di interi disponibili e le
-relative funzioni di conversione. In generale assumeremo di star lavorando con
-l'aritmetica in precisione doppia (`double`): cioè di usare una **rappresentazione
-con 64 bits**. Specificamente, il bit 63 assume valore $0$ o $1$ per indicare
-il segno ($0$ se positivo, $1$ se negativo). I bits da 62 a 52 contengono
-l'esponente $e$, mentre i bits da 51 a 0 contengo la mantissa $f$ come illustrato
-in {eq}`rappresentazione`.
+Una singola riga di dati contiene spazi o virgole `,` tra gli elementi e fa uso di
+un punto e virgola `;` per separare le righe.
 
-:::{warning}
-In alcuni casi MATLAB deciderà autonomamente se la variabile che stiamo usando
-è un *intero* e applicherà in tal caso l'aritmetica relativa. Alcune funzioni
-utili a verificare che tipo di aritmetica stiamo usando sono le funzioni
-`isfloat` e `isinteger` che restituiscono **vero** ($1$) se l'argomento è
-rispettivamente un *floating point* (`single` o `double`), oppure una delle
-tipologie di intero, **falso** ($0$) altrimenti.
-:::
+Ad esempio, se vogliamo crea una singola riga di tre elementi numerici
+```matlab
+v = [ 1 2 3]
+```
+oppure
+```matlab
+v = [ 1, 2, 3]
+```
+La dimensione della matrice risultante è 1 per 3, poiché ha una riga e tre colonne.
+Una matrice di questa forma viene definita **vettore riga** e se chiamiamo la
+funzione `isrow(v)` ci vediamo rispondere
+```
+ans =
 
-:::{margin} Classi Numeriche
-```{list-table} Classi di numeri interi
+  logical
+
+   1
+```
+Similmente, possiamo costuire un **vettore colonna** come
+```matlab
+w = [ 1; 2; 3]
+```
+per cui abbiamo che invece `iscolumn(w)` ci restituirà
+```
+ans =
+
+  logical
+
+   1
+```
+Più in generale, possiamo costruire una matrice di $4 \times 4$ elementi come
+```matlab
+A = [ 1 2 3 4; 5 6 7 8; 9 10 11 12; 13 14 15 16]
+```
+oppure come
+```matlab
+A = [ 1, 2, 3, 4; 5, 6, 7, 8; 9, 10, 11, 12; 13, 14, 15, 16]
+```
+o
+```matlab
+A = [ 1, 2, 3, 4
+      5, 6, 7, 8
+      9, 10, 11, 12
+      13, 14, 15, 16]
+```
+In tutti i casi ci vedremo restituire
+```matlab
+A =
+
+     1     2     3     4
+     5     6     7     8
+     9    10    11    12
+    13    14    15    16
+```
+Possiamo indagare le dimensioni di una matrice mediante la funzione `size(A)`,
+che nel caso precedente ci restituirà
+```
+ans =
+
+     4     4
+```
+### Costruttori predefiniti
+
+Costruire matrici semplicemente inserendo i valori all'interno in sequenza o in
+maniera esplicita è chiaramente scomodo (e molto noioso). A questo scopo MATLAB
+possiede i costruttori riportati in {numref}`costruttoriarray`.
+
+```{list-table} Costruttori per array e matrici.
 :header-rows: 1
-:name: classiintere
-* - Classe
-  - Range
-  - Conversione
-* - Signed 8-bit integer
-  - $-2^7$ a $2^7-1$
-  - `int8`
-* - Signed 16-bit integer
-  - $-2^{15}$ a $2^{15}-1$
-  - `int16`
-* - Signed 32-bit integer
-  - $-2^{31}$ a $2^{31}-1$
-  - `int32`
-* - Signed 64-bit integer
-  - $-2^{63}$ a $2^{63}-1$
-  - `int64`
-* - Unsigned 8-bit integer
-  - $0$ a $2^{8}-1$
-  - `uint8`
-* - Unsigned 16-bit integer
-  - $0$ a $2^{16}-1$
-  - `uint16`
-* - Unsigned 32-bit integer
-  - $0$ a $2^{32}-1$
-  - `uint32`
-* - Unsigned 64-bit integer
-  - $0$ a $2^{64}-1$
-  - `uint64`
+:name: costruttoriarray
+
+* - Funzione
+  - Operazione
+* - `zeros`
+  - **Crea un array di tutti zeri**
+    Per costruire la matrice $0 = (O)_{i,j}$ $i,j=1,\ldots,n$ scriviamo
+    ```matlab
+    O = zeros(n,m);
+    ```
+* - `ones`
+  - **Crea un array di tutti uno**
+    Per costruire la matrice $1 = (E)_{i,j}$ $i,j=1,\ldots,n$ scriviamo
+    ```matlab
+    E = ones(n,m);
+    ```
+* - `rand`
+  - **Crea un array di numeri casuali uniformemente distribuiti** in $[0,1]$.
+    ```matlab
+    R = rand(n,m);
+    ```
+    Possiamo generare numeri uniformemente distribuiti nell'intervallo $[a,b]$ come
+    ```matlab
+    R = a + (b-a).*rand(n,m);
+    ```
+* - `eye`
+  - **Matrice identità** costruisce la matrice identità $(I)_{i,i} = 1$, $i=1,\ldots,n$
+  e $0$ altrimenti `I = eye(n)`.
+* - `diag`
+  - Crea una **matrice diagonale** o estrae gli elementi diagonali di una matrice data. Se `v` è un vettore di lunghezza $n$, allora `diag(v)` è una matrice la cui diagonale principale è data dagli elementi di `v`. Se `A` è una matrice allora `diag(v)` è un vettore che contiene gli elementi della diagonale principale di $A$.
 ```
-:::
 
-## Rappresentazione dei numeri di macchina
+Altre funzioni dello stesso tipo sono `true`, `false`, `blkdiag` e i loro
+funzionamento può essere esplorato mediante la funzione `help`.
 
-In generale non tutti i numeri potranno essere espressi nella forma {eq}`eq-numeromacchina`,
-possiamo scegliere ad esempio il numero $4/3$ che non può essere scritto esattamente nella
-forma $s \times 2^k$. Se proviamo ad eseguire l'operazione
+Il secondo insieme di funzioni estremamente utile per costruire matrici è quello
+che si occupa di gestire le concatenazioni. Queste possono essere ottenute sia
+utilizzando la notazione con le parentesi quadre `[ ]`, ad esempio,
 ```matlab
-e = 1 - 3*(4/3 - 1)
+A = rand(5,5);
+B = rand(5,10);
+C = [A,B];
 ```
-da cui ci aspetteremo di ottenere uno $0$, otteniamo invece
-```
-e =
-   2.2204e-16
-```
-che è un errore della grandezza della *precisione di macchina* per l'aritmetica
-in virgola mobile adoperata da MATLAB.
-
-In maniera analoga, possiamo considerare un altro numero che non è esattamente
-rappresentato in macchina $0.1$. Se lo sommiamo $10$ volte in aritmetica esatta
-ci aspettiamo di ottenere $1$:
+costruisce a partire dalle matrici $A \in \mathbb{R}^{5 \times 5}$,
+$B \in \mathbb{R}^{5\times 10}$, la matrice $C \in \mathbb{R}^{5\times 15}$ ottenuta
+ponendo una accanto alle altre tutte le colonne di $A$ seguite da quelle di $B$.
+Alla stesso modo, si può ottenere la concatenazione verticale come
 ```matlab
-a = 0.0;
-for i = 1:10
-  a = a + 0.1;
-end
+A = rand(8,8);
+B = rand(12,8);
+C = [A;B];
 ```
-Tuttavia se proviamo a fare la verifica leggiamo
-```matlab
-a == 1
-ans =
+che genererà la matrice $C \in \mathbb{R}^{20,8}$ ottenuta impilando tutte le
+righe di $A$ seguite dalle righe di $B$.
 
-  logical
-
-   0
-```
-Ed infatti,
-```matlab
-abs(a-1)
-
-ans =
-
-   1.1102e-16
-```
-che è di nuovo dell'ordine della precisione di macchina.
-
-:::{tip}
-Quando impostiamo dei confronti di "uguaglianza" tra numeri *floating point* la
-procedura corretta è sempre quella di controllare la differenza in valore
-assoluto tra il valore calcolato ed il risultato aspettato in termine della
-precisione di macchina in uso:
-```matlab
-abs(1-a) < eps
-
-ans =
-
- logical
-
-  1
-```
-che ci restituisce il valore aspettato, dove `eps` è spesso chiamato *floating-point
-zero*.
-:::
-
-All'altro estremo del range dinamico dei numeri rappresentati osserviamo anche
-il problema del "diradarsi" dei numeri di macchina, infatti sfruttando la
-definizione di numero normalizzato osserviamo facilmente che:
-```matlab
-(2^53 + 1) - 2^53
-
-ans =
-     0
-```
-Possiamo farci dire da MATLAB quali sono il più piccolo ed il più grande numero
-reale rappresentato richiamando le variabili `realmin` e `realmax`:  
-```matlab
->> realmin
-
-ans =
-
-  2.2251e-308
-
->> realmax
-
-ans =
-
-  1.7977e+308
-```
-Qualunque operazione generi un numero maggiore di `realmax` provocherà un errore
-di **overflow**, qualunque operazione generi un numero minore di `realmin` genererà
-un errore di **underflow**. In MATLAB questo è rappresento dai valori `+Inf` e `-Inf`:
-```matlab
-realmax + .0001e+308
-ans =
-   Inf
-
--realmax - .0001e+308
-ans =
-  -Inf
-```
-
-:::{warning}
-Alcune macchine permettono il trattamento di alcuni casi eccezionali di numeri
-*floating point*, cioè l'esistenza di numeri *denormalizzati* (o *subnormali*).
-Questi si trovano nell'intevallo [`eps*realmin`,`realmin`].
-:::
-
-L'ultimo caso che vogliamo discutere riguarda l'uso delle funzioni trigonometriche.
-Dalla goniometria di base sappiamo che $\sin(k \pi) = 0$ per ogni $k$ dispari.
-Tuttavia è immediato osservare che
-```matlab
-sin(3*pi)
-
-ans =
-
-     3.673940397442059e-16
-```
-Poiché di $\pi$ abbiamo solo un'**approssimazione**, l'algoritmo che calcola la
-funzione $\sin(x)$ propaga l'errore commesso nell'argomento anche sulla valutazione
-restituendoci un errore finale dell'ordine della precisione di macchina.
-
-D'altra parte, se usiamo la variante della funzione che lavora con i gradi,
-osserviamo che
-```matlab
-sind(3*180)
-
-ans =
-
-     0
-```
-questa volta l'input della funzione è un **intero**, per cui non commettiamo
-errore di **troncamento** e otteniamo alla fine il valore esatto.
-
-## Associatività delle operazioni
-
-Mentre l'operazione di somma e di prodotto sono garantite essere commutative
-nello standard IEEE, l'operazione di soma tra *floating point* è sicuramente
-non associativa. Si consideri infatti l'esempio:
-```matlab
-b = 1e-16 + 1 - 1e-16;
-c = 1e-16 - 1e-16 + 1;
-b == c
-ans =
-
-  logical
-
-   0
-```
-Si osserva che se andiamo a valutare la differenza tra le due procedure
-```matlab
->> abs(b-c)
-
-ans =
-
-   1.1102e-16
-```
-che è di nuovo dell'ordine della precisione di macchina.
-
-:::{tip}
-Quando si calcola la somma di più termini di ordine diverso è opportuno valutare
-l'accumulazione ed agire di conseguenza.
-:::
-
-:::{margin} Precisione di stampa
-È utile in alcuni casi aumentare la precisione delle stampe in uscita di
-MATLAB, possiamo farlo per mezzo del comando `format`, in particolare:
-```matlab
-format long
-```
-farà in modo che l'output sia stampato con 15 cifre per una variabile
-di tipo `double` e con 7 cifre per una variabile di tipo `single`. Per tornare
-invece alla *notazione di default* si può usare il comando
-```matlab
-format short
-```
-che userà invece 5 cifre indipendentemente per i due tipi di variabili. Altre
-opzioni si possono leggere facendo `help format`.
-
-```{danger}
-L'uso del comando `format` **non** altera la precisione in cui le operazioni
-sono compiute, ma solo il formato di stampa a schermo.
-```
-
-:::
-
-Per correggere il problema precedente si può implementare l'**algoritmo delle somme
-compensate** di Kahan, per cui uno pseudocodice è dato da:
-
-```
-function KahanSomma(input)
-    somma = 0.0                  // variabile che conterrà la somma finale
-    c = 0.0                      // Compensazione per i bits che altrimenti andrebbero persi.
-
-    for i = 1 to length(input) do // L'array che ha in input le quantità da sommare va da input(1)
-                                   // fino a input(length(input))
-        y = input(i) - c           // Al primo passaggio c è zero
-        t = somma + y              // Purtroppo, somma è "grande", y è piccolo, quindi alcuni bits
-                                   // sono persi, ma non per sempre...
-        c = (t - somma) - y        // (t - somma) cancella la parte di ordine alto di y; sottrarre y
-                                   // recupera la parte "piccola" di y
-        somma = t                  // In aritmetica di precisione infinita c dovrebbe essere
-                                   // sempre zero
-    // Alla prossima iterata la parte "persa" verrà aggiunta ad y in un nuovo
-    // tentativo di recuperarla.
-    end for
-
-    return somma
-```
-
-:::{admonition} Esercizio
-Si implementi l'algoritmo KahanSomma in una funzione MATLAB e se ne verifichino
-le proprietà numeriche.
-```matlab
-function [somma] = KahanSomma(input)
-%%KAHANSOMMA algoritmo delle somme compensate di Kahan
-
-end
-```
-Che possiamo testare sull'esempio precedente costruendo uno script con
-```matlab
-clear; clc;
-
-input = [ 1e-16 +1 -1e-16];
-
-somma1 = input(1)+input(2)+input(3);
-somma2 = sum(input);
-somma3 = KahanSomma(input);
-```
-e confrontando la differenza in valore assoluto tra i tre valori `somma1`, `somma2`
-e `somma3`. Cosa si osserva?
-:::
-
-Per questo algoritmo è possibile dare una limitazione dell'errore commesso. Se chiamiamo
-```{math}
-S_n = \sum_{i=1}^{n} \text{input}_i
-```
-la somma calcolata in precisione infinita, allora con un algoritmo otteniamo in
-genere $S_n + E_n$ dove l'errore $E_n$ può essere limitato per l'algoritmo delle somme
-compensate da
-```{math}
-|E_n| \leq [2 \varepsilon + O(n\varepsilon^2)] \sum_{i=1}^{n} |\text{input}_i|,
-```
-dove $\varepsilon$ è la precisione di macchina. Più in generale, siamo di solito
-interessati all'errore relativo, cioè alla quantità
-```{math}
-\frac{|E_n|}{|S_n|} \leq [2 \varepsilon + O(n\varepsilon^2)] \frac{\sum_{i=1}^{n} |\text{input}_i|}{\left| \sum_{i=1}^{n} \text{input}_i| \right|},
-```
-```{margin} Numero di condizionamento
-Ricordiamo che il numero di condizionamento di un problema rappresenta
-essenzialmente la "sensitività" intrinseca del problema, indipendentemente
-dall'algoritmo utilizzato per risolverlo.
-```
-dove la quantità $\kappa = \frac{\sum_{i=1}^{n} |\text{input}_i|}{\left| \sum_{i=1}^{n} \text{input}_i| \right|}$
-rappresenta il **numero di condizionamento** dell'operazione di somma. Esistono
-algoritmi per la somma che esibiscono migliori limitazioni dell'errore {cite}`MR378388,MR2210098` , per i
-nostri scopi illustrativi questa versione è sufficiente.
-
-## Errori di cancellazione/roundoff
-
-Un altro caso in cui calcoli avventati possono avere effetti catastrofici è
-quello delle sottrazioni eseguite con operandi quasi uguali, è facile che
-l'annullamento si verifichi in modo imprevisto. Consideriamo l'esempio:
-```matlab
-sqrt(1e-16 + 1) - 1
-
-ans =
-     0
-```
-in cui osserviamo una **cancellazione** causata da *swamping*, che è un fenomeno
-analogo a quello che abbiamo visto per l'associatività della somma. Stiamo
-osservando una perdita di precisione che rende l'aggiunta insignificante.
-È possibile introdurre delle correzioni algoritmiche in maniera analoga a quanto
-fatto per la somma anche per altre funzioni, per corregere l'esempio visto sopra
-possiamo usare la seguente riscrittura:
-```{math}
-\sqrt{1e-16 + 1} - 1 = \exp( \log(\sqrt{1e-16 + 1}) ) - 1 = \exp( 0.5 \log(1e-16 + 1) ) - 1,
-```
-ed usare le funzioni `expm1` e `log1p` di MATLAB che ci permettono di risolvere
-il problema di cancellazione:
-```matlab
-expm1(0.5*log1p(1e-16))
-```
-in particolare
-- `expm1` calcola $\exp(x)-1$ compensando per il *roundoff* in $\exp(x)$,
-- `log1p` calcola $\log(1+x)$ evitando di calcolare $1+x$ per valori "piccoli"
-di $x$.
-
-```{margin} Roundoff polinomio
-![Roundoff nella valutazione di un polinomio](./images/polynomialroundoff.png)
-```
-Consideriamo un altro esempio, produciamo uno script che valuti il seguente
-polinomio
-```{math}
-:label: eq-polinomio
-p(x) = x^7 - 7x^6 + 21x^5 -35x^4 +35x^3 - 21x^2 +7x -1,
-```
-nell'intervallo $[0.988,1.012]$ su di una griglia con scansione $10^{-4}$. Come
-si vede dalla figura al margine questo produce il *plot* di una funzione che
-non sembra proprio essere un polinomio: non è liscia! Stiamo osservando di nuovo
-degli errori di **roundoff** dati dalla sottrazione di numeri dello stesso
-ordine (elevato), che infatti (come si legge dalla scala sull'asse delle $y$)
-hanno un ordine di $10^{-14}$. Se guardiamo meglio al polinomio in {eq}`eq-polinomio`
-possiamo osservare che questo non è nient'altro che l'espansione di $p(x) = (x-1)^7$,
-provate a fare un *plot* sullo stesso intervallo e confrontiamolo con il precedente
-```{figure} ./images/polynomialroundoffgood.png
----
-name: buonpolinomio
----
-Confronto del grafico del polinomio {eq}`eq-polinomio` calcolato nella forma {eq}`eq-polinomio`
-e a partire dalla forma  $p(x) = (x-1)^7$.
-```
-(condizionamento-spettrale)=
-## Condizionamento di un sistema lineare
-
-Ricordiamo che il **numero di condizionamento** associato all'equazione lineare
-$A \mathbf{x} = \mathbf{b}$ fornisce un limite sulla precisione della soluzione
-$\mathbf{x}$ dopo che un qualunque algoritmo sarà stato applicato per la
-sua approssimazione ed in maniera indipendente dalla precisione *floating point*
-usata.
-
-:::{margin} Norma di una matrice
-Ricordiamo che una norma sullo spazio vettoriale $K^{m\times n}$ delle matrici
-a elementi nel campo $K$ è una funzione
-```{math}
-\| \cdot \|:K^{m \times n} \mapsto \mathbb{R}^{+}
-```
-tale che per ogni coppia di matrici $A$ e $B$ e per ogni scalare $\lambda \in K$ si verifica:
-
-- ${\displaystyle \|A\|=0}$ se e solo se ${\displaystyle A=0}$,
-- ${\displaystyle \|\lambda A\|=|\lambda |\|A\|}$.
-- ${\displaystyle \|A+B\|\leq \|A\|+\|B\|}$.
-
-Se è data una norma sullo spazio vettoriale $K^n$, si può costruire una **norma indotta**
-sullo spazio delle matrici in $K^{n \times n}$ considerando
-```{math}
-\|A\| = \sup_{x \neq \mathbf{0}} \frac{\| A \mathbf{x} \|}{\|\mathbf{x}\|},
-```
-ovvero
-```{math}
-\|A\| = \sup_{\|x\|  = 1} \| A \mathbf{x} \|.
-```
-Nei casi speciali in cui la norma vettoriale sia la norma  ${\displaystyle p=1,2,\infty ,}$
-la norma matriciale indotta può essere calcolata come
-```{math}
-{\displaystyle \|A\|_{1}=\max _{1\leq j\leq n}\sum _{i=1}^{m}|a_{ij}|,}
-```
-che è il massimo della somma dei valori assoluti delle colonne di $A$;
-```{math}
-{\displaystyle \|A\|_{\infty }=\max _{1\leq i\leq m}\sum _{j=1}^{n}|a_{ij}|,}
-```
-che è il massimo della somma dei valori assoluti delle righe di $A$;
-```{math}
-{\displaystyle \|A\|_{2}={\sqrt {\lambda _{\max }\left(A^{*}A\right)}}.}
-```
-che è detta **norma spettrale** della matrice ${\displaystyle A}$, ovver la
-radice quadrata the più grande autovalore di ${\displaystyle A^{* }A}$,
-dove $A^{* }$ denota la coniugata trasposta di $A$.
-:::
-
-Sia $\mathbf{e}$ l'errore commesso rispetto a $\mathbf{b}$, assumiamo che $A$ sia
-non singolare, allora l'errore sulla soluzione $A^{-1} \mathbf{b}$ è dato da
-$A^{-1} \mathbf{e}$. Allora il rapporto tra gli errori relativi è dato da
-```{math}
-\frac{\| A^{-1} \mathbf{e} \|}{\| A^{-1} \mathbf{b} \|} / \frac{\|\mathbf{e}\|}{\|\mathbf{b}\|} = \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|},
-```
-per cui possiamo esibire la limitazione per il termine destro come
-```{math}
-:label: bound
-\frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \leq & \max_{\mathbf{e},\mathbf{b} \neq 0} \left\lbrace \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|}, \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \right\rbrace \\ = & \max_{\mathbf{e}\neq 0} \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \max_{\mathbf{b}\neq 0} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \\
-= & \max_{\mathbf{e}\neq 0} \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \max_{\mathbf{b}\neq 0} \frac{\|A\mathbf{x}\|}{\|\mathbf{x}\|} \\
-= & \| A^{-1} \| \|A \| \equiv \kappa(A) \geq \| A^{-1} A \| = 1.
-```
-Consideriamo ora il seguente esempio artificiale
-```{math}
-A \mathbf{x} = \begin{bmatrix}
-4.1 & 2.8 \\
-9.7 & 6.6
-\end{bmatrix}  \begin{bmatrix}
-x_1 \\ x_2
-\end{bmatrix} = \begin{bmatrix}
-4.1 \\ 9.7
-\end{bmatrix}
-```
-Proviamo a risolvere direttamente con MATLAB il sistema lineare
-```matlab
-A = [4.1 2.8; 9.7 6.6];
-b = A(:,1);
-x = A\b
-```
-da cui otteniamo come risposta:
-```
-x =
-
-   1.000000000000002
-  -0.000000000000003
-```
-Ritracciamo i passi del bound sul termine noto, per cui introduciamo una
-perturbazione di $0.01$ sulla prima componente di $\mathbf{b}$ e paragoniamo le
-due soluzioni
-```matlab
-b2 = [4.11; 9.7];
-x2 = A\b2
-```
-da cui otteniamo
-```
-x2 =
-
-   0.339999999999957
-   0.970000000000064
-```
-
-Andiamo ora a verificare la limitazione che abbiamo mostrato in termini del
-numero di condizionamento. A questo scopo facciamo uso del comando `cond`
-```
-cond   Condition number with respect to inversion.
-   cond(X) returns the 2-norm condition number (the ratio of the
-   largest singular value of X to the smallest).  Large condition
-   numbers indicate a nearly singular matrix.
-
-   cond(X,P) returns the condition number of X in P-norm:
-
-      NORM(X,P) * NORM(INV(X),P).
-
-   where P = 1, 2, inf, or 'fro'.
-```
 :::{danger}
-Il calcolo del numero di condizionamento per una matrice è bene che sia eseguito
-tramite la funzione `cond`, la forma `NORM(X,P) * NORM(INV(X),P)` nella
-documentazione è identificativa di ciò che stiamo calcolando, ma *non* è
-rappresentativo del modo in cui è realmente calcolato.
-:::
-
-Calcoliamo quindi
+Le operazioni di concatenazione devono essere fatte tra matrici di dimensione
+compatibile, non possono esserci "avanzi" tra le dimensioni in oggetto. Per
+provare ad ottenere un errore si esegua:
 ```matlab
-kappa = cond(A);
-bound = kappa*norm(b-b2)/norm(b);
-errore_relativo = norm(x-x2)/norm(x);
+A = rand(5,5);
+B = rand(5,10);
+C = [A;B];
 ```
-e osserviamo che
+che restituirà
 ```
-bound =
+Error using vertcat
+Dimensions of arrays being concatenated are not consistent.
+```
+:::
+Al posto della notazione con le parentesi quadre è possibile fare uso delle
+funzioni `horzcat` e `vertcat` che corrispondono, rispettivamente, alle
+concatenazioni della forma `[,]` e `[;]`.
 
-   1.54117722269025
-errore_relativo =
-
-  1.173243367763135
+Se vogliamo costruire invece una matrice diagonale a blocchi a partire dai blocchi
+diagonali possiamo utilizzare la funzione `blkdiag` il cui `help` ci restituisce
+esattamente
 ```
-che quindi ci mostra che l'errore che abbiamo commesso è abbastanza vicino
-alla limitazione data dalla {eq}`bound`.
+blkdiag  Block diagonal concatenation of matrix input arguments.
+
+                                   |A 0 .. 0|
+   Y = blkdiag(A,B,...)  produces  |0 B .. 0|
+                                   |0 0 ..  |
+
+   Class support for inputs:
+      float: double, single
+      integer: uint8, int8, uint16, int16, uint32, int32, uint64, int64
+      char, logical
+```
+
+### Slicing: accedere agli elementi
+
+Il modo più comune di accedere ad un determinato elemento di un array o di una
+matrice è quello di specificare esplicitamente gli indici degli elementi.
+Ad **esempio**, per accedere a un singolo elemento di una matrice, specificare
+il numero di riga seguito dal numero di colonna dell'elemento:
+```matlab
+A = [ 1 2 3 4
+      17 8 2 1];
+A(2,1)
+```
+che stamperà nella **command window** `17`, cioè l'elemento in posizione riga
+2 e colonna 1 di `A` ($a_{2,1}$).
+
+Possiamo anche fare riferimento a più elementi alla volta specificando i loro
+indici in un vettore. Ad **esempio**, accediamo al primo e al quarto elemento
+della seconda riga della `A` precedente, facendo
+```matlab
+A(2,[1,4])
+```
+che restituirà
+```
+ans =
+
+    17     1
+```
+Per accedere agli elementi in un intervallo di righe o colonne, è possibile
+utilizzare l'operatore due punti `:`. Ad esempio, possiamo accedere accedi
+agli elementi dalla prima alla quinta riga e dalla seconda alla sesta colonna di
+una matrice $A$ come
+```matlab
+A = rand(10,10);
+A(1:5,2:6)
+```
+Nel caso si voglia scorrere fino al termine di una dimensione è possibile
+sostituire il valore di destra nei `:` con la parola chiave `end`, ad esempio:
+```matlab
+A(1:5,2:end)
+```
+Invece l'utilizzo di `:` senza valori di inizio/fine estrae tutte le entrate della
+dimensione relativa, ad esempio, 5 colonna, `A(:,5)`, oppure colonne dalla quarta
+alla settima, `A(:,4:7)`.
+
+```{note}
+In generale, si può utilizzare l'indicizzazione per accedere agli elementi di
+qualsiasi array in MATLAB **indipendentemente** dal tipo di dati o dalle
+dimensioni.
+```
+L'ultimo modo di fare uno *slicing* di un vettore di cui vogliamo parlare è
+quello mediante **vettori logici**. L'utilizzo di indicatori logici `true` e
+`false` è particolarmente efficace quando si lavora con istruzioni condizionali.
+Ad **esempio**, supponiamo di voler sapere se gli elementi di una matrice $A$
+sono maggiori degli elementi corrispondenti di un'altra matrice $B$.
+L'operatore di confronto applicato alle due matrici restituisce un array
+logico i cui elementi sono 1 quando un elemento in $A$ soddisfa il confronto con il
+corrispondente elemento in $B$.  
+```matlab
+A = [1 2 6; 4 3 6];
+B = [0 3 7; 3 7 5];
+ind = A>B
+A(ind)
+B(ind)
+```
+ci restituisce
+```
+ind =
+
+  2×3 logical array
+
+   1   0   0
+   1   0   1
+
+
+ans =
+
+     1
+     4
+     6
+
+
+ans =
+
+     0
+     3
+     5
+```
+Gli operatori di confronto non sono gli unici per cui è possibile compiere questa
+operazione, MATLAB stesso implementa un certo numero di funzioni utili a questo
+scopo, si vedano  `isnan`, `isfinite`, `isinf`, `ismissing`. È inoltre possibile
+combinare insieme diverse richieste mediante l'uso degli **operatori logici**,
+si veda più avanti la sezione su {ref}`sec-ifelsestuff`.
+
+### Operazioni tra array e matrici
+
+MATLAB supporta tutte le operazioni che hanno senso in termini di algebra lineare,
+dunque prodotti matrici-vettore, somme di matrici e di vettori, trasposizione,
+coniugio, *etc.*, con i medesimi vincoli di consistenza tra gli operatori.
+Specificamente, il prodotto $A \mathbf{v}$ con $A \in \mathbb{R}^{n \times k_1}$
+e $\mathbf{v} \in \mathbb{R}^{k_2}$ è possibile se e solo se $k_1 \equiv k_2$,
+consideriamo ad esempio
+```matlab
+A = [1 2 3 4;
+     4 3 2 1;
+     2 4 3 1;
+     3 2 4 1];
+v1 = [1,2,3,4];
+v2 = [1;2;3;4];
+```
+e proviamo a calcolare
+- `A*v1` da cui otteniamo un errore:
+```
+Error using  *
+Incorrect dimensions for matrix multiplication. Check that the number of columns in the first matrix matches the number of rows in the second matrix. To perform elementwise multiplication, use '.*'.
+```
+  poiché stiamo cercando di fare un'operazione che non ha senso dal punto di vista
+  dell'algebra lineare.
+- `A*v2` è invece l'operazione corretta e otteniamo
+```
+ans =
+
+    30
+    20
+    23
+    23
+```
+- `v1*A` anche questa operazione ha senso dal punto di vista matriciale e infatti
+otteniamo
+```
+ans =
+
+    27    28    32    13
+```
+- `v2*A` ha il medesimo problema della prima, cioè abbiamo di nuovo delle dimensioni
+che non sono consistenti
+```
+Error using  *
+Incorrect dimensions for matrix multiplication. Check that the number of columns in the first matrix matches the number of rows in the second matrix. To perform elementwise multiplication, use '.*'.
+```
+- `A*v1'` introduciamo qui l'operazione di trasposta-coniugata (che poiché stiamo
+  utilizzando vettori di numeri reali coincide con la semplice operazione di
+  trasposizione `.'`), che ci porta ad avere le dimensioni corrette e ci restituisce
+```
+ans =
+
+    30
+    20
+    23
+    23
+```
+- `A*v2'` la trasposizione in questo caso rende le dimensioni di `v2` incompatibili
+per cui otteniamo di nuovo il medesimo errore
+```
+Error using  *
+Incorrect dimensions for matrix multiplication. Check that the number of columns in the first matrix matches the number of rows in the second matrix. To perform elementwise multiplication, use '.*'.
+```
 
 :::{warning}
-Per matrici di grandi dimensioni la funzione `cond` può risultare estremamente
-lenta o andare **out of memory**. Per questo motivo sono disponibili altre
-due funzioni chiamate `rcond` e `condest`.
+Il messaggio di errore che abbiamo incontrato ci dice che l'operazione non ha senso
+in termine delle usuali operazioni dell'algebra lineare, tuttavia ci suggerisce
+che quello che potevamo avere intenzione di fare era un prodotto **elementwise**
+ovvero "elemento ad elemento". Questa operazione si ottiene utilizzando l'operatore
+`.*`, cioè con un `.` prefisso davanti all'operatore di prodotto che in genere
+significa proprio "esegui in maniera elemento-ad-elemento". Proviamo con la prima
+operazione sbagliata che abbiamo proposto:
+```matlab
+A.*v1
+```
+che ci restituisce
+```
+ans =
 
-La funzione `rcond(A)` calcola il reciproco di `cond(A,1)`, per cui più questo è
-vicino a $0$ più la matrice è *malcondizionata*, più questo è vicino a $1$ più
-la matrice è *ben condizionata*. Questa funzione si basa sulla libreria [LAPACK](http://www.netlib.org/lapack/).
-Questa è una libreria di software in Fortran 90 che produce le implementazioni
-standard delle operazioni dell'algebra lineare per matrici dense.
-
-La funzione `condest` calcola un limite inferiore per il numero di condizionamento
-in norma $1$ di una matrice quadrata $A$. Informazioni sull'algoritmo applicato
-per ottenere questa approssimazione si trovano in {cite:p}`MR740850` e {cite:p}`MR1780268`.
+     1     4     9    16
+     4     6     6     4
+     2     8     9     4
+     3     4    12     4
+```
+Che operazione abbiamo eseguito? Si provi ad eseguire anche le operazioni di
+elevamento a potenza
+```matlab
+A^3
+A.^3
+v1^3
+v1.^3
+```
+e si descriva il risultato.
 :::
 
-## Precisione mista
+Le ultime due operazioni che ci sono rimaste da descrivere sono `+`/`-`. Di nuovo
+dobbiamo preoccuparci della compatibilità delle operazioni che vogliamo compiere.
+Se vogliamo essere sicuri di star eseguendo la somma tra array e matrici che abbiamo
+in mente dobbiamo assicurarci che le dimensioni siano compatibili.
 
-La rivoluzione delle applicazioni di "apprendimento automatico" (*machine learning*) e dell'intelligenza artificiale (*AI*) ha suscitato negli ultimi anni un interesse per lo sviluppo di aritmetica a **mezza precisione** (formato in virgola mobile a 16 bit) che potesse rispondere al problema della necessità di
-avere alte prestazioni nelle fasi di addestramento delle reti neurali. L'idea
-nasce dall'osservazione (per lo più empirica) che dice che la maggior parte di
-queste applicazioni non richiede necessariamente l'accuratezza della precisione singola (`single`) o doppia (`double`). La mezza precisione (`half`) ha quindi
-un'aritmetica più veloce e produce una riduzione della memoria e del traffico di un fattore $2\times$ contro il formato  precisione in singola cifra e di un fattore $4\times$ contro la doppia precisione.
-
-In MATLAB questo è disponibile con il comando `half` per cui una buona parte delle
-funzioni di default è resa disponibile. Si può interrogare l'inseme delle funzioni
-disponibili con il comando:
+Supponiamo di avere i vettori riga e colonna
 ```matlab
-methods(half(1))
+v = [1 2 3 4]
+w = [1
+     2
+     3
+     4]
 ```
-che vi restituirà una lista del tipo:
+se vogliamo sommarli o sottrarli e ottenere un vettore rispettivamente riga o
+colonna dobbiamo fare in modo che abbiano ambedue la dimensione corretta. Ovvero,
+dobbiamo avere, rispettivamente,
+```matlab
+v + w'
 ```
-Methods for class half:
+oppure
+```matlab
+v' + w
+```
+Se inavvertitamente sommiamo i due vettori come
+```matlab
+v + w
+```
+otteniamo invece
+```
+ans =
 
-abs         asinh       complex     double      floor       int16       islogical   le          logical     mod         plot3       real        scatter3    subsasgn    uint16      ylim        
-acos        atan        conj        end         fplot       int32       isnan       length      lt          mrdivide    plotmatrix  rem         sin         subsref     uint32      zlim        
-acosh       atanh       cos         eps         ge          int64       isnumeric   line        max         mtimes      plus        reshape     single      sum         uint64      
-all         bar         cosh        eq          gt          int8        isreal      log         mean        ndims       pow10       rgbplot     sinh        tan         uint8       
-any         barh        cospi       exp         half        isempty     isscalar    log10       min         ne          pow2        round       sinpi       tanh        uminus      
-area        ceil        ctranspose  expm1       hypot       isfinite    isvector    log1p       minus       numel       prod        rsqrt       size        times       uplus       
-asin        colon       display     fix         imag        isinf       ldivide     log2        mldivide    plot        rdivide     scatter     sqrt        transpose   xlim   
+     2     3     4     5
+     3     4     5     6
+     4     5     6     7
+     5     6     7     8
+```
+che è invece una matrice! Non esattamente quello che ci aspettavamo (riuscite
+  a capire che operazione abbiamo ottenuto?). Uguale cautela va esercitata
+  nello scrivere operazioni di somma/sottrazioni tra matrici e vettori.
+  Si provi ad eseguire:
+  ```
+  A = pascal(4);
+  v = [1 3 2 4];
+  A + v
+  A + v'
+  A + 0.5
+  v + 1
+  ```
+
+  È legittimo domandarsi a questo punto perché mai queste operazioni vengano
+  eseguite senza restituire errori. Anche se dal punto di vista della pura
+  algebra lineare queste operazioni non sono di immediata sensatezza, dal punto
+  di vista implementativo permettono di semplificare (e velocizzare) un certo
+  numero di operazioni che altrimenti richiederebbero diverse righe di codice
+  (la cui ottimizzazione per le performance non è scontata) per essere
+  implementate.
+
+(sec-ifelsestuff)=
+## Selezione e Strutture Condizionali
+
+```{list-table} Strutture Condizionali.
+:header-rows: 1
+:name: tabcondizionali
+
+* - Funzione di MATLAB
+  - Descrizione
+* - `if, elseif, else`
+  - Esegue comando se la condizione `if` è verificata
+* - `switch, case, otherwise`
+  - Esegue uno o più gruppi di comandi a seconda che la variabile `switch`
+  abbia il valore indicato nel `case`, altrimenti esegue il comando o gruppo di
+  comandi identificati da `otherwise`
+* - `try, catch`
+  - Esegue i comandi nel gruppo `try`, se questi restituiscono errore non blocca
+  l'esecuzione e passa ai comandi racolti in `catch`
 ```
 
-Per estrarre *performance* dall'utilizzo della precisione `half` e, più in
-generale, dall'utilizzo contemporaneo di dati in più precisioni (*mixed precision*) è necessario avere dell'hardware che possa lavorare in maniera
-diretta in questo formato, cioè senza adoperare continuamente conversioni o simulare la precisione ridotta. Per le alte performance parliamo di oggetti come
-le NVIDIA GPUs (CUDA Capabilitiy $\geq 7.0$), Google TPUs e diversi tipi di
-FPGA più o meno sperimentali.
+Consideriamo il seguente esempio che simula il lancio di una moneta.
+```matlab
+a = rand();
+if a < 0.5
+  disp('Testa!')
+else
+  disp('Croce')
+end
+```
+Ad ogni nuova esecuzione `rand()` genera un numero casuale in $[0,1]$ con
+probabilità uniforme. Il comando `if` controlla se il numero casuale generato
+è $< 0.5$ ed in questo caso entra nel primo gruppo di codice. Altrimenti, abbiamo
+ottenuto un numero $> 0.5$ e rientriamo nel secondo gruppo di codice. Possiamo
+decidere di simulare anche un dado a tre facce nel seguente modo
+```matlab
+a = rand();
+if a < 1/3
+  disp('1')
+elseif a >= 1/3 & a < 2/3
+  disp('2')
+else
+  disp('3')
+end
+```
+in cui abbiamo utilizzato il comando `elseif` per avere un ramo aggiuntivo.
 
-MATLAB ha un supporto limitato (ma in espansione) per lavorare sulle GPU, non
-esploreremo oltre questa direzione, ma è utile che sappiate che esistono questi
-possibili sviluppi.
+```{note}
+All'interno dei nostri controlli di tipo `if` (e più in generale) possiamo combinare
+insieme il risultato di diverse operazioni logiche. Queste sono raccolte nella
+Tabella {numref}`logicalops`. Altre funzioni che agiscono sui vettori di logici
+e che potete esplorare richiamando la funzione `help` sono `any` e `all`.
+
+```{list-table} Operazioni logiche
+:header-rows: 1
+:name: logicalops
+
+* - Funzione di MATLAB
+  - Descrizione
+* - `&`
+  - AND Logico
+* - `~`
+  - NOT Logico
+* - `|`
+  - OR Logico
+* - `xor`	 
+  - OR Esclusivo Logico
+```
+
+Vediamo anche un esempio dell'istruzione di tipo `switch`.
+```matlab
+controllo = input("Inserisci un numero intero tra 0 e 3: ");
+switch controllo
+case 0
+ A = pascal(4,4);
+ disp(A);
+case 1
+ A = ones(4,4);
+ disp(A);
+case 2
+ A = eye(4,4);
+ disp(A);
+case 3
+ A = rand(4,4);
+ disp(A);
+otherwise
+ disp("Non so cosa fare con questo input!")
+end
+```
+Si sarebbe potuto implementare lo stesso codice con una serie di `if` e `elseif`
+ed un `else`, ma questo approccio è più rapido se non c'è la necessità di
+imporre molti controlli logici.
+
+L'ultimo controllo che vogliamo testare è `try`. Per cui potete provare il seguente
+codice.
+```matlab
+try
+ A = rand(5,5);
+ b = ones(1,5);
+ A*b
+catch
+ disp("C'è qualche problema con le dimensioni!");
+end
+```
+Poiché l'operazione algebrica che abbiamo richiesto non è ben posta (provate ad
+eseguirla al di fuori dell'operazione di `try`) il `try` cattura l'errore e
+invece di arrestare l'esecuzione esegue il codice nella clausola `catch`. Potete
+correggere il codice nel primo blocco e verificare che in tal caso non entrerete
+nel `catch`.
+
+## Cicli e Cicli Innestati
+
+All'interno di qualsiasi programma, è possibile definire sezioni di codice che si ripetono in un ciclo.
+
+```{list-table} Strutture Condizionali.
+:header-rows: 1
+:name: tabcicli
+* - Funzione di MATLAB
+  - Descrizione
+* - `for`
+  - ciclo `for` per ripetere delle istruzioni un numero prefissato di volte
+* - `while`
+  - ciclo `while` ripete il suo codice fintanto che la condizione è `true`
+* - `break`
+  - Termina in maniera forzata l'esecuzione di un ciclo `for` o `while`
+* - `continue`
+  - Passa il controllo all'iterata successiva di un ciclo `for` o `while`
+* - `pause`
+  - Mette temporaneamente in pausa l'esecuzione di MATLAB.
+```
+
+:::{margin} Funzioni di stampa
+MATLAB fornisce un porting abbastanza trasparente delle funzioni di stampa
+a schermo (su stream di dati) del C. Ovvero la funzione `fprintf`. Per la stampa
+a schermo il prototipo di questa funzione è
+```
+fprintf(FORMAT, A, ...)
+```
+dove FORMAT è una stringa che contiene informazioni sul formato da stampare e
+`A` è un array che contiene i dati che devono essere stampati secondo il formato
+FORMAT. In generale questo è una stringa che può contenere del testo accompagnato
+da dei caratteri di *escape* che dicono come formattare il dato contenuto nella
+variabile `A`.
+![Caratteri di *escape* per il formato](./images/format.png)
+Come descritto nell'immagine l'*escape* per un operatore di formattazione
+comincia con il segno di percentuale, `%`, e finisce con un carattere di
+conversione ({numref}`carattereconversione`). Il carattere di conversione è richiesto. In maniera opzionale,
+si possono specificare un identificatore, delle flag, l'ampiezza del campo,
+la *precisione*, e un operatore di *sottotipo* tra il `%` ed il carattere di
+conversione.
+
+```{list-table} Caratteri di conversione
+:header-rows: 1
+:name: carattereconversione
+* - Carattere
+  - Conversione
+* - `%d` o `%i`
+  - Intero base 10
+* - `%f`
+  - Floating point a precisione fissa
+* - `%e`
+  - Floating point notazione scientifica
+* - `%c`
+  - Singolo carattere
+* - `%s`
+  - Stringa
+```
+Un esempio:
+```matlab
+fprintf("%f \n",pi);
+fprintf("%e \n",5*10^20);
+fprintf("%1.2f \n",pi);
+fprintf("%1.2e \n",5*10^20);
+fprintf("%c \n",'a')
+fprintf("%s \n",'Ciao, mondo!')
+```
+Nell'esempio abbiamo usato ripetutamente i caratteri `\n` che stanno a
+simboleggiare un carattere di fine linea. Altri caratteri utili di questo tipo
+sono in {numref}`carformattazione`.
+```{list-table} Caratteri di formattazione
+:header-rows: 1
+:name: carformattazione
+* - Risultato
+  - Stringa
+* - Singolo quotation mark
+  - `''`
+* - Simbolo percento
+  - `%%`
+* - Backslash
+  - `\\`
+* - Backspace
+  - `\b`
+* - Tab orizzontale
+  - `\t`
+* - Tab verticale
+  - `\v`
+```
+Ulteriori informazioni possono essere ottenuto scrivendo `help fprintf` nella
+*command line*.
+:::
+Utilizziamo un ciclo `for` per calcolare la somma dei primi `n` numeri interi.
+```matlab
+n = input("Inserisci un numero intero n: ");
+somma = 0;
+for i=1:n
+  somma = somma + i;
+end
+fprintf("La somma degli interi da 1 a %d è %d.\n",n,somma);
+```
+Questo non è ovviamente il modo migliore di fare questa operazione, avremmo
+ad esempio potuto calcolare la stessa quantità come `sum(1:10)`. Oppure, sfruttare
+un po' di idee matematiche per ricordarci che
+$\displaystyle S_n = \sum_{i=1}^{n} i = \frac{n(n+1)}{2}.$ Ma è servito al nostro
+scopo dimostrativo.
+
+Vediamo ora un esempio di ciclo `while`.
+```matlab
+somma = 0;
+while somma < 10
+  somma = somma + rand();
+end
+fprintf("Il valore finale della somma è: %f\n",somma);
+```
+Poiché abbiamo inizializzato la variabile `somma` a 0, la condizione di innesco
+del ciclo `while` è `true` e dunque cominciamo ad iterare. Ad ogni nuova istanza
+del ciclo un nuovo numero casuale viene generato e aggiunto alla variabile `somma`.
+Non appena il valore di `somma` supera 10, il ciclo viene interrotto e il messaggio
+viene stampato a schermo.
+
+## Alcuni esercizi
+
+Gli esercizi qui raccolti hanno per lo più lo scopo di verificare che abbiate
+assorbito queste informazioni generali sul linguaggio MATLAB, cosicché dal
+**prossimo laboratorio** ci si possa concentrare sull'implementazione di algoritmi
+prettamente numerici e sulle questioni affrontate nelle lezioni di teoria.
+
+:::{admonition} Esercizio 1
+La costante aurea $\varphi$ si può esprimere in forma compatta come
+```{math}
+\varphi = \frac{1+\sqrt{5}}{2}.
+```
+Ammettiamo di non avere un algoritmo per estrarre le radici quadrate, allora
+possiamo provare ad approssimare il valore di $\phi$ usando la sua espansione
+in frazione continua:
+```{math}
+\varphi = 1 + \frac{1}{1 + \frac{1}{1 + \frac{1}{1 + \frac{1}{1 + \frac{1}{1 + \frac{1}{1 + \vdots } } } } } }
+```
+Si scriva una funzione con il seguente prototipo:
+```matlab
+function phi = frazionephi(n)
+%%FRAZIONEPHI prende in input il numero di termini da utilizzare
+%nell'approssimazione con frazione continua della sezione aurea e
+%restituisce l'approssimazione.
+end
+```
+* Per costruire l'implementazione della funzione si usi un ciclo `for`.
+  **Suggerimento** si organizzi il calcolo partendo dal "livello più basso" verso
+  quello più alto.
+* Supponiamo di sapere che un valore esatto di $\varphi$ con 16 cifre
+  significative è `1.6180339887498949`. Si modifichi la funzione precedente in
+  una nuova funzione con il seguente prototipo
+  ```matlab
+  function [n,phi] = quantiterminiphi(tol)
+  %%QUANTITERMINIPHI data in input una tolleranza tol sulla distanza tra
+  %l'approssimazione della costante phi e il valore reale questa funzione
+  %ci restituisce il numero di termini necessari e il valore dell'approssimazione
+
+  phitrue = 1.6180339887498949;
+
+  end
+  ```
+  Per farlo si usi un ciclo `while` e la funzione `abs` (che implementa il
+  valore assoluto) per misurare l'**errore assoluto** tra la nostra
+  approssimazione e il valore vero.
+* Si usi la funzione `fprintf` per stampare a schermo una tabella con tolleranza,
+  numero di termini per raggiungerla, valore ottenuto ed errore per le tolleranze
+  da `1e-1`, `1e-2`, fino a `1e-10`.
+:::
+
+:::{admonition} Esercizio 2.
+Esercitiamoci ora nel costruire una *funzione ricorsiva*. Una sequenza collegata
+alla costante aurea $\varphi$ è la sequenza di Fibonacci, ovvero la sequenza di
+numeri interi $\{F_n\}_n = \{1,1,2,3,5,\ldots\}$ data da
+```{math}
+F_{n+1} = F_{n} + F_{n-1}, \text{ se } n \geq 1, \; F_{1} = 1,\;F_{0} = 1.
+```
+* Si implementi una *funzione ricorsiva* che calcola l'$n$mo numero di Fibonacci
+$n$ utilizzando solamente la struttura condizionale `switch`, di cui riportiamo
+al solito il prototipo.
+```matlab
+function f = fibonacci(n)
+%FIBONACCI Implementazione ricorsiva della successione di Fibonacci. Prende
+%in input il numero n e restituisce l'n-mo numero di Fibonacci Fn.
+end
+```
+* La funzione così costruita ha uno spiacevole difetto, se gli diamo in pasto
+$n$ ci fornisce l'$n$mo numero, tuttavia se successivamente chiediamo l'$n+1$mo
+il calcolo per ottenerlo non ha memoria di quello che abbiamo fatto e ricalcola
+comunque tutti i precedenti. Costruiamo ora una *versione non ricorsiva* della
+funzione `fibonacci`. Possiamo ottenerla in diversi modi, ma quasi sicuramente
+avremo bisogno di un ciclo `for`. Riportiamo come al solito il prototipo.
+```matlab
+function f = fibonaccinonrecursive(n)
+%FIBONACCINONRECURSIVE Implementazione non ricorsiva della successione
+% di Fibonacci. Prende in input il numero n e restituisce un vettore
+% che contiene tutti i numeri di Fibonacci da F0 a Fn.
+end
+```
+* Sfruttiamo ora la seconda implementazione che abbiamo fatto della funzione
+di Fibonacci per costruire una sequenza diversa. Consideriamo la sequenza di
+Viswanath {cite}`Viswanath` così definita
+```{math}
+v_{n+1} = v_{n} \pm v_{n-1}, \; n \geq 1,
+```
+dove $v_{0}$ e $V_{1}$ sono assegnati a piacere e il $\pm$ ha la seguente
+interpretazione: con probabilità $1/2$ sommiamo, con probabilità $1/2$
+sottraiamo. Un'idea per implementare questa funzione è quella di utilizzare la
+funzione `sign` (provate a vedere a cosa serve facendo `help sign`).
+Un prototipo per questa funzione è ad esempio
+```matlab
+function v = viswanath(n,v0,v1)
+%VISWANATH Implementazione non ricorsiva della successione
+% di Viswanath. Prende in input il numero n, i valori di v0 e v1 e
+% restituisce un vettore che contiene tutti i numeri di Viswanath da v0 a vn.
+end
+```
+* Una volta costruita la nostra funzione, possiamo visualizzare cosa otteniamo
+con essa (e confrontarlo con la successione di Fibonacci) tramite lo script:
+```matlab
+%% Test della successione di Viswanath
+
+n = 1000; % Numero di termini
+
+% Calcoliamo la successione di Fibonacci
+f = fibonaccinonrecursive(n);
+
+% Calcoliamo la successione di Viswanath
+v0 = 1;
+v1 = 1;
+v = viswanath(n,v0,v1);
+
+% Valore asintotico
+c = 1.13198824;
+phi = (1+sqrt(5))/2;
+figure(1)
+semilogy(0:n,abs(v),'o',0:n,c.^(1:n+1),'-',0:n,f,'x',0:n,phi.^(1:n+1),'-');
+legend({'Viswanath','Stima Asintotica','Fibonacci','Stima Asintotica'},...
+    'Location','northwest')
+```
+Nella parte terminale dello script `% Valore asintotico` andiamo a confrontare
+in scala semi-logaritmica sull'asse delle $y$ i valori assoluti dei numeri
+$\{v_n\}_n$ e gli $\{F_n\}_n$. In particolare possiamo osservare che per
+entrambe le sequenza troviamo un numero $k$ per cui queste crescono come
+$k^{n+1}$. In particolare, per la sequenza di Fibonacci questo $k$ è la costante
+aurea $\varphi$ dell'esercizio precedente, mentre per la sequenza di Viswanath
+è il valore $c = 1.13198824\ldots$ (per una dimostrazione si veda {cite}`Viswanath`).
+
+**Approfittiamo** di questo anche per guarda come si possono ottenere dei
+grafici di funzione su MATLAB, per decodificare i comandi di questa sezione
+aiutatevi con `help`. Un esempio del grafico ottenuto con lo script precedente
+è il seguente:
+![Successione di Viswanath e Fibonacci e loro comportamento asintotico a confronto](./images/viswanath.png)
+:::
+
+:::{margin} Insieme di Mandelbrot
+![Insieme di Mandelbrot con 1000 iterazioni.](/images/mandelbroot.png)
+:::
+:::{Admonition} Esercizio 3
+Esploriamo ancora le funzioni di *plot* di MATLAB. Cerchiamo di produrre una
+stampa dell'insieme [frattale di Mandelbrot](https://en.wikipedia.org/wiki/Mandelbrot_set). Questo insieme è l'insieme è l'insieme dei numeri complessi
+$c$ per cui la funzione  $f_{c}(z)=z^{2}+c$ non *diverge* quando viene iterata
+a partire da $z = 0$, cioè, l'insieme di quei punti $c$ per cui la sequenza $f_{c}(0),f_{c}(f_{c}(0)),\ldots$ resta limitata in valore assoluto. Possiamo
+costruire uno *script* MATLAB che ci permetta di disegnare un'approssimazione
+di questo insieme.
+1. Utilizziamo la funzione `linspace` per costruire l'insieme dei numeri complessi $c$ su cui vogliamo fare la valutazione. Poiché `linspace` produce
+per noi un vettore reali, dobbiamo costruirne due -- uno per ciascuna direzione
+-- e trasformarli in un insieme di coppie
+di valutazioni con la funzione `meshgrid`. Un buon insieme reale da valutare per disegnare l'insieme di Mandelbrot è $[-2.1,0.6]\times[-1.1,1.1]$.
+2. Ora che abbiamo le valutazioni reali è necessario trasformare in numeri complessi $c$. Possiamo ottenere questo risultato utilizzando la funzione `complex`: `C = complex(X,Y)` sulla coppia di matrici di valutazioni ottenute
+da `meshgrid`.
+3. Possiamo ora implementare un certo numero fissato di iterazioni della funzione $f_{c}(z)=z^{2}+c$ mediante un ciclo `for`.
+4. Concludiamo l'esercizio disegnando l'insieme di Mandelbrot con la funzione
+```matlab
+contourf(x,y,double(abs(Z)<1e6))
+title('Insieme di Mandelbrot')
+```
+che è una buona occasione per guardare cosa fa la funzione di *plot* `contourf`
+(`help contourf`).
+:::
 
 ## Bibliografia
 
- ```{bibliography}
- :filter: docname in docnames
- ```
+```{bibliography}
+:filter: docname in docnames
+```

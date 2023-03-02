@@ -1,314 +1,586 @@
-# Laboratorio 7 : Metodi Stazionari per Sistemi Lineari
+# Laboratorio 7 : L'Eliminazione di Gauss il Metodo LU
 
-Un **metodo iterativo** è una procedura matematica che a partire da un *valore iniziale* genera una sequenza di *soluzioni approssimate* migliorative per una
-determinata classe di problemi, in cui l'approssimazione $n$esima è derivata dai precedenti. Abbiamo già visto, **ed implementato**, metodi di questo tipo per la ricerca degli zeri di una funzione.
+L'**eliminazione gaussiana** (Carl Friedrich Gauss, 1777-1855), noto anche come
+algoritmo di riduzione per le righe, è un algoritmo per risolvere sistemi
+quadrati di equazioni lineari. Come avete visto a lezione si riduce ad una
+sequenza di operazioni eseguite sulla corrispondente matrice di coefficienti.
 
-In questo laboratorio vogliamo concentrarci invece sulla costruzione di alcuni
-metodi di questo tipo per la soluzione di sistemi lineari.
+Alcune estensioni di questo metodo possono essere utilizzate anche per calcolare
+il **rango** di una matrice, il **determinante** di una matrice quadrata e
+l'**inversa di una matrice** invertibile.
 
-La prima domanda che è legittimo porsi è perché mai vogliamo mettere in piedi
-dei metodi iterativi se abbiamo già dei metodi diretti che possono raggiungere
-la soluzione del problema cercato?
-- A patto di richiedere una tolleranza minore (spesso sufficiente nelle applicazioni) sull'errore commesso sulla soluzione hanno un costo computazionale inferiore alle controparti dirette,
-- Per le dimensioni dei problemi che si vogliono affrontare nelle applicazioni ingegneristiche attuali sono spesso l'unica opzione disponibile (problemi di fluidodinamica computazionale, combustione, meccanica del continuo, ...)
+Come abbiamo visto nel secondo Laboratorio sul {ref}`condizionamento-spettrale`
+la precisione ottenuta in uscita da questa procedura. Ricordiamo che per
+valutare il *numero di condizionamento* di una matrice $A$, MATLAB mette a
+disposizione due comandi:
 
-Nel corso e in questo laboratorio ci focalizziamo su alcuni dei metodi più semplici e che, in genere, sono usati come i blocchi costituivi di metodi più complessi (e.g., metodi di tipo *multigrid* o *domain decomposition*) o come acceleratori per la convergenza (in gergo chiamati: *precondizionatori*).
+- `cond`: Numero di condizione rispetto all'inversione. `cond(A)` restituisce
+il numero di condizionamento rispetto alla norma 2 (che ricordiamo essere il
+    rapporto tra valore singolare più grande di $A$ e di quello più piccolo);
+- `rcond`: stimatore del reciproco del numero di condizionamento in norma 1.
+Utilizza lo stimatore implementato in LAPACK;
+- `condest`: calcola un limite inferiore $C$ per il numero di condizionamento in
+norma 1 di una matrice quadrata $A$. Accetta come seconda opzione un parametro
+intero positivo $T$ che rapprenta il numero di colonne utilizzate per l'iterazione
+dell'algoritmo di stima sottostante. L'aumentare del numero di colonne fornisce
+*di solito* una stima migliore del condizionamento, al prezzo di aumentarne il
+costo computazionale. Il valore predefinito è $T = 2$, che fornisce
+*quasi sempre* una stima corretta entro un fattore 2.
 
-## Metodi di tipo stazionario
-
-Dato un sistema lineare della forma
-```{math}
-A \mathbf{x} = \mathbf{b}, \qquad A \in \mathbb{R}^{n \times n},\; \mathbf{x},\mathbf{b} \in \mathbb{R}^n
-```
-siamo interessati a **metodi di punto fisso** basati sugli *splitting* della matrice $A$. Cioè metodi basati su una decomposizione additiva della matrice della forma
-```{math}
-A = M - N, \qquad\text{ con }\qquad \det(M) \neq 0.
-```
-Da questa decomposizione si ottiene poi l'iterata di punto fisso come
-```{math}
-A \mathbf{x} = \mathbf{b} \Rightarrow (M - N) \mathbf{x} = \mathbf{b} \Rightarrow M \mathbf{x} = N \mathbf{x} + \mathbf{b} \\
-\mathbf{x} = M^{-1} N \mathbf{x} + M^{-1} \mathbf{b}
-```
-e quindi
-```{math}
-\mathbf{x}^{(k+1)} = M^{-1} N \mathbf{x}^{(k)} + M^{-1} \mathbf{b}, \quad k = 0,1,2,\ldots, \\
-\mathbf{x}^{(0)} \text{ assegnato}.
-```
-Essendo questa un'iterata di punto fisso, la sua convergenza dipende dall'essere una **procedura contrattiva**, avete dimostrato a lezione che questo è equivalente alla richiesta che il *raggio spettrale* della matrice di iterazione $M^{-1}N$ sia strettamente minore di $1$:
-```{math}
-\rho(M^{-1}N) = \max_{1,\ldots,n }|\lambda_n(M^{-1}N)| < 1.
-```
-
-### Metodi per il calcolo agli autovalori implementati in MATLAB
-
-In alcuni casi data una matrice $A$ e uno splitting $A = M - N$ è possibile calcolare il *raggio spettrale* carta e penna, oppure inferire le proprietà di convergenza del metodo dalle proprietà della matrice $A$ e della particolare forma dello splitting. Laddove questo non fosse possibile, o volessimo una stima più precisa di quello che sta accadendo, dobbiamo ricorrere a dei metodi numerici a questo scopo. La loro costruzione è al di fuori degli obiettivi di questo corso, tuttavia MATLAB ci fornisce delle *function* che fanno al nostro caso.
-
-Vediamo prima il **caso generale** in cui data una matrice $A$ vogliamo calcolare *tutti* i suoi autovalori, costruiamo da principio una *matrice simmetrica* per
-cui possiamo sfruttare il **Teorema Spettrale** per interpretare i risultati:
+Si provi ad eseguire il seguente comando:
 ```matlab
-A = rand(10); % costruiamo una matrice casuale
-A = A + A'; % e facciamo in modo che sia simmetrica
-lambda = eig(A); % calcoliamo *tutti* gli autovalori
-disp(lambda)
+A = gallery('grcar',8);
+[cond(A,1) 1/rcond(A) condest(A)]
+[cond(A,1) 1/rcond(A) condest(A)]
 ```
-che ci restituisce il vettore:
-```
--2.1767
--1.8198
--0.7091
--0.3270
--0.1747
- 0.7953
- 0.9842
- 1.3664
- 1.9277
- 9.4423
-```
-per cui abbiamo ottenuto 10 autovalori reali.
+Come illustra questo esempio, `condest` non restituisce necessariamente lo
+stesso risultato ad ogni chiamata, poiché fa uso della funzione `rand` al suo
+interno (si tratta di uno stimatore stocastico).
 
-Se guardiamo il manuale del comando `eig` leggiamo:
-```
-eig    Eigenvalues and eigenvectors.
-   E = eig(A) produces a column vector E containing the eigenvalues of
-   a square matrix A.
+## Implementare la fattorizzazione LU
 
-   [V,D] = eig(A) produces a diagonal matrix D of eigenvalues and
-   a full matrix V whose columns are the corresponding eigenvectors  
-   so that A*V = V*D.
-
-   [V,D,W] = eig(A) also produces a full matrix W whose columns are the
-   corresponding left eigenvectors so that W'*A = D*W'.
-```
-Possiamo quindi usarlo per ottenere anche le relativi matrici degli autovettori sinistri e destri per la matrice $A$, cioè le matrici $V$ e $W$ tali che:
+Se $A$ è una matrice $n$ per $n$ su un campo $\mathbb{K}$ ($A  \in M_n(\mathbb{K})$),
+allora $A$ si dice "avere una fattorizzazione $LU$" se esiste una matrice
+**triangolare inferiore** $L \in  M_n(\mathbb{K})$ e una matrice **triangolare
+superiore** $U  \in M_n(\mathbb{K})$ tale che
 ```{math}
-A V = V D, \quad W^T A = D W^T.
+A = LU.
 ```
+Questo è particolarmente utile, poiché, se $A = LU$, allora ogni soluzione $\mathbf{x}$
+che sia soluzione di:
+```{math}
+U\mathbf{x} = \mathbf{y},
+```
+per una soluzione $\mathbf{y}$ di
+```{math}
+L\mathbf{y} = \mathbf{b},
+```
+e se $L$ è invertibile, allora $\mathbf{y}$ è unicamente determinata; e se $U$
+è invertibile, allora ogni soluzione $\mathbf{y}$ di $L\mathbf{y} = \mathbf{b}$
+produrrà una soluzione $\mathbf{x}$ di $A\mathbf{x} = \mathbf{b}$ via $U\mathbf{x} = \mathbf{y}$.
+
 :::{danger}
-MATLAB, e la maggior parte degli algoritmi che calcolano autovalori, non conoscono la forma canonica di Jordan e l'esistenza di matrici non diagonalizzabili. Per cui vi restituiranno sempre una diagonalizzazione, anche quando questa non esiste. Consideriamo ad esempio il blocco di Jordan:
-```matlab
-J = gallery('jordbloc',5)
-[V,D,W] = eig(J)
+In **generale** non tutte le matrici $A$ ammettono una fattorizzazione $LU$ di
+questa forma, si consideri ad esempio la matrice:
+```{math}
+A = \begin{bmatrix}
+0 & 1 \\
+1 & 0
+\end{bmatrix} = \begin{bmatrix}
+l_{11} & 0 \\
+l_{12} & l_{22}
+\end{bmatrix} \begin{bmatrix}
+u_{11} & u_{12} \\
+0 & u_{22}
+\end{bmatrix} = LU,
 ```
-Otteniamo le due matrici, senza *warning* o altro... tuttavia se calcoliamo
-```matlab
-cond(V)
+questa richiederebbe di avere gli elementi diagonali $u_{ii}$, $l_{ii}$, $i=1,2$,
+diversi da $0$, ma questo contraddirebbe $0 = a_{11} = l_{11}u_{11}$.
 
-ans =
-
-   1.3009e+63
+Una condizione **necessaria e sufficiente** affinché una fattorizzazione
+di questa forma esista per una matrice $A \in M_n(\mathbb{K})$,
+$\mathbb{K} = \mathbb{R},\mathbb{C}$, è che
+```{math}
+\operatorname{rank}(A_{11}) + k \geq \operatorname{rank}([A_{11}\,A_{12}]) + \operatorname{rank}\left(\begin{bmatrix}A_{11}\\A_{21}\end{bmatrix}\right),
 ```
-che è un **valore enorme** per una matrice $5 \times 5$. Questo ci deve far sospettare che c'è qualcosa che non va!
+per $k = 1,\ldots,n-1$ e
+```{math}
+A = \begin{bmatrix}
+A_{11} & A_{12} \\
+A_{21} & A_{22}
+\end{bmatrix}, \qquad A_{11} \in M_k(\mathbb{K}).
+```
 :::
 
-Per calcolare direttamente il raggio spettrale della matrice $M^{-1}N$ non abbiamo in realtà la necessità di calcolare tutti gli autovalori della matrice e prendere il massimo. Possiamo accedere ad algoritmi che calcolano direttamente la quantità che ci interessa:
+Quando esiste la decomposizione $LU$ **non è unica** (le combinazioni di $L$ e $U$
+per una data $A$ sono infinite). Per determinare un algoritmo univoco è
+necessario porre determinati vincoli su $L$ o $U$ ({numref}`tipidilu`).
+:::{margin} Varianti dell'algoritmo $LU$.
+```{list-table} Varianti dell'algoritmo $LU$.
+:header-rows: 1
+:name: tipidilu
+
+
+* - Nome
+  - Vincoli
+* - Doolittle
+  - $L_{ii} = 1$, $i=1,\ldots,n$
+* - Crout
+  - $U_{ii} = 1$, $i=1,\ldots,n$
+* - Choleski
+  - $U = L^T$
+```
+:::
+Come primo esercizio implementeremo la fattorizzazione $LU$ nella forma di Doolittle,
+che è quella più strettamente legata all'algoritmo di eleminazione di Gauss che
+conoscete sin dal corso di *algebra lineare*.
+
+Se scriviamo l'uguaglianza $A = LU$ con il vincolo aggiuntivo per cui
+ $L_{ii} = 1$, $i=1,\ldots,n$, possiamo ricavare che i termini della matrice
+ $U$ sono dati da
+```{math}
+:label: lu1
+\forall\,j\quad & \begin{array}{ll}
+i = 1, & u_{i,j} = a_{i,j},\\
+i > 1, & u_{i,j} = \displaystyle a_{i,j} - \sum_{k=1}^{i} l_{ik} u_{k,j},
+\end{array}
+```
+mentre quelli della matrice $L$ sono dati da:
+```{math}
+:label: lu2
+\forall\,i\quad & \begin{array}{ll}
+j = 1, & l_{ij} = \frac{a_{ij}}{u_{jj}}, \\
+j > 1, & l_{ij} = \displaystyle \frac{a_{ij} - \sum_{k=1}^{j} l_{ik} u_{kj} }{u_{jj}}.
+\end{array}
+```
+
+:::::{admonition} Esercizio
+Si usino le relazioni {eq}`lu1` e {eq}`lu2` per implementare la versione di
+Doolittle dell'algoritmo $LU$ per una matrice quadrata. Un prototipo della
+funzione è dato da:
 ```matlab
-A = gallery('poisson',5); % Discretizzazione del Laplaciano in 2D
-M = diag(A); % A = M - N
-N = M-A;     % N = M - A
-rho = eigs(N,M,1,'largestabs');
-disp(abs(rho))
+function [L,U] = doolittlelu(A)
+%%DOOLITTLELU Calcola la fattorizzazione LU della matrice A con i vincolo di
+%Doolittle.
+
+% Controllo degli input:
+
+% Pre-allocazione memoria:
+L = eye(n,n);
+U = zeros(n,n);
+%!! Questa potrebbe essere anche:
+% L = zeros(n,n);
+% U = zeros(n,n);
+% Dipende da come decidete di utilizzare le formule...
+
+% Utilizzo delle formule per l_{ij} e u_{ij}.
+
+end
 ```
-che ci restituisce il valore `0.8660` per il raggio spettrale, cioè abbiamo trovato uno **splitting convergente**.
+- Si faccia un **controllo dell'input**: la matrice $A$ è quadrata?
+- Si utilizzino operazioni vettorizzate per le somme che compaiono in {eq}`lu1`
+e {eq}`lu2`
 
-Vediamo il manuale del comando `eigs`.
+Per verificare la buona riuscita dell'implementazione si può usare il seguente
+problema di test.
+```matlab
+%% Test della versione di Doolittle dell'algoritmo LU  
+
+clear; clc;
+
+A = [ 3 -1  4;
+     -2  0  5;
+      7  2 -2 ];
+[L,U] = doolittlelu(A);
+fprintf("|| A - LU || = %1.2e\n",norm(A - L*U,2));
+
+% Vediamone gli ingressi:
+format rat
+disp(A)
+disp(L)
+disp(U)
+disp(L*U)
+format short
 ```
-eigs   Find a few eigenvalues and eigenvectors of a matrix
- D = eigs(A) returns a vector of A's 6 largest magnitude eigenvalues.
- A must be square and should be large and sparse.
 
- [...]
-
- eigs(A,K,SIGMA) and eigs(A,B,K,SIGMA) return K eigenvalues. If SIGMA is:
-
-        'largestabs' or 'smallestabs' - largest or smallest magnitude
-      'largestreal' or 'smallestreal' - largest or smallest real part
-                       'bothendsreal' - K/2 values with largest and
-                                        smallest real part, respectively
-                                        (one more from largest if K is odd)
-
-    For nonsymmetric problems, SIGMA can also be:
-      'largestimag' or 'smallestimag' - largest or smallest imaginary part
-                       'bothendsimag' - K/2 values with largest and
-                                       smallest imaginary part, respectively
-                                       (one more from largest if K is odd)
-
-    If SIGMA is a real or complex scalar including 0, eigs finds the
-    eigenvalues closest to SIGMA.
-
+```{tip}
+Guardando alla formulazione delle equazioni {eq}`lu1` e {eq}`lu2` potremmo
+osservare che in realtà possiamo sovrascrivere le entrate della matrice $A$
+con la fattorizzazione $LU$. Se avete concluso la prima parte pensate a come
+è possibile realizzare questa versione.
 ```
-da cui leggiamo che quello che abbiamo chiesto a MATLAB di calcolare è un autovalore (`1`) di massimo valore assoluto (`'largestabs'`) che risolva il problema
+::::{admonition} Un suggerimento più estensivo
+:class: tip, dropdown
+Possiamo sviluppare il ciclo di istruzioni sostanzialmente in due ordine, in un primo procediamo alla fattorizzazioni **colonna per colonna**, ovvero:
+```matlab
+for k=1:n
+    L(k:n,k) = A(k:n,k) / A(k,k); % Dividiamo per il Pivot
+    U(k,1:n) = A(k,1:n);          % Aggiorniamo le entrate della U
+    A(k+1:n,1:n) = A(k+1:n,1:n) - L(k+1:n,k)*A(k,1:n);
+end
+U(:,end) = A(:,end);
+```
+Nel caso dell'**esempio** vediamo:
 ```{math}
-N \mathbf{v} = \lambda M \mathbf{v},
+k = 0, \qquad L = \left(\begin{array}{ccc} 0 & 0 & 0\\ 0 & 0 & 0\\ 0 & 0 & 0 \end{array}\right) \qquad U = \left(\begin{array}{ccc} 0 & 0 & 0\\ 0 & 0 & 0\\ 0 & 0 & 0 \end{array}\right), \qquad A = \left(\begin{array}{ccc} 3 & -1 & 4\\ -2 & 0 & 5\\ 7 & 2 & -2 \end{array}\right)
 ```
-che, nel nostro caso, è equivalente alla richiesta
 ```{math}
-M^{-1}N \mathbf{v} = \lambda \mathbf{v},
+k = 1, \qquad L^{(1)} = \left(\begin{array}{ccc} 1 & 0 & 0\\ -\frac{2}{3} & 0 & 0\\ \frac{7}{3} & 0 & 0 \end{array}\right), \qquad \left(\begin{array}{ccc} 3 & -1 & 4\\ 0 & 0 & 0\\ 0 & 0 & 0 \end{array}\right) \qquad A^{(1)} = \left(\begin{array}{ccc} 3 & -1 & 4\\ 0 & -\frac{2}{3} & \frac{23}{3}\\ 0 & \frac{13}{3} & -\frac{34}{3} \end{array}\right), \\
 ```
-cioè quello che cercavamo. Problemi di questa forma sono detti **problemi generalizzati agli autovalori**, ma sono ben al di fuori degli obiettivi di questo corso.
+```{math}
+k = 2, \qquad L^{(2)} = \left(\begin{array}{ccc} 1 & 0 & 0\\ -\frac{2}{3} & 1 & 0\\ \frac{7}{3} & -\frac{13}{2} & 0 \end{array}\right), \qquad U^{(2)} = \left(\begin{array}{ccc} 3 & -1 & 4\\ 0 & -\frac{2}{3} & \frac{23}{3}\\ 0 & 0 & 0 \end{array}\right), \qquad A^{(2)} = \left(\begin{array}{ccc} 3 & -1 & 4\\ 0 & -\frac{2}{3} & \frac{23}{3}\\ 0 & 0 & \frac{77}{2} \end{array}\right), \\
+```
+```{math}
+k = 3, \qquad L^{(3)} = \left(\begin{array}{ccc} 1 & 0 & 0\\ -\frac{2}{3} & 1 & 0\\ \frac{7}{3} & -\frac{13}{2} & 1 \end{array}\right), \qquad U^{(3)} = \left(\begin{array}{ccc} 3 & -1 & 4\\ 0 & -\frac{2}{3} & \frac{23}{3}\\ 0 & 0 & \frac{77}{2} \end{array}\right), \qquad A^{(3)} = \left(\begin{array}{ccc} 3 & -1 & 4\\ 0 & -\frac{2}{3} & \frac{23}{3}\\ 0 & 0 & \frac{77}{2} \end{array}\right)
+```
+
+La **seconda alternativa** è quella di eseguire questo ciclo procedendo lungo le
+righe della matrice
+```matlab
+for i = 1:1:n
+    for j = 1:(i - 1)
+        L(i,j) = (A(i,j) - L(i,1:(j - 1))*U(1:(j - 1),j)) / U(j,j);
+    end
+    j = i:n;
+    U(i,j) = A(i,j) - L(i,1:(i - 1))*U(1:(i - 1),j);
+end
+```
+Nel caso dell'**esempio** vediamo:
+```{math}
+i = 0, \qquad L = \left(\begin{array}{ccc} 1 & 0 & 0\\ 0 & 1 & 0\\ 0 & 0 & 1 \end{array}\right), \qquad U = \left(\begin{array}{ccc} 0 & 0 & 0\\ 0 & 0 & 0\\ 0 & 0 & 0 \end{array}\right), \qquad A = \left(\begin{array}{ccc} 3 & -1 & 4\\ -2 & 0 & 5\\ 7 & 2 & -2 \end{array}\right),
+```
+```{math}
+i = 1, \qquad L^{(1)} = \left(\begin{array}{ccc} 1 & 0 & 0\\ 0 & 1 & 0\\ 0 & 0 & 1 \end{array}\right), \qquad U^{(1)} = \left(\begin{array}{ccc} 3 & -1 & 4\\ 0 & 0 & 0\\ 0 & 0 & 0 \end{array}\right),
+```
+```{math}
+i = 2, \qquad L^{(2)} = \left(\begin{array}{ccc} 1 & 0 & 0\\ -\frac{2}{3} & 1 & 0\\ 0 & 0 & 1 \end{array}\right), \qquad U^{(2)} = \left(\begin{array}{ccc} 3 & -1 & 4\\ 0 & -\frac{2}{3} & \frac{23}{3}\\ 0 & 0 & 0 \end{array}\right)',
+```
+```{math}
+i = 3, \qquad L^{(3)} = \left(\begin{array}{ccc} 1 & 0 & 0\\ -\frac{2}{3} & 1 & 0\\ \frac{7}{3} & -\frac{13}{2} & 1 \end{array}\right), \qquad U^{(3)} = \left(\begin{array}{ccc} 3 & -1 & 4\\ 0 & -\frac{2}{3} & \frac{23}{3}\\ 0 & 0 & \frac{77}{2} \end{array}\right)',
+```
+L'**unica differenza** tra le due implementazioni è l'ordine, per colonna e per riga rispettivamente, in cui facciamo le operazioni.
+::::
+:::::
+
+(pivoting)=
+### La fattorizzazione con *pivoting*
+
+Consideriamo il seguente esempio numerico in cui andiamo a confrontare gli errori
+assoluti e relativi,
+```{math}
+E_{\text{abs}} = \| A - LU\|_2, \qquad E_{\text{rel}} = \frac{\| A - LU\|_2}{\| A\|_2},
+```
+tra la matrice $A$ ed il prodotto dei termini $LU$ ottenuto con l'algoritmo
+implementato nell'esercizio precedente.
+
+```matlab
+clear; clc; close all;
+
+sizes = 100:100:1500;
+N = length(sizes);
+maxerr = zeros(N,1);
+relerr = zeros(N,1);
+for i = 1:N
+   A = rand(sizes(i),sizes(i));
+   [L,U] = doolittlelu(A);
+   [Lm,Um] = lu(A);
+   normA = norm(A,2);
+   maxerr(i) = norm(A - L*U,2);
+   relerr(i) = maxerr(i)/normA;
+   fprintf("Dimensione %d\n\t || A - LU || = %1.2e\n",sizes(i),maxerr(i));
+   fprintf("\t || A - LU ||/||A|| = %1.2e\n",relerr(i));
+end
+
+figure(1)
+loglog(sizes,maxerr,'o-',sizes,relerr,'x-','LineWidth',2);
+xlabel('Dimensione');
+legend({'Errore Assoluto','Errore Relativo'},...
+    'Location','best','FontSize',14);
+```
+Quello che osserviamo nella figura è una crescita di più di un'ordine di
+grandezza nella costruzione fatta dalla fattorizzazione $LU$ accompagnato da un
+certo numero di oscillazioni {numref}`lunopivoting`.
+```{figure} ./images/lunopivoting.png
+:name:  lunopivoting
+
+Errori assoluti e relativi tra una matrice $A$ ad entrate casuali
+uniformemente distribuite in $[0,1]$ e la relativa fattorizzazione $LU$ calcolata
+**senza** pivoting.
+```
+Ci aspetteremo che almeno l'**errore relativo** si comportasse meglio. Quello
+che sta accadendo è che la scelta dei *pivot* affidata alla forma originale della
+matrice sta introducendo dell'instabilità numerica che ci fa perdere in precisione
+relativa più di quanto sarebbe lecito aspettarsi guardando ai numeri di
+condizionamento delle operazioni in questione.
+
+
+Per **migliorare la stabilità dell'algoritmo** e fare sì che la fattorizzazione
+$LU$ si possa calcolare per una *generica matrice* (ovvero anche
+  quando si incontrano *pivot* nulli) possiamo introdurre una strategia di
+  **scambio delle righe** della matrice detta, per l'appunto, di *pivoting parziale*.
+
+Formalmente, questo vuol dire che otterremo una fattorizzazione della forma
+```{math}
+P A = L U,
+```
+in cui $P$ è una **matrice di permutazione**. Strutturalmente una matrice di
+permutazione non è nient'altro che una matrice identità di cui abbiamo permutato
+le righe. Vediamo un *veloce esempio*:
+```matlab
+format rat
+H = hilb(5)
+P = eye(5)
+P = P([5:-1:1],:)
+P*H
+```
+che costruisce le matrici
+```{math}
+H = \left(\begin{array}{ccccc} 1 & \frac{1}{2} & \frac{1}{3} & \frac{1}{4} & \frac{1}{5}\\ \frac{1}{2} & \frac{1}{3} & \frac{1}{4} & \frac{1}{5} & \frac{1}{6}\\ \frac{1}{3} & \frac{1}{4} & \frac{1}{5} & \frac{1}{6} & \frac{1}{7}\\ \frac{1}{4} & \frac{1}{5} & \frac{1}{6} & \frac{1}{7} & \frac{1}{8}\\ \frac{1}{5} & \frac{1}{6} & \frac{1}{7} & \frac{1}{8} & \frac{1}{9} \end{array}\right), \quad P = \left(\begin{array}{ccccc} 0 & 0 & 0 & 0 & 1\\ 0 & 0 & 0 & 1 & 0\\ 0 & 0 & 1 & 0 & 0\\ 0 & 1 & 0 & 0 & 0\\ 1 & 0 & 0 & 0 & 0 \end{array}\right), \quad PH = \left(\begin{array}{ccccc} \frac{1}{5} & \frac{1}{6} & \frac{1}{7} & \frac{1}{8} & \frac{1}{9}\\ \frac{1}{4} & \frac{1}{5} & \frac{1}{6} & \frac{1}{7} & \frac{1}{8}\\ \frac{1}{3} & \frac{1}{4} & \frac{1}{5} & \frac{1}{6} & \frac{1}{7}\\ \frac{1}{2} & \frac{1}{3} & \frac{1}{4} & \frac{1}{5} & \frac{1}{6}\\ 1 & \frac{1}{2} & \frac{1}{3} & \frac{1}{4} & \frac{1}{5} \end{array}\right),
+```
+e ci mostra anche come possiamo **permutare** due (o più) righe di una matrice
+MATLAB. Abbiamo ora tutti gli ingredienti necessari a costruire la nostra versione
+fatta in casa della fattorizzazione LU con pivoting in MATLAB.
+
+::::{admonition} Esercizio
+Si costruisca una funzione `ludecomp` per costruire la fattorizzazione $LU$ con
+pivoting parziale per una matrice $A$. Un prototipo della funzione è quindi:
+```matlab
+function [L,U,P] = ludecomp(A)
+%%LUDECOMPP Fattorizzazione LU con pivoting parziale.
+
+% Contrllo dell'input:
+
+% Allocazione della memoria:
+L = zeros(n);
+U = zeros(n);
+P = eye(n);
+
+% Fattorizzazione con Pivoting
+end
+```
+- Si faccia un **controllo dell'input**: la matrice $A$ è quadrata?
+- Si utilizzino operazioni vettorizzate per le somme che compaiono in {eq}`lu1`
+e {eq}`lu2`.
+
+:::{tip}
+Se il ciclo esterno è per $k=1,\ldots,n$ possiamo **individuare il pivot** facendo:
+```matlab
+[~,r] = max(abs(A(k:end,k)));
+r = n-(n-k+1)+r; % Trasliamo l'indice in questione
+```
+Qual è l'effetto della traslazione di indice?
+:::
+
+::::
+
+Possiamo **verificare** l'implementazione della versione con *pivoting parziale*
+facendone un paragone con la versione dell'esercizio precedente con il seguente
+codice:
+```matlab
+sizes = 100:100:1500;
+N = length(sizes);
+maxerr = zeros(N,1);
+relerr = zeros(N,1);
+maxerrm = zeros(N,1);
+relerrm = zeros(N,1);
+for i = 1:N
+   A = rand(sizes(i),sizes(i));
+   [L,U] = doolittlelu(A);
+   [Lm,Um,P] = ludecomp(A);
+   normA = norm(A,2);
+   maxerr(i) = norm(A - L*U,2);
+   relerr(i) = maxerr(i)/normA;
+   maxerrm(i) = norm(P*A - Lm*Um,2);
+   relerrm(i) = maxerrm(i)/normA;
+   fprintf("Dimensione %d\n \t || A - LU || = %1.2e\n",sizes(i),maxerr(i));
+   fprintf("\t || A - LU ||/||A|| = %1.2e\n",relerr(i));
+   fprintf("\t || P*A - LU ||/||A|| = %1.2e\n",maxerrm(i));
+   fprintf("\t || P*A - LU ||/||A|| = %1.2e\n",relerrm(i));
+end
+
+figure(2)
+loglog(sizes,maxerr,'o-',sizes,relerr,'x-',...
+    sizes,maxerrm,'o-',sizes,relerrm,'x-','LineWidth',2);
+xlabel('Dimensione');
+legend({'Errore Assoluto','Errore Relativo',...
+    'Errore Assoluto (Pivoting)','Errore Relativo (Pivoting)'},...
+    'Location','best','FontSize',14);
+```
+Con questa esecuzione possiamo osservare che abbiamo mantenuto un errore
+relativo che è all'incirca della precisione di macchina, migliorando
+sensibilmente le performance rispetto alla versione che utilizzava
+l'ordinamento di partenza.
+```{figure} ./images/lusipivoting.png
+:name:  lusipivoting
+
+Errori assoluti e relativi tra una matrice $A$ ad entrate casuali
+uniformemente distribuite in $[0,1]$ e la relativa fattorizzazione $LU$
+calcolata **senza** e **con** pivoting.
+```
+
+### Calcolo del determinante
+
+Dopo aver calcolato la fattorizzazione $LU$ di una matrice $A$ è possibile
+utilizzarla anche per calcolare il determinante della matrice $A$. Si può fare
+sfruttando il **teorema di Binet** che ricordiamo collega il prodotto fra
+matrici quadrate con il determinante:
+```{math}
+\det(AB) = \det(A)\det(B), \qquad \forall\,A,B \in M_n(\mathbb{K}),
+```
+ed, in particolare,
+```{math}
+\det(A) = \det(LU) = \det(L)\det(U),
+```
+che, se usiamo la formulazione di Doolittle si riduce quindi ad essere:
+```{math}
+\det(A) = \det(LU) = \det(L)\det(U) = \prod_{i=1}^{n} l_{ii} \prod_{i=1}^n u_{ii} = 1 \prod_{i=1}^n u_{ii} = \prod_{i=1}^n u_{ii}.
+```
+Che possiamo riportare facilmente su MATLAB come:
+```matlab
+function res = ludet(A)
+%%LUDET Calcola il determinante della matrice A sfruttando la sua fattorizzazione
+%LU in forma di Doolittle e senza pivoting.
+[~,U] = doolittlelu(A);
+res = prod(diag(U));
+end
+```
+e testare rapidamente con:
+```matlab
+A = pascal(5,2);
+fprintf('Errore relativo: %1.2e\n',abs(ludet(A) - det(A))/abs(det(A)));
+```
+che ci dovrebbe restituire un errore relativo, rispetto alla funzione `det`
+nativa di MATLAB dell'ordine di `3.33e-16`.
 
 :::{warning}
-Tutte le volte che volete risolvere un problema agli autovalori con matrice $M^{1}N$ la soluzione opportuna è quella di usare la formulazione come problema generalizzato agli autovalori, sia da un punto di vista di stabilità numerica, sia da un punto di vista di velocità di esecuzione del codice.
+Per costruire il calcolo del determinante anche nel caso in cui si utilizzi la fattorizzazione $LU$ con *pivoting* è necessario tenere traccia del numero di
+scambi di righe effettuati.
 :::
 
-## Metodo di Jacobi
+## Esercizi
 
-Il primo metodo che vogliamo implementare è il **metodo di Jacobi**, questo è basato sullo splitting additivo per la matrice $A$ con $A = D - N$ dove $D$ è la diagonale della matrice $A$.
-
-:::{admonition} Teorema
-Una condizione sufficiente (ma **non necessaria**) affinché il metodo di Jacobi sia convergente è che la matrice $A$ sia a diagonale strettamente dominante, oppure a diagonale dominante e irriducibile.
-:::
-
-Per trasformare il metodo in qualcosa di applicabile dobbiamo accoppiarlo ad un **criterio d'arresto**. Come sempre possiamo guardare al **residuo assoluto** oppure a quello **relativo** in una norma prefissata. Poiché abbiamo deciso di guardare alla convergenza attraverso informazioni spettrali scelta più naturale (e predittiva) è quella di usare la norma $\|\cdot\|_ 2$.
-```{math}
-\|\mathbf{r}^{(k)}\|_2 = \| A \mathbf{x}^{(k)} - \mathbf{b}\|_2 \leq \varepsilon,
-```
-ovvero, rispettivamente
-```{math}
-\|\mathbf{r}^{(k)}\|_2 = \| A \mathbf{x}^{(k)} - \mathbf{b}\|_2 \leq \varepsilon \|\mathbf{r}^{(0)}\|_2,
-```
-dove $\varepsilon$ è una tolleranza prefissata.
+Consideriamo alcune applicazioni *ingegneristiche* del problema calcolare le
+soluzione di un sistema {cite}`kiusalaas2015`.
 
 :::{admonition} Esercizio
-Si scriva una *function* che implementi il metodo di Jacobi per la soluzione di un sistema lineare $A \mathbf{x} = \mathbf{y}$ entro una tolleranza $\varepsilon$ sfruttando il seguente prototipo:
-```matlab
-function [x,res,it] = jacobi(A,b,x,itmax,eps)
-%%JACOBI implementa il metodo di Jacobi per la soluzione del sistema A x = b
-%    INPUT:
-%     A matrice quadrata
-%     b termine destro del sistema lineare da risolvere
-%     x innesco della strategia iterativa
-%     itmax massimo numero di iterazioni lineari consentito
-%    OUTPUT
-%     x ultima soluzione calcolata dal metodo
-%     res vettore dei residui
-%     it numero di iterazioni
-end
+La formulazione per gli spostamenti di una trave reticolare piana è simile a
+quella di un sistema di masse e molle. Le differenze sono che
+1. i termini di rigidità sono dati da $k_{i} = (E A/L)_ {i}$, dove $E$ è il modulo
+di elasticità, $A$ rappresenta l'area della sezione di taglio e $L$ è la
+lunghezza dell'elemento;
+2. ci sono due componenti dello scostamento in ogni punto di giuntura.
+
+Per la trave reticolare in figura:
+```{figure} ./images/planetruss.png
+
+Profilo di un elemento della trave reticolare piana.
 ```
-- Si implementi in maniera vettoriale, cioè **senza** usare cicli `for` per scorrere le righe della matrice,
-- Si usi il criterio d'arresto basato sull'errore relativo.
 
-Per *testare* il metodo si usi il seguente programma
-```matlab
-A = gallery('poisson',10); % Matrice di prova
-b = ones(10^2,1);           % rhs vettore di 1
-x = zeros(10^2,1);          % Tentativo iniziale vettore di 0
-[x,res,it] = jacobi(A,b,x,1000,1e-6);
-
-figure(1)
-semilogy(1:it,res,'o-','LineWidth',2);
-xlabel('Iterazione');
-ylabel('Residuo relativo');
+si ottiene quindi il seguente sistema di equazioni lineari
+```{math}
+K \mathbf{u} = \mathbf{p}
 ```
+dove
+```matlab
+K = [27.58  7.004 -7.004 0 0
+     7.004 29.57  -5.253 0 -24.32
+    -7.004 -5.253 29.57  0 0
+    0 0 0 27.58 -7.004
+    0 -24.32 0 -7.004 29.57];
+p = [0 0 0 0 -45]'; % kN
+```
+si determinino tutti gli scostamenti $u_i$ per il sistema.
 :::
-
-## Metodo di Gauss-Seidel
-
-:::{margin} Avanti/Indietro
-Si può utilizzare la stessa idea anche con la parte triangolare superiore $U$ di $A$, in genere si distingue tra i due chiamandoli, rispettivamente, metodo di Gauss-Seidel in *avanti* (forward Gauss-Seidel) o all'*indietro* (backward Gauss-Seidel).
-:::
-Il secondo metodo di questo tipo che avete visto è il metodo di **Gauss-Seidel**,
-per questo metodo la decomposizione additiva della matrice $A$ è $A = L - N$, dove $L$ è la parte triangolare inferiore della matrice $A$.
-
-:::{admonition} Teorema
-Una condizione sufficiente (ma **non necessaria**) affinché il metodo di Gauss-Seidel sia convergente è che la matrice $A$ sia a diagonale strettamente dominante, oppure una matrice simmetrica e definita positiva.
-:::
-
-Possiamo sfruttare di nuovo il *residuo relativo* per definire il criterio d'arresto.
 
 :::{admonition} Esercizio
-Si scriva una *function* che implementi il metodo di Gauss-Seidel in avanti per la soluzione di un sistema lineare $A \mathbf{x} = \mathbf{y}$ entro una tolleranza $\varepsilon$ sfruttando il seguente prototipo:
-```matlab
-function [x,res,it] = forwardgs(A,b,x,itmax,eps)
-%%FORWARDGS implementa il metodo di Gauss-Seidel in avanti per la soluzione del
-% sistema A x = b
-%    INPUT:
-%     A matrice quadrata
-%     b termine destro del sistema lineare da risolvere
-%     x innesco della strategia iterativa
-%     itmax massimo numero di iterazioni lineari consentito
-%    OUTPUT
-%     x ultima soluzione calcolata dal metodo
-%     res vettore dei residui
-%     it numero di iterazioni
-end
+Riprendiamo l'esperimento fatto ne {ref}`pivoting` con la **matrice di Hilbert**
+```{math}
+(H_n)_{i,j} = \int_{0}^{1} x^{i+j-2}\,{\rm d}x = \frac{1}{i+j-1}, \qquad i,j=1,\ldots,n
 ```
-- Si implementi in maniera vettoriale, cioè **senza** usare cicli `for` per scorrere le righe della matrice,
-- Si utilizzi la funzione `forwardsolve` vista in {ref}`forwardandbacwardsolve`
-- Si usi il criterio d'arresto basato sull'errore relativo.
+che è un noto esempio di matrice *malcondizionata*. Si scriva un programma
+specializzato nella risoluzione delle equazioni $H \mathbf{x} = \mathbf{b}$
+mediante il metodo di decomposizione $LU$ *con* e *senza* pivoting, dove $H$ è
+la matrice di Hilbert di dimensione arbitraria $n \times n$, e
+```{math}
+b_i = \sum_{j=1}^{n} (H_n)_{i,j},
+```
+L'unico input del programma deve essere $n$. Eseguendo il programma, si determinino
+i più grandi valori di $n$ per i due algoritmi per cui la soluzione è entro
+6 cifre significative della soluzione esatta.
+:::
 
-Per *testare* il metodo si usi il seguente programma
-```matlab
-A = gallery('poisson',10); % Matrice di prova
-b = ones(10^2,1);           % rhs vettore di 1
-x = zeros(10^2,1);          % Tentativo iniziale vettore di 0
-[x,res,it] = forwardgs(A,b,x,1000,1e-6);
+:::{margin} Sistema di molle
+```{figure} ./images/springlsys.png
+:name: springlsys
 
-figure(1)
-semilogy(1:it,res,'o-','LineWidth',2);
-xlabel('Iterazione');
-ylabel('Residuo relativo');
+Sistema lineare di molle.
+```
+:::
+:::{admonition} Esercizio
+Il sistema mostrato in {numref}`springlsys` è costituito da $n$ molle lineari che supportano
+$n$ masse. Le costanti elastiche delle molle sono indicate con $k_i$, i pesi
+delle masse sono $W_i$, e $x_i$ sono gli spostamenti delle masse (misurati dalle
+posizioni in cui le molle sono indeformate). La cosiddetta formulazione dello
+spostamento si ottiene scrivendo l'equazione di equilibrio di ciascuna massa e
+sostituendo le forze elastiche con $F_i = k_i (x_{i+1} - x_{i} )$.
+
+Il risultato è il sistema simmetrico e tridiagonale di equazioni
+```{math}
+\begin{split}
+(k_1 + k_2) x_1 - k_2 x_2 = & W_1,\\
+- k_i x_{i-1} + (k_i + k_{i+1}) x_i - k_{i+1} x_{i+1} = & W_i, \qquad i=2,3,\ldots,n-1,\\
+-k_n x_{n-1} + k_n x_n = & W_n,
+\end{split}
+```
+si scriva un programma che risolve queste equazioni per dati valori di $n$, $\mathbf{k}$ e $\mathbf{W}$. Si risolva il problema con $n=5$ e
+```{math}
+\begin{split}
+k_1 = k_2 = k_3 = 10\, \text{N}/\text{mm}\;\; k_4 = k_5 = 5\, \text{N}/\text{mm}\\ W_1 = W_3 = W_5 = 100\,\text{N},\qquad W_2 = W_4 = 50\,\text{N}.
+\end{split}
 ```
 :::
 
-## Paragone tra i due metodi e velocità di convergenza
+## Le funzioni di MATLAB
 
-Adesso che abbiamo implementato i due diversi metodi possiamo fare un confronto delle loro prestazioni. Possiamo paragonare in primo luogo le due storie di convergenza guardando all'evoluzione dei residui:
+MATLAB implementa ovviamente una sua versione della fattorizzazione $LU$ ed un
+suo algoritmo per la soluzione dei sistemi lineari.
+
+Per la fattorizzazione il comando ha il medesimo nome `lu` e permette una certa
+flessibilità.
+- `[L,U] = lu(A)`, restituisce una matrice triangolare superiore in $U$ e
+una matrice triangolare inferiore **permutata** in $L$, tale che $A = LU$.
+La matrice di input $A$ può essere *densa* o *sparsa*.
+- `[L,U,P] = lu(A)`, restituisce una matrice triangolare inferiore $L$ con
+diagonale di uno, matrice triangolare superiore $U$ ed una matrice di
+permutazione $P$ tale che $PA = LU$. Con un argomento di input *opzionale* è
+possibile scegliere il formato della $P$, ovvero se chiama `lu(A, outputForm)`
+con `outputForm` uguale a `'matrix'` (default) $P$ è memorizzata come una matrice,
+se si chiama con l'opzione `'vector'` allora $P$ è un vettore tale che `A(P,:) = L*U`.  
+- `[L,U,P,Q] = lu(A)` restituisce una matrice triangolare inferiore $L$ con
+diagonale di uno, matrice triangolare superiore $U$ e due matrici di
+permutazione $P$ e $Q$ tali che $PAQ = LU$. Per una matrice sparsa questa opzione
+è significativamente più efficiente della versione con tre output.
+
+```{prf:definition}
+Una **matrice sparsa** o **array sparso** è una matrice in cui la maggior parte
+degli elementi è zero. Per dare una definizione rigorosa riguardo alla
+proporzione di elementi di valore zero affinché una matrice sia qualificata
+come sparsa è tipicamente necessario considerare la sorgente del problema che la
+ha generata, e.g., la discretizzazione di una PDE. Un **criterio comune** è che
+il numero di elementi diversi da zero sia approssimativamente uguale al numero
+di righe o colonne.
+
+Al contrario, se la maggior parte degli elementi è diversa da zero, la matrice è
+considerata densa.
+```
+
+Informazioni sulle matrici sparse possono essere recuperate dal manuale di
+MATLAB (`help sparse`). Non scenderemo qui in ulteriori dettagli.
+
+La funzione per **risolvere i sistemi lineari** è la funzione `mldivide` `\`.
+Si tratta di una delle funzioni più elaborate di MATLAB, il comando `A\B` è la
+*divisione matriciale* di `A` in `B`, moralmente è la stessa operazione di
+`INV(A)*B`, ma è **calcolata in modo diverso**, **stabile** ed **efficiente**.
+
+Se $A$ è una matrice $N$ per $N$ e $\mathbf{b}$ è un vettore colonna con $N$
+componenti, o una matrice con più di queste colonne, allora `X = A\b` è la
+soluzione dell'equazione `A*X = B`.
+
+:::{warning}
+Viene stampato un messaggio di avviso se A è scalata male o malcondizionata, ad
+**esempio**
 ```matlab
-A = gallery('poisson',10); % Matrice di prova
-b = ones(10^2,1);           % rhs vettore di 1
-x = zeros(10^2,1);          % Tentativo iniziale vettore di 0
+x = hilb(15)\ones(15,1);
+```
+restituisce
+```
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  5.460912e-19.
+```
+:::
 
-[xjacobi,resjacobi,itjacobi] = jacobi(A,b,x,1000,1e-6);
-[xforwardgs,resforwardgs,itforwardgs] = forwardgs(A,b,x,1000,1e-6);
+## Bibliografia
 
-
-figure(1)
-semilogy(1:itjacobi,resjacobi,'o-',...
-    1:itforwardgs,resforwardgs,'x-', 'LineWidth',2);
-xlabel('Iterazione');
-ylabel('Residuo');
-legend({'Jacobi','Gauss-Seidel (Forward)'},...
-    'Location','northeast',...
-    'FontSize',14);
+ ```{bibliography}
+ :filter: docname in docnames
  ```
-Da cui osserviamo che il metodo di Gauss-Seidel (forward) impiega meno iterazioni per raggiungere la convergenza desiderata ({numref}`gaussjac1`).
-
-```{figure} ./images/gaussjacobicomparison1.png
----
-alt: convergenza-metodi
-width: 50%
-name: gaussjac1
----
-Evoluzione del residuo per i metodi di Jacobi e Gauss-Seidel.
-```
-Possiamo indagare la cosa dal punto di vista teorico andando a guardare il raggio spettrale delle due matrici di iterazione, infatti
-```matlab
-M = diag(diag(A)); % Jacobi
-N = M - A;
-rhojacobi = eigs(N,M,1,'largestabs');
-
-M = tril(A); % Gauss-Seidel (forward)
-N = M - A;
-rhoforwardgs = eigs(N,M,1,'largestabs');
-
-fprintf('Il raggio spettrale per Jacobi è %f\n',abs(rhojacobi));
-fprintf('Il raggio spettrale per Gauss-Seidel è %f\n',abs(rhoforwardgs));
-```
-Da cui scopriamo che:
-```
-Il raggio spettrale per Jacobi è 0.959493
-Il raggio spettrale per Gauss-Seidel è 0.920627
-```
-dunque Gauss-Seidel (forward) ha un tasso di riduzione del residuo minore e una convergenza più rapida.
-
-Possiamo aggiungere delle istruzioni `tic` e `toc` per valutare anche il tempo impiegato dai due differenti metodi:
-```
-Il tempo per Jacobi è 0.008983 s
-Il tempo per Gauss-Seidel è 0.182575 s
-```
-ovvero il metodo di Jacobi è in questo caso circa due ordini di grandezza più rapido. Tuttavia, se andiamo a sostituire la nostra implementazione della funzione `forwardsolve` con il `\` implementato da MATLAB scopriamo che:
-```
-Il tempo per Jacobi è 0.008191 s
-Il tempo per Gauss-Seidel è 0.004435 s
-```
-ed ora Gauss-Seidel ha ampiamente recuperato su Jacobi. L'**implementazione** conta! Qui il vantaggio è dato dal fatto che la matrice $L$ associata al problema di test che stiamo guardando è una matrice *a banda* i non-zeri non riempiono tutto il triangolo. Il codice di MATLAB è in grado di accorgersene e adatto l'algoritmo di soluzione in modo che se ne tenga conto.
