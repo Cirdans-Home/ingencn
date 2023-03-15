@@ -1,4 +1,166 @@
-# Laboratorio 6 : Soluzione di Sistemi Triangolari
+# Laboratorio 6 : Soluzione dei Sistemi Lineari
+
+In questo e nel prossimo laboratorio ci focalizzeremo sul problema di risolvere
+un sistema lineare compatibile. Partiremo dal caso dei sistemi triangolari per
+poi occuparci del caso generale tramite la fattorizzazione $PA = LU$ della
+matrice dei coefficienti.
+
+(condizionamento-spettrale)=
+## Condizionamento di un sistema lineare
+
+Ricordiamo che il **numero di condizionamento** associato all'equazione lineare
+$A \mathbf{x} = \mathbf{b}$ fornisce un limite sulla precisione della soluzione
+$\mathbf{x}$ dopo che un qualunque algoritmo sarà stato applicato per la
+sua approssimazione ed in maniera indipendente dalla precisione *floating point*
+usata.
+
+:::{margin} Norma di una matrice
+Ricordiamo che una norma sullo spazio vettoriale $K^{m\times n}$ delle matrici
+a elementi nel campo $K$ è una funzione
+```{math}
+\| \cdot \|:K^{m \times n} \mapsto \mathbb{R}^{+}
+```
+tale che per ogni coppia di matrici $A$ e $B$ e per ogni scalare $\lambda \in K$ si verifica:
+
+- ${\displaystyle \|A\|=0}$ se e solo se ${\displaystyle A=0}$,
+- ${\displaystyle \|\lambda A\|=|\lambda |\|A\|}$.
+- ${\displaystyle \|A+B\|\leq \|A\|+\|B\|}$.
+
+Se è data una norma sullo spazio vettoriale $K^n$, si può costruire una **norma indotta**
+sullo spazio delle matrici in $K^{n \times n}$ considerando
+```{math}
+\|A\| = \sup_{x \neq \mathbf{0}} \frac{\| A \mathbf{x} \|}{\|\mathbf{x}\|},
+```
+ovvero
+```{math}
+\|A\| = \sup_{\|x\|  = 1} \| A \mathbf{x} \|.
+```
+Nei casi speciali in cui la norma vettoriale sia la norma  ${\displaystyle p=1,2,\infty ,}$
+la norma matriciale indotta può essere calcolata come
+```{math}
+{\displaystyle \|A\|_{1}=\max _{1\leq j\leq n}\sum _{i=1}^{m}|a_{ij}|,}
+```
+che è il massimo della somma dei valori assoluti delle colonne di $A$;
+```{math}
+{\displaystyle \|A\|_{\infty }=\max _{1\leq i\leq m}\sum _{j=1}^{n}|a_{ij}|,}
+```
+che è il massimo della somma dei valori assoluti delle righe di $A$;
+```{math}
+{\displaystyle \|A\|_{2}={\sqrt {\lambda _{\max }\left(A^{*}A\right)}}.}
+```
+che è detta **norma spettrale** della matrice ${\displaystyle A}$, ovver la
+radice quadrata the più grande autovalore di ${\displaystyle A^{* }A}$,
+dove $A^{* }$ denota la coniugata trasposta di $A$.
+:::
+
+Sia $\mathbf{e}$ l'errore commesso rispetto a $\mathbf{b}$, assumiamo che $A$ sia
+non singolare, allora l'errore sulla soluzione $A^{-1} \mathbf{b}$ è dato da
+$A^{-1} \mathbf{e}$. Allora il rapporto tra gli errori relativi è dato da
+```{math}
+\frac{\| A^{-1} \mathbf{e} \|}{\| A^{-1} \mathbf{b} \|} / \frac{\|\mathbf{e}\|}{\|\mathbf{b}\|} = \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|},
+```
+per cui possiamo esibire la limitazione per il termine destro come
+```{math}
+:label: bound
+\frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \leq & \max_{\mathbf{e},\mathbf{b} \neq 0} \left\lbrace \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|}, \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \right\rbrace \\ = & \max_{\mathbf{e}\neq 0} \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \max_{\mathbf{b}\neq 0} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \\
+= & \max_{\mathbf{e}\neq 0} \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \max_{\mathbf{b}\neq 0} \frac{\|A\mathbf{x}\|}{\|\mathbf{x}\|} \\
+= & \| A^{-1} \| \|A \| \equiv \kappa(A) \geq \| A^{-1} A \| = 1.
+```
+Consideriamo ora il seguente esempio artificiale
+```{math}
+A \mathbf{x} = \begin{bmatrix}
+4.1 & 2.8 \\
+9.7 & 6.6
+\end{bmatrix}  \begin{bmatrix}
+x_1 \\ x_2
+\end{bmatrix} = \begin{bmatrix}
+4.1 \\ 9.7
+\end{bmatrix}
+```
+Proviamo a risolvere direttamente con MATLAB il sistema lineare
+```matlab
+A = [4.1 2.8; 9.7 6.6];
+b = A(:,1);
+x = A\b
+```
+da cui otteniamo come risposta:
+```
+x =
+
+   1.000000000000002
+  -0.000000000000003
+```
+Ritracciamo i passi del bound sul termine noto, per cui introduciamo una
+perturbazione di $0.01$ sulla prima componente di $\mathbf{b}$ e paragoniamo le
+due soluzioni
+```matlab
+b2 = [4.11; 9.7];
+x2 = A\b2
+```
+da cui otteniamo
+```
+x2 =
+
+   0.339999999999957
+   0.970000000000064
+```
+
+Andiamo ora a verificare la limitazione che abbiamo mostrato in termini del
+numero di condizionamento. A questo scopo facciamo uso del comando `cond`
+```
+cond   Condition number with respect to inversion.
+   cond(X) returns the 2-norm condition number (the ratio of the
+   largest singular value of X to the smallest).  Large condition
+   numbers indicate a nearly singular matrix.
+
+   cond(X,P) returns the condition number of X in P-norm:
+
+      NORM(X,P) * NORM(INV(X),P).
+
+   where P = 1, 2, inf, or 'fro'.
+```
+:::{danger}
+Il calcolo del numero di condizionamento per una matrice è bene che sia eseguito
+tramite la funzione `cond`, la forma `NORM(X,P) * NORM(INV(X),P)` nella
+documentazione è identificativa di ciò che stiamo calcolando, ma *non* è
+rappresentativo del modo in cui è realmente calcolato.
+:::
+
+Calcoliamo quindi
+```matlab
+kappa = cond(A);
+bound = kappa*norm(b-b2)/norm(b);
+errore_relativo = norm(x-x2)/norm(x);
+```
+e osserviamo che
+```
+bound =
+
+   1.54117722269025
+errore_relativo =
+
+  1.173243367763135
+```
+che quindi ci mostra che l'errore che abbiamo commesso è abbastanza vicino
+alla limitazione data dalla {eq}`bound`.
+
+:::{warning}
+Per matrici di grandi dimensioni la funzione `cond` può risultare estremamente
+lenta o andare **out of memory**. Per questo motivo sono disponibili altre
+due funzioni chiamate `rcond` e `condest`.
+
+La funzione `rcond(A)` calcola il reciproco di `cond(A,1)`, per cui più questo è
+vicino a $0$ più la matrice è *malcondizionata*, più questo è vicino a $1$ più
+la matrice è *ben condizionata*. Questa funzione si basa sulla libreria [LAPACK](http://www.netlib.org/lapack/).
+Questa è una libreria di software in Fortran 90 che produce le implementazioni
+standard delle operazioni dell'algebra lineare per matrici dense.
+
+La funzione `condest` calcola un limite inferiore per il numero di condizionamento
+in norma $1$ di una matrice quadrata $A$. Informazioni sull'algoritmo applicato
+per ottenere questa approssimazione si trovano in {cite:p}`MR740850` e {cite:p}`MR1780268`.
+:::
+
+## Soluzione dei sistemi triangolari
 
 I sistemi triangolari giocano un ruolo fondamentale nei calcoli matriciali.
 Molti metodi sono costruiti sull'idea di ridurre un problema alla soluzione di uno o più sistemi triangolari, questo include praticamente tutti i **metodi diretti** per la risoluzione di sistemi lineari.
