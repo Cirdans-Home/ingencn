@@ -145,7 +145,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio6.html">
-   Laboratorio 6 : Soluzione di Sistemi Triangolari
+   Laboratorio 6 : Soluzione dei Sistemi Lineari
   </a>
  </li>
  <li class="toctree-l1">
@@ -366,11 +366,6 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#condizionamento-di-un-sistema-lineare">
-   Condizionamento di un sistema lineare
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#precisione-mista">
    Precisione mista
   </a>
@@ -415,11 +410,6 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#condizionamento-di-un-sistema-lineare">
-   Condizionamento di un sistema lineare
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#precisione-mista">
    Precisione mista
   </a>
@@ -455,7 +445,7 @@ Un numero che può essere rappresentato esattamente è della forma seguente:</p>
 <div class="math notranslate nohighlight" id="equation-eq-numeromacchina">
 <span class="eqno">(1)<a class="headerlink" href="#equation-eq-numeromacchina" title="Permalink a questa equazione">#</a></span>\[ \text{significando} \times \text{base}^{\text{esponente}}.\]</div>
 <p>Di tutte le possibili costruzioni di questo tipo, noi adoperiamo quella
-codificata nello standard IEEE-754 <span id="id1">[<a class="reference internal" href="#id10" title="IEEE-754. IEEE 754-2019, Standard for Floating-Point Arithmetic. IEEE, New York, NY, USA, June 2019. ISBN 1-5044-5925-3 (print), 1-5044-5924-5 (e-PDF). URL: https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8766229, doi:https://doi.org/10.1109/IEEESTD.2019.876622.">IEEE75419</a>]</span>, in cui
+codificata nello standard IEEE-754 <span id="id1">[<a class="reference internal" href="#id8" title="IEEE-754. IEEE 754-2019, Standard for Floating-Point Arithmetic. IEEE, New York, NY, USA, June 2019. ISBN 1-5044-5925-3 (print), 1-5044-5924-5 (e-PDF). URL: https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8766229, doi:https://doi.org/10.1109/IEEESTD.2019.876622.">IEEE75419</a>]</span>, in cui
 (la maggior parte dei) i numeri <em>floating point</em> sono
 normalizzati, cioè possono essere espressi come</p>
 <div class="math notranslate nohighlight" id="equation-rappresentazione">
@@ -463,7 +453,7 @@ normalizzati, cioè possono essere espressi come</p>
 <p>dove <span class="math notranslate nohighlight">\(f\)</span> è detta la <strong>mantissa</strong>, e deve essere rappresentabile con al più 52 bits,
 cioè <span class="math notranslate nohighlight">\(2^{52}f\)</span> è un intero nell’intervallo <span class="math notranslate nohighlight">\(0 \leq 2^{52} f &lt; 2^{53}\)</span>, abbiamo
 fissato la base a <span class="math notranslate nohighlight">\(2\)</span> e chiamato l’esponente <span class="math notranslate nohighlight">\(e\)</span>.</p>
-<p>Il testo di riferimento per questi argomenti è <span id="id2">[<a class="reference internal" href="#id7" title="Nicholas J. Higham. Accuracy and stability of numerical algorithms. Society for Industrial and Applied Mathematics (SIAM), Philadelphia, PA, second edition, 2002. ISBN 0-89871-521-0. URL: https://doi.org/10.1137/1.9780898718027, doi:10.1137/1.9780898718027.">Hig02</a>]</span>.</p>
+<p>Il testo di riferimento per questi argomenti è <span id="id2">[<a class="reference internal" href="#id5" title="Nicholas J. Higham. Accuracy and stability of numerical algorithms. Society for Industrial and Applied Mathematics (SIAM), Philadelphia, PA, second edition, 2002. ISBN 0-89871-521-0. URL: https://doi.org/10.1137/1.9780898718027, doi:10.1137/1.9780898718027.">Hig02</a>]</span>.</p>
 <p>MATLAB implementa diversi formati di numeri <em>floating point</em> e <em>interi</em>; si
 veda la <a class="reference internal" href="#classiintere"><span class="std std-numref">Tabella 8</span></a> per i diversi tipi di interi disponibili e le
 relative funzioni di conversione. In generale assumeremo di star lavorando con
@@ -774,7 +764,7 @@ dall’algoritmo utilizzato per risolverlo.</p>
 </aside>
 <p>dove la quantità <span class="math notranslate nohighlight">\(\kappa = \frac{\sum_{i=1}^{n} |\text{input}_i|}{\left| \sum_{i=1}^{n} \text{input}_i| \right|}\)</span>
 rappresenta il <strong>numero di condizionamento</strong> dell’operazione di somma. Esistono
-algoritmi per la somma che esibiscono migliori limitazioni dell’errore <span id="id3">[<a class="reference internal" href="#id9" title="A. Klein. A generalized Kahan-Babuška-summation-algorithm. Computing, 76(3-4):279–293, 2006. URL: https://doi.org/10.1007/s00607-005-0139-x, doi:10.1007/s00607-005-0139-x.">Kle06</a>, <a class="reference internal" href="#id8" title="A. Neumaier. Rundungsfehleranalyse einiger Verfahren zur Summation endlicher Summen. Z. Angew. Math. Mech., 54:39–51, 1974. URL: https://doi.org/10.1002/zamm.19740540106, doi:10.1002/zamm.19740540106.">Neu74</a>]</span> , per i
+algoritmi per la somma che esibiscono migliori limitazioni dell’errore <span id="id3">[<a class="reference internal" href="#id7" title="A. Klein. A generalized Kahan-Babuška-summation-algorithm. Computing, 76(3-4):279–293, 2006. URL: https://doi.org/10.1007/s00607-005-0139-x, doi:10.1007/s00607-005-0139-x.">Kle06</a>, <a class="reference internal" href="#id6" title="A. Neumaier. Rundungsfehleranalyse einiger Verfahren zur Summation endlicher Summen. Z. Angew. Math. Mech., 54:39–51, 1974. URL: https://doi.org/10.1002/zamm.19740540106, doi:10.1002/zamm.19740540106.">Neu74</a>]</span> , per i
 nostri scopi illustrativi questa versione è sufficiente.</p>
 </section>
 <section id="errori-di-cancellazione-roundoff">
@@ -831,146 +821,6 @@ e a partire dalla forma  <span class="math notranslate nohighlight">\(p(x) = (x-
 </figcaption>
 </figure>
 </section>
-<section id="condizionamento-di-un-sistema-lineare">
-<span id="condizionamento-spettrale"></span><h2>Condizionamento di un sistema lineare<a class="headerlink" href="#condizionamento-di-un-sistema-lineare" title="Link a questa intestazione">#</a></h2>
-<p>Ricordiamo che il <strong>numero di condizionamento</strong> associato all’equazione lineare
-<span class="math notranslate nohighlight">\(A \mathbf{x} = \mathbf{b}\)</span> fornisce un limite sulla precisione della soluzione
-<span class="math notranslate nohighlight">\(\mathbf{x}\)</span> dopo che un qualunque algoritmo sarà stato applicato per la
-sua approssimazione ed in maniera indipendente dalla precisione <em>floating point</em>
-usata.</p>
-<aside class="margin sidebar">
-<p class="sidebar-title">Norma di una matrice</p>
-<p>Ricordiamo che una norma sullo spazio vettoriale <span class="math notranslate nohighlight">\(K^{m\times n}\)</span> delle matrici
-a elementi nel campo <span class="math notranslate nohighlight">\(K\)</span> è una funzione</p>
-<div class="math notranslate nohighlight">
-\[\| \cdot \|:K^{m \times n} \mapsto \mathbb{R}^{+}\]</div>
-<p>tale che per ogni coppia di matrici <span class="math notranslate nohighlight">\(A\)</span> e <span class="math notranslate nohighlight">\(B\)</span> e per ogni scalare <span class="math notranslate nohighlight">\(\lambda \in K\)</span> si verifica:</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\({\displaystyle \|A\|=0}\)</span> se e solo se <span class="math notranslate nohighlight">\({\displaystyle A=0}\)</span>,</p></li>
-<li><p><span class="math notranslate nohighlight">\({\displaystyle \|\lambda A\|=|\lambda |\|A\|}\)</span>.</p></li>
-<li><p><span class="math notranslate nohighlight">\({\displaystyle \|A+B\|\leq \|A\|+\|B\|}\)</span>.</p></li>
-</ul>
-<p>Se è data una norma sullo spazio vettoriale <span class="math notranslate nohighlight">\(K^n\)</span>, si può costruire una <strong>norma indotta</strong>
-sullo spazio delle matrici in <span class="math notranslate nohighlight">\(K^{n \times n}\)</span> considerando</p>
-<div class="math notranslate nohighlight">
-\[\|A\| = \sup_{x \neq \mathbf{0}} \frac{\| A \mathbf{x} \|}{\|\mathbf{x}\|},\]</div>
-<p>ovvero</p>
-<div class="math notranslate nohighlight">
-\[\|A\| = \sup_{\|x\|  = 1} \| A \mathbf{x} \|.\]</div>
-<p>Nei casi speciali in cui la norma vettoriale sia la norma  <span class="math notranslate nohighlight">\({\displaystyle p=1,2,\infty ,}\)</span>
-la norma matriciale indotta può essere calcolata come</p>
-<div class="math notranslate nohighlight">
-\[{\displaystyle \|A\|_{1}=\max _{1\leq j\leq n}\sum _{i=1}^{m}|a_{ij}|,}\]</div>
-<p>che è il massimo della somma dei valori assoluti delle colonne di <span class="math notranslate nohighlight">\(A\)</span>;</p>
-<div class="math notranslate nohighlight">
-\[{\displaystyle \|A\|_{\infty }=\max _{1\leq i\leq m}\sum _{j=1}^{n}|a_{ij}|,}\]</div>
-<p>che è il massimo della somma dei valori assoluti delle righe di <span class="math notranslate nohighlight">\(A\)</span>;</p>
-<div class="math notranslate nohighlight">
-\[{\displaystyle \|A\|_{2}={\sqrt {\lambda _{\max }\left(A^{*}A\right)}}.}\]</div>
-<p>che è detta <strong>norma spettrale</strong> della matrice <span class="math notranslate nohighlight">\({\displaystyle A}\)</span>, ovver la
-radice quadrata the più grande autovalore di <span class="math notranslate nohighlight">\({\displaystyle A^{* }A}\)</span>,
-dove <span class="math notranslate nohighlight">\(A^{* }\)</span> denota la coniugata trasposta di <span class="math notranslate nohighlight">\(A\)</span>.</p>
-</aside>
-<p>Sia <span class="math notranslate nohighlight">\(\mathbf{e}\)</span> l’errore commesso rispetto a <span class="math notranslate nohighlight">\(\mathbf{b}\)</span>, assumiamo che <span class="math notranslate nohighlight">\(A\)</span> sia
-non singolare, allora l’errore sulla soluzione <span class="math notranslate nohighlight">\(A^{-1} \mathbf{b}\)</span> è dato da
-<span class="math notranslate nohighlight">\(A^{-1} \mathbf{e}\)</span>. Allora il rapporto tra gli errori relativi è dato da</p>
-<div class="math notranslate nohighlight">
-\[\frac{\| A^{-1} \mathbf{e} \|}{\| A^{-1} \mathbf{b} \|} / \frac{\|\mathbf{e}\|}{\|\mathbf{b}\|} = \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|},\]</div>
-<p>per cui possiamo esibire la limitazione per il termine destro come</p>
-<div class="math notranslate nohighlight" id="equation-bound">
-<span class="eqno">(4)<a class="headerlink" href="#equation-bound" title="Permalink a questa equazione">#</a></span>\[\begin{split}\frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \leq &amp; \max_{\mathbf{e},\mathbf{b} \neq 0} \left\lbrace \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|}, \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \right\rbrace \\ = &amp; \max_{\mathbf{e}\neq 0} \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \max_{\mathbf{b}\neq 0} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \\
-= &amp; \max_{\mathbf{e}\neq 0} \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \max_{\mathbf{b}\neq 0} \frac{\|A\mathbf{x}\|}{\|\mathbf{x}\|} \\
-= &amp; \| A^{-1} \| \|A \| \equiv \kappa(A) \geq \| A^{-1} A \| = 1.\end{split}\]</div>
-<p>Consideriamo ora il seguente esempio artificiale</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}A \mathbf{x} = \begin{bmatrix}
-4.1 &amp; 2.8 \\
-9.7 &amp; 6.6
-\end{bmatrix}  \begin{bmatrix}
-x_1 \\ x_2
-\end{bmatrix} = \begin{bmatrix}
-4.1 \\ 9.7
-\end{bmatrix}\end{split}\]</div>
-<p>Proviamo a risolvere direttamente con MATLAB il sistema lineare</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mf">4.1</span><span class="w"> </span><span class="mf">2.8</span><span class="p">;</span><span class="w"> </span><span class="mf">9.7</span><span class="w"> </span><span class="mf">6.6</span><span class="p">];</span><span class="w"></span>
-<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="p">(:,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="o">\</span><span class="n">b</span><span class="w"></span>
-</pre></div>
-</div>
-<p>da cui otteniamo come risposta:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span>
-
-   <span class="mf">1.000000000000002</span>
-  <span class="o">-</span><span class="mf">0.000000000000003</span>
-</pre></div>
-</div>
-<p>Ritracciamo i passi del bound sul termine noto, per cui introduciamo una
-perturbazione di <span class="math notranslate nohighlight">\(0.01\)</span> sulla prima componente di <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> e paragoniamo le
-due soluzioni</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">b2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mf">4.11</span><span class="p">;</span><span class="w"> </span><span class="mf">9.7</span><span class="p">];</span><span class="w"></span>
-<span class="n">x2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="o">\</span><span class="n">b2</span><span class="w"></span>
-</pre></div>
-</div>
-<p>da cui otteniamo</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x2</span> <span class="o">=</span>
-
-   <span class="mf">0.339999999999957</span>
-   <span class="mf">0.970000000000064</span>
-</pre></div>
-</div>
-<p>Andiamo ora a verificare la limitazione che abbiamo mostrato in termini del
-numero di condizionamento. A questo scopo facciamo uso del comando <code class="docutils literal notranslate"><span class="pre">cond</span></code></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cond</span>   <span class="n">Condition</span> <span class="n">number</span> <span class="k">with</span> <span class="n">respect</span> <span class="n">to</span> <span class="n">inversion</span><span class="o">.</span>
-   <span class="n">cond</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="n">returns</span> <span class="n">the</span> <span class="mi">2</span><span class="o">-</span><span class="n">norm</span> <span class="n">condition</span> <span class="n">number</span> <span class="p">(</span><span class="n">the</span> <span class="n">ratio</span> <span class="n">of</span> <span class="n">the</span>
-   <span class="n">largest</span> <span class="n">singular</span> <span class="n">value</span> <span class="n">of</span> <span class="n">X</span> <span class="n">to</span> <span class="n">the</span> <span class="n">smallest</span><span class="p">)</span><span class="o">.</span>  <span class="n">Large</span> <span class="n">condition</span>
-   <span class="n">numbers</span> <span class="n">indicate</span> <span class="n">a</span> <span class="n">nearly</span> <span class="n">singular</span> <span class="n">matrix</span><span class="o">.</span>
-
-   <span class="n">cond</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">P</span><span class="p">)</span> <span class="n">returns</span> <span class="n">the</span> <span class="n">condition</span> <span class="n">number</span> <span class="n">of</span> <span class="n">X</span> <span class="ow">in</span> <span class="n">P</span><span class="o">-</span><span class="n">norm</span><span class="p">:</span>
-
-      <span class="n">NORM</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">P</span><span class="p">)</span> <span class="o">*</span> <span class="n">NORM</span><span class="p">(</span><span class="n">INV</span><span class="p">(</span><span class="n">X</span><span class="p">),</span><span class="n">P</span><span class="p">)</span><span class="o">.</span>
-
-   <span class="n">where</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">inf</span><span class="p">,</span> <span class="ow">or</span> <span class="s1">&#39;fro&#39;</span><span class="o">.</span>
-</pre></div>
-</div>
-<div class="admonition danger">
-<p class="admonition-title">Pericolo</p>
-<p>Il calcolo del numero di condizionamento per una matrice è bene che sia eseguito
-tramite la funzione <code class="docutils literal notranslate"><span class="pre">cond</span></code>, la forma <code class="docutils literal notranslate"><span class="pre">NORM(X,P)</span> <span class="pre">*</span> <span class="pre">NORM(INV(X),P)</span></code> nella
-documentazione è identificativa di ciò che stiamo calcolando, ma <em>non</em> è
-rappresentativo del modo in cui è realmente calcolato.</p>
-</div>
-<p>Calcoliamo quindi</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">kappa</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">cond</span><span class="p">(</span><span class="n">A</span><span class="p">);</span><span class="w"></span>
-<span class="n">bound</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kappa</span><span class="o">*</span><span class="nb">norm</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">b2</span><span class="p">)</span><span class="o">/</span><span class="nb">norm</span><span class="p">(</span><span class="n">b</span><span class="p">);</span><span class="w"></span>
-<span class="n">errore_relativo</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">norm</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span><span class="o">/</span><span class="nb">norm</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
-</pre></div>
-</div>
-<p>e osserviamo che</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bound</span> <span class="o">=</span>
-
-   <span class="mf">1.54117722269025</span>
-<span class="n">errore_relativo</span> <span class="o">=</span>
-
-  <span class="mf">1.173243367763135</span>
-</pre></div>
-</div>
-<p>che quindi ci mostra che l’errore che abbiamo commesso è abbastanza vicino
-alla limitazione data dalla <a class="reference internal" href="#equation-bound">(4)</a>.</p>
-<div class="admonition warning">
-<p class="admonition-title">Avvertimento</p>
-<p>Per matrici di grandi dimensioni la funzione <code class="docutils literal notranslate"><span class="pre">cond</span></code> può risultare estremamente
-lenta o andare <strong>out of memory</strong>. Per questo motivo sono disponibili altre
-due funzioni chiamate <code class="docutils literal notranslate"><span class="pre">rcond</span></code> e <code class="docutils literal notranslate"><span class="pre">condest</span></code>.</p>
-<p>La funzione <code class="docutils literal notranslate"><span class="pre">rcond(A)</span></code> calcola il reciproco di <code class="docutils literal notranslate"><span class="pre">cond(A,1)</span></code>, per cui più questo è
-vicino a <span class="math notranslate nohighlight">\(0\)</span> più la matrice è <em>malcondizionata</em>, più questo è vicino a <span class="math notranslate nohighlight">\(1\)</span> più
-la matrice è <em>ben condizionata</em>. Questa funzione si basa sulla libreria <a class="reference external" href="http://www.netlib.org/lapack/">LAPACK</a>.
-Questa è una libreria di software in Fortran 90 che produce le implementazioni
-standard delle operazioni dell’algebra lineare per matrici dense.</p>
-<p>La funzione <code class="docutils literal notranslate"><span class="pre">condest</span></code> calcola un limite inferiore per il numero di condizionamento
-in norma <span class="math notranslate nohighlight">\(1\)</span> di una matrice quadrata <span class="math notranslate nohighlight">\(A\)</span>. Informazioni sull’algoritmo applicato
-per ottenere questa approssimazione si trovano in <span id="id4">[<a class="reference internal" href="#id12" title="William W. Hager. Condition estimates. SIAM J. Sci. Statist. Comput., 5(2):311–316, 1984. URL: https://doi.org/10.1137/0905023, doi:10.1137/0905023.">Hag84</a>]</span> e <span id="id5">[<a class="reference internal" href="#id13" title="Nicholas J. Higham and Françoise Tisseur. A block algorithm for matrix 1-norm estimation, with an application to 1-norm pseudospectra. SIAM J. Matrix Anal. Appl., 21(4):1185–1201, 2000. URL: https://doi.org/10.1137/S0895479899356080, doi:10.1137/S0895479899356080.">HT00</a>]</span>.</p>
-</div>
-</section>
 <section id="precisione-mista">
 <h2>Precisione mista<a class="headerlink" href="#precisione-mista" title="Link a questa intestazione">#</a></h2>
 <p>La rivoluzione delle applicazioni di «apprendimento automatico» (<em>machine learning</em>) e dell’intelligenza artificiale (<em>AI</em>) ha suscitato negli ultimi anni un interesse per lo sviluppo di aritmetica a <strong>mezza precisione</strong> (formato in virgola mobile a 16 bit) che potesse rispondere al problema della necessità di
@@ -1007,24 +857,18 @@ possibili sviluppi.</p>
 </section>
 <section id="bibliografia">
 <h2>Bibliografia<a class="headerlink" href="#bibliografia" title="Link a questa intestazione">#</a></h2>
-<div class="docutils container" id="id6">
+<div class="docutils container" id="id4">
 <dl class="citation">
-<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id4">Hag84</a></span></dt>
-<dd><p>William W. Hager. Condition estimates. <em>SIAM J. Sci. Statist. Comput.</em>, 5(2):311–316, 1984. URL: <a class="reference external" href="https://doi.org/10.1137/0905023">https://doi.org/10.1137/0905023</a>, <a class="reference external" href="https://doi.org/10.1137/0905023">doi:10.1137/0905023</a>.</p>
-</dd>
-<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id2">Hig02</a></span></dt>
+<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id2">Hig02</a></span></dt>
 <dd><p>Nicholas J. Higham. <em>Accuracy and stability of numerical algorithms</em>. Society for Industrial and Applied Mathematics (SIAM), Philadelphia, PA, second edition, 2002. ISBN 0-89871-521-0. URL: <a class="reference external" href="https://doi.org/10.1137/1.9780898718027">https://doi.org/10.1137/1.9780898718027</a>, <a class="reference external" href="https://doi.org/10.1137/1.9780898718027">doi:10.1137/1.9780898718027</a>.</p>
 </dd>
-<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id5">HT00</a></span></dt>
-<dd><p>Nicholas J. Higham and Françoise Tisseur. A block algorithm for matrix 1-norm estimation, with an application to 1-norm pseudospectra. <em>SIAM J. Matrix Anal. Appl.</em>, 21(4):1185–1201, 2000. URL: <a class="reference external" href="https://doi.org/10.1137/S0895479899356080">https://doi.org/10.1137/S0895479899356080</a>, <a class="reference external" href="https://doi.org/10.1137/S0895479899356080">doi:10.1137/S0895479899356080</a>.</p>
-</dd>
-<dt class="label" id="id9"><span class="brackets"><a class="fn-backref" href="#id3">Kle06</a></span></dt>
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id3">Kle06</a></span></dt>
 <dd><p>A. Klein. A generalized Kahan-Babuška-summation-algorithm. <em>Computing</em>, 76(3-4):279–293, 2006. URL: <a class="reference external" href="https://doi.org/10.1007/s00607-005-0139-x">https://doi.org/10.1007/s00607-005-0139-x</a>, <a class="reference external" href="https://doi.org/10.1007/s00607-005-0139-x">doi:10.1007/s00607-005-0139-x</a>.</p>
 </dd>
-<dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id3">Neu74</a></span></dt>
+<dt class="label" id="id6"><span class="brackets"><a class="fn-backref" href="#id3">Neu74</a></span></dt>
 <dd><p>A. Neumaier. Rundungsfehleranalyse einiger Verfahren zur Summation endlicher Summen. <em>Z. Angew. Math. Mech.</em>, 54:39–51, 1974. URL: <a class="reference external" href="https://doi.org/10.1002/zamm.19740540106">https://doi.org/10.1002/zamm.19740540106</a>, <a class="reference external" href="https://doi.org/10.1002/zamm.19740540106">doi:10.1002/zamm.19740540106</a>.</p>
 </dd>
-<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id1">IEEE75419</a></span></dt>
+<dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id1">IEEE75419</a></span></dt>
 <dd><p>IEEE-754. <em>IEEE 754-2019, Standard for Floating-Point Arithmetic</em>. IEEE, New York, NY, USA, June 2019. ISBN 1-5044-5925-3 (print), 1-5044-5924-5 (e-PDF). URL: <a class="reference external" href="https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8766229">https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8766229</a>, <a class="reference external" href="https://doi.org/https://doi.org/10.1109/IEEESTD.2019.876622">doi:https://doi.org/10.1109/IEEESTD.2019.876622</a>.</p>
 </dd>
 </dl>

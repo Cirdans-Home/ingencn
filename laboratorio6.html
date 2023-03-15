@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Laboratorio 6 : Soluzione di Sistemi Triangolari &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
+    <title>Laboratorio 6 : Soluzione dei Sistemi Lineari &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -145,7 +145,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Laboratorio 6 : Soluzione di Sistemi Triangolari
+   Laboratorio 6 : Soluzione dei Sistemi Lineari
   </a>
  </li>
  <li class="toctree-l1">
@@ -351,6 +351,16 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#condizionamento-di-un-sistema-lineare">
+   Condizionamento di un sistema lineare
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#soluzione-dei-sistemi-triangolari">
+   Soluzione dei sistemi triangolari
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#sostituzione-in-avanti-e-all-indietro">
    Sostituzione in avanti e all’indietro
   </a>
@@ -374,7 +384,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Laboratorio 6 : Soluzione di Sistemi Triangolari</h1>
+                <h1>Laboratorio 6 : Soluzione dei Sistemi Lineari</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -384,6 +394,16 @@ title="Print to PDF"
                         </div>
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#condizionamento-di-un-sistema-lineare">
+   Condizionamento di un sistema lineare
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#soluzione-dei-sistemi-triangolari">
+   Soluzione dei sistemi triangolari
+  </a>
+ </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#sostituzione-in-avanti-e-all-indietro">
    Sostituzione in avanti e all’indietro
@@ -409,8 +429,154 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-6-soluzione-di-sistemi-triangolari">
-<h1>Laboratorio 6 : Soluzione di Sistemi Triangolari<a class="headerlink" href="#laboratorio-6-soluzione-di-sistemi-triangolari" title="Link a questa intestazione">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-6-soluzione-dei-sistemi-lineari">
+<h1>Laboratorio 6 : Soluzione dei Sistemi Lineari<a class="headerlink" href="#laboratorio-6-soluzione-dei-sistemi-lineari" title="Link a questa intestazione">#</a></h1>
+<p>In questo e nel prossimo laboratorio ci focalizzeremo sul problema di risolvere
+un sistema lineare compatibile. Partiremo dal caso dei sistemi triangolari per
+poi occuparci del caso generale tramite la fattorizzazione <span class="math notranslate nohighlight">\(PA = LU\)</span> della
+matrice dei coefficienti.</p>
+<section id="condizionamento-di-un-sistema-lineare">
+<span id="condizionamento-spettrale"></span><h2>Condizionamento di un sistema lineare<a class="headerlink" href="#condizionamento-di-un-sistema-lineare" title="Link a questa intestazione">#</a></h2>
+<p>Ricordiamo che il <strong>numero di condizionamento</strong> associato all’equazione lineare
+<span class="math notranslate nohighlight">\(A \mathbf{x} = \mathbf{b}\)</span> fornisce un limite sulla precisione della soluzione
+<span class="math notranslate nohighlight">\(\mathbf{x}\)</span> dopo che un qualunque algoritmo sarà stato applicato per la
+sua approssimazione ed in maniera indipendente dalla precisione <em>floating point</em>
+usata.</p>
+<aside class="margin sidebar">
+<p class="sidebar-title">Norma di una matrice</p>
+<p>Ricordiamo che una norma sullo spazio vettoriale <span class="math notranslate nohighlight">\(K^{m\times n}\)</span> delle matrici
+a elementi nel campo <span class="math notranslate nohighlight">\(K\)</span> è una funzione</p>
+<div class="math notranslate nohighlight">
+\[\| \cdot \|:K^{m \times n} \mapsto \mathbb{R}^{+}\]</div>
+<p>tale che per ogni coppia di matrici <span class="math notranslate nohighlight">\(A\)</span> e <span class="math notranslate nohighlight">\(B\)</span> e per ogni scalare <span class="math notranslate nohighlight">\(\lambda \in K\)</span> si verifica:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\({\displaystyle \|A\|=0}\)</span> se e solo se <span class="math notranslate nohighlight">\({\displaystyle A=0}\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\({\displaystyle \|\lambda A\|=|\lambda |\|A\|}\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\({\displaystyle \|A+B\|\leq \|A\|+\|B\|}\)</span>.</p></li>
+</ul>
+<p>Se è data una norma sullo spazio vettoriale <span class="math notranslate nohighlight">\(K^n\)</span>, si può costruire una <strong>norma indotta</strong>
+sullo spazio delle matrici in <span class="math notranslate nohighlight">\(K^{n \times n}\)</span> considerando</p>
+<div class="math notranslate nohighlight">
+\[\|A\| = \sup_{x \neq \mathbf{0}} \frac{\| A \mathbf{x} \|}{\|\mathbf{x}\|},\]</div>
+<p>ovvero</p>
+<div class="math notranslate nohighlight">
+\[\|A\| = \sup_{\|x\|  = 1} \| A \mathbf{x} \|.\]</div>
+<p>Nei casi speciali in cui la norma vettoriale sia la norma  <span class="math notranslate nohighlight">\({\displaystyle p=1,2,\infty ,}\)</span>
+la norma matriciale indotta può essere calcolata come</p>
+<div class="math notranslate nohighlight">
+\[{\displaystyle \|A\|_{1}=\max _{1\leq j\leq n}\sum _{i=1}^{m}|a_{ij}|,}\]</div>
+<p>che è il massimo della somma dei valori assoluti delle colonne di <span class="math notranslate nohighlight">\(A\)</span>;</p>
+<div class="math notranslate nohighlight">
+\[{\displaystyle \|A\|_{\infty }=\max _{1\leq i\leq m}\sum _{j=1}^{n}|a_{ij}|,}\]</div>
+<p>che è il massimo della somma dei valori assoluti delle righe di <span class="math notranslate nohighlight">\(A\)</span>;</p>
+<div class="math notranslate nohighlight">
+\[{\displaystyle \|A\|_{2}={\sqrt {\lambda _{\max }\left(A^{*}A\right)}}.}\]</div>
+<p>che è detta <strong>norma spettrale</strong> della matrice <span class="math notranslate nohighlight">\({\displaystyle A}\)</span>, ovver la
+radice quadrata the più grande autovalore di <span class="math notranslate nohighlight">\({\displaystyle A^{* }A}\)</span>,
+dove <span class="math notranslate nohighlight">\(A^{* }\)</span> denota la coniugata trasposta di <span class="math notranslate nohighlight">\(A\)</span>.</p>
+</aside>
+<p>Sia <span class="math notranslate nohighlight">\(\mathbf{e}\)</span> l’errore commesso rispetto a <span class="math notranslate nohighlight">\(\mathbf{b}\)</span>, assumiamo che <span class="math notranslate nohighlight">\(A\)</span> sia
+non singolare, allora l’errore sulla soluzione <span class="math notranslate nohighlight">\(A^{-1} \mathbf{b}\)</span> è dato da
+<span class="math notranslate nohighlight">\(A^{-1} \mathbf{e}\)</span>. Allora il rapporto tra gli errori relativi è dato da</p>
+<div class="math notranslate nohighlight">
+\[\frac{\| A^{-1} \mathbf{e} \|}{\| A^{-1} \mathbf{b} \|} / \frac{\|\mathbf{e}\|}{\|\mathbf{b}\|} = \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|},\]</div>
+<p>per cui possiamo esibire la limitazione per il termine destro come</p>
+<div class="math notranslate nohighlight" id="equation-bound">
+<span class="eqno">(7)<a class="headerlink" href="#equation-bound" title="Permalink a questa equazione">#</a></span>\[\begin{split}\frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \leq &amp; \max_{\mathbf{e},\mathbf{b} \neq 0} \left\lbrace \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|}, \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \right\rbrace \\ = &amp; \max_{\mathbf{e}\neq 0} \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \max_{\mathbf{b}\neq 0} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \\
+= &amp; \max_{\mathbf{e}\neq 0} \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \max_{\mathbf{b}\neq 0} \frac{\|A\mathbf{x}\|}{\|\mathbf{x}\|} \\
+= &amp; \| A^{-1} \| \|A \| \equiv \kappa(A) \geq \| A^{-1} A \| = 1.\end{split}\]</div>
+<p>Consideriamo ora il seguente esempio artificiale</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}A \mathbf{x} = \begin{bmatrix}
+4.1 &amp; 2.8 \\
+9.7 &amp; 6.6
+\end{bmatrix}  \begin{bmatrix}
+x_1 \\ x_2
+\end{bmatrix} = \begin{bmatrix}
+4.1 \\ 9.7
+\end{bmatrix}\end{split}\]</div>
+<p>Proviamo a risolvere direttamente con MATLAB il sistema lineare</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mf">4.1</span><span class="w"> </span><span class="mf">2.8</span><span class="p">;</span><span class="w"> </span><span class="mf">9.7</span><span class="w"> </span><span class="mf">6.6</span><span class="p">];</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="p">(:,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="o">\</span><span class="n">b</span><span class="w"></span>
+</pre></div>
+</div>
+<p>da cui otteniamo come risposta:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span>
+
+   <span class="mf">1.000000000000002</span>
+  <span class="o">-</span><span class="mf">0.000000000000003</span>
+</pre></div>
+</div>
+<p>Ritracciamo i passi del bound sul termine noto, per cui introduciamo una
+perturbazione di <span class="math notranslate nohighlight">\(0.01\)</span> sulla prima componente di <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> e paragoniamo le
+due soluzioni</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">b2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mf">4.11</span><span class="p">;</span><span class="w"> </span><span class="mf">9.7</span><span class="p">];</span><span class="w"></span>
+<span class="n">x2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="o">\</span><span class="n">b2</span><span class="w"></span>
+</pre></div>
+</div>
+<p>da cui otteniamo</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x2</span> <span class="o">=</span>
+
+   <span class="mf">0.339999999999957</span>
+   <span class="mf">0.970000000000064</span>
+</pre></div>
+</div>
+<p>Andiamo ora a verificare la limitazione che abbiamo mostrato in termini del
+numero di condizionamento. A questo scopo facciamo uso del comando <code class="docutils literal notranslate"><span class="pre">cond</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cond</span>   <span class="n">Condition</span> <span class="n">number</span> <span class="k">with</span> <span class="n">respect</span> <span class="n">to</span> <span class="n">inversion</span><span class="o">.</span>
+   <span class="n">cond</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="n">returns</span> <span class="n">the</span> <span class="mi">2</span><span class="o">-</span><span class="n">norm</span> <span class="n">condition</span> <span class="n">number</span> <span class="p">(</span><span class="n">the</span> <span class="n">ratio</span> <span class="n">of</span> <span class="n">the</span>
+   <span class="n">largest</span> <span class="n">singular</span> <span class="n">value</span> <span class="n">of</span> <span class="n">X</span> <span class="n">to</span> <span class="n">the</span> <span class="n">smallest</span><span class="p">)</span><span class="o">.</span>  <span class="n">Large</span> <span class="n">condition</span>
+   <span class="n">numbers</span> <span class="n">indicate</span> <span class="n">a</span> <span class="n">nearly</span> <span class="n">singular</span> <span class="n">matrix</span><span class="o">.</span>
+
+   <span class="n">cond</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">P</span><span class="p">)</span> <span class="n">returns</span> <span class="n">the</span> <span class="n">condition</span> <span class="n">number</span> <span class="n">of</span> <span class="n">X</span> <span class="ow">in</span> <span class="n">P</span><span class="o">-</span><span class="n">norm</span><span class="p">:</span>
+
+      <span class="n">NORM</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">P</span><span class="p">)</span> <span class="o">*</span> <span class="n">NORM</span><span class="p">(</span><span class="n">INV</span><span class="p">(</span><span class="n">X</span><span class="p">),</span><span class="n">P</span><span class="p">)</span><span class="o">.</span>
+
+   <span class="n">where</span> <span class="n">P</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">inf</span><span class="p">,</span> <span class="ow">or</span> <span class="s1">&#39;fro&#39;</span><span class="o">.</span>
+</pre></div>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">Pericolo</p>
+<p>Il calcolo del numero di condizionamento per una matrice è bene che sia eseguito
+tramite la funzione <code class="docutils literal notranslate"><span class="pre">cond</span></code>, la forma <code class="docutils literal notranslate"><span class="pre">NORM(X,P)</span> <span class="pre">*</span> <span class="pre">NORM(INV(X),P)</span></code> nella
+documentazione è identificativa di ciò che stiamo calcolando, ma <em>non</em> è
+rappresentativo del modo in cui è realmente calcolato.</p>
+</div>
+<p>Calcoliamo quindi</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">kappa</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">cond</span><span class="p">(</span><span class="n">A</span><span class="p">);</span><span class="w"></span>
+<span class="n">bound</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kappa</span><span class="o">*</span><span class="nb">norm</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">b2</span><span class="p">)</span><span class="o">/</span><span class="nb">norm</span><span class="p">(</span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+<span class="n">errore_relativo</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">norm</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span><span class="o">/</span><span class="nb">norm</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>e osserviamo che</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bound</span> <span class="o">=</span>
+
+   <span class="mf">1.54117722269025</span>
+<span class="n">errore_relativo</span> <span class="o">=</span>
+
+  <span class="mf">1.173243367763135</span>
+</pre></div>
+</div>
+<p>che quindi ci mostra che l’errore che abbiamo commesso è abbastanza vicino
+alla limitazione data dalla <a class="reference internal" href="#equation-bound">(7)</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Avvertimento</p>
+<p>Per matrici di grandi dimensioni la funzione <code class="docutils literal notranslate"><span class="pre">cond</span></code> può risultare estremamente
+lenta o andare <strong>out of memory</strong>. Per questo motivo sono disponibili altre
+due funzioni chiamate <code class="docutils literal notranslate"><span class="pre">rcond</span></code> e <code class="docutils literal notranslate"><span class="pre">condest</span></code>.</p>
+<p>La funzione <code class="docutils literal notranslate"><span class="pre">rcond(A)</span></code> calcola il reciproco di <code class="docutils literal notranslate"><span class="pre">cond(A,1)</span></code>, per cui più questo è
+vicino a <span class="math notranslate nohighlight">\(0\)</span> più la matrice è <em>malcondizionata</em>, più questo è vicino a <span class="math notranslate nohighlight">\(1\)</span> più
+la matrice è <em>ben condizionata</em>. Questa funzione si basa sulla libreria <a class="reference external" href="http://www.netlib.org/lapack/">LAPACK</a>.
+Questa è una libreria di software in Fortran 90 che produce le implementazioni
+standard delle operazioni dell’algebra lineare per matrici dense.</p>
+<p>La funzione <code class="docutils literal notranslate"><span class="pre">condest</span></code> calcola un limite inferiore per il numero di condizionamento
+in norma <span class="math notranslate nohighlight">\(1\)</span> di una matrice quadrata <span class="math notranslate nohighlight">\(A\)</span>. Informazioni sull’algoritmo applicato
+per ottenere questa approssimazione si trovano in <span id="id1">[]</span> e <span id="id2">[]</span>.</p>
+</div>
+</section>
+<section id="soluzione-dei-sistemi-triangolari">
+<h2>Soluzione dei sistemi triangolari<a class="headerlink" href="#soluzione-dei-sistemi-triangolari" title="Link a questa intestazione">#</a></h2>
 <p>I sistemi triangolari giocano un ruolo fondamentale nei calcoli matriciali.
 Molti metodi sono costruiti sull’idea di ridurre un problema alla soluzione di uno o più sistemi triangolari, questo include praticamente tutti i <strong>metodi diretti</strong> per la risoluzione di sistemi lineari.</p>
 <p>Sui <strong>computer seriali</strong> i sistemi triangolari sono universalmente risolti dagli algoritmi standard di sostituzione in avanti e all’indietro. Sulle <strong>macchine
@@ -434,6 +600,7 @@ obiettivi di questo corso.</p>
 </pre></div>
 </div>
 <p>Possiamo usarle per costruire sistemi triangolari a partire da sistemi densi.</p>
+</section>
 <section id="sostituzione-in-avanti-e-all-indietro">
 <span id="forwardandbacwardsolve"></span><h2>Sostituzione in avanti e all’indietro<a class="headerlink" href="#sostituzione-in-avanti-e-all-indietro" title="Link a questa intestazione">#</a></h2>
 <p>Chiamiamo di nuovo <span class="math notranslate nohighlight">\(L\)</span> una matrice triangolare inferiore, vogliamo risolvere un sistema della forma:</p>
