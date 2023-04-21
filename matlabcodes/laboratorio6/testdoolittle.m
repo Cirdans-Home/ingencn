@@ -5,6 +5,7 @@ clear; clc;
 A = [ 3 -1  4;
      -2  0  5;
       7  2 -2 ];
+
 [L,U] = doolittlelu(A);
 fprintf("|| A - LU || = %1.2e\n",norm(A - L*U,2));
 
