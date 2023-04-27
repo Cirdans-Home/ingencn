@@ -1,167 +1,608 @@
-# Laboratorio 11 : Metodi di tipo Runge-Kutta
+# Laboratorio 11 : Metodi di Quadratura
 
-Come abbiamo visto nello scorso laboratorio i metodi di Eulero in avanti
-e all'indietro, ovvero, esplicito ed implicito, hanno un ordine di
-convergenza di uno. Questo fa sì che per raggiungere una accuratezza
-maggiore sia necessario compiere un grande numero di passi di integrazione.
+Compito dell'integrazione numerica, o *quadrature* è quello di
+approssimare il valore dell'integrale
+```{math}
+\int_{a}^{b} f(x)\,{\rm d}x,
+```
+con la somma finita
+```{math}
+I = \sum_{i=1}^{n} \omega_i f(x_i),
+```
+dove i **nodi** $\{x_i\}_{i=1}$ e i **pesi** $\{ \omega_i \}_{i=1}^{n}$
+dipendono dalla particolare forma scelta. Come avete visto a lezione, le
+regole di quadratura provengono dalla scelta di un particolare _polinomio
+interpolante_ per la funzione $f$. Delle diverse famiglie di formule
+quadrature che esistono ci focalizzeremo qui sull'implementazione delle
+**formule di Newton-Cotes**.
 
-Per risolvere questo problema avete visto a lezione come costruire metodi
-ad **un passo** di ordine **più elevato**, ovvero i metodi di Runge-Kutta.
+Ricordiamo brevemente il funzionamento generale di questa procedura.
+Consideriamo l'integrale definito
+```{math}
+\int_{a}^{b} f(x)\,{\rm d}x,
+```
+e dividiamo l'intervallo $(a,b)$ in $n-1$ intervalli di uguale lunghezza
+```{math}
+h = \frac{b-a}{n-1}, \quad x_{i+1} = a + i h, \; i=0,\ldots,n-1,
+```
+sostituiamo poi alla funzione $f$ il suo **polinomio interpolante** in
+forma di Lagrange sui valori $\{ (x_i,f(x_i))\}_{i=1}^{n}$
+```{math}
+P_{n-1}(x) = \sum_{i=1}^{n} f(x_i)L_i(x),
+```
+da cui otteniamo che
+```{math}
+I = \int_{a}^{b} P_{n-1}(x)\,{\rm d}x = \sum_{i=1}^{n}\left[ f(x_i) \int_{a}^{b} L_{i}(x) \right] = \sum_{i=1}^{n} \omega_i f(x_i),
+```
+dove i **pesi** non sono nient'altro che gli integrali
+```{math}
+\omega_i = \int_{a}^{b} L_i(x)\,{\rm d}x, \quad i=1,\ldots,n.
+```
+Vediamo e **implementiamo** ora alcune celebri formule di quadratura di
+questa forma.
 
-Un'altra buona proprietà dei metodi Runge-Kutta è quella di eliminare la
-necessità di differenziazioni ripetute delle equazioni differenziali, cosa
-che ad esempio richiedono le formule di integrazione basate sulla serie di
-Taylor.
+## Regola composita dei trapezi
 
-## Costruzione
+Supponiamo di scegliere $n=2$, ovvero $h = b-a$ e quindi $x_1 = a$,
+$x_2 = b$, e quindi
+```{math}
+w_1 = & -\frac{1}{h}\int_{a}^{b} (x-b)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},\\
+w_2 = & \frac{1}{h}\int_{a}^{b} (x-a)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},
+```
+da cui
+```{math}
+I = \sum_{i=1}^{2} \omega_i f(x_i) = \frac{h}{2}(f(a)+f(b)),
+```
+e che è **esattamente** l'area del trapezio di altezza $b-a$ e basi $f(a)$
+e $f(b)$. L'errore per questa approssimazione, se $f$ è due volte differenziabile, è dato da
+```{math}
+E = O\left( \frac{h^3}{12} f''(\xi) \right),
+```
+dove $\xi$ è un punto in $[a,b]$ e che quindi **possiamo maggiorare** con il massimo di $f''(x)$ in $[a,b]$.
 
-Per costruire i metodi di Runge-Kutta si traspone il problema dalla forma
-differenziale alla forma integrale a cui si applicano poi opportune
-formule di quadratura dalle quali si ottiene l'approssimazione
-discreta della soluzione.
+Facciamo una rapida verifica con MATLAB
+```matlab
+f = @(x) sin(x);
+Ix = @(x) -cos(x);
+a = 0;
+b = 1;
+h = b - a;
+I = h*(f(a)+f(b))/2;
+Itrue = Ix(b)-Ix(a);
+fprintf('|I - Itrue| = %e\n',abs(I-Itrue));
+fprintf("Dovrebbe essere dell'ordine di: %e\n", h^3/12);
+```
+Questo ovviamente non ci è sufficiente, poiché non appena andiamo ad
+aumentare l'intervallo $[a,b]$ ( e quindi $h$ ) su cui vogliamo calcolare
+l'integrale le cose peggiorano nettamente
+```matlab
+f = @(x) sin(x);
+Ix = @(x) -cos(x);
+a = 0;
+b = pi;
+h = b - a;
+I = h*(f(a)+f(b))/2;
+Itrue = Ix(b)-Ix(a);
+fprintf('|I - Itrue| = %e\n',abs(I-Itrue));
+fprintf("Dovrebbe essere dell'ordine di: %e\n", h^3/12);
+```
+non **abbiamo nemmeno una cifra significativa corretta**.
 
-Dato il problema di Cauchy per una equazione del primo ordine
+Per *risolvere questo inconveniente*, possiamo passare ad utilizzare una
+composita. Dividiamo di nuovo l'intervallo $[a,b]$ in $n-1$
+sotto-intervalli di ampiezza $h = (b-a)/(n-1)$ e approssimiamo su ogni sotto-intervallo l'integrale con la formula dei trapezi locale
 ```{math}
-\begin{cases}
-y'(t)=f(t,y(t))\\
-y(t_0)=y_0
-\end{cases}
+I = \frac{h}{2} \sum_{i=1}^{n-1} f(x_i) + f(x_{i+1}),
 ```
-scriviamo la sua formulazione in forma integrale
+per cui si può ricavare una **nuova stima dell'errore**:
 ```{math}
-y(t)=y_0 + \int_{t_0}^t y'(s)\, ds = y_0 + \int_{t_0}^t f(s,y(s))\,ds
+E = O\left( - \frac{(b-a)h^2}{12} f''(\xi) \right),
 ```
-come nei casi dello scorso laboratorio scegliamo di nuovo una griglia
-uniforme
-```{math}
-\Delta = \{t_i\} = \{t_0+ih\}_{\{i=0,\dots,n\}},
-```
-e approssimiamo il valore della soluzione nel punto $t_1$ con
-```{math}
-y(t_1)=y_0 + \int_{t_0}^{t_0+h} f(s,y(s))\,ds
-```
-applichiamo la sostituzione $s=t_0 + \theta h$ e normalizziamo l'intervallo di integrazione
-```{math}
-y(t_1)=y_0 + h\int_0^1 f(t_0+\theta h,y(t_0 + \theta h))\,d\theta.
-```
-Applicando ora una formula di quadratura su dei nodi $\theta_i$ di pesi $b_i$ otteniamo quindi una stima del valore $y_1$:
-```{math}
-y_1 = y_0 + h \sum_{i=0}^\nu b_i f(t_0+\theta_i h, K_i)
-```
-dove i valori $K_i$ sono approssimazioni di $y(t_0+\theta_i h)$ per cui
-dobbiamo ancora ricavare una approssimazione numerica. Applichiamo
-nuovamente la stessa procedura e scriviamo
-```{math}
-y(t_0+\theta_i h) =  y_0 + h\int_0^{\theta_i} f(t_0+v h,y(t_0 + v h))\,dv
-```
-Scegliamo una nuova formula di quadratura, per semplicità sugli stessi nodi
-di quella per gli integrali "esterni", con pesi $a_{ij}$ e otteniamo:
-```{math}
-K_i=y_0 + h\sum_{j=1}^\nu a_{ij}f(t_0+\theta_j h , K_j)
-```
-
-In generale un metodo di Runge-Kutta così costruito è quindi
-caratterizzato da **tre parametri**: un vettore $b = (b_i)_
-{i=0,\ldots,s}$, una matrice $a=(a_{i,j})_ {i,j=0,\ldots,s}$ e un vettore
-$\theta = (\theta_i)_ {i=0,\ldots,s}$.
-
-L'approssimazione è data dal sistema:
-```{math}
-\begin{cases}
-y_{n+1} = y_n + h\sum_{i=1}^s b_i f(t_n + \theta_i h, K_i) \\
-K_i = y_n + h \sum_{j=1}^s a_{ij} f(t_n+ \theta_j h, K_j) \quad i=1,\dots,s
-\end{cases}
-```
-
-## Implementazione
-
-La versione più popolare, spesso nota semplicemente come metodo
-Runge-Kutta, prevede la seguente sequenza di operazioni:
-```{math}
-:label: eq:RK4
-K_1 = & h f(x,y),\\
-K_2 = & h f\left(x + \frac{h}{2}, y + \frac{K_1}{2}\right),\\
-K_3 = & h f\left(x + \frac{h}{2}, y + \frac{K_2}{2} \right),\\
-K_4 = & h F(x+h,y+K_3),\\
-y(x+h) = & y(x) + \frac{1}{6} (K_1 + 2K_2 + 2 K_3 + K_4),
-```
-si tratta di un **metodo esplicito** di ordine 4.
+dove $\xi$ è sempre un valore nell'intervallo $[a,b]$.
 
 :::{admonition} Esercizio
-Si implementi il metodo RK4 descritto in {eq}`eq:RK4` utilizzando il
-seguente prototipo di funzione
+Implementiamo la **formula dei trapezi** per una funzione $f$ utilizzando
+il seguente prototipo
 ```matlab
-function [y,x] = RK4(f,y0,a,b,h)
-%RK4 Implementazone del metodo di Runge-Kutta esplicito del quarto ordine.
-% INPUT:
-%        f   = handle della funzione che specifica l'equazione
-%            differenziale f(x,y) = [dy1/dx dy2/dx dy3/dx ...].
-%        y0  = vettore dei valori iniziali
-%        a,b = estremi dell'intervallo di integrazione
-%        h   = passo di integrazione
-% OUTPUT:
-%        y = valori calcolati della soluzione nei corrispondenti valori
-%            della x
-%        x = valori della x nei quali è stata calcolata la soluzione
+function I = trapezi(f,a,b,n)
+%% TRAPEZI questa funzione implementa il metodo dei trapezi per la
+% funzione f sull'intervallo a,b con n-1 intervalli.
+%   INPUT: f function handle dell'integrando,
+%          a,b estremi dell'intervallo di integrazione
+%          n numero di intervalli + 1
 
 end
 ```
-Che possiamo testare sullo stesso problema che abbiamo usato per i metodi
-di Eulero impliciti/espliciti
+- Si cerchi di **minimizzare** il numero di **chiamate** alla funzione $f$ della routine,
+- Un comando utile per questo esercizio è il comando `linspace`,
+- Si scriva un codice che non utilizza cicli `for`.
+
+Per testare l'implementazione si può provare a valutare l'integrale:
+```{math}
+\pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,
+```
+con
 ```matlab
-%% Il metodo di RK4
+%% Test del metodo dei Trapezi
 
 clear; clc; close all;
 
-f = @(x,y) - (2*y + (x^2)*(y^2))/(x);
-ytrue = @(x) 1./(x.^2.*(log(x)+1));
+f = @(x) 4*sqrt(1-x.^2);
+a = 0;
+b = 1;
 
-a = 1;
-b = 2;
-h  = 1e-2;
-y0 = 1;
-[y,x] = RK4(f,y0,a,b,h);
+n = 10;
+I = trapezi(f,a,b,n);
 
-figure(1)
-plot(x,y,'r--',x,ytrue(x),'b-','LineWidth',2);
-xlabel('x');
-legend({'Computed Solution','True Solution'},'FontSize',14);
-figure(2)
-semilogy(x,abs(y-ytrue(x)),'r-','LineWidth',2);
-xlabel('x');
-ylabel('Errore Assoluto');
+fprintf('Errore: %e\n',abs(pi-I)/pi);
 ```
 :::
 
-Possiamo di nuovo **analizzare la convergenza** di questo metodo e
-confrontarla con quella del metodo di Eulero in avanti che abbiamo visto
-durante lo scorso laboratorio
+Cerchiamo ora di verificare il comportamento della formula rispetto
+alla stima dell'errore che abbiamo **ottenuto dalla teoria**. Valutiamo
+che succede per l'integrale dell'esempio:
+```{math}
+\pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,
+```
+Proviamo a stimare l'errore in maniera numerica e a confrontarlo con il
+comportamento che ci aspettiamo dalla teoria:
+
 ```matlab
-%% Convergenza
-k = 9;
-h = fliplr(logspace(-6,-1,k));
-err = zeros(k,1);
-errRK = zeros(k,1);
-for i=1:k
-    [y,x] = expliciteuler(f,y0,a,b,h(i));
-    [yrk,xrk] = RK4(f,y0,a,b,h(i));
-    yt = ytrue(x);
-    err(i) = norm(y - yt)/norm(yt);
-    errRK(i) = norm(yrk - yt)/norm(yt);
+n = logspace(1,4,4);
+errore = [];
+
+for nval = n
+    I = trapezi(f,a,b,nval);
+    errore = [errore,abs(I-pi)/pi];
 end
 
-figure(3)
-loglog(h,err,'o-',h,errRK,'x-','LineWidth',2);
-xlabel('h')
-ylabel('Errore Relativo');
-```
-Da cui otteniamo i risultati in {numref}`fig:RK4`.
-```{figure} ./images/RK4_convergence.png
-:name: fig:RK4
+h = (b-a)./n;
+err = (b-a)*h.^2/12;
 
-Paragone tra la convergenza del metodo di Eulero in avanti (esplicito) e
-il metodo esplicito di Runge-Kutta di ordine 4.
+figure(1)
+loglog(n,errore,'o-',n,err/errore(1),'r--','LineWidth',2);
+xlabel('n');
+ylabel('Errore');
+legend({'Errore Misurato','Stima'},'FontSize',14)
 ```
-Con il metodo RK4 raggiungiamo più velocemente la precisione di macchina
-per un valore di $h$ più elevato di quello del metodo di Eulero. Questo è
-l'effetto dell'ordine più alto.
+:::{margin} Errore regola dei trapezi
+![Errore per trapezi non regolare](/images/trapezoidal_error1.png)
+
+Errore per l'integrale
+```{math}
+\pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,
+```
+
+![Errore per trapezi regolare](/images/trapezoidal_error2.png)
+
+Errore per l'integrale
+```{math}
+\int_0^3 x^2 \sin ^3(x) \, {\rm d}x
+```
+:::
+La stima non sembra particolarmente soddisfacente, ma siamo sicuri di
+poterla applicare? Calcoliamo la derivata seconda della nostra funzione
+integranda:
+```{math}
+f''(x) = 4 \left(-\frac{t^2}{\left(1-t^2\right)^{3/2}}-\frac{1}{\sqrt{1-t^2}}\right) = -\frac{4}{\left(1-t^2\right)^{3/2}}
+```
+per cui abbiamo che:
+```{math}
+\underset{t\to 1^-}{\text{lim}}-\frac{4}{\left(1-t^2\right)^{3/2}} = -\infty
+```
+ovvero, **non possiamo limitare $f''(\xi)$ nell'intervallo di
+integrazione**.
+
+Proviamo con una funzione diversa, ad esempio:
+```{math}
+I = \int_0^3 x^2 \sin ^3(x) \, {\rm d}x = & \frac{1}{108} \left.-81 \left(x^2-2\right) \cos (x)+\left(9 x^2-2\right) \cos (3 x)-6 x (\sin (3 x)-27 \sin (x))\right|_{0}^{3} \\
+= & \frac{1}{108} (-160+486 \sin (3)-18 \sin (9)-567 \cos (3)+79 \cos (9)),
+```
+per cui la derivata seconda ha la regolarità necessaria
+```{math}
+f''(x) = & x^2 \left(6 \sin (x) \cos ^2(x)-3 \sin ^3(x)\right)+2 \sin ^3(x)+12 x \sin ^2(x) \cos (x) \\
+= & \frac{1}{2} \sin (x) \left(3 x^2+\left(9 x^2-2\right) \cos (2 x)+12 x \sin (2 x)+2\right)
+```
+e si osserva che $|f''(x)| < 10$ per $x \in [0,3]$. Vediamo che succede
+numericamente:
+```matlab
+f = @(x) x.^2.*sin(x).^3;
+a = 0;
+b = 3;
+Itrue = 3.615857833947287;
+
+n = logspace(1,4,4);
+errore = [];
+
+for nval = n
+    I = trapezi(f,a,b,nval);
+    errore = [errore,abs(I-Itrue)/Itrue];
+end
+
+h = (b-a)./n;
+err = 10*(b-a)*h.^2/12;
+
+figure(2)
+loglog(n,errore,'o-',n,err,'r--','LineWidth',2);
+xlabel('n');
+ylabel('Errore');
+legend({'Errore Misurato','Stima'},'FontSize',14)
+```
+
+:::{warning}
+Questa stima dell'errore è solo una prima approssimazione, in realtà è
+possibile ottenere stime più precise coinvolgendo termini di ordine
+superiore. Per i nostri scopi è sufficiente, ma sappiate che si può indagare più in profondità la questione.
+:::
+
+### Una versione ricorsiva
+
+Supponiamo di aver scelto un valore di $n$ per il nostro integrale, ma che
+alla fine del calcolo il valore ottenuto non abbia l'accuratezza che
+desideravamo. Quello che possiamo fare è scegliere un nuovo valore di $n$
+e calcolare di nuovo l'integrale. Questo, tuttavia, ci richiede di
+fare di nuovo tutte le valutazioni di funzione perché ad un nuovo $n$
+corrispondono nodi nuovi.
+
+Possiamo recuperare in qualche modo parte dello sforzo?
+
+Chiamiamo $I_k$ l'integrale valutato con la regola composita dei
+trapezi usando $2^{k-1}$ intervalli. Ora, se passiamo da $k$ a $k+1$
+il **numero di intervalli è raddoppiato**.
+
+Chiamiamo $H = b - a$ e scriviamo la regola dei trapezi per i primi $k$
+```{math}
+k = 1, &\quad I_1 = \frac{H}{2}[f(a) + f(b)],\\
+k = 2, &\quad I_2 = \frac{H}{4}\left[ f(a) + 2 f\left(a + \frac{H}{2} \right) + f(b) \right] \\
+&\quad\; = \frac{1}{2} I_1 + f\left(a + \frac{H}{2}\right)\frac{H}{2}, \\
+k = 3, &\quad I_3 = \frac{H}{8}\left[ f(a) + 2 f\left(a + \frac{H}{4}\right) + 2 f\left(a + \frac{H}{2}\right) + 2 f\left(a + \frac{3H}{4}\right) + f(b) \right] \\
+&\quad\; = \frac{1}{2} I_2 + \frac{H}{4}\left[f\left(a + \frac{H}{4}\right) + f\left(a + \frac{3H}{4}\right)\right].
+```
+Con un po' di *intuizione*, possiamo scrivere per $k > 1$
+```{math}
+I_k = \frac{1}{2}I_{k-1} + \frac{H}{2^{k-1}} \sum_{i=1}^{2^{k-2}} f \left[ a + \frac{(2i-1)H}{2^{k-1}} \right], \quad k=2,3,\ldots
+```
+
+:::{tip}
+Qual è il vantaggio di questa scelta? La somma contiene solo nodi creati ad ogni nuovo raddoppio!
+
+Ovvero, il calcolo della sequenza $I_1, I_2, I_3, \ldots, I_k$ costa
+esattamente lo stesso numero di operazioni sia che si faccia il calcolo
+tutto insieme, sia che si calcolino separatamente tutti gli $I_k$ uno
+dopo l'altro.
+
+Il vantaggio dell'uso di questa forma della regola dei trapezi
+**ricorsiva** è che ci consente di monitorare la convergenza e
+terminare il processo quando la differenza tra $I_{k-1}$ e $I_k$
+diventa sufficientemente piccola.
+:::
+
+Per implementare l'algoritmo in modo ricorsivo, riscriviamo la formula
+in termini del valore di $h$ come:
+```{math}
+:label: trapezir
+
+I(h) = \frac{1}{2}I(2h) + h \sum f(x_{\text{new}}), \quad h = \frac{H}{n-1}.
+```
+
+:::{admonition} Esercizio  
+Separiamo la funzione ricorsiva in due parti, la prima è quella
+che calcola $I(h)$, dato $I(2h)$, usando l'equazione {eq}`trapezir`
+e chiamiamola `trapezir`
+```matlab
+function Ih = trapezir(f,a,b,I2h,k)
+%%TRAPEZIR implementa l'algoritmo ricorsivo della regola dei
+%trapezi.
+%   INPUT:  f = handle della funzione da integrare,
+%           a,b = limiti di integrazione
+%           I2h = integrale su 2^{k-1} intervalli
+%           Ih = integralae calcolo su 2^k intervalli
+%           k  = livello di ricorsione
+
+end
+```
+Una volta che la parte computazionale è stata completata possiamo
+mettere insieme la funzione ricorsiva
+```matlab
+function I = trapeziricorsiva(f,a,b,kmax,tol)
+%% TRAPEZIRICORSIVA calcola l'integrale di f tra a e b in modo
+% ricorsivo. L'integrazione si ferma quando la differenza tra due
+% ricorsioni successive è minore della tolleranza richiesta.
+%   INPUT:  f = handle della funzione di integrare,
+%           a,b = estremi di integrazione
+%           kmax = massimo numero di livello di ricorsione
+%           tol = tolleranza tra due livelli di ricorsione successivi
+
+I2h = 0; k = 1;
+
+Ih = trapezir(f,a,b,I2h,k);
+fprintf('k = 1 Ih = %1.16f\n',Ih);
+
+for k = 2:kmax
+   I2h = Ih;
+   Ih = trapezir(f,a,b,I2h,k);
+   fprintf('k = %d Ih = %1.16f\n',k,Ih);
+   if abs(Ih - I2h) < tol
+       I = Ih;
+       return
+   end
+end
+warning("Non abbiamo raggiunto la tolleranza richiesta!");
+I = Ih;
+
+end
+```
+Dopo averlo fatto la testiamo sullo stesso integrale del caso precedente
+```matlab
+%% Test della funzione ricorsiva dei trapezi
+
+clear; clc; close all;
+
+f = @(x) x.^2.*sin(x).^3;
+a = 0;
+b = 3;
+Itrue = 3.615857833947287;
+tol = 1e-9;
+kmax = 20;
+
+I = trapeziricorsiva(f,a,b,kmax,tol);
+fprintf("\n\tL'errore è %e\n",abs(I - Itrue)/Itrue);
+```
+:::
+
+## Formula di Simpson
+
+La formula di quadratura di Simpson può essere ottenuta di nuovo come una
+formula di Newton-Cotes con $n = 3$. Laddove nel caso dei trapezi avevamo
+fissato una interpolate lineare, questa volta abbiamo scelto una
+interpolante quadratica attraverso tre nodi adiacenti.
+
+Possiamo ricavarla direttamente dalla definizione su un solo intervallo $[a,b]$ con i nodi
+```{math}
+x_1 = a, \quad x_2 = \frac{a+b}{2}, \quad x_3 = b,
+```
+da cui abbiamo che i pesi si ottengono come
+```{math}
+\omega_1 = \int_{a}^{b} L_1(x)\,{\rm d}x = \frac{h}{3}, \\
+\omega_2 = \int_{a}^{b} L_2(x)\,{\rm d}x = \frac{4h}{3}, \\
+\omega_3 = \int_{a}^{b} L_3(x)\,{\rm d}x = \frac{h}{3},
+```
+e quindi
+```{math}
+I = \sum_{i=1}^{3} \omega_i f(x_i) = \frac{h}{3}\left[ f(a) + 4f\left(\frac{a+b}{2}\right)+f(b)\right].
+```
+:::{tip}
+Per calcolare gli integrali $\omega_i$ è conveniente fare un cambio di
+variabili ponendo l'origine dell'intervallo di integrazione su $x_2$.
+In questo modo i nodi diventano $\{-h,0,h\}$ e gli integrali sono più semplici da calcolare.
+:::
+
+:::{danger}
+La regola di Simpson che abbiamo scritto richiede che il numero di
+intervalli sia pari, ovvero che il numero di nodi sia dispari. Se
+vogliamo ammettere un qualunque numero di intervalli $n$, è necessario
+che il primo (o l'ultimo) intervallo usi 4 invece che 3 punti.
+
+Per l'implementazione seguente ci limiteremo al caso di nodi dispari, ovvero di intervalli pari.
+:::
+
+Con calcoli analoghi a quelli che avete visto per la formula dei trapezi
+si può ottenere una prima stima dell'errore anche per la formula di
+Simpson. Infatti si ha che l'errore si comporta come
+```{math}
+E = O\left( (b-a)\frac{h^4}{180} f^{(4)}(\xi) \right),
+```
+per $\xi$ un punto nell'intervallo $[a,b]$.
+
+::::{admonition} Esercizio.
+Si implementi la versione composita della regola di Simpson per il
+calcolo di un integrale secondo il seguente prototipo
+```matlab
+function I = simpson(f,a,b,n)
+%%SIMPSON calcolo dell'integrale della funzione f tra a e b mediante la
+% formula di Simpson.
+%   INPUT:  f = handle della funzione di integrare,
+%           a,b = estremi di integrazione
+%           n numero di intervalli + 1
+
+if mod(n,2) ~= 1
+    error('n deve essere dispari');
+end
+
+end
+```
+Che possiamo testare con:
+```matlab
+%% Test della formula di quadratura di Simpson
+
+f = @(x) x.^2.*sin(x).^3;
+a = 0;
+b = 3;
+Itrue = 3.615857833947287;
+
+n = logspace(1,4,4)+1;
+errore = [];
+
+for nval = n
+    I = simpson(f,a,b,nval);
+    errore = [errore,abs(I-Itrue)/Itrue];
+end
+
+h = (b-a)./n;
+err = 200*(b-a)*h.^4/180;
+
+figure(2)
+loglog(n,errore,'o-',n,err,'r--','LineWidth',2);
+xlabel('n');
+ylabel('Errore');
+legend({'Errore Misurato','Stima'},'FontSize',14)
+```
+
+Dove nella stima dell'errore `24*(b-a)*h.^4/180`, abbiamo sfruttato il fatto che
+```{math}
+\frac{d ^4\left(x^2 \sin (x)^3\right)}{d x^4} = x^2 \left(21 \sin ^3(x)-60 \sin (x) \cos ^2(x)\right)+8 x \left(6 \cos ^3(x)-21 \sin ^2(x) \cos (x)\right)+12 \left(6 \sin (x) \cos ^2(x)-3 \sin ^3(x)\right),
+```
+che in $[0,3]$ è maggiorata da $200$.
+::::
+```{margin} Errore di quadratura Simpson
+![Errore per Simpson regolare](/images/simpsonerror1.png)
+
+Errore per la formula di Simpson.
+```
+
+Possiamo quindi confrontare gli errori di quadratura ottenuti per le due
+formule stampandoli sullo stesso grafico
+```{figure} ./images/simpson_error2.png
+
+Confronto tra l'errore relativo compiuto con la formula dei Trapezi e
+quello ottenuto con la formula di Simpson.
+```
+da cui osserviamo il comportamento che ci aspettavamo considerata
+l'analisi dell'errore.
+
+## Le funzioni di quadratura di MATLAB
+
+MATLAB offre diverse funzioni per il calcolo di integrali. La prima
+da considerare è la funzione `quad`, dal cui *help* leggiamo
+```
+quad   Numerically evaluate integral, adaptive Simpson quadrature.
+   Q = quad(FUN,A,B) tries to approximate the integral of scalar-valued
+   function FUN from A to B to within an error of 1.e-6 using recursive
+   adaptive Simpson quadrature. FUN is a function handle. The function
+   Y=FUN(X) should accept a vector argument X and return a vector result
+   Y, the integrand evaluated at each element of X.
+
+   Q = quad(FUN,A,B,TOL) uses an absolute error tolerance of TOL
+   instead of the default, which is 1.e-6.  Larger values of TOL
+   result in fewer function evaluations and faster computation,
+   but less accurate results.  The quad function in MATLAB 5.3 used
+   a less reliable algorithm and a default tolerance of 1.e-3.
+
+   Q = quad(FUN,A,B,TOL,TRACE) with non-zero TRACE shows the values
+   of [fcnt a b-a Q] during the recursion. Use [] as a placeholder to
+   obtain the default value of TOL.
+```
+Questa applica la quadratura di Simpson che abbiamo visto nella sezione
+precedente sfruttando la tecnica ricorsiva che abbiamo visto, applicato
+e implementato nel caso della regola dei trapezi.
+
+Quest'ultima invece è implementata dal comando `trapz`, dal cui `help`
+leggiamo
+```
+trapz  Trapezoidal numerical integration.
+   Z = trapz(Y) computes an approximation of the integral of Y via
+   the trapezoidal method (with unit spacing).  To compute the integral
+   for spacing different from one, multiply Z by the spacing increment.
+
+   For vectors, trapz(Y) is the integral of Y. For matrices, trapz(Y)
+   is a row vector with the integral over each column. For N-D
+   arrays, trapz(Y) works across the first non-singleton dimension.
+
+   Z = trapz(X,Y) computes the integral of Y with respect to X using the
+   trapezoidal method. X can be a scalar or a vector with the same length
+   as the first non-singleton dimension in Y. trapz operates along this
+   dimension. If X is scalar, then trapz(X,Y) is equivalent to X*trapz(Y).
+```
+
+L'ultima funzione che vogliamo menzionare è `integral` che, in realtà,
+sostituisce la funzione `quad` che è in realtà _deprecata_. Questa applica
+una formula di quadratura adattiva e permette in realtà di calcolare anche
+integrali complessi, di funzioni con singolarità e regolare le tolleranze
+```
+integral  Numerically evaluate integral.
+   Q = integral(FUN,A,B) approximates the integral of function FUN from A
+   to B using global adaptive quadrature and default error tolerances.
+
+   FUN must be a function handle. A and B can be -Inf or Inf. If both are
+   finite, they can be complex. If at least one is complex, integral
+   approximates the path integral from A to B over a straight line path.
+
+   For scalar-valued problems the function Y = FUN(X) must accept a vector
+   argument X and return a vector result Y, the integrand function
+   evaluated at each element of X. For array-valued problems (see the
+   'ArrayValued' option below) FUN must accept a scalar and return an
+   array of values.
+```
+
+Di questa funzione sono disponibili anche le funzioni per il calcolo di integrali di funzioni in 2 e 3 variabili chiamate, rispettivamente, `integral2` e `integral3`.
+
+## Applicazioni ed esercizi
+
+Consideriamo alcuni esercizi sulla quadratura numerica da {cite}`kiusalaas2015`.
+
+:::::{admonition} Accelerazione di una macchina
+
+La {numref}`powertable` riporta la potenza $P$ fornita alle ruote motrici di una macchina come
+funzione della velocità $v$. Se la massa della macchina è $m = 2000\,kg$, si
+determini l'intervallo $\Delta t$ che serve alla macchina per accelerare da
+$1\,m/s$ a $6\,m/s$ utilizzando la regola dei trapezi implementata in `trapz`.
+
+```{list-table} Potenza e velocità
+:header-rows: 1
+:name: powertable
+
+* - $v\,(m/s)$
+  - $P\,(kW)$
+* - 0
+  - 0
+* - 1.0
+  - 4.7
+* - 1.8
+  - 12.2
+* - 2.4
+  - 19.0
+* - 3.5
+  - 31.8
+* - 4.4
+  - 40.1
+* - 5.1
+  - 43.8
+* - 6.0
+  - 43.2
+```
+
+:::{admonition} Suggerimento
+:class: tip, dropdown
+La funzione di cui calcolare l'integrale si può ottenere dalla
+seconda legge della dinamica e dalla definizione di potenza:
+```{math}
+\Delta t = m \int_{1 s}^{6 s} (v/P)\,{\rm d}v.
+```
+:::
+
+:::::
+
+::::{admonition} Esercizio
+Si calcoli l'integrale
+```{math}
+I = \int_{1}^{+\infty} \frac{{\rm d}x}{1+x^4} = \frac{\pi -2 \coth ^{-1}\left(\sqrt{2}\right)}{4 \sqrt{2}},
+```
+con la regola dei trapezi e si paragoni il risultato con il valore
+esatto.
+
+:::{admonition} Si applichi un cambio di variabili...
+:class: tip, dropdown
+Per riportare l'integrale su di un intervallo finito si applichi
+il cambio di variabili $x^3 = 1/t$.
+:::
+
+::::
+
+:::{admonition} Esercizio
+Il periodo di un pendolo semplice di lunghezza $L$ è $\tau = 4 \sqrt{L/g} h(\theta_0)$, dove $g$ è l'accelerazione di gravità, $\theta_0$ rappresenta l'ampiezza angolare e
+```{math}
+h(\theta_0) = \int_{0}^{\pi/2} \frac{ {\rm d}\theta }{\sqrt{1- \sin^2(\theta_0/2)\sin^2(\theta)}}.
+```
+Si calcolino i periodi per $h(15 \text{ deg})$, $h(30 \text{ deg})$,
+$h(45 \text{ deg})$ con la formula di Simpson e si paragonino
+all'approssimazione per piccoli angoli con $h = \frac{\pi}{2}$.
+Cosa si osserva?
+:::
+
+
+
+## Bibliografia
+
+ ```{bibliography}
+ :filter: docname in docnames
+ ```
