@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Laboratorio 10 : Metodi per la Soluzione di ODE &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
+    <title>Laboratorio 10 : Il Problema Lineare dei Minimi Quadrati &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -56,8 +56,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
-    <link rel="next" title="Laboratorio 11 : Metodi di tipo Runge-Kutta" href="laboratorio11.html" />
-    <link rel="prev" title="Laboratorio 9 : Metodi di Quadratura" href="laboratorio9.html" />
+    <link rel="next" title="Laboratorio 11 : Metodi di Quadratura" href="laboratorio11.html" />
+    <link rel="prev" title="Laboratorio 8 : Metodi Stazionari per Sistemi Lineari" href="laboratorio8.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
     
@@ -145,7 +145,7 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio6.html">
-   Laboratorio 6 : Soluzione di Sistemi Triangolari
+   Laboratorio 6 : Soluzione dei Sistemi Lineari
   </a>
  </li>
  <li class="toctree-l1">
@@ -158,19 +158,19 @@ const thebe_selector_output = ".output, .cell_output"
    Laboratorio 8 : Metodi Stazionari per Sistemi Lineari
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio9.html">
-   Laboratorio 9 : Metodi di Quadratura
-  </a>
- </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Laboratorio 10 : Metodi per la Soluzione di ODE
+   Laboratorio 10 : Il Problema Lineare dei Minimi Quadrati
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio11.html">
-   Laboratorio 11 : Metodi di tipo Runge-Kutta
+   Laboratorio 11 : Metodi di Quadratura
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio12.html">
+   Laboratorio 12 : Metodi per la Soluzione di ODE
   </a>
  </li>
 </ul>
@@ -328,104 +328,23 @@ title="Print to PDF"
     </ul>
   </div>
 </div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
-  </span>
-
-</label>
 
     </div>
 </div>
 
 <!-- Table of contents -->
 <div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
-    </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#problema-ai-valori-iniziali">
-   Problema ai valori iniziali
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#metodi-numerici">
-   Metodi numerici
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#il-metodo-di-eulero-esplicito">
-     Il metodo di Eulero esplicito
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#il-metodo-di-eulero-implicito">
-     Il metodo di Eulero implicito
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#esercizi">
-   Esercizi
-  </a>
- </li>
-</ul>
-
-    </nav>
 </div>
     </div>
     <div class="article row">
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Laboratorio 10 : Metodi per la Soluzione di ODE</h1>
+                <h1>Laboratorio 10 : Il Problema Lineare dei Minimi Quadrati</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#problema-ai-valori-iniziali">
-   Problema ai valori iniziali
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#metodi-numerici">
-   Metodi numerici
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#il-metodo-di-eulero-esplicito">
-     Il metodo di Eulero esplicito
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#il-metodo-di-eulero-implicito">
-     Il metodo di Eulero implicito
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#esercizi">
-   Esercizi
-  </a>
- </li>
-</ul>
-
-                        </nav>
                     </div>
                 </div>
             </div>
@@ -433,468 +352,111 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-10-metodi-per-la-soluzione-di-ode">
-<h1>Laboratorio 10 : Metodi per la Soluzione di ODE<a class="headerlink" href="#laboratorio-10-metodi-per-la-soluzione-di-ode" title="Link a questa intestazione">#</a></h1>
-<p>In questo laboratorio ci vogliamo occupare di alcuni metodi per la
-soluzione di un”<strong>equazione differenziale del primo ordine</strong>, la cui forma
-generale è</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-10-il-problema-lineare-dei-minimi-quadrati">
+<h1>Laboratorio 10 : Il Problema Lineare dei Minimi Quadrati<a class="headerlink" href="#laboratorio-10-il-problema-lineare-dei-minimi-quadrati" title="Link a questa intestazione">#</a></h1>
+<p>Siamo interessati a risolvere sistemi lineari <strong>sovradeterminati</strong>, ossia della forma</p>
 <div class="math notranslate nohighlight">
-\[y' = f(x,y)\]</div>
-<p>dove <span class="math notranslate nohighlight">\(y' = {\rm d}y/{\rm d}x\)</span> e <span class="math notranslate nohighlight">\(f(x,y)\)</span> è una funzione data. Come avete
-visto nei corsi di Analisi, la soluzione di questo tipo di equazioni
-contiene una costante arbitraria (detta <em>costante di integrazione</em>). Per
-trovare questa costante, e dunque determinare completamente una soluzione,
-dobbiamo sapere un punto sulla curva della soluzione:</p>
+\[A \mathbf{x} = \mathbf{b}, \qquad A \in \mathbb{R}^{m \times n},\; \mathbf{x},\mathbf{b} \in \mathbb{R}^n,\;m&gt; n.\]</div>
+<p>Se il problema non ha soluzione si cercano i vettori <span class="math notranslate nohighlight">\(\mathbf{x}\in \mathbb{R}^{n}\)</span> che soddisfano</p>
+<div class="math notranslate nohighlight" id="equation-leastsq">
+<span class="eqno">(11)<a class="headerlink" href="#equation-leastsq" title="Permalink a questa equazione">#</a></span>\[\lVert A\mathbf{x}-\mathbf{b}\rVert_2 = \min_{\mathbf{y}\in\mathbb{R}^n}\lVert A\mathbf{y}-\mathbf{b}\rVert_2.\]</div>
+<p>Tale problema viene detto <strong>problema dei minimi quadrati</strong>.</p>
+<p>In questo laboratorio vogliamo concentrarci su metodi numerici di risoluzione del problema dei minimi quadrati e vedere un’applicazione al <em>fitting</em> di dati.</p>
+<p>La determinazione di un punto di minimo di <span class="math notranslate nohighlight">\(\Psi(\mathbf{x})=\lVert A\mathbf{x}-\mathbf{b}\rVert_2\)</span> si riconduce alla ricerca dei punti che annullano tutte le derivate parziali prime di <span class="math notranslate nohighlight">\(\Psi\)</span> e questo porta alle <strong>equazioni normali</strong></p>
+<div class="math notranslate nohighlight" id="equation-eqnorm">
+<span class="eqno">(12)<a class="headerlink" href="#equation-eqnorm" title="Permalink a questa equazione">#</a></span>\[A^{\top}A\mathbf{x}=A^{\top}\mathbf{b}.\]</div>
+<p>Se la matrice <span class="math notranslate nohighlight">\(A\)</span> ha rango massimo, allora la soluzione del problema dei minimi quadrati <a class="reference internal" href="#equation-leastsq">(11)</a> è unica e può essere ottenuta risolvendo il sistema <a class="reference internal" href="#equation-eqnorm">(12)</a>.</p>
+<p>In tal caso, si può utilizzare la fattorizzazione <span class="math notranslate nohighlight">\(LU\)</span> della matrice <span class="math notranslate nohighlight">\(A^{\top}A\)</span>. Poiché la matrice <span class="math notranslate nohighlight">\(A^{\top}A\)</span> è simmetrica definita positiva, puo essere fattorizzata come</p>
 <div class="math notranslate nohighlight">
-\[y(a) = \alpha.\]</div>
-<p>In modo <strong>più formale</strong>, un’<strong>equazione differenziale ordinaria di ordine <span class="math notranslate nohighlight">\(n\)</span></strong>, in <em>forma
-normale</em>, è un’equazione del tipo</p>
+\[A^{\top} A = LL^{\top},\]</div>
+<p>detta <strong>fattorizzazione di Cholesky</strong>, dove <span class="math notranslate nohighlight">\(L\in\mathbb{R}^n\)</span> è una matrice triangolare inferiore con elementi principali positivi.
+La soluzione del sistema delle equazioni normali <a class="reference internal" href="#equation-eqnorm">(12)</a> viene calcolata risolvendo successivamente i due sistemi
+di ordine <span class="math notranslate nohighlight">\(n\)</span> con matrice dei coefficienti triangolare</p>
 <div class="math notranslate nohighlight">
-\[y^{(n)}=f(x,y,y',y'',\ldots,y^{(n-1)}),\]</div>
-<p>che lega una funzione <span class="math notranslate nohighlight">\(y=y(x)\)</span> e le sue derivate fino
-all’ordine <span class="math notranslate nohighlight">\(n\)</span>.</p>
-<p>Soluzione dell’equazione è una funzione <span class="math notranslate nohighlight">\(y(x)\)</span>, continua e
-derivabile fino all’ordine <span class="math notranslate nohighlight">\(n\)</span> in un intervallo opportuno, che
-soddisfa l’equazione.</p>
-<p>In generale, un’equazione differenziale ha infinite soluzioni.
-Solitamente si impongono delle condizioni aggiuntive e si determinano
-le soluzioni che soddisfano le condizioni assegnate.</p>
-<section id="problema-ai-valori-iniziali">
-<h2>Problema ai valori iniziali<a class="headerlink" href="#problema-ai-valori-iniziali" title="Link a questa intestazione">#</a></h2>
-<p>Nel problema ai valori iniziali, detto anche di Cauchy, all’equazione</p>
-<div class="math notranslate nohighlight">
-\[y^{(n)}=f(x,y,y',y'',\ldots,y^{(n-1)}),\]</div>
-<p>si assegnano <span class="math notranslate nohighlight">\(n\)</span> condizioni iniziali</p>
-<div class="math notranslate nohighlight">
-\[ y(x_0)=\eta_0,\quad y'(x_0)=\eta_1,\quad\ldots\quad,y^{(n-1)}(x_0)=\eta_{n-1}.\]</div>
-<p>Sotto <strong>opportune condizioni</strong>, si dimostrano l’esistenza e l’unicità
-della soluzione. In particolare, nel caso <span class="math notranslate nohighlight">\(n=1\)</span></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}    \left\{\begin{array}{l}
-    y'=f(x,y)\quad\\y(x_0)=\eta
-    \end{array}
-    \right.\end{split}\]</div>
-<p>valgono risultati di esistenza e unicità della soluzione nell’ipotesi
-che <span class="math notranslate nohighlight">\(f(x,y)\)</span> sia continua rispetto a <span class="math notranslate nohighlight">\(x\)</span> e <em>uniformemente
-lipschitziana</em> rispetto a <span class="math notranslate nohighlight">\(y\)</span>.</p>
-<p>Più in generale, possiamo guardare ad un sistema <span class="math notranslate nohighlight">\(n\)</span> equazioni differenziali del primo ordine</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}  \left\{\begin{array}{l}
-  y_1'=f_1(x,y_1,\ldots,y_n)\\
-  y_2'=f_2(x,y_1,\ldots,y_n)\\
-  \ldots\\
-  y_n'=f_n(x,y_1,\ldots,y_n)\\
-  \end{array}\right.\end{split}\]</div>
-<p>dove <span class="math notranslate nohighlight">\(f_1,\ldots,f_n\)</span> sono <span class="math notranslate nohighlight">\(n\)</span> funzioni di <span class="math notranslate nohighlight">\(n+1\)</span>
-variabili e <span class="math notranslate nohighlight">\(y_1(x), y_2(x),\ldots,y_n(x)\)</span> sono le <span class="math notranslate nohighlight">\(n\)</span> incognite.</p>
-<p>In <strong>forma compatta</strong>:</p>
-<div class="math notranslate nohighlight">
-\[{\bf y}'={\bf f}(x,{\bf y}),\]</div>
-<p>dove <span class="math notranslate nohighlight">\({\bf y}\)</span>, <span class="math notranslate nohighlight">\({\bf y}'\)</span> e <span class="math notranslate nohighlight">\({\bf f}\)</span> sono <em>vettori di funzioni</em>.</p>
-<p>Se a questo sistema associamo le <strong>condizioni iniziali</strong></p>
-<div class="math notranslate nohighlight">
-\[{\bf y}(x_0)=(\eta_0,\eta_1,\ldots,\eta_{n-1})^T,\]</div>
-<p>otteniamo il corrispondente problema ai valori iniziali, che, sotto
-ipotesi simili a quelle già viste, ammette una e una sola soluzione.</p>
-<div class="tip admonition">
-<p class="admonition-title">Equazione differenziale <span class="math notranslate nohighlight">\(\leadsto\)</span> sistema di ordine 1</p>
-<p>Data
-un’equazione differenziale di ordine :math:<code class="docutils literal notranslate"><span class="pre">n</span></code></p>
-<div class="math notranslate nohighlight">
-\[y^{(n)}=f(x,y,y',y'',\ldots,y^{(n-1)}),\]</div>
-<p>poniamo</p>
-<div class="math notranslate nohighlight">
-\[y_1(x)=y(x),\quad y_2(x)=y'(x),\quad\ldots\quad y_n(x)=y^{(n-1)}(x).\]</div>
-<p>Allora l’equazione si trasforma in un sistema di equazioni del primo
-ordine</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}    \left\{\begin{array}{l}
-    y_1'=y_2\\
-    y_2'=y_3\\
-    \ldots\\
-    y_{n-1}'=y_n\\
-    y_n'=f(x,y_1,y_2,\ldots,y_n)
-    \end{array}\right.\end{split}\]</div>
-</div>
-</section>
-<section id="metodi-numerici">
-<h2>Metodi numerici<a class="headerlink" href="#metodi-numerici" title="Link a questa intestazione">#</a></h2>
-<p>Determinare la soluzione di un’equazione
-differenziale per via analitica è generalmente difficile e spesso
-impossibile. Per esempio, l’equazione</p>
-<div class="math notranslate nohighlight">
-\[y'=x^2+y^2,\]</div>
-<p>nonostante l’aspetto apparentemente semplice, non è risolubile in
-termini di funzioni elementari. Dobbiamo quindi cercare una soluzione
-approssimata usando un metodo numerico.</p>
-<p>La letteratura che tratta i metodi numerici per equazioni
-differenziali con condizioni iniziali è molto vasta. Come primi
-esempi studieremo</p>
-<ul class="simple">
-<li><p>il metodo di Eulero esplicito,</p></li>
-<li><p>il metodi di Eulero implicito,</p></li>
-<li><p>il metodo di Runge-Kutta classico.</p></li>
-</ul>
-<section id="il-metodo-di-eulero-esplicito">
-<h3>Il metodo di Eulero esplicito<a class="headerlink" href="#il-metodo-di-eulero-esplicito" title="Link a questa intestazione">#</a></h3>
-<p>Il metodo di Eulero esplicito Consideriamo il problema di Cauchy</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}  \left\{\begin{array}{l}
-  y'=f(x,y)\\y(a)=\eta
-  \end{array}
-  \right.\end{split}\]</div>
-<p>che vogliamo risolvere numericamente nell’intervallo <span class="math notranslate nohighlight">\([a,b]\)</span>
-Discretizziamo la variabile <span class="math notranslate nohighlight">\(x\)</span> fissando nell’intervallo
-<span class="math notranslate nohighlight">\([a,b]\)</span> una <strong>griglia di nodi</strong> <span class="math notranslate nohighlight">\(\{x_i\}_{i=0,\ldots,N}\)</span>
-<strong>equidistanti</strong> di passo <span class="math notranslate nohighlight">\(h&gt;0\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[ x_0=a,\quad x_i=x_{i-1}+h,\quad x_N=b.\]</div>
-<p>Il comportamento della soluzione
-<span class="math notranslate nohighlight">\(y(x)\)</span> tra <span class="math notranslate nohighlight">\(x_{i-1}\)</span> e <span class="math notranslate nohighlight">\(x_{i}\)</span> può essere stimato come</p>
-<div class="math notranslate nohighlight">
-\[ y(x_{i})\sim y(x_{i-1})+hf(x_{i-1},y(x_{i-1})).\]</div>
-<p>Per cui si
-approssima la funzione <span class="math notranslate nohighlight">\(y(x)\)</span> per mezzo dei suoi valori
-<span class="math notranslate nohighlight">\(y_i\)</span> nei nodi <span class="math notranslate nohighlight">\(x_i\)</span>, calcolati tramite la formula</p>
-<div class="math notranslate nohighlight">
-\[y_0=\eta,\quad y_i=y_{i-1}+hf(x_{i-1},y_{i-1}),\quad i=1,\ldots,N.\]</div>
-<p>Abbiamo ora tutti gli strumenti necessari ad implementare il metodo di
-Eulero esplicito.</p>
-<div class="admonition-esercizio admonition">
-<p class="admonition-title">Esercizio</p>
-<p>Si usi il seguente prototipo per implementare il <strong>metodo di Eulero
-esplicito</strong> per un sistema di equazioni differenziali del primo ordine.</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[y,x]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">expliciteuler</span><span class="p">(</span>f,y0,a,b,h<span class="p">)</span><span class="w"></span>
-<span class="c">%%EXPLICITEULER implementa il metodo di Eulero esplicito per la soluzione</span><span class="w"></span>
-<span class="c">% di un sistema di equazioni differenziali del primo ordine.</span><span class="w"></span>
-<span class="c">%   INPUT: f function handle della dinamica del sistema f(x,y)</span><span class="w"></span>
-<span class="c">%          y0 vettore delle condizioni iniziali</span><span class="w"></span>
-<span class="c">%          a,b estremi dell&#39;intervallo di integrazione</span><span class="w"></span>
-<span class="c">%          h ampiezza del passo di integrazione</span><span class="w"></span>
-<span class="c">%   OUTPUT: y vettore (matrice) che contiene le soluzioni calcolate nei</span><span class="w"></span>
-<span class="c">%           punti x(i),</span><span class="w"></span>
-<span class="c">%           x vettore dei nodi</span><span class="w"></span>
-
+\[\begin{split}\begin{align}
+    &amp; L\mathbf{y} = A^{\top}\mathbf{b}\\[1ex]
+    &amp; L^{\top}\mathbf{x} = \mathbf{y}.
+\end{align}\end{split}\]</div>
+<p>In alternativa, abbiamo discusso a lezione il metodo basato sulla fattorizzazione <span class="math notranslate nohighlight">\(QR\)</span> della matrice <span class="math notranslate nohighlight">\(A\)</span> per il calcolo della soluzione del problema dei minimi quadrati <a class="reference internal" href="#equation-leastsq">(11)</a>.</p>
+<div class="admonition-esercizio-1 admonition">
+<p class="admonition-title">Esercizio 1</p>
+<p>Si scriva una <em>function</em> che risolve il problema dei minimi quadrati sfruttando il seguente prototipo:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[x,min_res]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">minquad</span><span class="p">(</span>A,b,flag<span class="p">)</span><span class="w"></span>
+<span class="c">%%MINQUAD risolve il problem ai minimi quadrati associato</span><span class="w"></span>
+<span class="c">% al sistema Ax=b con il metodo specificato in flag</span><span class="w"></span>
+<span class="c">%    INPUT:</span><span class="w"></span>
+<span class="c">%     A matrice del sistema</span><span class="w"></span>
+<span class="c">%     b termine noto del sistema</span><span class="w"></span>
+<span class="c">%     flag stringa che specifica il metodo di risoluzione</span><span class="w"></span>
+<span class="c">%    OUTPUT:</span><span class="w"></span>
+<span class="c">%     x soluzione del problema ai minimi quadrati, punto di minimo</span><span class="w"></span>
+<span class="c">%     min_res valore del minimo</span><span class="w"></span>
 <span class="k">end</span><span class="w"></span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>Si verifichino gli <em>input</em>,</p></li>
-<li><p>Si minimizzi il numero di chiamate alla funzione <span class="math notranslate nohighlight">\(f\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flag</span></code> è una stringa che può assumere il valore <code class="docutils literal notranslate"><span class="pre">'EqNormali'</span></code> oppure <code class="docutils literal notranslate"><span class="pre">'MetodoQR'</span></code> e determina il metodo numerico con cui il problema dei minimi quadrati viene risolto all’interno della <em>function</em>.</p></li>
+<li><p>Si calcoli la fattorizzazione <span class="math notranslate nohighlight">\(LU\)</span> di <span class="math notranslate nohighlight">\(A^{\top}A\)</span> usando l’algoritmo di Doolittle visto nel Laboratorio 7.</p></li>
+<li><p>Si usi il comando MATLAB <code class="docutils literal notranslate"><span class="pre">qr</span></code> per calcolare la fattorizzazione <span class="math notranslate nohighlight">\(QR\)</span> della matrice <span class="math notranslate nohighlight">\(A\)</span>.</p></li>
+<li><p>Si usino le funzioni <code class="docutils literal notranslate"><span class="pre">backwardsolve</span></code> e <code class="docutils literal notranslate"><span class="pre">forwardsolve</span></code>, implementate nel Laboratorio 6, per risolvere i sistemi lineari triangolari risultanti.</p></li>
 </ul>
-<p>Per testare il codice si può usare il seguente <strong>problema di test</strong></p>
+</div>
+<p>Una tipica situazione in cui è necessario risolvere un problema dei minimi quadrati si presenta quando si vuole costruire una funzione che «si avvicini il più possibile» ad un insieme di dati.</p>
+<div class="admonition-esercizio-2 admonition">
+<p class="admonition-title">Esercizio 2</p>
+<p>Vogliamo trovare i coefficienti <span class="math notranslate nohighlight">\(a_1\)</span> e <span class="math notranslate nohighlight">\(a_2\)</span> della funzione <span class="math notranslate nohighlight">\(f(t) = t(a_1+a_2 e^{-t})\)</span> in modo che <span class="math notranslate nohighlight">\(f\)</span> approssi i dati <span class="math notranslate nohighlight">\((t_i,f_i)\)</span>, <span class="math notranslate nohighlight">\(i=0,1,2,3,4\)</span>, di Tabella 1 nel senso dei minimi quadrati</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}  \left\{\begin{array}{l}
-  y'=-\frac{2y+x^2y^2}{x}\\
-  y(1)=1
-  \end{array}\right.\end{split}\]</div>
-<p>per <span class="math notranslate nohighlight">\(x\in [1,2]\)</span>. In questo caso la <strong>soluzione esatta</strong> è nota e vale</p>
-<div class="math notranslate nohighlight">
-\[y=\frac{1}{x^2(\log x+1)}.\]</div>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Il metodo di Eulero esplicito</span><span class="w"></span>
-<span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">x</span>^<span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">y</span>^<span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
-<span class="n">ytrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span><span class="o">./</span><span class="p">(</span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="o">.*</span><span class="p">(</span><span class="nb">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span><span class="w"></span>
+\[\begin{split}\begin{aligned}
+&amp;\text{Tabella 1}\\
+&amp;\begin{array}{c|ccccc}
+t_i &amp; 0.2 &amp; 0.4 &amp; 0.6 &amp; 0.8 &amp; 1.0\\
+\hline f_i &amp; 2.3 &amp; 3.0 &amp; 2.9 &amp; 2.0 &amp; 1.1
+\end{array}
+\end{aligned}\end{split}\]</div>
+<p>Per risolvere il problema del <em>fitting</em> di dati, si derivino la matrice <span class="math notranslate nohighlight">\(A\)</span> ed il vettore <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> del problema dei minimi quadrati corrispondente. Si utilizzi la <em>function</em> <code class="docutils literal notranslate"><span class="pre">minquad</span></code> implementata nell’Esercizio 1 per risolvere il problema.</p>
+<p>Si completi il seguente programma usando i dati forniti</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Soluzione del problema di fitting di dati</span><span class="w"></span>
 
-<span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
-<span class="n">h</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-2</span><span class="p">;</span><span class="w"></span>
-<span class="n">y0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<span class="p">[</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">expliciteuler</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">h</span><span class="p">);</span><span class="w"></span>
+<span class="c">% Dati</span><span class="w"></span>
+<span class="n">t</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="c">% Definizione della matrice e del termine noto del sistema</span><span class="w"></span>
+<span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
 
-<span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s">&#39;r--&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">ytrue</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="s">&#39;b-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Computed Solution&#39;</span><span class="p">,</span><span class="s">&#39;True Solution&#39;</span><span class="p">},</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">);</span><span class="w"></span>
-<span class="nb">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
-<span class="nb">semilogy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">ytrue</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span><span class="s">&#39;r-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Errore Assoluto&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="c">% Soluzione usando le equazioni normali</span><span class="w"></span>
+<span class="nb">flag</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;EqNormali&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">min_a</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">minquad</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="nb">flag</span><span class="p">);</span><span class="w"></span>
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;Il minimo dato dalla soluzione del sistema delle equazioni normali e&#39; %1.2e\n&quot;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">        </span><span class="n">min_a</span><span class="p">);</span><span class="w"></span>
+<span class="c">% Soluzione usando il metodo QR</span><span class="w"></span>
+<span class="nb">flag</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;MetodoQR&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="p">[</span><span class="n">c</span><span class="p">,</span><span class="n">min_c</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">minquad</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="nb">flag</span><span class="p">);</span><span class="w"></span>
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;Il minimo dato dal metodo QR e&#39; %1.2e\n&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">min_c</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Plot dei dati</span><span class="w"></span>
+<span class="nb">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="s">&#39;sk&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="nb">hold</span><span class="w"> </span><span class="n">on</span><span class="p">;</span><span class="w"></span>
+<span class="c">% Valutazione della funzione approssimante nei punti dati in tfine </span><span class="w"></span>
+<span class="n">tfine</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span><span class="mf">0.02</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="n">fa</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="n">fc</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="c">% Plot delle funzioni approssimanti sulla griglia tfine</span><span class="w"></span>
+<span class="nb">plot</span><span class="p">(</span><span class="n">tfine</span><span class="p">,</span><span class="w"> </span><span class="n">fa</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;-b&#39;</span><span class="p">);</span><span class="w"> </span><span class="n">hold</span><span class="w"> </span><span class="s">on</span><span class="w"></span>
+<span class="nb">plot</span><span class="p">(</span><span class="n">tfine</span><span class="p">,</span><span class="w"> </span><span class="n">fc</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;--r&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;t&#39;</span><span class="p">);</span><span class="w"> </span><span class="nb">legend</span><span class="p">(</span><span class="s">&#39;Dati&#39;</span><span class="p">,</span><span class="s">&#39;Soluzione delle equazioni normali&#39;</span><span class="p">,</span><span class="s">&#39;Soluzione del metodo QR&#39;</span><span class="p">,</span><span class="s">&#39;Location&#39;</span><span class="p">,</span><span class="s">&#39;best&#39;</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-</div>
-<p>Possiamo studiare la convergenza del metodo guardando all’errore rispetto
-alla soluzione esatta e sfruttando la <em>function</em> <code class="docutils literal notranslate"><span class="pre">convergenza2</span></code> che
-abbiamo visto quando abbiamo discusso del metodo di Newton (<a class="reference internal" href="laboratorio5.html#newt-convergenza"><span class="std std-ref">Convergenza</span></a>)
-per stimare numericamente l’ordine di convergenza:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>q<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">convergenza2</span><span class="p">(</span>x<span class="p">)</span><span class="w"></span>
-<span class="c">%%CONVERGENZA produce una stima dell&#39;ordine di convergenza della</span><span class="w"></span>
-<span class="c">%%successione x_n ad xtrue.</span><span class="w"></span>
-<span class="w">    </span><span class="n">q</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="nb">length</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="p">:(</span><span class="nb">length</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="n">q</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">real</span><span class="p">(</span><span class="nb">log</span><span class="p">((</span><span class="n">x</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="n">x</span><span class="p">(</span><span class="n">n</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">-</span><span class="n">x</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span><span class="o">/</span><span class="nb">log</span><span class="p">((</span><span class="n">x</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">-</span><span class="n">x</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="n">x</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">))));</span><span class="w">       </span>
-<span class="w">    </span><span class="k">end</span><span class="w"></span>
-<span class="k">end</span><span class="w"></span>
-</pre></div>
-</div>
-<p>Con questa osserviamo che:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Convergenza</span><span class="w"></span>
-<span class="n">k</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span><span class="w"></span>
-<span class="n">h</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">fliplr</span><span class="p">(</span><span class="nb">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">));</span><span class="w"></span>
-<span class="n">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">k</span><span class="w"></span>
-<span class="w">    </span><span class="p">[</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">expliciteuler</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">h</span><span class="p">(</span><span class="nb">i</span><span class="p">));</span><span class="w"></span>
-<span class="w">    </span><span class="n">yt</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ytrue</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="n">err</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">norm</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">yt</span><span class="p">)</span><span class="o">/</span><span class="nb">norm</span><span class="p">(</span><span class="n">yt</span><span class="p">);</span><span class="w"></span>
-<span class="k">end</span><span class="w"></span>
-
-<span class="nb">figure</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
-<span class="nb">loglog</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="n">err</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;h&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Errore Assoluto&#39;</span><span class="p">);</span><span class="w"></span>
-
-<span class="n">q</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">convergenza2</span><span class="p">(</span><span class="n">err</span><span class="p">);</span><span class="w"></span>
-</pre></div>
-</div>
-<figure class="align-default" id="id1">
-<img alt="_images/forward_euler_error.png" src="_images/forward_euler_error.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 19 </span><span class="caption-text">Errore del metodo di Eulero in avanti.</span><a class="headerlink" href="#id1" title="Link a questa immagine">#</a></p>
-</figcaption>
+<p>Il grafico risultante è mostrato qui sotto.</p>
+<figure class="align-default">
+<a class="reference internal image-reference" href="_images/datafitting.png"><img alt="_images/datafitting.png" src="_images/datafitting.png" style="width: 90%;" /></a>
 </figure>
-<p>ed il valore di <span class="math notranslate nohighlight">\(q = [0.9784, 0.9972, 1.0000, 1.0001, 1.0000, 1.0000]\)</span> ed
-il previsto ordine di convergenza per questo metodo.</p>
-<p>Infatti, se supponiamo che <span class="math notranslate nohighlight">\(f(x,y)\)</span> abbia derivate continue rispetto a
-<span class="math notranslate nohighlight">\(x\)</span> e <span class="math notranslate nohighlight">\(y\)</span>. In questo caso si ha <span class="math notranslate nohighlight">\(y(x)\in\mathcal{C}^2([a,b])\)</span>. Possiamo
-quindi applicare la formula di Taylor (con resto in forma di Lagrange):</p>
-<div class="math notranslate nohighlight">
-\[y(x_i)-y(x_{i-1})=hy'(x_{i-1})+\frac{h^2}{2}y''(\xi),\quad \xi\in (x_{i-1},x_i)\]</div>
-<p>da cui si deduce</p>
-<div class="math notranslate nohighlight">
-\[|\tau_i|=\frac{h}{2}|y''(\xi)|.\]</div>
-<p>Quindi in ogni intervallo <span class="math notranslate nohighlight">\([x_{i-1},x_i]\)</span> l’<strong>errore locale</strong> è
-approssimativamente lineare in <span class="math notranslate nohighlight">\(h\)</span>. Poiché <span class="math notranslate nohighlight">\(|y''(\xi)|\)</span> è
-limitato in <span class="math notranslate nohighlight">\([a,b]\)</span>, si ha che <span class="math notranslate nohighlight">\(\tau_i\)</span> tende a zero con
-<span class="math notranslate nohighlight">\(h\)</span> e si scrive <span class="math notranslate nohighlight">\(\tau_i=\mathcal{O}(h)\)</span>.</p>
-<p>Posto <span class="math notranslate nohighlight">\(\tau=\max_{i=1,\ldots,N}|\tau_i|\)</span>, esiste una costante
-<span class="math notranslate nohighlight">\(M\neq 0\)</span> per cui <span class="math notranslate nohighlight">\(\tau\leq Mh\)</span>, e quindi</p>
-<div class="math notranslate nohighlight">
-\[ \lim_{h\rightarrow 0}\tau=0,\qquad \tau=\mathcal{O}(h).\]</div>
-<p>Si dice allora che il metodo di Eulero è consistente di ordine 1.</p>
-<p>Si può dimostrare che, sotto le stesse ipotesi su <span class="math notranslate nohighlight">\(f\)</span>, anche
-l’errore globale tende a zero con <span class="math notranslate nohighlight">\(h\rightarrow 0\)</span>. Concludiamo
-quindi che il metodo di Eulero è convergente.</p>
-<p>Proviamo ora a <strong>cambiare le condizioni iniziali</strong> per la nostra ODE.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\left\{\begin{array}{l}
-y'=-\frac{2y+x^2y^2}{x}\\
-y(1)=10
-\end{array}\right.,\quad x\in [1,2].\end{split}\]</div>
-<p>La soluzione generale è data da</p>
-<div class="math notranslate nohighlight">
-\[y(x) = \frac{1}{x^2 (c_1+\log (x))}\]</div>
-<p>e sostituendo la condizione iniziale</p>
-<div class="math notranslate nohighlight">
-\[y(x) = \frac{10}{x^2 (10 \log (x)+1)}.\]</div>
-<p>Tuttavia se ripetiamo l’analisi di convergenza</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Convergenza per diverse condizioni iniziali</span><span class="w"></span>
-<span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
-<span class="n">y0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
-
-<span class="n">ytrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="mi">10</span><span class="o">./</span><span class="p">(</span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="o">.*</span><span class="p">(</span><span class="mi">10</span><span class="o">*</span><span class="nb">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span><span class="w"></span>
-
-<span class="n">k</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span><span class="w"></span>
-<span class="n">h</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">fliplr</span><span class="p">(</span><span class="nb">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">));</span><span class="w"></span>
-<span class="n">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">k</span><span class="w"></span>
-<span class="w">    </span><span class="p">[</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">expliciteuler</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">h</span><span class="p">(</span><span class="nb">i</span><span class="p">));</span><span class="w"></span>
-<span class="w">    </span><span class="n">yt</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ytrue</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="n">err</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">norm</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">yt</span><span class="p">)</span><span class="o">/</span><span class="nb">norm</span><span class="p">(</span><span class="n">yt</span><span class="p">);</span><span class="w"></span>
-<span class="k">end</span><span class="w"></span>
-
-<span class="nb">figure</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
-<span class="nb">loglog</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="n">err</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;h&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Errore Assoluto&#39;</span><span class="p">);</span><span class="w"></span>
-</pre></div>
 </div>
-<p>Osserviamo:</p>
-<figure class="align-default" id="id2">
-<img alt="_images/forward_euler_error2.png" src="_images/forward_euler_error2.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 20 </span><span class="caption-text">Convergenza del metodo di Eulero per diverse condizioni iniziali.</span><a class="headerlink" href="#id2" title="Link a questa immagine">#</a></p>
-</figcaption>
-</figure>
-<p>Quello che vediamo è che per il valore di <span class="math notranslate nohighlight">\(h\)</span> più grande, ovvero <span class="math notranslate nohighlight">\(h =
-0.1\)</span>, l’errore relativo è maggiore di <span class="math notranslate nohighlight">\(1\)</span>, cioè <strong>non abbiamo
-convergenza</strong>. Nell’esempio il metodo di Eulero ha quindi un
-comportamento instabile.</p>
-<p>La stabilità di un metodo numerico per problemi differenziali viene
-valutata applicando il metodo ad un particolare problema test ed
-esaminando se l’errore, introdotto ad un passo per effetto del
-calcolo, aumenta o diminuisce quando viene propagato al passo
-successivo.</p>
-<p>Nel caso generale del problema</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}  \left\{\begin{array}{l}
-  y'=f(x,y)\\y(a)=\eta
-  \end{array}
-  \right.\end{split}\]</div>
-<p>la limitazione sul passo <span class="math notranslate nohighlight">\(h\)</span> diventa</p>
-<div class="math notranslate nohighlight">
-\[0&lt;h&lt;\frac{2}{|f_y(x,y)|}\]</div>
-<p>e quindi cambia punto per punto. Nell’esempio con <span class="math notranslate nohighlight">\(f(x,y)=-\frac{2y+x^2y^2}{x}\)</span> e condizione iniziale <span class="math notranslate nohighlight">\(y(1)=1\)</span> si ha</p>
-<div class="math notranslate nohighlight">
-\[f_y(x,y)=-2\,\frac{1+x^2y}{x},\quad f_y(x_0,y_0)=f_y(1,1)=-4.\]</div>
-<p>Perciò al primo passo il metodo di Eulero è stabile per
-<span class="math notranslate nohighlight">\(0&lt;h&lt;1/2\)</span>; questa proprietà vale anche ai passi successivi
-perché si ha <span class="math notranslate nohighlight">\(|f_y(x_i,y_i)|&lt;|f_y(x_0,y_0)|\)</span> e <span class="math notranslate nohighlight">\(i&gt;1\)</span>.</p>
-<p>Quando invece si modifica la condizione iniziale si ha</p>
-<div class="math notranslate nohighlight">
-\[f_y(x_0,u_0)=f_y(1,10)=-22,\]</div>
-<p>quindi per avere stabilità si richiede <span class="math notranslate nohighlight">\(0&lt;h&lt;1/11\)</span> al primo
-passo. Ai passi successivi, vista la decrescenza della soluzione,
-questa limitazione risulta indebolita e si può scegliere un valore di
-<span class="math notranslate nohighlight">\(h\)</span> un più grande e questo è ben descritto dalla figura.</p>
-</section>
-<section id="il-metodo-di-eulero-implicito">
-<h3>Il metodo di Eulero implicito<a class="headerlink" href="#il-metodo-di-eulero-implicito" title="Link a questa intestazione">#</a></h3>
-<p>Da quanto detto finora sembra
-che scelte piccole del passo <span class="math notranslate nohighlight">\(h\)</span> siano indispensabili per
-assicurare convergenza e stabilità. Tuttavia, a un <span class="math notranslate nohighlight">\(h\)</span> piccolo
-corrisponde un numero elevato di nodi di integrazione, e
-quindi un notevole volume di calcolo per approssimare la soluzione in
-tutto l’intervallo richiesto, con un conseguente elevato accumulo
-dell’errore di arrotondamento.</p>
-<p>La scelta di <span class="math notranslate nohighlight">\(h\)</span> deve quindi trovare un <strong>compromesso</strong> tra due
-esigenze: passo sufficientemente piccolo per ragioni di convergenza e
-stabilità, ma al contempo non troppo piccolo per non rendere
-eccessivo l’errore di arrotondamento.</p>
-<p>Per ridurre le richieste su <span class="math notranslate nohighlight">\(h\)</span>, introduciamo quindi i metodi impliciti.</p>
-<div class="admonition-esercizio admonition">
-<p class="admonition-title">Esercizio</p>
-<p>Si implementi il metodo di Eulero implicito.</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[y,x]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">impliciteuler</span><span class="p">(</span>f,y0,a,b,h<span class="p">)</span><span class="w"></span>
-<span class="c">%%IMPLICITEULER implementa il metodo di Eulero implicito per la soluzione</span><span class="w"></span>
-<span class="c">% di un sistema di equazioni differenziali del primo ordine.</span><span class="w"></span>
-<span class="c">%   INPUT: f function handle della dinamica del sistema f(x,y)</span><span class="w"></span>
-<span class="c">%          y0 vettore delle condizioni iniziali</span><span class="w"></span>
-<span class="c">%          a,b estremi dell&#39;intervallo di integrazione</span><span class="w"></span>
-<span class="c">%          h ampiezza del passo di integrazione</span><span class="w"></span>
-<span class="c">%   OUTPUT: y vettore (matrice) che contiene le soluzioni calcolate nei</span><span class="w"></span>
-<span class="c">%           punti x(i),</span><span class="w"></span>
-<span class="c">%           x vettore dei nodi</span><span class="w"></span>
-
-<span class="k">end</span><span class="w"></span>
-</pre></div>
-</div>
+<p>Quando la funzione approssimante cercata è un polinomio esistono le seguenti routine di MATLAB:</p>
 <ul class="simple">
-<li><p>Si usi il comando <code class="docutils literal notranslate"><span class="pre">fsolve</span></code> per risolvere il sistema (possibilmente) non
-lineare, per sopprimere le stampe di controllo di <code class="docutils literal notranslate"><span class="pre">fsolve</span></code> si possono
-usare le opzioni generate con <code class="docutils literal notranslate"><span class="pre">optimoptions('fsolve','Display','none')</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">polyfit(xData,yData,m)</span></code> restituisce il vettore <code class="docutils literal notranslate"><span class="pre">a</span></code> di coefficienti del polinomio di grado <span class="math notranslate nohighlight">\(m\)</span> che approssima i dati <code class="docutils literal notranslate"><span class="pre">(xData,yData)</span></code> nel senso dei minimi quadrati.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">polyval(a,x)</span></code> valuta nel punto <code class="docutils literal notranslate"><span class="pre">x</span></code> il polinomio definito dai coefficienti <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
 </ul>
-<p>Per verificare l’implementazione possiamo usare lo stesso problema test</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Il metodo di Eulero implicito</span><span class="w"></span>
-<span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">x</span>^<span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">y</span>^<span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
-<span class="n">ytrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span><span class="o">./</span><span class="p">(</span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="o">.*</span><span class="p">(</span><span class="nb">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span><span class="w"></span>
-
-<span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
-<span class="n">h</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-2</span><span class="p">;</span><span class="w"></span>
-<span class="n">y0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<span class="p">[</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">impliciteuler</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">h</span><span class="p">);</span><span class="w"></span>
-
-<span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s">&#39;r--&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">ytrue</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="s">&#39;b-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Computed Solution&#39;</span><span class="p">,</span><span class="s">&#39;True Solution&#39;</span><span class="p">},</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">);</span><span class="w"></span>
-<span class="nb">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
-<span class="nb">semilogy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">ytrue</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span><span class="s">&#39;r-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Errore Assoluto&#39;</span><span class="p">);</span><span class="w"></span>
-</pre></div>
-</div>
-</div>
-<p>Controlliamo ora che succede nel caso che prima ci restituiva dei
-problemi confrontando la soluzione con il metodo di Eulero esplicito
-ed implicito.</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Errore di stabilità</span><span class="w"></span>
-<span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
-<span class="n">h</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-1</span><span class="p">;</span><span class="w"></span>
-<span class="n">y0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
-
-<span class="n">ytrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="mi">10</span><span class="o">./</span><span class="p">(</span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="o">.*</span><span class="p">(</span><span class="mi">10</span><span class="o">*</span><span class="nb">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span><span class="w"></span>
-
-<span class="p">[</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">impliciteuler</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">h</span><span class="p">);</span><span class="w"></span>
-<span class="p">[</span><span class="n">yexp</span><span class="p">,</span><span class="n">xexp</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">expliciteuler</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">h</span><span class="p">);</span><span class="w"></span>
-
-<span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="nb">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s">&#39;r--&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">ytrue</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="s">&#39;b-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Computed Solution&#39;</span><span class="p">,</span><span class="s">&#39;True Solution&#39;</span><span class="p">},</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">);</span><span class="w"></span>
-<span class="nb">title</span><span class="p">(</span><span class="s">&#39;Eulero implicito&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">plot</span><span class="p">(</span><span class="n">xexp</span><span class="p">,</span><span class="n">yexp</span><span class="p">,</span><span class="s">&#39;r--&#39;</span><span class="p">,</span><span class="n">xexp</span><span class="p">,</span><span class="n">ytrue</span><span class="p">(</span><span class="n">xexp</span><span class="p">),</span><span class="s">&#39;b-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Computed Solution&#39;</span><span class="p">,</span><span class="s">&#39;True Solution&#39;</span><span class="p">},</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">);</span><span class="w"></span>
-<span class="nb">title</span><span class="p">(</span><span class="s">&#39;Eulero esplicito&#39;</span><span class="p">)</span><span class="w"></span>
-</pre></div>
-</div>
-<figure class="align-default" id="id3">
-<img alt="_images/implicit_euler_error.png" src="_images/implicit_euler_error.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 21 </span><span class="caption-text">Differenza in stabilità tra il metodo di Eulero implicito ed esplicito.</span><a class="headerlink" href="#id3" title="Link a questa immagine">#</a></p>
-</figcaption>
-</figure>
-</section>
-</section>
-<section id="esercizi">
-<h2>Esercizi<a class="headerlink" href="#esercizi" title="Link a questa intestazione">#</a></h2>
-<aside class="margin sidebar">
-<p class="sidebar-title">Condizione iniziale</p>
-<figure class="align-default" id="fig-spacecraft">
-<img alt="_images/spacecraft.png" src="_images/spacecraft.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 22 </span><span class="caption-text">Condizioni iniziali</span><a class="headerlink" href="#fig-spacecraft" title="Link a questa immagine">#</a></p>
-</figcaption>
-</figure>
-</aside>
-<div class="admonition-esercizio admonition">
-<p class="admonition-title">Esercizio</p>
-<p>Un veicolo spaziale è lanciato ad una altitudine di <span class="math notranslate nohighlight">\(H = 772 \text{ km}\)</span>
-sul livello del mare con velocità iniziale <span class="math notranslate nohighlight">\(v_0 = 6700\,\text{m/s}\)</span> nella
-direzione illustrata in <a class="reference internal" href="#fig-spacecraft"><span class="std std-numref">Fig. 22</span></a>. Le equazioni differenziali che descrivono
-il moto dell’oggetto in coordinate polari sono</p>
-<div class="math notranslate nohighlight">
-\[\ddot{r} = r \dot{\theta}^2 - \frac{G M_e}{r^2}, \quad \ddot{\theta} = - 2 \frac{\dot{r}\dot{\theta}}{r}.\]</div>
-<p>Rispetto alle costanti</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(G = 6.672 \times 10^{-11}\)</span> <span class="math notranslate nohighlight">\(\text{m}^3\text{kg}^{-1}\text{s}^{-2}\)</span> per la costante di gravitazione universale,</p></li>
-<li><p><span class="math notranslate nohighlight">\(M_e = 5.9742 \times 10^{24} \text{ kg}\)</span>, per la massa della terra,</p></li>
-<li><p><span class="math notranslate nohighlight">\(R_e = 6378.14 \text{ km}\)</span> per il raggio della terra a livello del mare,</p></li>
-</ul>
-<p>Si ottengano le equazioni differenziali del <strong>primo ordine</strong> per questo
-sistema e si integri numericamente fino a che il veicolo non tocca terra.
-Si determini il valore di <span class="math notranslate nohighlight">\(\theta\)</span> del sito di impatto.</p>
-<div class="tip dropdown admonition">
-<p class="admonition-title">Suggerimento</p>
-<p>Si può usare il seguente prototipo per implementare la dinamica. In questa
-implementazione assumiamo di aver ordinato le variabili <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> del sistema riscritto al primo ordine come <span class="math notranslate nohighlight">\(\mathbf{y} = [y_1,y_2,y_3,y_4]^T = [r,\dot{r},\theta,\dot{\theta}]^T\)</span>.</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>ydot<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">veicolo</span><span class="p">(</span>x,y<span class="p">)</span><span class="w"></span>
-<span class="c">%VEICOLO Dinamica per il veicolo in coordinate polari.</span><span class="w"></span>
-<span class="c">%   INPUT:  x variabile muta</span><span class="w"></span>
-<span class="c">%           y vettore delle variabili y = [r rdot theta thetadot]</span><span class="w"></span>
-<span class="c">%   OUTPUT: dinamica del sistema</span><span class="w"></span>
-
-<span class="k">end</span><span class="w"></span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="admonition-esercizio admonition">
-<p class="admonition-title">Esercizio</p>
-<p>Un paracadutista di massa <span class="math notranslate nohighlight">\(m\)</span> in caduta libera verticale subisce una
-resistenza aerodinamica <span class="math notranslate nohighlight">\(F_D = c_D \dot{y}^2\)</span>, dove <span class="math notranslate nohighlight">\(y\)</span> è misurata
-verso il basso dall’inizio della caduta. L’equazione differenziale che descrive la caduta è</p>
-<div class="math notranslate nohighlight">
-\[\ddot{y} = g - \frac{c_D}{m} \dot{y}^2.\]</div>
-<p>Si determnini il tempo di una caduta di <span class="math notranslate nohighlight">\(500 \text{ m}\)</span> utilizzando
-<span class="math notranslate nohighlight">\(g = 9.80665 \text{ m/}\text{s}^2\)</span>, <span class="math notranslate nohighlight">\(c_D = 0.2028 \text{ kg/m}\)</span> e
-<span class="math notranslate nohighlight">\(m = 80 \,\text{kg}\)</span>.</p>
-</div>
-</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -924,17 +486,17 @@ verso il basso dall’inizio della caduta. L’equazione differenziale che descr
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="laboratorio9.html" title="precedente pagina">
+    <a class='left-prev' id="prev-link" href="laboratorio8.html" title="precedente pagina">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">precedente</p>
-            <p class="prev-next-title">Laboratorio 9 : Metodi di Quadratura</p>
+            <p class="prev-next-title">Laboratorio 8 : Metodi Stazionari per Sistemi Lineari</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="laboratorio11.html" title="successivo pagina">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">successivo</p>
-        <p class="prev-next-title">Laboratorio 11 : Metodi di tipo Runge-Kutta</p>
+        <p class="prev-next-title">Laboratorio 11 : Metodi di Quadratura</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

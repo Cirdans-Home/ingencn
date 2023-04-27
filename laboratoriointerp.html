@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Calcolo Numerico - Esercitazioni di Laboratorio &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
+    <title>Laboratorio 9 : Metodi di Interpolazione &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -52,9 +52,10 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
-    <link rel="next" title="Laboratorio 1 : Introduzione a MATLAB" href="laboratorio1.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
     
@@ -108,8 +109,8 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="bd-toc-item active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1 current active">
-                <a class="reference internal" href="#">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
                     Calcolo Numerico - Esercitazioni di Laboratorio
                 </a>
             </li>
@@ -260,7 +261,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://github.com/Cirdans-Home/ingencn/issues/new?title=Issue%20on%20page%20%2Fintro.html&body=Your%20issue%20content%20here."
+        <a href="https://github.com/Cirdans-Home/ingencn/issues/new?title=Issue%20on%20page%20%2Flaboratoriointerp.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -288,7 +289,7 @@ title="Open an issue"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="_sources/intro.md"
+        <a href="_sources/laboratoriointerp.md"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -325,23 +326,60 @@ title="Print to PDF"
     </ul>
   </div>
 </div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
 
     </div>
 </div>
 
 <!-- Table of contents -->
 <div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#metodi-di-tipo-stazionario">
+   Metodi di tipo stazionario
+  </a>
+ </li>
+</ul>
+
+    </nav>
 </div>
     </div>
     <div class="article row">
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Calcolo Numerico - Esercitazioni di Laboratorio</h1>
+                <h1>Laboratorio 9 : Metodi di Interpolazione</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#metodi-di-tipo-stazionario">
+   Metodi di tipo stazionario
+  </a>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -349,12 +387,40 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="calcolo-numerico-esercitazioni-di-laboratorio">
-<h1>Calcolo Numerico - Esercitazioni di Laboratorio<a class="headerlink" href="#calcolo-numerico-esercitazioni-di-laboratorio" title="Link a questa intestazione">#</a></h1>
-<p>Queste pagine web contengo le esercitazioni di laboratorio del corso di Calcolo
-Numerico per la Laurea Triennale in Ingegneria dell’Energia.</p>
-<div class="toctree-wrapper compound">
-</div>
+  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-9-metodi-di-interpolazione">
+<h1>Laboratorio 9 : Metodi di Interpolazione<a class="headerlink" href="#laboratorio-9-metodi-di-interpolazione" title="Link a questa intestazione">#</a></h1>
+<p>Un <strong>metodo iterativo</strong> è una procedura matematica che a partire da un <em>valore iniziale</em> genera una sequenza di <em>soluzioni approssimate</em> migliorative per una
+determinata classe di problemi, in cui l’approssimazione <span class="math notranslate nohighlight">\(n\)</span>esima è derivata dai precedenti. Abbiamo già visto, <strong>ed implementato</strong>, metodi di questo tipo per la ricerca degli zeri di una funzione.</p>
+<p>In questo laboratorio vogliamo concentrarci invece sulla costruzione di alcuni
+metodi di questo tipo per la soluzione di sistemi lineari.</p>
+<p>La prima domanda che è legittimo porsi è perché mai vogliamo mettere in piedi
+dei metodi iterativi se abbiamo già dei metodi diretti che possono raggiungere
+la soluzione del problema cercato?</p>
+<ul class="simple">
+<li><p>A patto di richiedere una tolleranza minore (spesso sufficiente nelle applicazioni) sull’errore commesso sulla soluzione hanno un costo computazionale inferiore alle controparti dirette,</p></li>
+<li><p>Per le dimensioni dei problemi che si vogliono affrontare nelle applicazioni ingegneristiche attuali sono spesso l’unica opzione disponibile (problemi di fluidodinamica computazionale, combustione, meccanica del continuo, …)</p></li>
+</ul>
+<p>Nel corso e in questo laboratorio ci focalizziamo su alcuni dei metodi più semplici e che, in genere, sono usati come i blocchi costituivi di metodi più complessi (e.g., metodi di tipo <em>multigrid</em> o <em>domain decomposition</em>) o come acceleratori per la convergenza (in gergo chiamati: <em>precondizionatori</em>).</p>
+<section id="metodi-di-tipo-stazionario">
+<h2>Metodi di tipo stazionario<a class="headerlink" href="#metodi-di-tipo-stazionario" title="Link a questa intestazione">#</a></h2>
+<p>Dato un sistema lineare della forma</p>
+<div class="math notranslate nohighlight">
+\[A \mathbf{x} = \mathbf{b}, \qquad A \in \mathbb{R}^{n \times n},\; \mathbf{x},\mathbf{b} \in \mathbb{R}^n\]</div>
+<p>siamo interessati a <strong>metodi di punto fisso</strong> basati sugli <em>splitting</em> della matrice <span class="math notranslate nohighlight">\(A\)</span>. Cioè metodi basati su una decomposizione additiva della matrice della forma</p>
+<div class="math notranslate nohighlight">
+\[A = M - N, \qquad\text{ con }\qquad \det(M) \neq 0.\]</div>
+<p>Da questa decomposizione si ottiene poi l’iterata di punto fisso come</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}A \mathbf{x} = \mathbf{b} \Rightarrow (M - N) \mathbf{x} = \mathbf{b} \Rightarrow M \mathbf{x} = N \mathbf{x} + \mathbf{b} \\
+\mathbf{x} = M^{-1} N \mathbf{x} + M^{-1} \mathbf{b}\end{split}\]</div>
+<p>e quindi</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{x}^{(k+1)} = M^{-1} N \mathbf{x}^{(k)} + M^{-1} \mathbf{b}, \quad k = 0,1,2,\ldots, \\
+\mathbf{x}^{(0)} \text{ assegnato}.\end{split}\]</div>
+<p>Essendo questa un’iterata di punto fisso, la sua convergenza dipende dall’essere una <strong>procedura contrattiva</strong>, avete dimostrato a lezione che questo è equivalente alla richiesta che il <em>raggio spettrale</em> della matrice di iterazione <span class="math notranslate nohighlight">\(M^{-1}N\)</span> sia strettamente minore di <span class="math notranslate nohighlight">\(1\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\rho(M^{-1}N) = \max_{1,\ldots,n }|\lambda_n(M^{-1}N)| &lt; 1.\]</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -384,13 +450,6 @@ Numerico per la Laurea Triennale in Ingegneria dell’Energia.</p>
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='right-next' id="next-link" href="laboratorio1.html" title="successivo pagina">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">successivo</p>
-        <p class="prev-next-title">Laboratorio 1 : Introduzione a MATLAB</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
 </div>
             </footer>
         </div>
