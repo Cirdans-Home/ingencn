@@ -159,6 +159,11 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio9.html">
+   Laboratorio 9 : Metodi di Interpolazione
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="laboratorio10.html">
    Laboratorio 10 : Il Problema Lineare dei Minimi Quadrati
   </a>
@@ -570,13 +575,13 @@ conoscete sin dal corso di <em>algebra lineare</em>.</p>
 <div class="math notranslate nohighlight" id="equation-lu1">
 <span class="eqno">(9)<a class="headerlink" href="#equation-lu1" title="Permalink a questa equazione">#</a></span>\[\begin{split}\forall\,j\quad &amp; \begin{array}{ll}
 i = 1, &amp; u_{i,j} = a_{i,j},\\
-i &gt; 1, &amp; u_{i,j} = \displaystyle a_{i,j} - \sum_{k=1}^{i} l_{ik} u_{k,j},
+i &gt; 1, &amp; u_{i,j} = \displaystyle a_{i,j} - \sum_{k=1}^{i-1} l_{ik} u_{k,j},
 \end{array}\end{split}\]</div>
 <p>mentre quelli della matrice <span class="math notranslate nohighlight">\(L\)</span> sono dati da:</p>
 <div class="math notranslate nohighlight" id="equation-lu2">
 <span class="eqno">(10)<a class="headerlink" href="#equation-lu2" title="Permalink a questa equazione">#</a></span>\[\begin{split}\forall\,i\quad &amp; \begin{array}{ll}
 j = 1, &amp; l_{ij} = \frac{a_{ij}}{u_{jj}}, \\
-j &gt; 1, &amp; l_{ij} = \displaystyle \frac{a_{ij} - \sum_{k=1}^{j} l_{ik} u_{kj} }{u_{jj}}.
+j &gt; 1, &amp; l_{ij} = \displaystyle \frac{a_{ij} - \sum_{k=1}^{j-1} l_{ik} u_{kj} }{u_{jj}}.
 \end{array}\end{split}\]</div>
 <div class="admonition-esercizio admonition">
 <p class="admonition-title">Esercizio</p>
@@ -756,7 +761,7 @@ pivoting parziale per una matrice <span class="math notranslate nohighlight">\(A
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[L,U,P]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">ludecomp</span><span class="p">(</span>A<span class="p">)</span><span class="w"></span>
 <span class="c">%%LUDECOMPP Fattorizzazione LU con pivoting parziale.</span><span class="w"></span>
 
-<span class="c">% Contrllo dell&#39;input:</span><span class="w"></span>
+<span class="c">% Controllo dell&#39;input:</span><span class="w"></span>
 
 <span class="c">% Allocazione della memoria:</span><span class="w"></span>
 <span class="n">L</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">);</span><span class="w"></span>

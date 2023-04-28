@@ -1,0 +1,540 @@
+
+<!DOCTYPE html>
+
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Laboratorio 9 : Metodi di Interpolazione &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/translations.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Indice" href="genindex.html" />
+    <link rel="search" title="Cerca" href="search.html" />
+    <link rel="next" title="Laboratorio 10 : Il Problema Lineare dei Minimi Quadrati" href="laboratorio10.html" />
+    <link rel="prev" title="Laboratorio 8 : Metodi Stazionari per Sistemi Lineari" href="laboratorio8.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="it">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Calcolo Numerico - Esercitazioni di Laboratorio</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Calcolo Numerico - Esercitazioni di Laboratorio
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio1.html">
+   Laboratorio 1 : Introduzione a MATLAB
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio2.html">
+   Laboratorio 2 : Introduzione a MATLAB - II
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio3.html">
+   Laboratorio 3 : L’Aritmetica di Precisione Finita
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio4.html">
+   Laboratorio 4 : Il Metodo di Bisezione
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio5.html">
+   Laboratorio 5 : Il Metodo di Newton
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio6.html">
+   Laboratorio 6 : Soluzione dei Sistemi Lineari
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio7.html">
+   Laboratorio 7 : L’Eliminazione di Gauss il Metodo LU
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio8.html">
+   Laboratorio 8 : Metodi Stazionari per Sistemi Lineari
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Laboratorio 9 : Metodi di Interpolazione
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio10.html">
+   Laboratorio 10 : Il Problema Lineare dei Minimi Quadrati
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio11.html">
+   Laboratorio 11 : Metodi di Quadratura
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio12.html">
+   Laboratorio 12 : Metodi per la Soluzione di ODE
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/Cirdans-Home/ingencn"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/Cirdans-Home/ingencn/issues/new?title=Issue%20on%20page%20%2Flaboratorio9.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/laboratorio9.md"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.md</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Laboratorio 9 : Metodi di Interpolazione</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-9-metodi-di-interpolazione">
+<h1>Laboratorio 9 : Metodi di Interpolazione<a class="headerlink" href="#laboratorio-9-metodi-di-interpolazione" title="Link a questa intestazione">#</a></h1>
+<p>In molti problemi si ha a che fare con una funzione <span class="math notranslate nohighlight">\(f:\mathbb{R}\rightarrow\mathbb{R}\)</span> di forma non elementare, o addirittura sconosciuta, di cui si possiede solo una tabulazione in un insieme finito di punti, per esempio derivanti da misurazioni sperimentali. In questi casi la stima di un valore di <span class="math notranslate nohighlight">\(f\)</span>, in un punto diverso da quelli in cui è data, può essere fatta utilizzando i dati disponibili. Questa operazione si effettua sostituendo a <span class="math notranslate nohighlight">\(f\)</span> una funzione che sia facilmente calcolabile come, per esempio, un polinomio.</p>
+<p>Supponiamo siano dati <span class="math notranslate nohighlight">\(n+1\)</span> punti reali <span class="math notranslate nohighlight">\(x_0,\ldots, x_n\in [a,b]\subset\mathbb{R}\)</span>, due a due distinti, in corrispondenza dei quali siano noti gli <span class="math notranslate nohighlight">\(n+1\)</span> valori reali <span class="math notranslate nohighlight">\(f(x_0), \ldots, f(x_n)\)</span>. L’interpolazione polinomiale consiste nel determinare un polinomio <span class="math notranslate nohighlight">\(P_n\)</span> di grado al più <span class="math notranslate nohighlight">\(n\)</span> tale che</p>
+<div class="math notranslate nohighlight" id="equation-cinterp">
+<span class="eqno">(11)<a class="headerlink" href="#equation-cinterp" title="Permalink a questa equazione">#</a></span>\[P_n(x_i)=f(x_i),\quad \forall i=0,1,\ldots,n.\]</div>
+<p>Srivendo il polinomio <span class="math notranslate nohighlight">\(P_n\)</span> nella base dei monomi <span class="math notranslate nohighlight">\(\{1,x,x^2,\ldots\}\)</span> si ha</p>
+<div class="math notranslate nohighlight">
+\[P_n(x)=a_n x^n+a_{n-1} x^{n-1}+\ldots+a_1 x+a_0,\]</div>
+<p>i cui coefficienti <span class="math notranslate nohighlight">\(\{a_i\}_{i=0}^n\)</span> si possono ricavare risolvendo il sistema lineare di <span class="math notranslate nohighlight">\(n+1\)</span> equazioni ottenuto imponendo che il polinomio verifichi le condizioni di interpolazione <a class="reference internal" href="#equation-cinterp">(11)</a>.</p>
+<p>Poiché la matrice del sistema (matrice di Vandermonde) risulta una matrice malcondizionata non conviene risolvere il sistema lineare per determinare il polinomio di interpolazione.</p>
+<p>In questo laboratorio ci concentriamo sull’interpolazione di Lagrange.</p>
+<p>Questa consiste nel costruire un polinomio di interpolazione di grado al più <span class="math notranslate nohighlight">\(n\)</span> della forma</p>
+<div class="math notranslate nohighlight">
+\[P_n(x) = \sum_{j=0}^n f(x_j)\ell_j(x),\qquad \ell_j(x)=\prod_{i\neq j}\dfrac{x-x_i}{x_j-x_i}.\]</div>
+<div class="admonition-esercizio-1 admonition">
+<p class="admonition-title">Esercizio 1</p>
+<p>Si implementi una <em>function</em> che costruisce le funzioni polinomiali <span class="math notranslate nohighlight">\(\ell_j\)</span> dato il vettore <code class="docutils literal notranslate"><span class="pre">x</span></code> di <span class="math notranslate nohighlight">\(n+1\)</span> nodi di interpolazione e restituisce il suo valore nei punti specificati nel vettore <code class="docutils literal notranslate"><span class="pre">z</span></code>. Si segua il seguente prototipo</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>L<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">LagrangePoly</span><span class="p">(</span>x, z, j<span class="p">)</span><span class="w"></span>
+<span class="c">%%LAGRANGEPOLY costruisce il k-esimo polinomio di Lagrange dati i nodi</span><span class="w"></span>
+<span class="c">% di interpolazione x e lo valuta nei vettore z</span><span class="w"></span>
+<span class="c">%    INPUT:</span><span class="w"></span>
+<span class="c">%          x vettore riga degli n+1 nodi di interpolazione</span><span class="w"></span>
+<span class="c">%          z vettore riga dei punti di valutazione del polinomio</span><span class="w"></span>
+<span class="c">%          j indice the polinomio di Lagrange</span><span class="w"></span>
+<span class="c">%   OUTPUT:</span><span class="w"></span>
+<span class="c">%          L j-esimo polinomio di Lagrange valutato in z</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Si inserisca un controllo sul valore di <span class="math notranslate nohighlight">\(j\)</span> ammesso.</p></li>
+</ul>
+<p>Si usi la <em>function</em> <code class="docutils literal notranslate"><span class="pre">LagrangePoly</span></code> per costruire il polinomio di interpolazione di Lagrange <span class="math notranslate nohighlight">\(P_3\)</span> dai punti di interpolazione di Tabella 1</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+&amp;\text{Tabella 1}\\
+&amp;\begin{array}{c|ccccc}
+x_i &amp; -5 &amp; -4 &amp; 0 &amp; 5 \\
+\hline y_i &amp; -10 &amp; -12 &amp; -16 &amp; 1\\
+\end{array}
+\end{aligned}\end{split}\]</div>
+<p>Si implementi uno script di MATLAB che produce il grafico del polinomio di interpolazione <span class="math notranslate nohighlight">\(P_3\)</span> nell’intervallo <span class="math notranslate nohighlight">\([-5,5]\)</span> con <span class="math notranslate nohighlight">\(m=100\)</span> punti equidistanti. Si aggiungano alla stessa figura i punti di interpolazione.</p>
+<p>Il grafico risultante è mostrato qui sotto.</p>
+<figure class="align-default">
+<a class="reference internal image-reference" href="_images/interp.png"><img alt="_images/interp.png" src="_images/interp.png" style="width: 90%;" /></a>
+</figure>
+</div>
+<p>Per trovare i coefficienti del polinomio interpolante nella base dei monomi esistono le seguenti routine di MATLAB:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">polyfit(xData,yData,m)</span></code> restituisce il vettore <code class="docutils literal notranslate"><span class="pre">a</span></code> di coefficienti del polinomio di grado <span class="math notranslate nohighlight">\(m\)</span> che approssima i dati <code class="docutils literal notranslate"><span class="pre">(xData,yData)</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">polyval(a,x)</span></code> valuta nel punto <code class="docutils literal notranslate"><span class="pre">x</span></code> il polinomio definito dai coefficienti <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
+</ul>
+<div class="admonition-esercizio-2 admonition">
+<p class="admonition-title">Esercizio 2</p>
+<p>Si consideri la <strong>funzione di Runge</strong></p>
+<div class="math notranslate nohighlight" id="equation-runge">
+<span class="eqno">(12)<a class="headerlink" href="#equation-runge" title="Permalink a questa equazione">#</a></span>\[f(x) = \dfrac{1}{1+x^2},\quad x\in[a,b].\]</div>
+<p>Vogliamo studiare l’influenza della scelta dei nodi di interpolazione sulla qualità dell’interpolante polinomiale di grado <span class="math notranslate nohighlight">\(n\)</span> per diversi valori di <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<p>Si implementi uno script di MATLAB in cui:</p>
+<ul class="simple">
+<li><p>Si calcolino i polinomi <span class="math notranslate nohighlight">\(\{P_n\}_n\)</span> di Lagrange di grado <span class="math notranslate nohighlight">\(n=5,10,19\)</span> che interpolano la funzione data in <a class="reference internal" href="#equation-runge">(12)</a> usando <span class="math notranslate nohighlight">\(n+1\)</span> nodi equispaziati nell’intervallo <span class="math notranslate nohighlight">\([−5, 5]\)</span>. Si riporti il grafico di ciascun polinomio interpolante su <span class="math notranslate nohighlight">\(m=500\)</span> punti nell’intervallo considerato, insieme con quello della funzione data;</p></li>
+<li><p>Si calcoli per ciascun valore di <span class="math notranslate nohighlight">\(n\)</span> l’errore commesso ossia <span class="math notranslate nohighlight">\(E_n = \max_{-5\leq x \leq 5} |f(x) − P_n(x)|\)</span> e si riportino gli errori ottenuti in un grafico in scala semilogaritmica;</p></li>
+<li><p>Si utilizzi l’implementazione dell’interpolazione di Lagrange derivata nell’Esercizio 1.</p></li>
+</ul>
+<div class="tip dropdown admonition">
+<p class="admonition-title">Un suggerimento</p>
+<p>Si può seguire il seguente prototipo</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="o">-</span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
+<span class="n">m</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">500</span><span class="p">;</span><span class="w"></span>
+<span class="n">z</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="c"> % punti di valutazione</span><span class="w"></span>
+<span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="c"> % funzione di Runge definita come handle function</span><span class="w"></span>
+<span class="n">d</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">19</span><span class="p">];</span><span class="w"></span>
+<span class="c">% Allocazione dei polinomi interpolanti e del vettore degli errori</span><span class="w"></span>
+<span class="n">P</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="n">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span>
+<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="c">  % Nodi di interpolazione</span><span class="w"></span>
+<span class="w">    </span><span class="k">...</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">% Calcolo del polinomio di Lagrange</span><span class="w"></span>
+<span class="w">    </span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c">% Calcolo dell&#39;errore</span><span class="w"></span>
+<span class="w">    </span><span class="k">...</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+<span class="c">% Plot della funzione e dei polinomi interpolanti</span><span class="w"></span>
+<span class="k">...</span><span class="w"></span>
+<span class="nb">legend</span><span class="p">(</span><span class="s">&#39;Exact&#39;</span><span class="p">,</span><span class="s">&#39;n = 5&#39;</span><span class="p">,</span><span class="s">&#39;n = 10&#39;</span><span class="p">,</span><span class="s">&#39;n = 19&#39;</span><span class="p">,</span><span class="s">&#39;Location&#39;</span><span class="p">,</span><span class="s">&#39;best&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="c">% Plot dell&#39;errore</span><span class="w"></span>
+<span class="k">...</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Il fenomeno che si osserva nell’Esercizio 2 è la mancata convergenza della successione <span class="math notranslate nohighlight">\(\{P_n\}_n\)</span> dei polinomi di interpolazione alla funzione di Runge <a class="reference internal" href="#equation-runge">(12)</a>.
+Tale fenomeno, detto anche <strong>fenomeno di Runge</strong>, può essere evitato utilizzando opportune distribuzioni di nodi.</p>
+<p>Nell’intervallo <span class="math notranslate nohighlight">\([a,b]\subset\mathbb{R}\)</span> si considerino i nodi <span class="math notranslate nohighlight">\(\{x_i\}_{i=0}^{n}\)</span> dati da</p>
+<div class="math notranslate nohighlight" id="equation-cheb">
+<span class="eqno">(13)<a class="headerlink" href="#equation-cheb" title="Permalink a questa equazione">#</a></span>\[x_i = \dfrac{a+b}{2} + \dfrac{b-a}{2}\widehat{x}_i\quad\mbox{con}\;\widehat{x}_i = -\cos\left(\dfrac{\pi i}{n}\right),\quad i=0,\ldots,n.\]</div>
+<p>I punti <span class="math notranslate nohighlight">\(\widehat{x}_i\in[−1, 1]\)</span> sono detti <strong>nodi di Chebyshev</strong>.</p>
+<div class="admonition-esercizio-3 admonition">
+<p class="admonition-title">Esercizio 3</p>
+<p>Si ripeta l’Esercizio 2 utilizzando come nodi di interpolazione i nodi di Chebyshev dati dalla <a class="reference internal" href="#equation-cheb">(13)</a>.</p>
+<p>I grafici dei polinomi interpolanti ottenuti con nodi di interpolazione equidistanti (grafico di sinistra) e con nodi di Chebyshev (grafico di destra) sono riportati qui sotto.</p>
+<figure class="align-default">
+<a class="reference internal image-reference" href="_images/runge.png"><img alt="_images/runge.png" src="_images/runge.png" style="width: 100%;" /></a>
+</figure>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="laboratorio8.html" title="precedente pagina">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">precedente</p>
+            <p class="prev-next-title">Laboratorio 8 : Metodi Stazionari per Sistemi Lineari</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="laboratorio10.html" title="successivo pagina">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">successivo</p>
+        <p class="prev-next-title">Laboratorio 10 : Il Problema Lineare dei Minimi Quadrati</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By F. Durastante<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

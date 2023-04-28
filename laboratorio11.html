@@ -159,6 +159,11 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio9.html">
+   Laboratorio 9 : Metodi di Interpolazione
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="laboratorio10.html">
    Laboratorio 10 : Il Problema Lineare dei Minimi Quadrati
   </a>
@@ -688,11 +693,11 @@ diventa sufficientemente piccola.</p>
 <p>Per implementare l’algoritmo in modo ricorsivo, riscriviamo la formula
 in termini del valore di <span class="math notranslate nohighlight">\(h\)</span> come:</p>
 <div class="math notranslate nohighlight" id="equation-trapezir">
-<span class="eqno">(13)<a class="headerlink" href="#equation-trapezir" title="Permalink a questa equazione">#</a></span>\[I(h) = \frac{1}{2}I(2h) + h \sum f(x_{\text{new}}), \quad h = \frac{H}{n-1}.\]</div>
+<span class="eqno">(16)<a class="headerlink" href="#equation-trapezir" title="Permalink a questa equazione">#</a></span>\[I(h) = \frac{1}{2}I(2h) + h \sum f(x_{\text{new}}), \quad h = \frac{H}{n-1}.\]</div>
 <div class="admonition-esercizio admonition">
 <p class="admonition-title">Esercizio</p>
 <p>Separiamo la funzione ricorsiva in due parti, la prima è quella
-che calcola <span class="math notranslate nohighlight">\(I(h)\)</span>, dato <span class="math notranslate nohighlight">\(I(2h)\)</span>, usando l’equazione <a class="reference internal" href="#equation-trapezir">(13)</a>
+che calcola <span class="math notranslate nohighlight">\(I(h)\)</span>, dato <span class="math notranslate nohighlight">\(I(2h)\)</span>, usando l’equazione <a class="reference internal" href="#equation-trapezir">(16)</a>
 e chiamiamola <code class="docutils literal notranslate"><span class="pre">trapezir</span></code></p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>Ih<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">trapezir</span><span class="p">(</span>f,a,b,I2h,k<span class="p">)</span><span class="w"></span>
 <span class="c">%%TRAPEZIR implementa l&#39;algoritmo ricorsivo della regola dei</span><span class="w"></span>
