@@ -122,7 +122,7 @@ Se scriviamo l'uguaglianza $A = LU$ con il vincolo aggiuntivo per cui
 :label: lu1
 \forall\,j\quad & \begin{array}{ll}
 i = 1, & u_{i,j} = a_{i,j},\\
-i > 1, & u_{i,j} = \displaystyle a_{i,j} - \sum_{k=1}^{i} l_{ik} u_{k,j},
+i > 1, & u_{i,j} = \displaystyle a_{i,j} - \sum_{k=1}^{i-1} l_{ik} u_{k,j},
 \end{array}
 ```
 mentre quelli della matrice $L$ sono dati da:
@@ -130,7 +130,7 @@ mentre quelli della matrice $L$ sono dati da:
 :label: lu2
 \forall\,i\quad & \begin{array}{ll}
 j = 1, & l_{ij} = \frac{a_{ij}}{u_{jj}}, \\
-j > 1, & l_{ij} = \displaystyle \frac{a_{ij} - \sum_{k=1}^{j} l_{ik} u_{kj} }{u_{jj}}.
+j > 1, & l_{ij} = \displaystyle \frac{a_{ij} - \sum_{k=1}^{j-1} l_{ik} u_{kj} }{u_{jj}}.
 \end{array}
 ```
 
@@ -328,7 +328,7 @@ pivoting parziale per una matrice $A$. Un prototipo della funzione è quindi:
 function [L,U,P] = ludecomp(A)
 %%LUDECOMPP Fattorizzazione LU con pivoting parziale.
 
-% Contrllo dell'input:
+% Controllo dell'input:
 
 % Allocazione della memoria:
 L = zeros(n);
