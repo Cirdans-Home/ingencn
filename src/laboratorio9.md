@@ -26,7 +26,7 @@ P_n(x) = \sum_{j=0}^n f(x_j)\ell_j(x),\qquad \ell_j(x)=\prod_{i\neq j}\dfrac{x-x
 Si implementi una *function* che costruisce le funzioni polinomiali $\ell_j$ dato il vettore `x` di $n+1$ nodi di interpolazione e restituisce il suo valore nei punti specificati nel vettore `z`. Si segua il seguente prototipo
 ```matlab
 function L = LagrangePoly(x, z, j)
-%%LAGRANGEPOLY costruisce il k-esimo polinomio di Lagrange dati i nodi
+%%LAGRANGEPOLY costruisce il j-esimo polinomio di Lagrange dati i nodi
 % di interpolazione x e lo valuta nei vettore z
 %    INPUT:
 %          x vettore riga degli n+1 nodi di interpolazione
