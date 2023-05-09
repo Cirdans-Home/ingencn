@@ -2,7 +2,7 @@
 # Learn more at https://jupyterbook.org/customize/config.html
 
 title: Calcolo Numerico - Esercitazioni di Laboratorio
-author: F. Durastante
+author: F. Durastante, C. Pagliantini
 logo: logo.png
 
 # Force re-execution of notebooks on each build.
