@@ -450,7 +450,7 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-11-metodi-di-quadratura">
 <h1>Laboratorio 11 : Metodi di Quadratura<a class="headerlink" href="#laboratorio-11-metodi-di-quadratura" title="Link a questa intestazione">#</a></h1>
-<p>Compito dell’integrazione numerica, o <em>quadrature</em> è quello di
+<p>Compito dell’integrazione numerica, o <em>quadratura</em> è quello di
 approssimare il valore dell’integrale</p>
 <div class="math notranslate nohighlight">
 \[\int_{a}^{b} f(x)\,{\rm d}x,\]</div>
@@ -473,13 +473,13 @@ Consideriamo l’integrale definito</p>
 <p>sostituiamo poi alla funzione <span class="math notranslate nohighlight">\(f\)</span> il suo <strong>polinomio interpolante</strong> in
 forma di Lagrange sui valori <span class="math notranslate nohighlight">\(\{ (x_i,f(x_i))\}_{i=1}^{n}\)</span></p>
 <div class="math notranslate nohighlight">
-\[P_{n-1}(x) = \sum_{i=1}^{n} f(x_i)L_i(x),\]</div>
+\[P_{n-1}(x) = \sum_{i=1}^{n} f(x_i)\ell_i(x),\]</div>
 <p>da cui otteniamo che</p>
 <div class="math notranslate nohighlight">
-\[I = \int_{a}^{b} P_{n-1}(x)\,{\rm d}x = \sum_{i=1}^{n}\left[ f(x_i) \int_{a}^{b} L_{i}(x) \right] = \sum_{i=1}^{n} \omega_i f(x_i),\]</div>
+\[I = \int_{a}^{b} P_{n-1}(x)\,{\rm d}x = \sum_{i=1}^{n}\left[ f(x_i) \int_{a}^{b} \ell_{i}(x) \right] = \sum_{i=1}^{n} \omega_i f(x_i),\]</div>
 <p>dove i <strong>pesi</strong> non sono nient’altro che gli integrali</p>
 <div class="math notranslate nohighlight">
-\[\omega_i = \int_{a}^{b} L_i(x)\,{\rm d}x, \quad i=1,\ldots,n.\]</div>
+\[\omega_i = \int_{a}^{b} \ell_i(x)\,{\rm d}x, \quad i=1,\ldots,n.\]</div>
 <p>Vediamo e <strong>implementiamo</strong> ora alcune celebri formule di quadratura di
 questa forma.</p>
 <section id="regola-composita-dei-trapezi">
