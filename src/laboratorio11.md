@@ -1,6 +1,6 @@
 # Laboratorio 11 : Metodi di Quadratura
 
-Compito dell'integrazione numerica, o *quadrature* è quello di
+Compito dell'integrazione numerica, o *quadratura* è quello di
 approssimare il valore dell'integrale
 ```{math}
 \int_{a}^{b} f(x)\,{\rm d}x,
@@ -28,15 +28,15 @@ h = \frac{b-a}{n-1}, \quad x_{i+1} = a + i h, \; i=0,\ldots,n-1,
 sostituiamo poi alla funzione $f$ il suo **polinomio interpolante** in
 forma di Lagrange sui valori $\{ (x_i,f(x_i))\}_{i=1}^{n}$
 ```{math}
-P_{n-1}(x) = \sum_{i=1}^{n} f(x_i)L_i(x),
+P_{n-1}(x) = \sum_{i=1}^{n} f(x_i)\ell_i(x),
 ```
 da cui otteniamo che
 ```{math}
-I = \int_{a}^{b} P_{n-1}(x)\,{\rm d}x = \sum_{i=1}^{n}\left[ f(x_i) \int_{a}^{b} L_{i}(x) \right] = \sum_{i=1}^{n} \omega_i f(x_i),
+I = \int_{a}^{b} P_{n-1}(x)\,{\rm d}x = \sum_{i=1}^{n}\left[ f(x_i) \int_{a}^{b} \ell_{i}(x) \right] = \sum_{i=1}^{n} \omega_i f(x_i),
 ```
 dove i **pesi** non sono nient'altro che gli integrali
 ```{math}
-\omega_i = \int_{a}^{b} L_i(x)\,{\rm d}x, \quad i=1,\ldots,n.
+\omega_i = \int_{a}^{b} \ell_i(x)\,{\rm d}x, \quad i=1,\ldots,n.
 ```
 Vediamo e **implementiamo** ora alcune celebri formule di quadratura di
 questa forma.
