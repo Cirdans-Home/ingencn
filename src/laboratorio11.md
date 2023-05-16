@@ -7,9 +7,9 @@ approssimare il valore dell'integrale
 ```
 con la somma finita
 ```{math}
-I = \sum_{i=1}^{n} \omega_i f(x_i),
+I = \sum_{i=0}^{n} \omega_i f(x_i),
 ```
-dove i **nodi** $\{x_i\}_{i=1}$ e i **pesi** $\{ \omega_i \}_{i=1}^{n}$
+dove i **nodi** $\{x_i\}_{i=0}^n$ e i **pesi** $\{ \omega_i \}_{i=0}^{n}$
 dipendono dalla particolare forma scelta. Come avete visto a lezione, le
 regole di quadratura provengono dalla scelta di un particolare _polinomio
 interpolante_ per la funzione $f$. Delle diverse famiglie di formule
@@ -21,37 +21,37 @@ Consideriamo l'integrale definito
 ```{math}
 \int_{a}^{b} f(x)\,{\rm d}x,
 ```
-e dividiamo l'intervallo $(a,b)$ in $n-1$ intervalli di uguale lunghezza
+e dividiamo l'intervallo $(a,b)$ in $n$ intervalli di uguale lunghezza
 ```{math}
-h = \frac{b-a}{n-1}, \quad x_{i+1} = a + i h, \; i=0,\ldots,n-1,
+h = \frac{b-a}{n}, \quad x_{i} = a + i h, \; i=0,\ldots,n,
 ```
 sostituiamo poi alla funzione $f$ il suo **polinomio interpolante** in
-forma di Lagrange sui valori $\{ (x_i,f(x_i))\}_{i=1}^{n}$
+forma di Lagrange sui valori $\{ (x_i,f(x_i))\}_{i=0}^{n}$
 ```{math}
-P_{n-1}(x) = \sum_{i=1}^{n} f(x_i)\ell_i(x),
+P_{n}(x) = \sum_{i=0}^{n} f(x_i)\ell_i(x),
 ```
 da cui otteniamo che
 ```{math}
-I = \int_{a}^{b} P_{n-1}(x)\,{\rm d}x = \sum_{i=1}^{n}\left[ f(x_i) \int_{a}^{b} \ell_{i}(x) \right] = \sum_{i=1}^{n} \omega_i f(x_i),
+I = \int_{a}^{b} P_{n}(x)\,{\rm d}x = \sum_{i=0}^{n}\left[ f(x_i) \int_{a}^{b} \ell_{i}(x) \right] = \sum_{i=0}^{n} \omega_i f(x_i),
 ```
 dove i **pesi** non sono nient'altro che gli integrali
 ```{math}
-\omega_i = \int_{a}^{b} \ell_i(x)\,{\rm d}x, \quad i=1,\ldots,n.
+\omega_i = \int_{a}^{b} \ell_i(x)\,{\rm d}x, \quad i=0,\ldots,n.
 ```
 Vediamo e **implementiamo** ora alcune celebri formule di quadratura di
 questa forma.
 
 ## Regola composita dei trapezi
 
-Supponiamo di scegliere $n=2$, ovvero $h = b-a$ e quindi $x_1 = a$,
-$x_2 = b$, e quindi
+Supponiamo di scegliere $n=1$, ovvero $h = b-a$ e quindi $x_0 = a$,
+$x_1 = b$, e quindi
 ```{math}
-w_1 = & -\frac{1}{h}\int_{a}^{b} (x-b)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},\\
-w_2 = & \frac{1}{h}\int_{a}^{b} (x-a)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},
+w_0 = & -\frac{1}{h}\int_{a}^{b} (x-b)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},\\
+w_1 = & \frac{1}{h}\int_{a}^{b} (x-a)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},
 ```
 da cui
 ```{math}
-I = \sum_{i=1}^{2} \omega_i f(x_i) = \frac{h}{2}(f(a)+f(b)),
+I = \sum_{i=0}^{1} \omega_i f(x_i) = \frac{h}{2}(f(a)+f(b)),
 ```
 e che è **esattamente** l'area del trapezio di altezza $b-a$ e basi $f(a)$
 e $f(b)$. L'errore per questa approssimazione, se $f$ è due volte differenziabile, è dato da
@@ -89,10 +89,10 @@ fprintf("Dovrebbe essere dell'ordine di: %e\n", h^3/12);
 non **abbiamo nemmeno una cifra significativa corretta**.
 
 Per *risolvere questo inconveniente*, possiamo passare ad utilizzare una
-composita. Dividiamo di nuovo l'intervallo $[a,b]$ in $n-1$
-sotto-intervalli di ampiezza $h = (b-a)/(n-1)$ e approssimiamo su ogni sotto-intervallo l'integrale con la formula dei trapezi locale
+composita. Dividiamo di nuovo l'intervallo $[a,b]$ in $n$
+sotto-intervalli di ampiezza $h = (b-a)/n$ e approssimiamo su ogni sotto-intervallo l'integrale con la formula dei trapezi locale
 ```{math}
-I = \frac{h}{2} \sum_{i=1}^{n-1} f(x_i) + f(x_{i+1}),
+I = \frac{h}{2} \sum_{i=0}^{n-1} f(x_i) + f(x_{i+1}),
 ```
 per cui si può ricavare una **nuova stima dell'errore**:
 ```{math}
@@ -109,7 +109,7 @@ function I = trapezi(f,a,b,n)
 % funzione f sull'intervallo a,b con n-1 intervalli.
 %   INPUT: f function handle dell'integrando,
 %          a,b estremi dell'intervallo di integrazione
-%          n numero di intervalli + 1
+%          n numero di intervalli
 
 end
 ```
