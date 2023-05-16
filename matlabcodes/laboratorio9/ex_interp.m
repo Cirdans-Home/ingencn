@@ -1,5 +1,4 @@
 % Interpolazione di Lagrange dati i punti (x,y)
-
 clear; close all; clc
 
 x = [-5,-4,0,5];

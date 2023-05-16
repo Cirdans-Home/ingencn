@@ -26,4 +26,4 @@ figure;
 plot(z,f(z),'-k',z,P);
 xlabel('x');
 legend('Exact','n = 5','n = 10','n = 19','Location','best');
-figure; semilogy(d,err,'-o')
+% figure; semilogy(d,err,'-o')
