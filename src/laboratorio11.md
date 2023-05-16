@@ -109,7 +109,7 @@ function I = trapezi(f,a,b,n)
 % funzione f sull'intervallo a,b con n-1 intervalli.
 %   INPUT: f function handle dell'integrando,
 %          a,b estremi dell'intervallo di integrazione
-%          n numero di intervalli
+%          n numero di intervalli +1
 
 end
 ```
