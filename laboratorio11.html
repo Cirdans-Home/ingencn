@@ -456,8 +456,8 @@ approssimare il valore dell’integrale</p>
 \[\int_{a}^{b} f(x)\,{\rm d}x,\]</div>
 <p>con la somma finita</p>
 <div class="math notranslate nohighlight">
-\[I = \sum_{i=1}^{n} \omega_i f(x_i),\]</div>
-<p>dove i <strong>nodi</strong> <span class="math notranslate nohighlight">\(\{x_i\}_{i=1}\)</span> e i <strong>pesi</strong> <span class="math notranslate nohighlight">\(\{ \omega_i \}_{i=1}^{n}\)</span>
+\[I = \sum_{i=0}^{n} \omega_i f(x_i),\]</div>
+<p>dove i <strong>nodi</strong> <span class="math notranslate nohighlight">\(\{x_i\}_{i=0}^n\)</span> e i <strong>pesi</strong> <span class="math notranslate nohighlight">\(\{ \omega_i \}_{i=0}^{n}\)</span>
 dipendono dalla particolare forma scelta. Come avete visto a lezione, le
 regole di quadratura provengono dalla scelta di un particolare <em>polinomio
 interpolante</em> per la funzione <span class="math notranslate nohighlight">\(f\)</span>. Delle diverse famiglie di formule
@@ -467,31 +467,31 @@ quadrature che esistono ci focalizzeremo qui sull’implementazione delle
 Consideriamo l’integrale definito</p>
 <div class="math notranslate nohighlight">
 \[\int_{a}^{b} f(x)\,{\rm d}x,\]</div>
-<p>e dividiamo l’intervallo <span class="math notranslate nohighlight">\((a,b)\)</span> in <span class="math notranslate nohighlight">\(n-1\)</span> intervalli di uguale lunghezza</p>
+<p>e dividiamo l’intervallo <span class="math notranslate nohighlight">\((a,b)\)</span> in <span class="math notranslate nohighlight">\(n\)</span> intervalli di uguale lunghezza</p>
 <div class="math notranslate nohighlight">
-\[h = \frac{b-a}{n-1}, \quad x_{i+1} = a + i h, \; i=0,\ldots,n-1,\]</div>
+\[h = \frac{b-a}{n}, \quad x_{i} = a + i h, \; i=0,\ldots,n,\]</div>
 <p>sostituiamo poi alla funzione <span class="math notranslate nohighlight">\(f\)</span> il suo <strong>polinomio interpolante</strong> in
-forma di Lagrange sui valori <span class="math notranslate nohighlight">\(\{ (x_i,f(x_i))\}_{i=1}^{n}\)</span></p>
+forma di Lagrange sui valori <span class="math notranslate nohighlight">\(\{ (x_i,f(x_i))\}_{i=0}^{n}\)</span></p>
 <div class="math notranslate nohighlight">
-\[P_{n-1}(x) = \sum_{i=1}^{n} f(x_i)\ell_i(x),\]</div>
+\[P_{n}(x) = \sum_{i=0}^{n} f(x_i)\ell_i(x),\]</div>
 <p>da cui otteniamo che</p>
 <div class="math notranslate nohighlight">
-\[I = \int_{a}^{b} P_{n-1}(x)\,{\rm d}x = \sum_{i=1}^{n}\left[ f(x_i) \int_{a}^{b} \ell_{i}(x) \right] = \sum_{i=1}^{n} \omega_i f(x_i),\]</div>
+\[I = \int_{a}^{b} P_{n}(x)\,{\rm d}x = \sum_{i=0}^{n}\left[ f(x_i) \int_{a}^{b} \ell_{i}(x) \right] = \sum_{i=0}^{n} \omega_i f(x_i),\]</div>
 <p>dove i <strong>pesi</strong> non sono nient’altro che gli integrali</p>
 <div class="math notranslate nohighlight">
-\[\omega_i = \int_{a}^{b} \ell_i(x)\,{\rm d}x, \quad i=1,\ldots,n.\]</div>
+\[\omega_i = \int_{a}^{b} \ell_i(x)\,{\rm d}x, \quad i=0,\ldots,n.\]</div>
 <p>Vediamo e <strong>implementiamo</strong> ora alcune celebri formule di quadratura di
 questa forma.</p>
 <section id="regola-composita-dei-trapezi">
 <h2>Regola composita dei trapezi<a class="headerlink" href="#regola-composita-dei-trapezi" title="Link a questa intestazione">#</a></h2>
-<p>Supponiamo di scegliere <span class="math notranslate nohighlight">\(n=2\)</span>, ovvero <span class="math notranslate nohighlight">\(h = b-a\)</span> e quindi <span class="math notranslate nohighlight">\(x_1 = a\)</span>,
-<span class="math notranslate nohighlight">\(x_2 = b\)</span>, e quindi</p>
+<p>Supponiamo di scegliere <span class="math notranslate nohighlight">\(n=1\)</span>, ovvero <span class="math notranslate nohighlight">\(h = b-a\)</span> e quindi <span class="math notranslate nohighlight">\(x_0 = a\)</span>,
+<span class="math notranslate nohighlight">\(x_1 = b\)</span>, e quindi</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}w_1 = &amp; -\frac{1}{h}\int_{a}^{b} (x-b)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},\\
-w_2 = &amp; \frac{1}{h}\int_{a}^{b} (x-a)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},\end{split}\]</div>
+\[\begin{split}w_0 = &amp; -\frac{1}{h}\int_{a}^{b} (x-b)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},\\
+w_1 = &amp; \frac{1}{h}\int_{a}^{b} (x-a)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},\end{split}\]</div>
 <p>da cui</p>
 <div class="math notranslate nohighlight">
-\[I = \sum_{i=1}^{2} \omega_i f(x_i) = \frac{h}{2}(f(a)+f(b)),\]</div>
+\[I = \sum_{i=0}^{1} \omega_i f(x_i) = \frac{h}{2}(f(a)+f(b)),\]</div>
 <p>e che è <strong>esattamente</strong> l’area del trapezio di altezza <span class="math notranslate nohighlight">\(b-a\)</span> e basi <span class="math notranslate nohighlight">\(f(a)\)</span>
 e <span class="math notranslate nohighlight">\(f(b)\)</span>. L’errore per questa approssimazione, se <span class="math notranslate nohighlight">\(f\)</span> è due volte differenziabile, è dato da</p>
 <div class="math notranslate nohighlight">
@@ -525,10 +525,10 @@ l’integrale le cose peggiorano nettamente</p>
 </div>
 <p>non <strong>abbiamo nemmeno una cifra significativa corretta</strong>.</p>
 <p>Per <em>risolvere questo inconveniente</em>, possiamo passare ad utilizzare una
-composita. Dividiamo di nuovo l’intervallo <span class="math notranslate nohighlight">\([a,b]\)</span> in <span class="math notranslate nohighlight">\(n-1\)</span>
-sotto-intervalli di ampiezza <span class="math notranslate nohighlight">\(h = (b-a)/(n-1)\)</span> e approssimiamo su ogni sotto-intervallo l’integrale con la formula dei trapezi locale</p>
+composita. Dividiamo di nuovo l’intervallo <span class="math notranslate nohighlight">\([a,b]\)</span> in <span class="math notranslate nohighlight">\(n\)</span>
+sotto-intervalli di ampiezza <span class="math notranslate nohighlight">\(h = (b-a)/n\)</span> e approssimiamo su ogni sotto-intervallo l’integrale con la formula dei trapezi locale</p>
 <div class="math notranslate nohighlight">
-\[I = \frac{h}{2} \sum_{i=1}^{n-1} f(x_i) + f(x_{i+1}),\]</div>
+\[I = \frac{h}{2} \sum_{i=0}^{n-1} f(x_i) + f(x_{i+1}),\]</div>
 <p>per cui si può ricavare una <strong>nuova stima dell’errore</strong>:</p>
 <div class="math notranslate nohighlight">
 \[E = O\left( - \frac{(b-a)h^2}{12} f''(\xi) \right),\]</div>
@@ -542,7 +542,7 @@ il seguente prototipo</p>
 <span class="c">% funzione f sull&#39;intervallo a,b con n-1 intervalli.</span><span class="w"></span>
 <span class="c">%   INPUT: f function handle dell&#39;integrando,</span><span class="w"></span>
 <span class="c">%          a,b estremi dell&#39;intervallo di integrazione</span><span class="w"></span>
-<span class="c">%          n numero di intervalli + 1</span><span class="w"></span>
+<span class="c">%          n numero di intervalli +1</span><span class="w"></span>
 
 <span class="k">end</span><span class="w"></span>
 </pre></div>
