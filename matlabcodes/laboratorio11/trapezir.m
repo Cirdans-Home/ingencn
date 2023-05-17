@@ -4,8 +4,8 @@ function Ih = trapezir(f,a,b,I2h,k)
 %   INPUT:  f = handle della funzione da integrare,
 %           a,b = limiti di integrazione
 %           I2h = integrale su 2^{k-1} intervalli
-%           Ih = integralae calcolo su 2^k intervalli
 %           k  = livello di ricorsione
+%   OUTPUT: Ih = integrale su 2^k intervalli
 
 if k == 1
     Ih = (f(a) + f(b))*(b - a)/2.0;
@@ -13,6 +13,7 @@ else
     n = 2^(k -2);  % Numero dei nuovi punti:
     h = (b - a)/n ; % Spaziatura
     x = a + h/2.0;  % Coordinata del primo dei nuovi punti
+%     % Versione con ciclo for
 %     sum = 0.0;
 %     for i = 1:n
 %         fx = f(x);

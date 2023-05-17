@@ -5,7 +5,7 @@ a = 0;
 b = 3;
 Itrue = 3.615857833947287;
 
-n = logspace(1,4,4)+1;
+n = logspace(1,4,4);
 errore = [];
 
 for nval = n
@@ -29,7 +29,7 @@ a = 0;
 b = 3;
 Itrue = 3.615857833947287;
 
-n = logspace(1,4,4)+1;
+n = logspace(1,4,4);
 erroresimpson = [];
 erroretrapezi = [];
 

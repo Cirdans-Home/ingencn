@@ -3,14 +3,14 @@ function I = simpson(f,a,b,n)
 % formula di Simpson.
 %   INPUT:  f = handle della funzione di integrare,
 %           a,b = estremi di integrazione
-%           n numero di intervalli + 1
+%           n numero di intervalli
 
-if mod(n,2) ~= 1
-    error('n deve essere dispari');
+if mod(n+1,2) ~= 1
+    error('n deve essere pari');
 end
 
-x = linspace(a,b,n);
-h=(b-a)/(n-1); 
+x = linspace(a,b,n+1);
+h=(b-a)/n; 
 fx = f(x);
 I= h/3*(fx(1)+2*sum(fx(3:2:end-2))+4*sum(fx(2:2:end))+fx(end));
 

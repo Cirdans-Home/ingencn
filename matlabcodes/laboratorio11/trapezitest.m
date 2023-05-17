@@ -6,14 +6,14 @@ f = @(x) 4*sqrt(1-x.^2);
 a = 0;
 b = 1;
 
-n = 10;
+n = 9;
 I = trapezi(f,a,b,n);
 
 fprintf('Errore: %e\n',abs(pi-I)/pi);
 
 %% Convergenza : versione 1
 
-n = logspace(1,4,4);
+n = logspace(1,4,4)-1;
 errore = [];
 
 for nval = n
@@ -37,7 +37,7 @@ a = 0;
 b = 3;
 Itrue = 3.615857833947287;
 
-n = logspace(1,4,4);
+n = logspace(1,4,4)-1;
 errore = [];
 
 for nval = n
