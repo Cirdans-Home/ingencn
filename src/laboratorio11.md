@@ -92,11 +92,11 @@ Per *risolvere questo inconveniente*, possiamo passare ad utilizzare una
 composita. Dividiamo di nuovo l'intervallo $[a,b]$ in $n$
 sotto-intervalli di ampiezza $h = (b-a)/n$ e approssimiamo su ogni sotto-intervallo l'integrale con la formula dei trapezi locale
 ```{math}
-I = \frac{h}{2} \sum_{i=0}^{n-1} f(x_i) + f(x_{i+1}),
+I = \frac{h}{2} \sum_{i=0}^{n-1} \big(f(x_i) + f(x_{i+1})\big),
 ```
 per cui si può ricavare una **nuova stima dell'errore**:
 ```{math}
-E = O\left( - \frac{(b-a)h^2}{12} f''(\xi) \right),
+E = O\left(\frac{(b-a)h^2}{12} f''(\xi) \right),
 ```
 dove $\xi$ è sempre un valore nell'intervallo $[a,b]$.
 
@@ -106,10 +106,10 @@ il seguente prototipo
 ```matlab
 function I = trapezi(f,a,b,n)
 %% TRAPEZI questa funzione implementa il metodo dei trapezi per la
-% funzione f sull'intervallo a,b con n-1 intervalli.
+% funzione f sull'intervallo a,b con n intervalli.
 %   INPUT: f function handle dell'integrando,
 %          a,b estremi dell'intervallo di integrazione
-%          n numero di intervalli +1
+%          n numero di intervalli
 
 end
 ```
@@ -131,7 +131,7 @@ f = @(x) 4*sqrt(1-x.^2);
 a = 0;
 b = 1;
 
-n = 10;
+n = 9;
 I = trapezi(f,a,b,n);
 
 fprintf('Errore: %e\n',abs(pi-I)/pi);
@@ -148,7 +148,7 @@ Proviamo a stimare l'errore in maniera numerica e a confrontarlo con il
 comportamento che ci aspettiamo dalla teoria:
 
 ```matlab
-n = logspace(1,4,4);
+n = logspace(1,4,4)-1;
 errore = [];
 
 for nval = n
@@ -184,11 +184,11 @@ La stima non sembra particolarmente soddisfacente, ma siamo sicuri di
 poterla applicare? Calcoliamo la derivata seconda della nostra funzione
 integranda:
 ```{math}
-f''(x) = 4 \left(-\frac{t^2}{\left(1-t^2\right)^{3/2}}-\frac{1}{\sqrt{1-t^2}}\right) = -\frac{4}{\left(1-t^2\right)^{3/2}}
+f''(t) = 4 \left(-\frac{t^2}{\left(1-t^2\right)^{3/2}}-\frac{1}{\sqrt{1-t^2}}\right) = \frac{-4}{\left(1-t^2\right)^{3/2}}
 ```
 per cui abbiamo che:
 ```{math}
-\underset{t\to 1^-}{\text{lim}}-\frac{4}{\left(1-t^2\right)^{3/2}} = -\infty
+\underset{t\to 1^-}{\text{lim}}\frac{-4}{\left(1-t^2\right)^{3/2}} = -\infty
 ```
 ovvero, **non possiamo limitare $f''(\xi)$ nell'intervallo di
 integrazione**.
@@ -211,7 +211,7 @@ a = 0;
 b = 3;
 Itrue = 3.615857833947287;
 
-n = logspace(1,4,4);
+n = logspace(1,4,4)-1;
 errore = [];
 
 for nval = n
