@@ -772,12 +772,12 @@ interpolante quadratica attraverso tre nodi adiacenti.</p>
 \[x_0 = a, \quad x_1 = \frac{a+b}{2}, \quad x_2 = b,\]</div>
 <p>da cui abbiamo che i pesi si ottengono come</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\omega_0 = \int_{a}^{b} \ell_0(x)\,{\rm d}x = \frac{h}{3}, \\
-\omega_1 = \int_{a}^{b} \ell_1(x)\,{\rm d}x = \frac{4h}{3}, \\
-\omega_2 = \int_{a}^{b} \ell_2(x)\,{\rm d}x = \frac{h}{3},\end{split}\]</div>
+\[\begin{split}\omega_0 = \int_{a}^{b} \ell_0(x)\,{\rm d}x = \frac{h}{6}, \\
+\omega_1 = \int_{a}^{b} \ell_1(x)\,{\rm d}x = \frac{2h}{3}, \\
+\omega_2 = \int_{a}^{b} \ell_2(x)\,{\rm d}x = \frac{h}{6},\end{split}\]</div>
 <p>e quindi</p>
 <div class="math notranslate nohighlight">
-\[I = \sum_{i=0}^{2} \omega_i f(x_i) = \frac{h}{3}\left[ f(a) + 4f\left(\frac{a+b}{2}\right)+f(b)\right].\]</div>
+\[I = \sum_{i=0}^{2} \omega_i f(x_i) = \frac{h}{6}\left[ f(a) + 4f\left(\frac{a+b}{2}\right)+f(b)\right].\]</div>
 <div class="admonition tip">
 <p class="admonition-title">Suggerimento</p>
 <p>Per calcolare gli integrali <span class="math notranslate nohighlight">\(\omega_i\)</span> è conveniente fare un cambio di
