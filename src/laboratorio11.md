@@ -363,13 +363,13 @@ x_0 = a, \quad x_1 = \frac{a+b}{2}, \quad x_2 = b,
 ```
 da cui abbiamo che i pesi si ottengono come
 ```{math}
-\omega_0 = \int_{a}^{b} \ell_0(x)\,{\rm d}x = \frac{h}{3}, \\
-\omega_1 = \int_{a}^{b} \ell_1(x)\,{\rm d}x = \frac{4h}{3}, \\
-\omega_2 = \int_{a}^{b} \ell_2(x)\,{\rm d}x = \frac{h}{3},
+\omega_0 = \int_{a}^{b} \ell_0(x)\,{\rm d}x = \frac{h}{6}, \\
+\omega_1 = \int_{a}^{b} \ell_1(x)\,{\rm d}x = \frac{2h}{3}, \\
+\omega_2 = \int_{a}^{b} \ell_2(x)\,{\rm d}x = \frac{h}{6},
 ```
 e quindi
 ```{math}
-I = \sum_{i=0}^{2} \omega_i f(x_i) = \frac{h}{3}\left[ f(a) + 4f\left(\frac{a+b}{2}\right)+f(b)\right].
+I = \sum_{i=0}^{2} \omega_i f(x_i) = \frac{h}{6}\left[ f(a) + 4f\left(\frac{a+b}{2}\right)+f(b)\right].
 ```
 :::{tip}
 Per calcolare gli integrali $\omega_i$ è conveniente fare un cambio di
