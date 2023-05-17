@@ -528,10 +528,10 @@ l’integrale le cose peggiorano nettamente</p>
 composita. Dividiamo di nuovo l’intervallo <span class="math notranslate nohighlight">\([a,b]\)</span> in <span class="math notranslate nohighlight">\(n\)</span>
 sotto-intervalli di ampiezza <span class="math notranslate nohighlight">\(h = (b-a)/n\)</span> e approssimiamo su ogni sotto-intervallo l’integrale con la formula dei trapezi locale</p>
 <div class="math notranslate nohighlight">
-\[I = \frac{h}{2} \sum_{i=0}^{n-1} f(x_i) + f(x_{i+1}),\]</div>
+\[I = \frac{h}{2} \sum_{i=0}^{n-1} \big(f(x_i) + f(x_{i+1})\big),\]</div>
 <p>per cui si può ricavare una <strong>nuova stima dell’errore</strong>:</p>
 <div class="math notranslate nohighlight">
-\[E = O\left( - \frac{(b-a)h^2}{12} f''(\xi) \right),\]</div>
+\[E = O\left(\frac{(b-a)h^2}{12} f''(\xi) \right),\]</div>
 <p>dove <span class="math notranslate nohighlight">\(\xi\)</span> è sempre un valore nell’intervallo <span class="math notranslate nohighlight">\([a,b]\)</span>.</p>
 <div class="admonition-esercizio admonition">
 <p class="admonition-title">Esercizio</p>
@@ -539,10 +539,10 @@ sotto-intervalli di ampiezza <span class="math notranslate nohighlight">\(h = (b
 il seguente prototipo</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>I<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">trapezi</span><span class="p">(</span>f,a,b,n<span class="p">)</span><span class="w"></span>
 <span class="c">%% TRAPEZI questa funzione implementa il metodo dei trapezi per la</span><span class="w"></span>
-<span class="c">% funzione f sull&#39;intervallo a,b con n-1 intervalli.</span><span class="w"></span>
+<span class="c">% funzione f sull&#39;intervallo a,b con n intervalli.</span><span class="w"></span>
 <span class="c">%   INPUT: f function handle dell&#39;integrando,</span><span class="w"></span>
 <span class="c">%          a,b estremi dell&#39;intervallo di integrazione</span><span class="w"></span>
-<span class="c">%          n numero di intervalli +1</span><span class="w"></span>
+<span class="c">%          n numero di intervalli</span><span class="w"></span>
 
 <span class="k">end</span><span class="w"></span>
 </pre></div>
@@ -564,7 +564,7 @@ il seguente prototipo</p>
 <span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
 <span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
 
-<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
+<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span><span class="w"></span>
 <span class="n">I</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">trapezi</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">n</span><span class="p">);</span><span class="w"></span>
 
 <span class="nb">fprintf</span><span class="p">(</span><span class="s">&#39;Errore: %e\n&#39;</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="nb">pi</span><span class="o">-</span><span class="n">I</span><span class="p">)</span><span class="o">/</span><span class="nb">pi</span><span class="p">);</span><span class="w"></span>
@@ -578,7 +578,7 @@ che succede per l’integrale dell’esempio:</p>
 \[\pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,\]</div>
 <p>Proviamo a stimare l’errore in maniera numerica e a confrontarlo con il
 comportamento che ci aspettiamo dalla teoria:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">logspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">logspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
 <span class="n">errore</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[];</span><span class="w"></span>
 
 <span class="k">for</span><span class="w"> </span><span class="n">nval</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
@@ -611,10 +611,10 @@ comportamento che ci aspettiamo dalla teoria:</p>
 poterla applicare? Calcoliamo la derivata seconda della nostra funzione
 integranda:</p>
 <div class="math notranslate nohighlight">
-\[f''(x) = 4 \left(-\frac{t^2}{\left(1-t^2\right)^{3/2}}-\frac{1}{\sqrt{1-t^2}}\right) = -\frac{4}{\left(1-t^2\right)^{3/2}}\]</div>
+\[f''(t) = 4 \left(-\frac{t^2}{\left(1-t^2\right)^{3/2}}-\frac{1}{\sqrt{1-t^2}}\right) = \frac{-4}{\left(1-t^2\right)^{3/2}}\]</div>
 <p>per cui abbiamo che:</p>
 <div class="math notranslate nohighlight">
-\[\underset{t\to 1^-}{\text{lim}}-\frac{4}{\left(1-t^2\right)^{3/2}} = -\infty\]</div>
+\[\underset{t\to 1^-}{\text{lim}}\frac{-4}{\left(1-t^2\right)^{3/2}} = -\infty\]</div>
 <p>ovvero, <strong>non possiamo limitare <span class="math notranslate nohighlight">\(f''(\xi)\)</span> nell’intervallo di
 integrazione</strong>.</p>
 <p>Proviamo con una funzione diversa, ad esempio:</p>
@@ -632,7 +632,7 @@ numericamente:</p>
 <span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
 <span class="n">Itrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">3.615857833947287</span><span class="p">;</span><span class="w"></span>
 
-<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">logspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
+<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">logspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
 <span class="n">errore</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[];</span><span class="w"></span>
 
 <span class="k">for</span><span class="w"> </span><span class="n">nval</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
@@ -705,8 +705,8 @@ e chiamiamola <code class="docutils literal notranslate"><span class="pre">trape
 <span class="c">%   INPUT:  f = handle della funzione da integrare,</span><span class="w"></span>
 <span class="c">%           a,b = limiti di integrazione</span><span class="w"></span>
 <span class="c">%           I2h = integrale su 2^{k-1} intervalli</span><span class="w"></span>
-<span class="c">%           Ih = integralae calcolo su 2^k intervalli</span><span class="w"></span>
 <span class="c">%           k  = livello di ricorsione</span><span class="w"></span>
+<span class="c">%   OUTPUT: Ih = integrale su 2^k intervalli</span><span class="w"></span>
 
 <span class="k">end</span><span class="w"></span>
 </pre></div>
@@ -764,24 +764,24 @@ mettere insieme la funzione ricorsiva</p>
 <section id="formula-di-simpson">
 <h2>Formula di Simpson<a class="headerlink" href="#formula-di-simpson" title="Link a questa intestazione">#</a></h2>
 <p>La formula di quadratura di Simpson può essere ottenuta di nuovo come una
-formula di Newton-Cotes con <span class="math notranslate nohighlight">\(n = 3\)</span>. Laddove nel caso dei trapezi avevamo
+formula di Newton-Cotes con <span class="math notranslate nohighlight">\(n = 2\)</span>. Laddove nel caso dei trapezi avevamo
 fissato una interpolate lineare, questa volta abbiamo scelto una
 interpolante quadratica attraverso tre nodi adiacenti.</p>
 <p>Possiamo ricavarla direttamente dalla definizione su un solo intervallo <span class="math notranslate nohighlight">\([a,b]\)</span> con i nodi</p>
 <div class="math notranslate nohighlight">
-\[x_1 = a, \quad x_2 = \frac{a+b}{2}, \quad x_3 = b,\]</div>
+\[x_0 = a, \quad x_1 = \frac{a+b}{2}, \quad x_2 = b,\]</div>
 <p>da cui abbiamo che i pesi si ottengono come</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\omega_1 = \int_{a}^{b} L_1(x)\,{\rm d}x = \frac{h}{3}, \\
-\omega_2 = \int_{a}^{b} L_2(x)\,{\rm d}x = \frac{4h}{3}, \\
-\omega_3 = \int_{a}^{b} L_3(x)\,{\rm d}x = \frac{h}{3},\end{split}\]</div>
+\[\begin{split}\omega_0 = \int_{a}^{b} \ell_0(x)\,{\rm d}x = \frac{h}{3}, \\
+\omega_1 = \int_{a}^{b} \ell_1(x)\,{\rm d}x = \frac{4h}{3}, \\
+\omega_2 = \int_{a}^{b} \ell_2(x)\,{\rm d}x = \frac{h}{3},\end{split}\]</div>
 <p>e quindi</p>
 <div class="math notranslate nohighlight">
-\[I = \sum_{i=1}^{3} \omega_i f(x_i) = \frac{h}{3}\left[ f(a) + 4f\left(\frac{a+b}{2}\right)+f(b)\right].\]</div>
+\[I = \sum_{i=0}^{2} \omega_i f(x_i) = \frac{h}{3}\left[ f(a) + 4f\left(\frac{a+b}{2}\right)+f(b)\right].\]</div>
 <div class="admonition tip">
 <p class="admonition-title">Suggerimento</p>
 <p>Per calcolare gli integrali <span class="math notranslate nohighlight">\(\omega_i\)</span> è conveniente fare un cambio di
-variabili ponendo l’origine dell’intervallo di integrazione su <span class="math notranslate nohighlight">\(x_2\)</span>.
+variabili ponendo l’origine dell’intervallo di integrazione su <span class="math notranslate nohighlight">\(x_1\)</span>.
 In questo modo i nodi diventano <span class="math notranslate nohighlight">\(\{-h,0,h\}\)</span> e gli integrali sono più semplici da calcolare.</p>
 </div>
 <div class="admonition danger">
@@ -796,7 +796,7 @@ che il primo (o l’ultimo) intervallo usi 4 invece che 3 punti.</p>
 si può ottenere una prima stima dell’errore anche per la formula di
 Simpson. Infatti si ha che l’errore si comporta come</p>
 <div class="math notranslate nohighlight">
-\[E = O\left( (b-a)\frac{h^4}{180} f^{(4)}(\xi) \right),\]</div>
+\[E = O\left( (b-a)\frac{h^4}{180} f^{(iv)}(\xi) \right),\]</div>
 <p>per <span class="math notranslate nohighlight">\(\xi\)</span> un punto nell’intervallo <span class="math notranslate nohighlight">\([a,b]\)</span>.</p>
 <div class="admonition-esercizio admonition">
 <p class="admonition-title">Esercizio.</p>
@@ -807,10 +807,10 @@ calcolo di un integrale secondo il seguente prototipo</p>
 <span class="c">% formula di Simpson.</span><span class="w"></span>
 <span class="c">%   INPUT:  f = handle della funzione di integrare,</span><span class="w"></span>
 <span class="c">%           a,b = estremi di integrazione</span><span class="w"></span>
-<span class="c">%           n numero di intervalli + 1</span><span class="w"></span>
+<span class="c">%           n numero di intervalli</span><span class="w"></span>
 
-<span class="k">if</span><span class="w"> </span><span class="nb">mod</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
-<span class="w">    </span><span class="nb">error</span><span class="p">(</span><span class="s">&#39;n deve essere dispari&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="k">if</span><span class="w"> </span><span class="nb">mod</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">    </span><span class="nb">error</span><span class="p">(</span><span class="s">&#39;n deve essere pari&#39;</span><span class="p">);</span><span class="w"></span>
 <span class="k">end</span><span class="w"></span>
 
 <span class="k">end</span><span class="w"></span>
@@ -824,7 +824,7 @@ calcolo di un integrale secondo il seguente prototipo</p>
 <span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
 <span class="n">Itrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">3.615857833947287</span><span class="p">;</span><span class="w"></span>
 
-<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">logspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">logspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
 <span class="n">errore</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[];</span><span class="w"></span>
 
 <span class="k">for</span><span class="w"> </span><span class="n">nval</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
