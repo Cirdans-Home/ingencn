@@ -1,4 +1,13 @@
 # This job installs dependencies, build the book, and pushes it to `gh-pages`
+name: deploy-book
+
+on:
+  # Trigger the deploy on push to main branch and to AY_2023_2024 branch
+  push:
+    branches:
+      - main
+      - AY_2023_2024
+
 jobs:
   deploy-book:
     runs-on: ubuntu-latest
