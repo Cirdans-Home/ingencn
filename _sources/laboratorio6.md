@@ -1,460 +1,691 @@
-# Laboratorio 6 : Soluzione dei Sistemi Lineari
+# Laboratorio 6 : Metodi di Quadratura
 
-In questo e nel prossimo laboratorio ci focalizzeremo sul problema di risolvere
-un sistema lineare compatibile. Partiremo dal caso dei sistemi triangolari per
-poi occuparci del caso generale tramite la fattorizzazione $PA = LU$ della
-matrice dei coefficienti.
+Compito dell'integrazione numerica, o *quadratura* è quello di
+approssimare il valore dell'integrale
 
-(condizionamento-spettrale)=
-## Condizionamento di un sistema lineare
+```{math}
+\int_{a}^{b} f(x)\,{\rm d}x,
+```
 
-Ricordiamo che il **numero di condizionamento** associato all'equazione lineare
-$A \mathbf{x} = \mathbf{b}$ fornisce un limite sulla precisione della soluzione
-$\mathbf{x}$ dopo che un qualunque algoritmo sarà stato applicato per la
-sua approssimazione ed in maniera indipendente dalla precisione *floating point*
-usata.
+con la somma finita
 
-:::{margin} Norma di una matrice
-Ricordiamo che una norma sullo spazio vettoriale $K^{m\times n}$ delle matrici
-a elementi nel campo $K$ è una funzione
 ```{math}
-\| \cdot \|:K^{m \times n} \mapsto \mathbb{R}^{+}
+I = \sum_{i=0}^{n} \omega_i f(x_i),
 ```
-tale che per ogni coppia di matrici $A$ e $B$ e per ogni scalare $\lambda \in K$ si verifica:
 
-- ${\displaystyle \|A\|=0}$ se e solo se ${\displaystyle A=0}$,
-- ${\displaystyle \|\lambda A\|=|\lambda |\|A\|}$.
-- ${\displaystyle \|A+B\|\leq \|A\|+\|B\|}$.
+dove i **nodi** $\{x_i\}_{i=0}^n$ e i **pesi** $\{ \omega_i \}_{i=0}^{n}$
+dipendono dalla particolare forma scelta. Come avete visto a lezione, le
+regole di quadratura provengono dalla scelta di un particolare *polinomio
+interpolante* per la funzione $f$. Delle diverse famiglie di formule
+quadrature che esistono ci focalizzeremo qui sull'implementazione delle
+**formule di Newton-Cotes**.
 
-Se è data una norma sullo spazio vettoriale $K^n$, si può costruire una **norma indotta**
-sullo spazio delle matrici in $K^{n \times n}$ considerando
+Ricordiamo brevemente il funzionamento generale di questa procedura.
+Consideriamo l'integrale definito
+
 ```{math}
-\|A\| = \sup_{x \neq \mathbf{0}} \frac{\| A \mathbf{x} \|}{\|\mathbf{x}\|},
+\int_{a}^{b} f(x)\,{\rm d}x,
 ```
-ovvero
+
+e dividiamo l'intervallo $(a,b)$ in $n$ intervalli di uguale lunghezza
+
 ```{math}
-\|A\| = \sup_{\|x\|  = 1} \| A \mathbf{x} \|.
+h = \frac{b-a}{n}, \quad x_{i} = a + i h, \; i=0,\ldots,n,
 ```
-Nei casi speciali in cui la norma vettoriale sia la norma  ${\displaystyle p=1,2,\infty ,}$
-la norma matriciale indotta può essere calcolata come
+
+sostituiamo poi alla funzione $f$ il suo **polinomio interpolante** in
+forma di Lagrange sui valori $\{ (x_i,f(x_i))\}_{i=0}^{n}$
+
 ```{math}
-{\displaystyle \|A\|_{1}=\max _{1\leq j\leq n}\sum _{i=1}^{m}|a_{ij}|,}
+P_{n}(x) = \sum_{i=0}^{n} f(x_i)\ell_i(x),
 ```
-che è il massimo della somma dei valori assoluti delle colonne di $A$;
+
+da cui otteniamo che
+
 ```{math}
-{\displaystyle \|A\|_{\infty }=\max _{1\leq i\leq m}\sum _{j=1}^{n}|a_{ij}|,}
+I = \int_{a}^{b} P_{n}(x)\,{\rm d}x = \sum_{i=0}^{n}\left[ f(x_i) \int_{a}^{b} \ell_{i}(x) \right] = \sum_{i=0}^{n} \omega_i f(x_i),
 ```
-che è il massimo della somma dei valori assoluti delle righe di $A$;
+
+dove i **pesi** non sono nient'altro che gli integrali
+
 ```{math}
-{\displaystyle \|A\|_{2}={\sqrt {\lambda _{\max }\left(A^{*}A\right)}}.}
+\omega_i = \int_{a}^{b} \ell_i(x)\,{\rm d}x, \quad i=0,\ldots,n.
 ```
-che è detta **norma spettrale** della matrice ${\displaystyle A}$, ovver la
-radice quadrata the più grande autovalore di ${\displaystyle A^{* }A}$,
-dove $A^{* }$ denota la coniugata trasposta di $A$.
+
+Vediamo e **implementiamo** ora alcune celebri formule di quadratura di
+questa forma.
+
+## Regola composita dei trapezi
+
+Supponiamo di scegliere $n=1$, ovvero $h = b-a$ e quindi $x_0 = a$,
+$x_1 = b$, e quindi
+
+```{math}
+w_0 = & -\frac{1}{h}\int_{a}^{b} (x-b)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},\\
+w_1 = & \frac{1}{h}\int_{a}^{b} (x-a)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},
+```
+
+da cui
+
+```{math}
+I = \sum_{i=0}^{1} \omega_i f(x_i) = \frac{h}{2}(f(a)+f(b)),
+```
+
+e che è **esattamente** l'area del trapezio di altezza $b-a$ e basi $f(a)$
+e $f(b)$. L'errore per questa approssimazione, se $f$ è due volte differenziabile, è dato da
+
+```{math}
+E = O\left( \frac{h^3}{12} f''(\xi) \right),
+```
+
+dove $\xi$ è un punto in $[a,b]$ e che quindi **possiamo maggiorare** con il massimo di $f''(x)$ in $[a,b]$.
+
+Facciamo una rapida verifica con MATLAB
+
+```matlab
+f = @(x) sin(x);
+Ix = @(x) -cos(x);
+a = 0;
+b = 1;
+h = b - a;
+I = h*(f(a)+f(b))/2;
+Itrue = Ix(b)-Ix(a);
+fprintf('|I - Itrue| = %e\n',abs(I-Itrue));
+fprintf("Dovrebbe essere dell'ordine di: %e\n", h^3/12);
+```
+
+Questo ovviamente non ci è sufficiente, poiché non appena andiamo ad
+aumentare l'intervallo $[a,b]$ ( e quindi $h$ ) su cui vogliamo calcolare
+l'integrale le cose peggiorano nettamente
+
+```matlab
+f = @(x) sin(x);
+Ix = @(x) -cos(x);
+a = 0;
+b = pi;
+h = b - a;
+I = h*(f(a)+f(b))/2;
+Itrue = Ix(b)-Ix(a);
+fprintf('|I - Itrue| = %e\n',abs(I-Itrue));
+fprintf("Dovrebbe essere dell'ordine di: %e\n", h^3/12);
+```
+
+non **abbiamo nemmeno una cifra significativa corretta**.
+
+Per *risolvere questo inconveniente*, possiamo passare ad utilizzare una
+composita. Dividiamo di nuovo l'intervallo $[a,b]$ in $n$
+sotto-intervalli di ampiezza $h = (b-a)/n$ e approssimiamo su ogni sotto-intervallo l'integrale con la formula dei trapezi locale
+
+```{math}
+I = \frac{h}{2} \sum_{i=0}^{n-1} \big(f(x_i) + f(x_{i+1})\big),
+```
+
+per cui si può ricavare una **nuova stima dell'errore**:
+
+```{math}
+E = O\left(\frac{(b-a)h^2}{12} f''(\xi) \right),
+```
+
+dove $\xi$ è sempre un valore nell'intervallo $[a,b]$.
+
+:::{admonition} Esercizio
+Implementiamo la **formula dei trapezi** per una funzione $f$ utilizzando
+il seguente prototipo
+
+```matlab
+function I = trapezi(f,a,b,n)
+%% TRAPEZI questa funzione implementa il metodo dei trapezi per la
+% funzione f sull'intervallo a,b con n intervalli.
+%   INPUT: f function handle dell'integrando,
+%          a,b estremi dell'intervallo di integrazione
+%          n numero di intervalli
+
+end
+```
+
+- Si cerchi di **minimizzare** il numero di **chiamate** alla funzione $f$ della routine,
+- Un comando utile per questo esercizio è il comando `linspace`,
+- Si scriva un codice che non utilizza cicli `for`.
+
+Per testare l'implementazione si può provare a valutare l'integrale:
+
+```{math}
+\pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,
+```
+
+con
+
+```matlab
+%% Test del metodo dei Trapezi
+
+clear; clc; close all;
+
+f = @(x) 4*sqrt(1-x.^2);
+a = 0;
+b = 1;
+
+n = 9;
+I = trapezi(f,a,b,n);
+
+fprintf('Errore: %e\n',abs(pi-I)/pi);
+```
+
 :::
 
-Sia $\mathbf{e}$ l'errore commesso rispetto a $\mathbf{b}$, assumiamo che $A$ sia
-non singolare, allora l'errore sulla soluzione $A^{-1} \mathbf{b}$ è dato da
-$A^{-1} \mathbf{e}$. Allora il rapporto tra gli errori relativi è dato da
+Cerchiamo ora di verificare il comportamento della formula rispetto
+alla stima dell'errore che abbiamo **ottenuto dalla teoria**. Valutiamo
+che succede per l'integrale dell'esempio:
+
 ```{math}
-\frac{\| A^{-1} \mathbf{e} \|}{\| A^{-1} \mathbf{b} \|} / \frac{\|\mathbf{e}\|}{\|\mathbf{b}\|} = \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|},
+\pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,
 ```
-per cui possiamo esibire la limitazione per il termine destro come
-```{math}
-:label: bound
-\frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \leq & \max_{\mathbf{e},\mathbf{b} \neq 0} \left\lbrace \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|}, \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \right\rbrace \\ = & \max_{\mathbf{e}\neq 0} \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \max_{\mathbf{b}\neq 0} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \\
-= & \max_{\mathbf{e}\neq 0} \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \max_{\mathbf{b}\neq 0} \frac{\|A\mathbf{x}\|}{\|\mathbf{x}\|} \\
-= & \| A^{-1} \| \|A \| \equiv \kappa(A) \geq \| A^{-1} A \| = 1.
-```
-Consideriamo ora il seguente esempio artificiale
-```{math}
-A \mathbf{x} = \begin{bmatrix}
-4.1 & 2.8 \\
-9.7 & 6.6
-\end{bmatrix}  \begin{bmatrix}
-x_1 \\ x_2
-\end{bmatrix} = \begin{bmatrix}
-4.1 \\ 9.7
-\end{bmatrix}
-```
-Proviamo a risolvere direttamente con MATLAB il sistema lineare
+
+Proviamo a stimare l'errore in maniera numerica e a confrontarlo con il
+comportamento che ci aspettiamo dalla teoria:
+
 ```matlab
-A = [4.1 2.8; 9.7 6.6];
-b = A(:,1);
-x = A\b
-```
-da cui otteniamo come risposta:
-```
-x =
+n = logspace(1,4,4)-1;
+errore = [];
 
-   1.000000000000002
-  -0.000000000000003
-```
-Ritracciamo i passi del bound sul termine noto, per cui introduciamo una
-perturbazione di $0.01$ sulla prima componente di $\mathbf{b}$ e paragoniamo le
-due soluzioni
-```matlab
-b2 = [4.11; 9.7];
-x2 = A\b2
-```
-da cui otteniamo
-```
-x2 =
+for nval = n
+    I = trapezi(f,a,b,nval);
+    errore = [errore,abs(I-pi)/pi];
+end
 
-   0.339999999999957
-   0.970000000000064
+h = (b-a)./n;
+err = (b-a)*h.^2/12;
+
+figure(1)
+loglog(n,errore,'o-',n,err/errore(1),'r--','LineWidth',2);
+xlabel('n');
+ylabel('Errore');
+legend({'Errore Misurato','Stima'},'FontSize',14)
 ```
 
-Andiamo ora a verificare la limitazione che abbiamo mostrato in termini del
-numero di condizionamento. A questo scopo facciamo uso del comando `cond`
+:::{margin} Errore regola dei trapezi
+![Errore per trapezi non regolare](/images/trapezoidal_error1.png)
+
+Errore per l'integrale
+
+```{math}
+\pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,
 ```
-cond   Condition number with respect to inversion.
-   cond(X) returns the 2-norm condition number (the ratio of the
-   largest singular value of X to the smallest).  Large condition
-   numbers indicate a nearly singular matrix.
 
-   cond(X,P) returns the condition number of X in P-norm:
+![Errore per trapezi regolare](/images/trapezoidal_error2.png)
 
-      NORM(X,P) * NORM(INV(X),P).
+Errore per l'integrale
 
-   where P = 1, 2, inf, or 'fro'.
+```{math}
+\int_0^3 x^2 \sin ^3(x) \, {\rm d}x
 ```
-:::{danger}
-Il calcolo del numero di condizionamento per una matrice è bene che sia eseguito
-tramite la funzione `cond`, la forma `NORM(X,P) * NORM(INV(X),P)` nella
-documentazione è identificativa di ciò che stiamo calcolando, ma *non* è
-rappresentativo del modo in cui è realmente calcolato.
+
 :::
+La stima non sembra particolarmente soddisfacente, ma siamo sicuri di
+poterla applicare? Calcoliamo la derivata seconda della nostra funzione
+integranda:
 
-Calcoliamo quindi
+```{math}
+f''(t) = 4 \left(-\frac{t^2}{\left(1-t^2\right)^{3/2}}-\frac{1}{\sqrt{1-t^2}}\right) = \frac{-4}{\left(1-t^2\right)^{3/2}}
+```
+
+per cui abbiamo che:
+
+```{math}
+\underset{t\to 1^-}{\text{lim}}\frac{-4}{\left(1-t^2\right)^{3/2}} = -\infty
+```
+
+ovvero, **non possiamo limitare $f''(\xi)$ nell'intervallo di
+integrazione**.
+
+Proviamo con una funzione diversa, ad esempio:
+
+```{math}
+I = \int_0^3 x^2 \sin ^3(x) \, {\rm d}x = & \frac{1}{108} \left.-81 \left(x^2-2\right) \cos (x)+\left(9 x^2-2\right) \cos (3 x)-6 x (\sin (3 x)-27 \sin (x))\right|_{0}^{3} \\
+= & \frac{1}{108} (-160+486 \sin (3)-18 \sin (9)-567 \cos (3)+79 \cos (9)),
+```
+
+per cui la derivata seconda ha la regolarità necessaria
+
+```{math}
+f''(x) = & x^2 \left(6 \sin (x) \cos ^2(x)-3 \sin ^3(x)\right)+2 \sin ^3(x)+12 x \sin ^2(x) \cos (x) \\
+= & \frac{1}{2} \sin (x) \left(3 x^2+\left(9 x^2-2\right) \cos (2 x)+12 x \sin (2 x)+2\right)
+```
+
+e si osserva che $|f''(x)| < 10$ per $x \in [0,3]$. Vediamo che succede
+numericamente:
+
 ```matlab
-kappa = cond(A);
-bound = kappa*norm(b-b2)/norm(b);
-errore_relativo = norm(x-x2)/norm(x);
-```
-e osserviamo che
-```
-bound =
+f = @(x) x.^2.*sin(x).^3;
+a = 0;
+b = 3;
+Itrue = 3.615857833947287;
 
-   1.54117722269025
-errore_relativo =
+n = logspace(1,4,4)-1;
+errore = [];
 
-  1.173243367763135
+for nval = n
+    I = trapezi(f,a,b,nval);
+    errore = [errore,abs(I-Itrue)/Itrue];
+end
+
+h = (b-a)./n;
+err = 10*(b-a)*h.^2/12;
+
+figure(2)
+loglog(n,errore,'o-',n,err,'r--','LineWidth',2);
+xlabel('n');
+ylabel('Errore');
+legend({'Errore Misurato','Stima'},'FontSize',14)
 ```
-che quindi ci mostra che l'errore che abbiamo commesso è abbastanza vicino
-alla limitazione data dalla {eq}`bound`.
 
 :::{warning}
-Per matrici di grandi dimensioni la funzione `cond` può risultare estremamente
-lenta o andare **out of memory**. Per questo motivo sono disponibili altre
-due funzioni chiamate `rcond` e `condest`.
-
-La funzione `rcond(A)` calcola il reciproco di `cond(A,1)`, per cui più questo è
-vicino a $0$ più la matrice è *malcondizionata*, più questo è vicino a $1$ più
-la matrice è *ben condizionata*. Questa funzione si basa sulla libreria [LAPACK](http://www.netlib.org/lapack/).
-Questa è una libreria di software in Fortran 90 che produce le implementazioni
-standard delle operazioni dell'algebra lineare per matrici dense.
-
-La funzione `condest` calcola un limite inferiore per il numero di condizionamento
-in norma $1$ di una matrice quadrata $A$. Informazioni sull'algoritmo applicato
-per ottenere questa approssimazione si trovano in {cite:p}`MR740850` e {cite:p}`MR1780268`.
+Questa stima dell'errore è solo una prima approssimazione, in realtà è
+possibile ottenere stime più precise coinvolgendo termini di ordine
+superiore. Per i nostri scopi è sufficiente, ma sappiate che si può indagare più in profondità la questione.
 :::
 
-## Soluzione dei sistemi triangolari
+### Una versione ricorsiva
 
-I sistemi triangolari giocano un ruolo fondamentale nei calcoli matriciali.
-Molti metodi sono costruiti sull'idea di ridurre un problema alla soluzione di uno o più sistemi triangolari, questo include praticamente tutti i **metodi diretti** per la risoluzione di sistemi lineari.
+Supponiamo di aver scelto un valore di $n$ per il nostro integrale, ma che
+alla fine del calcolo il valore ottenuto non abbia l'accuratezza che
+desideravamo. Quello che possiamo fare è scegliere un nuovo valore di $n$
+e calcolare di nuovo l'integrale. Questo, tuttavia, ci richiede di
+fare di nuovo tutte le valutazioni di funzione perché ad un nuovo $n$
+corrispondono nodi nuovi.
 
-Sui **computer seriali** i sistemi triangolari sono universalmente risolti dagli algoritmi standard di sostituzione in avanti e all'indietro. Sulle **macchine
-parallele** la situazione è sensibilmente più varia, ma questo trascende gli
-obiettivi di questo corso.
+Possiamo recuperare in qualche modo parte dello sforzo?
 
-Due funzioni utili per lavorare con i sisistemi triangolari sono le funzioni
-`triu` e `tril`. Dal loro `help`:
-```
-tril Extract lower triangular part.
-   tril(X) is the lower triangular part of X.
-   tril(X,K) is the elements on and below the K-th diagonal
-   of X .  K = 0 is the main diagonal, K > 0 is above the
-   main diagonal and K < 0 is below the main diagonal.
-```
-ed analogamente per `triu`:
-```
-triu Extract upper triangular part.
-   triu(X) is the upper triangular part of X.
-   triu(X,K) is the elements on and above the K-th diagonal of
-   X.  K = 0 is the main diagonal, K > 0 is above the main
-   diagonal and K < 0 is below the main diagonal.
-```
-Possiamo usarle per costruire sistemi triangolari a partire da sistemi densi.
+Chiamiamo $I_k$ l'integrale valutato con la regola composita dei
+trapezi usando $2^{k-1}$ intervalli. Ora, se passiamo da $k$ a $k+1$
+il **numero di intervalli è raddoppiato**.
 
-(forwardandbacwardsolve)=
-## Sostituzione in avanti e all'indietro
+Chiamiamo $H = b - a$ e scriviamo la regola dei trapezi per i primi $k$
 
-Chiamiamo di nuovo $L$ una matrice triangolare inferiore, vogliamo risolvere un sistema della forma:
 ```{math}
-L \mathbf{x} = \mathbf{b},
-```
-che possiamo riscrivere in forma estesa come:
-```{math}
-\begin{bmatrix}
-l_{1,1} & 0       & 0      & \cdots & 0 \\
-l_{2,1} & l_{2,2} & 0      & \cdots & 0 \\
-\vdots  & \ddots  & \ddots & \ddots & \vdots \\
-l_{n-1,1} & l_{n-1,2} & \cdots & l_{n-1,n} & 0 \\
-l_{n,1} & l_{n,2} & \cdots & \cdots & l_{n,n}  \\
-\end{bmatrix} \begin{bmatrix}
-x_1 \\
-x_2 \\
-\vdots \\
-x_{n-1}\\
-x_n
-\end{bmatrix}
-= \begin{bmatrix}
-b_1 \\
-b_2 \\
-\vdots \\
-b_{n-1} \\
-b_n
-\end{bmatrix}
-```
-Da cui è facile ricavare che la componente $i$ma della soluzione è
-```{math}
-x_i = \frac{1}{l_{i,i}} \left( b_i - \sum_{j=1}^{i-1} l_{i,j} x_j \right), \qquad i=1,\ldots,n.
+k = 1, &\quad I_1 = \frac{H}{2}[f(a) + f(b)],\\
+k = 2, &\quad I_2 = \frac{H}{4}\left[ f(a) + 2 f\left(a + \frac{H}{2} \right) + f(b) \right] \\
+&\quad\; = \frac{1}{2} I_1 + f\left(a + \frac{H}{2}\right)\frac{H}{2}, \\
+k = 3, &\quad I_3 = \frac{H}{8}\left[ f(a) + 2 f\left(a + \frac{H}{4}\right) + 2 f\left(a + \frac{H}{2}\right) + 2 f\left(a + \frac{3H}{4}\right) + f(b) \right] \\
+&\quad\; = \frac{1}{2} I_2 + \frac{H}{4}\left[f\left(a + \frac{H}{4}\right) + f\left(a + \frac{3H}{4}\right)\right].
 ```
 
-:::{admonition} Esercizio 1
-Si scriva una *function* che implementa il metodo di sostituzione in avanti con
-il seguente prototipo.
+Con un po' di *intuizione*, possiamo scrivere per $k > 1$
+
+```{math}
+I_k = \frac{1}{2}I_{k-1} + \frac{H}{2^{k-1}} \sum_{i=1}^{2^{k-2}} f \left[ a + \frac{(2i-1)H}{2^{k-1}} \right], \quad k=2,3,\ldots
+```
+
+:::{tip}
+Qual è il vantaggio di questa scelta? La somma contiene solo nodi creati ad ogni nuovo raddoppio!
+
+Ovvero, il calcolo della sequenza $I_1, I_2, I_3, \ldots, I_k$ costa
+esattamente lo stesso numero di operazioni sia che si faccia il calcolo
+tutto insieme, sia che si calcolino separatamente tutti gli $I_k$ uno
+dopo l'altro.
+
+Il vantaggio dell'uso di questa forma della regola dei trapezi
+**ricorsiva** è che ci consente di monitorare la convergenza e
+terminare il processo quando la differenza tra $I_{k-1}$ e $I_k$
+diventa sufficientemente piccola.
+:::
+
+Per implementare l'algoritmo in modo ricorsivo, riscriviamo la formula
+in termini del valore di $h$ come:
+
+```{math}
+:label: trapezir
+
+I(h) = \frac{1}{2}I(2h) + h \sum f(x_{\text{new}}), \quad h = \frac{H}{n-1}.
+```
+
+:::{admonition} Esercizio  
+Separiamo la funzione ricorsiva in due parti, la prima è quella
+che calcola $I(h)$, dato $I(2h)$, usando l'equazione {eq}`trapezir`
+e chiamiamola `trapezir`
+
 ```matlab
-function [x] = forwardsolve(A,b)
-%FORWARDSOLVE Se A è una matrice triangolare inferiore risolve sistema
-%Ax=b tramite metodo di sostituzione in avanti.
-%   Input:
-%   A = matrice triangolare inferiore
-%   b = vettore del termine note
-%   Output:
-%   x = vettore della soluzione
+function Ih = trapezir(f,a,b,I2h,k)
+%%TRAPEZIR implementa l'algoritmo ricorsivo della regola dei
+%trapezi.
+%   INPUT:  f = handle della funzione da integrare,
+%           a,b = limiti di integrazione
+%           I2h = integrale su 2^{k-1} intervalli
+%           k  = livello di ricorsione
+%   OUTPUT: Ih = integrale su 2^k intervalli
 
 end
 ```
-Si presti attenzione:
-- Alla verifica degli *input*, il sistema **deve** essere triangolare basso e
-quadrato;
-- Ad utilizzare le **operazioni vettorizzate** di MATLAB, ovvero si ragioni su
-come evitare di usare un ciclo `for` per effettuare la somma che compare
-nella formula di soluzione.
 
-Si può testare il codice con il seguente problema:
+Una volta che la parte computazionale è stata completata possiamo
+mettere insieme la funzione ricorsiva
+
 ```matlab
-%% Sostituzione in avanti
-n = 10;
-A = tril(ones(n,n));
-b = (1:n).';
-x = forwardsolve(A,b);
+function I = trapeziricorsiva(f,a,b,kmax,tol)
+%% TRAPEZIRICORSIVA calcola l'integrale di f tra a e b in modo
+% ricorsivo. L'integrazione si ferma quando la differenza tra due
+% ricorsioni successive è minore della tolleranza richiesta.
+%   INPUT:  f = handle della funzione di integrare,
+%           a,b = estremi di integrazione
+%           kmax = massimo numero di livello di ricorsione
+%           tol = tolleranza tra due livelli di ricorsione successivi
 
-fprintf("Avanti: Errore sulla soluzione è: %1.2e\n",norm(A*x-b));
-```
-:::
+I2h = 0; k = 1;
 
-Chiamiamo di nuovo $U$ una matrice triangolare superiore, vogliamo risolvere un sistema della forma:
-```{math}
-U \mathbf{x} = \mathbf{b},
-```
-che possiamo riscrivere in forma estesa come:
-```{math}
-\begin{bmatrix}
-u_{1,1} & u_{1,2} & \cdots & \cdots & u_{1,n}  \\
-0 & u_{2,2} & u_{2,3} & \cdots & u_{2,n} \\
-\vdots  & \ddots  & \ddots & \ddots & \vdots \\
-0      & \cdots & 0 & u_{n-1,n-1} & u_{n-1,n}  \\
-0       & 0      & \cdots & 0 & u_{n,n} \\
-\end{bmatrix} \begin{bmatrix}
-x_1 \\
-x_2 \\
-\vdots \\
-x_{n-1}\\
-x_n
-\end{bmatrix}
-= \begin{bmatrix}
-b_1 \\
-b_2 \\
-\vdots \\
-b_{n-1} \\
-b_n
-\end{bmatrix}
-```
-Da cui di nuovo ricaviamo facilmente la componente $i$ma della soluzione come:
-```{math}
-x_i = \frac{1}{u_{i,i}} \left( b_i - \sum_{j=i+1}^{n} u_{i,j} x_j \right), \qquad i=n,n-1,\ldots,1.
-```
+Ih = trapezir(f,a,b,I2h,k);
+fprintf('k = 1 Ih = %1.16f\n',Ih);
 
-:::{admonition} Esercizio 2
-Si scriva una *function* che implementa il metodo di sostituzione all'indietro con
-il seguente prototipo.
-```matlab
-function [x] = backwardsolve(A,b)
-%BACKWARDSOLVE Se A è una matrice triangolare superiore risolve sistema
-%Ax=b tramite metodo di sostituzione all'indietro.
-%   Input:
-%   A = matrice triangolare inferiore
-%   b = vettore del termine note
-%   Output:
-%   x = vettore della soluzione
+for k = 2:kmax
+   I2h = Ih;
+   Ih = trapezir(f,a,b,I2h,k);
+   fprintf('k = %d Ih = %1.16f\n',k,Ih);
+   if abs(Ih - I2h) < tol
+       I = Ih;
+       return
+   end
+end
+warning("Non abbiamo raggiunto la tolleranza richiesta!");
+I = Ih;
 
 end
 ```
-Si presti attenzione:
-- Alla verifica degli *input*, il sistema **deve** essere triangolare alto e
-quadrato;
-- Ad utilizzare le **operazioni vettorizzate** di MATLAB, ovvero si ragioni su
-come evitare di usare un ciclo `for` per effettuare la somma che compare
-nella formula di soluzione.
 
-Si può testare il codice con il seguente problema:
+Dopo averlo fatto la testiamo sullo stesso integrale del caso precedente
+
 ```matlab
-%% Sostituzione all'indietro
-n = 10;
-A = triu(ones(n,n));
-b = (1:n).';
-x = backwardsolve(A,b);
+%% Test della funzione ricorsiva dei trapezi
 
-fprintf("Indietro: Errore sulla soluzione è: %1.2e\n",norm(A*x-b));
-```
-:::
+clear; clc; close all;
 
-## Tempo di calcolo
+f = @(x) x.^2.*sin(x).^3;
+a = 0;
+b = 3;
+Itrue = 3.615857833947287;
+tol = 1e-9;
+kmax = 20;
 
-Avete mostrato a lezione che il numero di operazioni necessario a risolvere un
-sistema triangolare con l'algoritmo di sostituzione è un $O(n^2)$ per $n$ la
-dimensione del sistema. Proviamo ad indagare come si comporta a questo riguardo
-la nostra implementazione. Per farlo sfruttiamo i codici che abbiamo appena
-scritto per la sostituzione _forward_ o _backward_ e le funzioni `tic` e `toc`
-che abbiamo menzionato nel {ref}`laboratorio3`.
-```matlab
-sizes = floor(logspace(1,4,10));
-times = zeros(size(sizes));
-h = waitbar(0,"Calcolo in corso...");
-for i=1:length(sizes)
-    n = sizes(i);
-    A = triu(ones(n,n));
-    b = (1:n).';
-    tic;
-    x = backwardsolve(A,b); % Allo stesso modo con forwardsolve
-    times(i) = toc;
-    waitbar(i/length(sizes));
-end
-```
-Ora che abbiamo i tempi possiamo visualizzare quello che abbiamo ottenuto
-sfruttando alcune funzioni di MATLAB. Poiché sappiamo che il numero di
-operazioni è una funzione che scala come un $O(n^2)$ possiamo assumere in
-prima approssimazione che anche il tempo si comporti allo stesso modo.
-Cerchiamo dunque di *fittare* un polinomio di secondo grado ai nostri dati:
-```matlab
-[P,S] = polyfit(sizes,times,2);
-```
-Con la mia macchina, questa procedure mi restituisce il polinomio:
-```{math}
-p(x) = 0.000005682501880 x^2  -0.015569138451058 x + 3.230452264767748
-```
-insieme ad una struttura $S$ che contiene informazioni relative all'algoritmo
-con cui questa procedura è stata eseguita. Possiamo usare tutto questo per
-confrontare i valori del *fit* con quelli dei dati
-```matlab
-[y_fit,delta] = polyval(P,sizes,S);
-plot(sizes,times,'o-',...
-    sizes,y_fit,'--',...
-    sizes,y_fit+2*delta,'m--',sizes,y_fit-2*delta,'m--',...
-    'Linewidth',2);
-xlabel('Dimensione del sistema')
-ylabel('Tempo di calcolo (s)')
-legend({'Tempo misurato','Stima asintotica','Intervallo di Confidenza'},...
-    'FontSize',14,'Location','northwest');
-```
-dove abbiamo stampato sia il tempo misurato, sia il *fit* con il suo
-*intervallo di confidenza* entro il 95%. Dalla {numref}`triangularsolvetime`
-vediamo che la predizione quadratica è piuttosto efficace.
-```{figure} ./images/triangulartime.png
-:name: triangularsolvetime
-
-Tempo di calcolo come un $O(n^2)$ della dimensione.
-```
-
-## Esercizi
-
-:::{admonition} Esercizio 3: Numeri di Bernoulli
-
-Consideriamo le condizioni
-```{math}
-B(x+1) - B(x) = n x^{n-1}, \quad \int_{0}^{1} B(x)\,{\rm d}x, \quad B(x)\, \text{polinomio}.
-```
-Queste definiscono in maniera unica la funzione $B(x)$. Se assumiamo che il grado
-del polinomio monico $B(x)$ sia $n$ abbiamo così costruito i **polinomi di Bernoulli**. Si possono calcolare esattamente i primi polinomi come:
-```{math}
-B_0(x) = 1, \quad B_1(x) = x - \frac{1}{2}, \quad B_2(x) = x(x-1)+\frac{1}{6}, \quad B_3(x) = x(x-\frac{1}{2})(x-1), \ldots
-```
-Si può dimostrare che i polinomi di Bernoulli definiscono i coefficienti della rappresentazione in serie di potenze di diverse funzioni, ad esepio:
-```{math}
-\frac{t e^{xt}}{e^t - 1} = \sum_{k=0}^{+\infty} \frac{B_n(x)}{n!}t^n.
-```
-In particolare, se scegliamo $x = 0$, abbiamo che
-```{math}
-:label: bernoulliexpansion
-\frac{t}{e^t - 1} = -\frac{1}{2}t + \sum_{k=0}^{+\infty} \frac{B_{2k}(0)}{(2k)!}t^{2k}.
-```
-Facciamo ora la seguente manipolazione algebrica, moltiplichiamo l'equazione
-a sinistra e a destra per $e^{t} - 1$, espandiamo $e^{t}$ con la sua serie
-di potenze, e poniamo uguale a zero i coefficienti di $t^i$ sul lato destro.
-Così otteniamo il seguente sistema di equazioni:
-```{math}
-- \frac{1}{2} j + \sum_{k=0}^{[\frac{j-1}{2}]} \binom{j}{2k} B_{2k}(0), \qquad j=2,3,4,\ldots
-```
-Da cui otteniamo, per gli $j$ pari, il seguente sistema di equazioni lineari
-```{math}
-\begin{bmatrix}
-\binom{2}{0} \\
-\binom{4}{0} & \binom{4}{2} \\
-\binom{6}{0} & \binom{6}{2} & \binom{6}{4} \\
-\binom{8}{0} & \binom{8}{2} & \binom{8}{4} & \binom{8}{6} \\
-\vdots & \vdots & \vdots & \vdots & \ddots \\
-\end{bmatrix}
-\begin{bmatrix}
-B_0(0)\\
-B_2(0)\\
-B_4(0)\\
-B_6(0)\\
-\vdots
-\end{bmatrix}
-= \begin{bmatrix}
-1\\
-2\\
-3\\
-4\\
-\vdots
-\end{bmatrix}.
-```
-1. Si implementi una funzione che dato un intero $k$ restituisca i numeri di
-Bernoulli $\{B_{2j}(0)\}_{j=0}^{k}$ risolvendo questo sistema lineare.
-2. Si usino i numeri così ottenuti per determinare lo sviluppo in {eq}`bernoulliexpansion` e disegnare
-- le due funzioni una accanto all'altra,
-- l'errore di approssimazione commesso in scala logaritmica.
-
-Un prototipo della funzione è:
-```matlab
-function [Bk] = nbernoulli(k)
-%BERNOULLI Produce i numeri di Bernoulli B_{2j}(0) per j=0,...,k risolvendo
-%un sistema triangolare inferiore.
-%   INPUT:
-%   k =  Numero di termini (-1) da calcolare
-%   OUTPUT:
-%   Bk = Vettore di lunghezza k+1 che contiene i numeri richiesti
-end
-```
-
-```{tip}
-La funzione binomiale in MATLAB è implementata come `nchoosek`. Potete inoltre
-confrontare i risultati ottenuti con la funzione nativa di MATLAB che calcola
-i numeri di Bernoulli dal medesimo nome (`help bernoulli` per le informazioni).
+I = trapeziricorsiva(f,a,b,kmax,tol);
+fprintf("\n\tL'errore è %e\n",abs(I - Itrue)/Itrue);
 ```
 
 :::
+
+## Formula di Simpson
+
+La formula di quadratura di Simpson può essere ottenuta di nuovo come una
+formula di Newton-Cotes con $n = 2$. Laddove nel caso dei trapezi avevamo
+fissato una interpolate lineare, questa volta abbiamo scelto una
+interpolante quadratica attraverso tre nodi adiacenti.
+
+Possiamo ricavarla direttamente dalla definizione su un solo intervallo $[a,b]$ con i nodi
+
+```{math}
+x_0 = a, \quad x_1 = \frac{a+b}{2}, \quad x_2 = b,
+```
+
+da cui abbiamo che i pesi si ottengono come
+
+```{math}
+\omega_0 = \int_{a}^{b} \ell_0(x)\,{\rm d}x = \frac{h}{6}, \\
+\omega_1 = \int_{a}^{b} \ell_1(x)\,{\rm d}x = \frac{2h}{3}, \\
+\omega_2 = \int_{a}^{b} \ell_2(x)\,{\rm d}x = \frac{h}{6},
+```
+
+e quindi
+
+```{math}
+I = \sum_{i=0}^{2} \omega_i f(x_i) = \frac{h}{6}\left[ f(a) + 4f\left(\frac{a+b}{2}\right)+f(b)\right].
+```
+
+:::{tip}
+Per calcolare gli integrali $\omega_i$ è conveniente fare un cambio di
+variabili ponendo l'origine dell'intervallo di integrazione su $x_1$.
+In questo modo i nodi diventano $\{-h,0,h\}$ e gli integrali sono più semplici da calcolare.
+:::
+
+:::{danger}
+La regola di Simpson che abbiamo scritto richiede che il numero di
+intervalli sia pari, ovvero che il numero di nodi sia dispari. Se
+vogliamo ammettere un qualunque numero di intervalli $n$, è necessario
+che il primo (o l'ultimo) intervallo usi 4 invece che 3 punti.
+
+Per l'implementazione seguente ci limiteremo al caso di nodi dispari, ovvero di intervalli pari.
+:::
+
+Con calcoli analoghi a quelli che avete visto per la formula dei trapezi
+si può ottenere una prima stima dell'errore anche per la formula di
+Simpson. Infatti si ha che l'errore si comporta come
+
+```{math}
+E = O\left( (b-a)\frac{h^4}{180} f^{(iv)}(\xi) \right),
+```
+
+per $\xi$ un punto nell'intervallo $[a,b]$.
+
+::::{admonition} Esercizio.
+Si implementi la versione composita della regola di Simpson per il
+calcolo di un integrale secondo il seguente prototipo
+
+```matlab
+function I = simpson(f,a,b,n)
+%%SIMPSON calcolo dell'integrale della funzione f tra a e b mediante la
+% formula di Simpson.
+%   INPUT:  f = handle della funzione di integrare,
+%           a,b = estremi di integrazione
+%           n numero di intervalli
+
+if mod(n+1,2) ~= 1
+    error('n deve essere pari');
+end
+
+end
+```
+
+Che possiamo testare con:
+
+```matlab
+%% Test della formula di quadratura di Simpson
+
+f = @(x) x.^2.*sin(x).^3;
+a = 0;
+b = 3;
+Itrue = 3.615857833947287;
+
+n = logspace(1,4,4);
+errore = [];
+
+for nval = n
+    I = simpson(f,a,b,nval);
+    errore = [errore,abs(I-Itrue)/Itrue];
+end
+
+h = (b-a)./n;
+err = 200*(b-a)*h.^4/180;
+
+figure(2)
+loglog(n,errore,'o-',n,err,'r--','LineWidth',2);
+xlabel('n');
+ylabel('Errore');
+legend({'Errore Misurato','Stima'},'FontSize',14)
+```
+
+Dove nella stima dell'errore `24*(b-a)*h.^4/180`, abbiamo sfruttato il fatto che
+
+```{math}
+\frac{d ^4\left(x^2 \sin (x)^3\right)}{d x^4} = x^2 \left(21 \sin ^3(x)-60 \sin (x) \cos ^2(x)\right)+8 x \left(6 \cos ^3(x)-21 \sin ^2(x) \cos (x)\right)+12 \left(6 \sin (x) \cos ^2(x)-3 \sin ^3(x)\right),
+```
+
+che in $[0,3]$ è maggiorata da $200$.
+::::
+
+```{margin} Errore di quadratura Simpson
+![Errore per Simpson regolare](/images/simpsonerror1.png)
+
+Errore per la formula di Simpson.
+```
+
+Possiamo quindi confrontare gli errori di quadratura ottenuti per le due
+formule stampandoli sullo stesso grafico
+
+```{figure} ./images/simpson_error2.png
+
+Confronto tra l'errore relativo compiuto con la formula dei Trapezi e
+quello ottenuto con la formula di Simpson.
+```
+
+da cui osserviamo il comportamento che ci aspettavamo considerata
+l'analisi dell'errore.
+
+## Le funzioni di quadratura di MATLAB
+
+MATLAB offre diverse funzioni per il calcolo di integrali. La prima
+da considerare è la funzione `quad`, dal cui *help* leggiamo
+
+```
+quad   Numerically evaluate integral, adaptive Simpson quadrature.
+   Q = quad(FUN,A,B) tries to approximate the integral of scalar-valued
+   function FUN from A to B to within an error of 1.e-6 using recursive
+   adaptive Simpson quadrature. FUN is a function handle. The function
+   Y=FUN(X) should accept a vector argument X and return a vector result
+   Y, the integrand evaluated at each element of X.
+
+   Q = quad(FUN,A,B,TOL) uses an absolute error tolerance of TOL
+   instead of the default, which is 1.e-6.  Larger values of TOL
+   result in fewer function evaluations and faster computation,
+   but less accurate results.  The quad function in MATLAB 5.3 used
+   a less reliable algorithm and a default tolerance of 1.e-3.
+
+   Q = quad(FUN,A,B,TOL,TRACE) with non-zero TRACE shows the values
+   of [fcnt a b-a Q] during the recursion. Use [] as a placeholder to
+   obtain the default value of TOL.
+```
+
+Questa applica la quadratura di Simpson che abbiamo visto nella sezione
+precedente sfruttando la tecnica ricorsiva che abbiamo visto, applicato
+e implementato nel caso della regola dei trapezi.
+
+Quest'ultima invece è implementata dal comando `trapz`, dal cui `help`
+leggiamo
+
+```
+trapz  Trapezoidal numerical integration.
+   Z = trapz(Y) computes an approximation of the integral of Y via
+   the trapezoidal method (with unit spacing).  To compute the integral
+   for spacing different from one, multiply Z by the spacing increment.
+
+   For vectors, trapz(Y) is the integral of Y. For matrices, trapz(Y)
+   is a row vector with the integral over each column. For N-D
+   arrays, trapz(Y) works across the first non-singleton dimension.
+
+   Z = trapz(X,Y) computes the integral of Y with respect to X using the
+   trapezoidal method. X can be a scalar or a vector with the same length
+   as the first non-singleton dimension in Y. trapz operates along this
+   dimension. If X is scalar, then trapz(X,Y) is equivalent to X*trapz(Y).
+```
+
+L'ultima funzione che vogliamo menzionare è `integral` che, in realtà,
+sostituisce la funzione `quad` che è in realtà *deprecata*. Questa applica
+una formula di quadratura adattiva e permette in realtà di calcolare anche
+integrali complessi, di funzioni con singolarità e regolare le tolleranze
+
+```
+integral  Numerically evaluate integral.
+   Q = integral(FUN,A,B) approximates the integral of function FUN from A
+   to B using global adaptive quadrature and default error tolerances.
+
+   FUN must be a function handle. A and B can be -Inf or Inf. If both are
+   finite, they can be complex. If at least one is complex, integral
+   approximates the path integral from A to B over a straight line path.
+
+   For scalar-valued problems the function Y = FUN(X) must accept a vector
+   argument X and return a vector result Y, the integrand function
+   evaluated at each element of X. For array-valued problems (see the
+   'ArrayValued' option below) FUN must accept a scalar and return an
+   array of values.
+```
+
+Di questa funzione sono disponibili anche le funzioni per il calcolo di integrali di funzioni in 2 e 3 variabili chiamate, rispettivamente, `integral2` e `integral3`.
+
+## Applicazioni ed esercizi
+
+Consideriamo alcuni esercizi sulla quadratura numerica da {cite}`kiusalaas2015`.
+
+:::::{admonition} Accelerazione di una macchina
+
+La {numref}`powertable` riporta la potenza $P$ fornita alle ruote motrici di una macchina come
+funzione della velocità $v$. Se la massa della macchina è $m = 2000\,kg$, si
+determini l'intervallo $\Delta t$ che serve alla macchina per accelerare da
+$1\,m/s$ a $6\,m/s$ utilizzando la regola dei trapezi implementata in `trapz`.
+
+```{list-table} Potenza e velocità
+:header-rows: 1
+:name: powertable
+
+* - $v\,(m/s)$
+  - $P\,(kW)$
+* - 0
+  - 0
+* - 1.0
+  - 4.7
+* - 1.8
+  - 12.2
+* - 2.4
+  - 19.0
+* - 3.5
+  - 31.8
+* - 4.4
+  - 40.1
+* - 5.1
+  - 43.8
+* - 6.0
+  - 43.2
+```
+
+:::{admonition} Suggerimento
+:class: tip, dropdown
+La funzione di cui calcolare l'integrale si può ottenere dalla
+seconda legge della dinamica e dalla definizione di potenza:
+
+```{math}
+\Delta t = m \int_{1 s}^{6 s} (v/P)\,{\rm d}v.
+```
+
+:::
+
+:::::
+
+::::{admonition} Esercizio
+Si calcoli l'integrale
+
+```{math}
+I = \int_{1}^{+\infty} \frac{{\rm d}x}{1+x^4} = \frac{\pi -2 \coth ^{-1}\left(\sqrt{2}\right)}{4 \sqrt{2}},
+```
+
+con la regola dei trapezi e si paragoni il risultato con il valore
+esatto.
+
+:::{admonition} Si applichi un cambio di variabili...
+:class: tip, dropdown
+Per riportare l'integrale su di un intervallo finito si applichi
+il cambio di variabili $x^3 = 1/t$.
+:::
+
+::::
+
+:::{admonition} Esercizio
+Il periodo di un pendolo semplice di lunghezza $L$ è $\tau = 4 \sqrt{L/g} h(\theta_0)$, dove $g$ è l'accelerazione di gravità, $\theta_0$ rappresenta l'ampiezza angolare e
+
+```{math}
+h(\theta_0) = \int_{0}^{\pi/2} \frac{ {\rm d}\theta }{\sqrt{1- \sin^2(\theta_0/2)\sin^2(\theta)}}.
+```
+
+Si calcolino i periodi per $h(15 \text{ deg})$, $h(30 \text{ deg})$,
+$h(45 \text{ deg})$ con la formula di Simpson e si paragonino
+all'approssimazione per piccoli angoli con $h = \frac{\pi}{2}$.
+Cosa si osserva?
+:::
+
+## Bibliografia
+
+ ```{bibliography}
+ :filter: docname in docnames
+ ```

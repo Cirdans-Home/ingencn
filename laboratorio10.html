@@ -57,7 +57,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
     <link rel="next" title="Laboratorio 11 : Il Metodo di Newton" href="laboratorio11.html" />
-    <link rel="prev" title="Laboratorio 9 : Metodi Stazionari per Sistemi Lineari" href="laboratorio9.html" />
+    <link rel="prev" title="Laboratorio 8 : Metodi Stazionari per Sistemi Lineari" href="laboratorio9.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
     
@@ -140,27 +140,27 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio5.html">
-   Laboratorio 5 : Metodi di Quadratura
+   Laboratorio 5 : Il Problema Lineare dei Minimi Quadrati
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio6.html">
-   Laboratorio 6 : Soluzione dei Sistemi Lineari
+   Laboratorio 6 : Metodi di Quadratura
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio7.html">
-   Laboratorio 7 : L’Eliminazione di Gauss il Metodo LU
+   Laboratorio 7 : Soluzione dei Sistemi Lineari
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio8.html">
-   Laboratorio 8 : Il Problema Lineare dei Minimi Quadrati
+   Laboratorio 8 : L’Eliminazione di Gauss il Metodo LU
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio9.html">
-   Laboratorio 9 : Metodi Stazionari per Sistemi Lineari
+   Laboratorio 8 : Metodi Stazionari per Sistemi Lineari
   </a>
  </li>
  <li class="toctree-l1 current active">
@@ -440,6 +440,7 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-10-il-metodo-di-bisezione">
 <h1>Laboratorio 10 : Il Metodo di Bisezione<a class="headerlink" href="#laboratorio-10-il-metodo-di-bisezione" title="Link a questa intestazione">#</a></h1>
+<p>=(laboratorio3)</p>
 <p>In questo laboratorio ci occuperemo del problema dell’individuazione degli zeri
 di una funzione <strong>continua</strong> <span class="math notranslate nohighlight">\(f : \mathbb{R} \to \mathbb{R}\)</span>. Per farlo
 adopereremo il <em>metodo di bisezione</em>.</p>
@@ -554,7 +555,7 @@ stavamo riportando gli errori).</p></li>
 <section id="applicazioni">
 <h2>Applicazioni<a class="headerlink" href="#applicazioni" title="Link a questa intestazione">#</a></h2>
 <p>Consideriamo alcune applicazioni <em>ingegneristiche</em> del problema di trovare lo
-zero di una funzione <span id="id1">[<a class="reference internal" href="laboratorio7.html#id10" title="Jaan Kiusalaas. Numerical Methods in Engineering with MATLAB®. Cambridge University Press, 3 edition, 2015. doi:10.1017/CBO9781316341599.">Kiu15</a>]</span>.</p>
+zero di una funzione <span id="id1">[<a class="reference internal" href="laboratorio8.html#id10" title="Jaan Kiusalaas. Numerical Methods in Engineering with MATLAB®. Cambridge University Press, 3 edition, 2015. doi:10.1017/CBO9781316341599.">Kiu15</a>]</span>.</p>
 <div class="admonition-esercizio-2 admonition">
 <p class="admonition-title">Esercizio 2</p>
 <p>Un cavo d’acciao di lunghezza <span class="math notranslate nohighlight">\(L\)</span> è sospeso come mostrato nella figura:</p>
@@ -691,12 +692,12 @@ tali che <span class="math notranslate nohighlight">\(f(a)f(b) &lt; 0\)</span>.<
 <p>Che ci restituirà le seguenti informazioni, dapprima una stampa iterazione per
 iterazione di quello che l’algoritmo sta facendo:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Func</span><span class="o">-</span><span class="n">count</span>    <span class="n">x</span>          <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>             <span class="n">Procedure</span>
-	 <span class="mi">2</span>               <span class="mi">1</span>     <span class="o">-</span><span class="mf">0.307799</span>        <span class="n">initial</span>
-	 <span class="mi">3</span>        <span class="mf">0.544459</span>     <span class="mf">0.0153522</span>        <span class="n">interpolation</span>
-	 <span class="mi">4</span>        <span class="mf">0.566101</span>    <span class="mf">0.00070708</span>        <span class="n">interpolation</span>
-	 <span class="mi">5</span>        <span class="mf">0.567143</span>  <span class="o">-</span><span class="mf">1.40255e-08</span>        <span class="n">interpolation</span>
-	 <span class="mi">6</span>        <span class="mf">0.567143</span>   <span class="mf">1.50013e-12</span>        <span class="n">interpolation</span>
-	 <span class="mi">7</span>        <span class="mf">0.567143</span>             <span class="mi">0</span>        <span class="n">interpolation</span>
+  <span class="mi">2</span>               <span class="mi">1</span>     <span class="o">-</span><span class="mf">0.307799</span>        <span class="n">initial</span>
+  <span class="mi">3</span>        <span class="mf">0.544459</span>     <span class="mf">0.0153522</span>        <span class="n">interpolation</span>
+  <span class="mi">4</span>        <span class="mf">0.566101</span>    <span class="mf">0.00070708</span>        <span class="n">interpolation</span>
+  <span class="mi">5</span>        <span class="mf">0.567143</span>  <span class="o">-</span><span class="mf">1.40255e-08</span>        <span class="n">interpolation</span>
+  <span class="mi">6</span>        <span class="mf">0.567143</span>   <span class="mf">1.50013e-12</span>        <span class="n">interpolation</span>
+  <span class="mi">7</span>        <span class="mf">0.567143</span>             <span class="mi">0</span>        <span class="n">interpolation</span>
 
 <span class="n">Zero</span> <span class="n">found</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">interval</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 </pre></div>
@@ -705,17 +706,17 @@ iterazione di quello che l’algoritmo sta facendo:</p>
 valore dello zero, il valore della funzione in quel punto, la <em>flag</em> di uscita:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span>
 
-	 <span class="mf">0.5671</span>
+  <span class="mf">0.5671</span>
 
 
 <span class="n">fval</span> <span class="o">=</span>
 
-		<span class="mi">0</span>
+  <span class="mi">0</span>
 
 
 <span class="n">exitflag</span> <span class="o">=</span>
 
-		<span class="mi">1</span>
+  <span class="mi">1</span>
 </pre></div>
 </div>
 <p><em>flag</em> che ci viene tradotta nel campo <code class="docutils literal notranslate"><span class="pre">message</span></code> della struttura <code class="docutils literal notranslate"><span class="pre">output</span></code>, insieme
@@ -736,11 +737,11 @@ ad un riassunto di quello che l’algoritmo ha fatto.</p>
 
  <span class="n">struct</span> <span class="k">with</span> <span class="n">fields</span><span class="p">:</span>
 
-	 <span class="n">intervaliterations</span><span class="p">:</span> <span class="mi">0</span>
-					 <span class="n">iterations</span><span class="p">:</span> <span class="mi">5</span>
-						<span class="n">funcCount</span><span class="p">:</span> <span class="mi">7</span>
-						<span class="n">algorithm</span><span class="p">:</span> <span class="s1">&#39;bisection, interpolation&#39;</span>
-							<span class="n">message</span><span class="p">:</span> <span class="s1">&#39;Zero found in the interval [0, 1]&#39;</span>
+  <span class="n">intervaliterations</span><span class="p">:</span> <span class="mi">0</span>
+      <span class="n">iterations</span><span class="p">:</span> <span class="mi">5</span>
+      <span class="n">funcCount</span><span class="p">:</span> <span class="mi">7</span>
+      <span class="n">algorithm</span><span class="p">:</span> <span class="s1">&#39;bisection, interpolation&#39;</span>
+       <span class="n">message</span><span class="p">:</span> <span class="s1">&#39;Zero found in the interval [0, 1]&#39;</span>
 </pre></div>
 </div>
 <p>Vediamo invece la rappresentazione grafica di quanto ci è stato riassunto con
@@ -891,7 +892,7 @@ a perturbare il coefficiente di <span class="math notranslate nohighlight">\(x^{
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">precedente</p>
-            <p class="prev-next-title">Laboratorio 9 : Metodi Stazionari per Sistemi Lineari</p>
+            <p class="prev-next-title">Laboratorio 8 : Metodi Stazionari per Sistemi Lineari</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="laboratorio11.html" title="successivo pagina">
@@ -908,7 +909,7 @@ a perturbare il coefficiente di <span class="math notranslate nohighlight">\(x^{
     <div class="footer-content row">
         <footer class="col footer"><p>
   
-    By F. Durastante, L. Heltai, C. Pagliantini<br/>
+    By F. Durastante, C. Pagliantini, L. Heltai<br/>
   
       &copy; Copyright 2022.<br/>
 </p>
