@@ -1,137 +1,314 @@
-# Laboratorio 9 : Metodi di Interpolazione
+# Laboratorio 8 : Metodi Stazionari per Sistemi Lineari
 
-In molti problemi si ha a che fare con una funzione $f:\mathbb{R}\rightarrow\mathbb{R}$ di forma non elementare, o addirittura sconosciuta, di cui si possiede solo una tabulazione in un insieme finito di punti, per esempio derivanti da misurazioni sperimentali. In questi casi la stima di un valore di $f$, in un punto diverso da quelli in cui è data, può essere fatta utilizzando i dati disponibili. Questa operazione si effettua sostituendo a $f$ una funzione che sia facilmente calcolabile come, per esempio, un polinomio.
+Un **metodo iterativo** è una procedura matematica che a partire da un *valore iniziale* genera una sequenza di *soluzioni approssimate* migliorative per una
+determinata classe di problemi, in cui l'approssimazione $n$esima è derivata dai precedenti. Abbiamo già visto, **ed implementato**, metodi di questo tipo per la ricerca degli zeri di una funzione.
 
-Supponiamo siano dati $n+1$ punti reali $x_0,\ldots, x_n\in [a,b]\subset\mathbb{R}$, due a due distinti, in corrispondenza dei quali siano noti gli $n+1$ valori reali $f(x_0), \ldots, f(x_n)$. L'interpolazione polinomiale consiste nel determinare un polinomio $P_n$ di grado al più $n$ tale che
+In questo laboratorio vogliamo concentrarci invece sulla costruzione di alcuni
+metodi di questo tipo per la soluzione di sistemi lineari.
+
+La prima domanda che è legittimo porsi è perché mai vogliamo mettere in piedi
+dei metodi iterativi se abbiamo già dei metodi diretti che possono raggiungere
+la soluzione del problema cercato?
+- A patto di richiedere una tolleranza minore (spesso sufficiente nelle applicazioni) sull'errore commesso sulla soluzione hanno un costo computazionale inferiore alle controparti dirette,
+- Per le dimensioni dei problemi che si vogliono affrontare nelle applicazioni ingegneristiche attuali sono spesso l'unica opzione disponibile (problemi di fluidodinamica computazionale, combustione, meccanica del continuo, ...)
+
+Nel corso e in questo laboratorio ci focalizziamo su alcuni dei metodi più semplici e che, in genere, sono usati come i blocchi costituivi di metodi più complessi (e.g., metodi di tipo *multigrid* o *domain decomposition*) o come acceleratori per la convergenza (in gergo chiamati: *precondizionatori*).
+
+## Metodi di tipo stazionario
+
+Dato un sistema lineare della forma
 ```{math}
-:label: cinterp
-P_n(x_i)=f(x_i),\quad \forall i=0,1,\ldots,n.
+A \mathbf{x} = \mathbf{b}, \qquad A \in \mathbb{R}^{n \times n},\; \mathbf{x},\mathbf{b} \in \mathbb{R}^n
 ```
-Srivendo il polinomio $P_n$ nella base dei monomi $\{1,x,x^2,\ldots\}$ si ha
+siamo interessati a **metodi di punto fisso** basati sugli *splitting* della matrice $A$. Cioè metodi basati su una decomposizione additiva della matrice della forma
 ```{math}
-P_n(x)=a_n x^n+a_{n-1} x^{n-1}+\ldots+a_1 x+a_0,
+A = M - N, \qquad\text{ con }\qquad \det(M) \neq 0.
 ```
-i cui coefficienti $\{a_i\}_{i=0}^n$ si possono ricavare risolvendo il sistema lineare di $n+1$ equazioni ottenuto imponendo che il polinomio verifichi le condizioni di interpolazione {eq}`cinterp`.
-
-Poiché la matrice del sistema (matrice di Vandermonde) risulta una matrice malcondizionata non conviene risolvere il sistema lineare per determinare il polinomio di interpolazione.
-
-In questo laboratorio ci concentriamo sull'interpolazione di Lagrange.
-
-Questa consiste nel costruire un polinomio di interpolazione di grado al più $n$ della forma
+Da questa decomposizione si ottiene poi l'iterata di punto fisso come
 ```{math}
-P_n(x) = \sum_{j=0}^n f(x_j)\ell_j(x),\qquad \ell_j(x)=\prod_{i\neq j}\dfrac{x-x_i}{x_j-x_i}.
+A \mathbf{x} = \mathbf{b} \Rightarrow (M - N) \mathbf{x} = \mathbf{b} \Rightarrow M \mathbf{x} = N \mathbf{x} + \mathbf{b} \\
+\mathbf{x} = M^{-1} N \mathbf{x} + M^{-1} \mathbf{b}
+```
+e quindi
+```{math}
+\mathbf{x}^{(k+1)} = M^{-1} N \mathbf{x}^{(k)} + M^{-1} \mathbf{b}, \quad k = 0,1,2,\ldots, \\
+\mathbf{x}^{(0)} \text{ assegnato}.
+```
+Essendo questa un'iterata di punto fisso, la sua convergenza dipende dall'essere una **procedura contrattiva**, avete dimostrato a lezione che questo è equivalente alla richiesta che il *raggio spettrale* della matrice di iterazione $M^{-1}N$ sia strettamente minore di $1$:
+```{math}
+\rho(M^{-1}N) = \max_{1,\ldots,n }|\lambda_n(M^{-1}N)| < 1.
 ```
 
-:::{admonition} Esercizio 1
-Si implementi una *function* che costruisce le funzioni polinomiali $\ell_j$ dato il vettore `x` di $n+1$ nodi di interpolazione e restituisce il suo valore nei punti specificati nel vettore `z`. Si segua il seguente prototipo
+### Metodi per il calcolo agli autovalori implementati in MATLAB
+
+In alcuni casi data una matrice $A$ e uno splitting $A = M - N$ è possibile calcolare il *raggio spettrale* carta e penna, oppure inferire le proprietà di convergenza del metodo dalle proprietà della matrice $A$ e della particolare forma dello splitting. Laddove questo non fosse possibile, o volessimo una stima più precisa di quello che sta accadendo, dobbiamo ricorrere a dei metodi numerici a questo scopo. La loro costruzione è al di fuori degli obiettivi di questo corso, tuttavia MATLAB ci fornisce delle *function* che fanno al nostro caso.
+
+Vediamo prima il **caso generale** in cui data una matrice $A$ vogliamo calcolare *tutti* i suoi autovalori, costruiamo da principio una *matrice simmetrica* per
+cui possiamo sfruttare il **Teorema Spettrale** per interpretare i risultati:
 ```matlab
-function L = LagrangePoly(x, z, j)
-%%LAGRANGEPOLY costruisce il j-esimo polinomio di Lagrange dati i nodi
-% di interpolazione x e lo valuta nei vettore z
+A = rand(10); % costruiamo una matrice casuale
+A = A + A'; % e facciamo in modo che sia simmetrica
+lambda = eig(A); % calcoliamo *tutti* gli autovalori
+disp(lambda)
+```
+che ci restituisce il vettore:
+```
+-2.1767
+-1.8198
+-0.7091
+-0.3270
+-0.1747
+ 0.7953
+ 0.9842
+ 1.3664
+ 1.9277
+ 9.4423
+```
+per cui abbiamo ottenuto 10 autovalori reali.
+
+Se guardiamo il manuale del comando `eig` leggiamo:
+```
+eig    Eigenvalues and eigenvectors.
+   E = eig(A) produces a column vector E containing the eigenvalues of
+   a square matrix A.
+
+   [V,D] = eig(A) produces a diagonal matrix D of eigenvalues and
+   a full matrix V whose columns are the corresponding eigenvectors  
+   so that A*V = V*D.
+
+   [V,D,W] = eig(A) also produces a full matrix W whose columns are the
+   corresponding left eigenvectors so that W'*A = D*W'.
+```
+Possiamo quindi usarlo per ottenere anche le relativi matrici degli autovettori sinistri e destri per la matrice $A$, cioè le matrici $V$ e $W$ tali che:
+```{math}
+A V = V D, \quad W^T A = D W^T.
+```
+:::{danger}
+MATLAB, e la maggior parte degli algoritmi che calcolano autovalori, non conoscono la forma canonica di Jordan e l'esistenza di matrici non diagonalizzabili. Per cui vi restituiranno sempre una diagonalizzazione, anche quando questa non esiste. Consideriamo ad esempio il blocco di Jordan:
+```matlab
+J = gallery('jordbloc',5)
+[V,D,W] = eig(J)
+```
+Otteniamo le due matrici, senza *warning* o altro... tuttavia se calcoliamo
+```matlab
+cond(V)
+
+ans =
+
+   1.3009e+63
+```
+che è un **valore enorme** per una matrice $5 \times 5$. Questo ci deve far sospettare che c'è qualcosa che non va!
+:::
+
+Per calcolare direttamente il raggio spettrale della matrice $M^{-1}N$ non abbiamo in realtà la necessità di calcolare tutti gli autovalori della matrice e prendere il massimo. Possiamo accedere ad algoritmi che calcolano direttamente la quantità che ci interessa:
+```matlab
+A = gallery('poisson',5); % Discretizzazione del Laplaciano in 2D
+M = diag(A); % A = M - N
+N = M-A;     % N = M - A
+rho = eigs(N,M,1,'largestabs');
+disp(abs(rho))
+```
+che ci restituisce il valore `0.8660` per il raggio spettrale, cioè abbiamo trovato uno **splitting convergente**.
+
+Vediamo il manuale del comando `eigs`.
+```
+eigs   Find a few eigenvalues and eigenvectors of a matrix
+ D = eigs(A) returns a vector of A's 6 largest magnitude eigenvalues.
+ A must be square and should be large and sparse.
+
+ [...]
+
+ eigs(A,K,SIGMA) and eigs(A,B,K,SIGMA) return K eigenvalues. If SIGMA is:
+
+        'largestabs' or 'smallestabs' - largest or smallest magnitude
+      'largestreal' or 'smallestreal' - largest or smallest real part
+                       'bothendsreal' - K/2 values with largest and
+                                        smallest real part, respectively
+                                        (one more from largest if K is odd)
+
+    For nonsymmetric problems, SIGMA can also be:
+      'largestimag' or 'smallestimag' - largest or smallest imaginary part
+                       'bothendsimag' - K/2 values with largest and
+                                       smallest imaginary part, respectively
+                                       (one more from largest if K is odd)
+
+    If SIGMA is a real or complex scalar including 0, eigs finds the
+    eigenvalues closest to SIGMA.
+
+```
+da cui leggiamo che quello che abbiamo chiesto a MATLAB di calcolare è un autovalore (`1`) di massimo valore assoluto (`'largestabs'`) che risolva il problema
+```{math}
+N \mathbf{v} = \lambda M \mathbf{v},
+```
+che, nel nostro caso, è equivalente alla richiesta
+```{math}
+M^{-1}N \mathbf{v} = \lambda \mathbf{v},
+```
+cioè quello che cercavamo. Problemi di questa forma sono detti **problemi generalizzati agli autovalori**, ma sono ben al di fuori degli obiettivi di questo corso.
+
+:::{warning}
+Tutte le volte che volete risolvere un problema agli autovalori con matrice $M^{1}N$ la soluzione opportuna è quella di usare la formulazione come problema generalizzato agli autovalori, sia da un punto di vista di stabilità numerica, sia da un punto di vista di velocità di esecuzione del codice.
+:::
+
+## Metodo di Jacobi
+
+Il primo metodo che vogliamo implementare è il **metodo di Jacobi**, questo è basato sullo splitting additivo per la matrice $A$ con $A = D - N$ dove $D$ è la diagonale della matrice $A$.
+
+:::{admonition} Teorema
+Una condizione sufficiente (ma **non necessaria**) affinché il metodo di Jacobi sia convergente è che la matrice $A$ sia a diagonale strettamente dominante, oppure a diagonale dominante e irriducibile.
+:::
+
+Per trasformare il metodo in qualcosa di applicabile dobbiamo accoppiarlo ad un **criterio d'arresto**. Come sempre possiamo guardare al **residuo assoluto** oppure a quello **relativo** in una norma prefissata. Poiché abbiamo deciso di guardare alla convergenza attraverso informazioni spettrali scelta più naturale (e predittiva) è quella di usare la norma $\|\cdot\|_ 2$.
+```{math}
+\|\mathbf{r}^{(k)}\|_2 = \| A \mathbf{x}^{(k)} - \mathbf{b}\|_2 \leq \varepsilon,
+```
+ovvero, rispettivamente
+```{math}
+\|\mathbf{r}^{(k)}\|_2 = \| A \mathbf{x}^{(k)} - \mathbf{b}\|_2 \leq \varepsilon \|\mathbf{r}^{(0)}\|_2,
+```
+dove $\varepsilon$ è una tolleranza prefissata.
+
+:::{admonition} Esercizio
+Si scriva una *function* che implementi il metodo di Jacobi per la soluzione di un sistema lineare $A \mathbf{x} = \mathbf{y}$ entro una tolleranza $\varepsilon$ sfruttando il seguente prototipo:
+```matlab
+function [x,res,it] = jacobi(A,b,x,itmax,eps)
+%%JACOBI implementa il metodo di Jacobi per la soluzione del sistema A x = b
 %    INPUT:
-%          x vettore riga degli n+1 nodi di interpolazione
-%          z vettore riga dei punti di valutazione del polinomio
-%          j indice the polinomio di Lagrange
-%   OUTPUT:
-%          L j-esimo polinomio di Lagrange valutato in z
+%     A matrice quadrata
+%     b termine destro del sistema lineare da risolvere
+%     x innesco della strategia iterativa
+%     itmax massimo numero di iterazioni lineari consentito
+%    OUTPUT
+%     x ultima soluzione calcolata dal metodo
+%     res vettore dei residui
+%     it numero di iterazioni
 end
 ```
+- Si implementi in maniera vettoriale, cioè **senza** usare cicli `for` per scorrere le righe della matrice,
+- Si usi il criterio d'arresto basato sull'errore relativo.
 
-- Si inserisca un controllo sul valore di $j$ ammesso.
-
-
-Si usi la *function* `LagrangePoly` per costruire il polinomio di interpolazione di Lagrange $P_3$ dai punti di interpolazione di Tabella 1
-```{math}
-\begin{aligned}
-&\text{Tabella 1}\\
-&\begin{array}{c|ccccc}
-x_i & -5 & -4 & 0 & 5 \\
-\hline y_i & -10 & -12 & -16 & 1\\
-\end{array}
-\end{aligned}
-```
-Si implementi uno script di MATLAB che produce il grafico del polinomio di interpolazione $P_3$ nell'intervallo $[-5,5]$ con $m=100$ punti equidistanti. Si aggiungano alla stessa figura i punti di interpolazione.
-
-Il grafico risultante è mostrato qui sotto.
-```{figure} ./images/interp.png
----
-width: 90%
----
-```
-:::
-
-Per trovare i coefficienti del polinomio interpolante nella base dei monomi esistono le seguenti routine di MATLAB:
-- `a = polyfit(xData,yData,m)` restituisce il vettore `a` di coefficienti del polinomio di grado $m$ che approssima i dati `(xData,yData)`.
-- `y = polyval(a,x)` valuta nel punto `x` il polinomio definito dai coefficienti `a`.
-
-::::{admonition} Esercizio 2
-Si consideri la **funzione di Runge**
-```{math}
-:label: runge
-f(x) = \dfrac{1}{1+x^2},\quad x\in[a,b].
-```
-Vogliamo studiare l'influenza della scelta dei nodi di interpolazione sulla qualità dell'interpolante polinomiale di grado $n$ per diversi valori di $n$.
-
-Si implementi uno script di MATLAB in cui:
-- Si calcolino i polinomi $\{P_n\}_n$ di Lagrange di grado $n=5,10,19$ che interpolano la funzione data in {eq}`runge` usando $n+1$ nodi equispaziati nell'intervallo $[−5, 5]$. Si riporti il grafico di ciascun polinomio interpolante su $m=500$ punti nell'intervallo considerato, insieme con quello della funzione data;
-- Si calcoli per ciascun valore di $n$ l'errore commesso ossia $E_n = \max_{-5\leq x \leq 5} |f(x) − P_n(x)|$ e si riportino gli errori ottenuti in un grafico in scala semilogaritmica;
-- Si utilizzi l'implementazione dell'interpolazione di Lagrange derivata nell'Esercizio 1.
-
-
-:::{admonition} Un suggerimento
-:class: tip, dropdown
-Si può seguire il seguente prototipo
+Per *testare* il metodo si usi il seguente programma
 ```matlab
-a = -5;
-b = 5;
-m = 500;
-z = ... % punti di valutazione
-f = ... % funzione di Runge definita come handle function
-d = [5,10,19];
-% Allocazione dei polinomi interpolanti e del vettore degli errori
-P = ...
-err = ...
-for k = 1:length(d)
-    ...
-    
-    x = ...  % Nodi di interpolazione
-    ...
+A = gallery('poisson',10); % Matrice di prova
+b = ones(10^2,1);           % rhs vettore di 1
+x = zeros(10^2,1);          % Tentativo iniziale vettore di 0
+[x,res,it] = jacobi(A,b,x,1000,1e-6);
 
-    % Calcolo del polinomio di Lagrange
-    ...
-    
-    % Calcolo dell'errore
-    ...
+figure(1)
+semilogy(1:it,res,'o-','LineWidth',2);
+xlabel('Iterazione');
+ylabel('Residuo relativo');
+```
+:::
+
+## Metodo di Gauss-Seidel
+
+:::{margin} Avanti/Indietro
+Si può utilizzare la stessa idea anche con la parte triangolare superiore $U$ di $A$, in genere si distingue tra i due chiamandoli, rispettivamente, metodo di Gauss-Seidel in *avanti* (forward Gauss-Seidel) o all'*indietro* (backward Gauss-Seidel).
+:::
+Il secondo metodo di questo tipo che avete visto è il metodo di **Gauss-Seidel**,
+per questo metodo la decomposizione additiva della matrice $A$ è $A = L - N$, dove $L$ è la parte triangolare inferiore della matrice $A$.
+
+:::{admonition} Teorema
+Una condizione sufficiente (ma **non necessaria**) affinché il metodo di Gauss-Seidel sia convergente è che la matrice $A$ sia a diagonale strettamente dominante, oppure una matrice simmetrica e definita positiva.
+:::
+
+Possiamo sfruttare di nuovo il *residuo relativo* per definire il criterio d'arresto.
+
+:::{admonition} Esercizio
+Si scriva una *function* che implementi il metodo di Gauss-Seidel in avanti per la soluzione di un sistema lineare $A \mathbf{x} = \mathbf{y}$ entro una tolleranza $\varepsilon$ sfruttando il seguente prototipo:
+```matlab
+function [x,res,it] = forwardgs(A,b,x,itmax,eps)
+%%FORWARDGS implementa il metodo di Gauss-Seidel in avanti per la soluzione del
+% sistema A x = b
+%    INPUT:
+%     A matrice quadrata
+%     b termine destro del sistema lineare da risolvere
+%     x innesco della strategia iterativa
+%     itmax massimo numero di iterazioni lineari consentito
+%    OUTPUT
+%     x ultima soluzione calcolata dal metodo
+%     res vettore dei residui
+%     it numero di iterazioni
 end
-% Plot della funzione e dei polinomi interpolanti
-...
-legend('Exact','n = 5','n = 10','n = 19','Location','best');
-% Plot dell'errore
-...
-
 ```
-:::
-::::
+- Si implementi in maniera vettoriale, cioè **senza** usare cicli `for` per scorrere le righe della matrice,
+- Si utilizzi la funzione `forwardsolve` vista in {ref}`forwardandbacwardsolve`
+- Si usi il criterio d'arresto basato sull'errore relativo.
 
+Per *testare* il metodo si usi il seguente programma
+```matlab
+A = gallery('poisson',10); % Matrice di prova
+b = ones(10^2,1);           % rhs vettore di 1
+x = zeros(10^2,1);          % Tentativo iniziale vettore di 0
+[x,res,it] = forwardgs(A,b,x,1000,1e-6);
 
-Il fenomeno che si osserva nell'Esercizio 2 è la mancata convergenza della successione $\{P_n\}_n$ dei polinomi di interpolazione alla funzione di Runge {eq}`runge`.
-Tale fenomeno, detto anche **fenomeno di Runge**, può essere evitato utilizzando opportune distribuzioni di nodi.
-
-Nell'intervallo $[a,b]\subset\mathbb{R}$ si considerino i nodi $\{x_i\}_{i=0}^{n}$ dati da
-```{math}
-:label: cheb
-x_i = \dfrac{a+b}{2} + \dfrac{b-a}{2}\widehat{x}_i\quad\mbox{con}\;\widehat{x}_i = -\cos\left(\dfrac{\pi i}{n}\right),\quad i=0,\ldots,n.
-```
-I punti $\widehat{x}_i\in[−1, 1]$ sono detti **nodi di Chebyshev**.
-
-:::{admonition} Esercizio 3
-Si ripeta l'Esercizio 2 utilizzando come nodi di interpolazione i nodi di Chebyshev dati dalla {eq}`cheb`.
-
-I grafici dei polinomi interpolanti ottenuti con nodi di interpolazione equidistanti (grafico di sinistra) e con nodi di Chebyshev (grafico di destra) sono riportati qui sotto.
-```{figure} ./images/runge.png
----
-width: 100%
----
+figure(1)
+semilogy(1:it,res,'o-','LineWidth',2);
+xlabel('Iterazione');
+ylabel('Residuo relativo');
 ```
 :::
 
+## Paragone tra i due metodi e velocità di convergenza
+
+Adesso che abbiamo implementato i due diversi metodi possiamo fare un confronto delle loro prestazioni. Possiamo paragonare in primo luogo le due storie di convergenza guardando all'evoluzione dei residui:
+```matlab
+A = gallery('poisson',10); % Matrice di prova
+b = ones(10^2,1);           % rhs vettore di 1
+x = zeros(10^2,1);          % Tentativo iniziale vettore di 0
+
+[xjacobi,resjacobi,itjacobi] = jacobi(A,b,x,1000,1e-6);
+[xforwardgs,resforwardgs,itforwardgs] = forwardgs(A,b,x,1000,1e-6);
+
+
+figure(1)
+semilogy(1:itjacobi,resjacobi,'o-',...
+    1:itforwardgs,resforwardgs,'x-', 'LineWidth',2);
+xlabel('Iterazione');
+ylabel('Residuo');
+legend({'Jacobi','Gauss-Seidel (Forward)'},...
+    'Location','northeast',...
+    'FontSize',14);
+ ```
+Da cui osserviamo che il metodo di Gauss-Seidel (forward) impiega meno iterazioni per raggiungere la convergenza desiderata ({numref}`gaussjac1`).
+
+```{figure} ./images/gaussjacobicomparison1.png
+---
+alt: convergenza-metodi
+width: 50%
+name: gaussjac1
+---
+Evoluzione del residuo per i metodi di Jacobi e Gauss-Seidel.
+```
+Possiamo indagare la cosa dal punto di vista teorico andando a guardare il raggio spettrale delle due matrici di iterazione, infatti
+```matlab
+M = diag(diag(A)); % Jacobi
+N = M - A;
+rhojacobi = eigs(N,M,1,'largestabs');
+
+M = tril(A); % Gauss-Seidel (forward)
+N = M - A;
+rhoforwardgs = eigs(N,M,1,'largestabs');
+
+fprintf('Il raggio spettrale per Jacobi è %f\n',abs(rhojacobi));
+fprintf('Il raggio spettrale per Gauss-Seidel è %f\n',abs(rhoforwardgs));
+```
+Da cui scopriamo che:
+```
+Il raggio spettrale per Jacobi è 0.959493
+Il raggio spettrale per Gauss-Seidel è 0.920627
+```
+dunque Gauss-Seidel (forward) ha un tasso di riduzione del residuo minore e una convergenza più rapida.
+
+Possiamo aggiungere delle istruzioni `tic` e `toc` per valutare anche il tempo impiegato dai due differenti metodi:
+```
+Il tempo per Jacobi è 0.008983 s
+Il tempo per Gauss-Seidel è 0.182575 s
+```
+ovvero il metodo di Jacobi è in questo caso circa due ordini di grandezza più rapido. Tuttavia, se andiamo a sostituire la nostra implementazione della funzione `forwardsolve` con il `\` implementato da MATLAB scopriamo che:
+```
+Il tempo per Jacobi è 0.008191 s
+Il tempo per Gauss-Seidel è 0.004435 s
+```
+ed ora Gauss-Seidel ha ampiamente recuperato su Jacobi. L'**implementazione** conta! Qui il vantaggio è dato dal fatto che la matrice $L$ associata al problema di test che stiamo guardando è una matrice *a banda* i non-zeri non riempiono tutto il triangolo. Il codice di MATLAB è in grado di accorgersene e adatto l'algoritmo di soluzione in modo che se ne tenga conto.
