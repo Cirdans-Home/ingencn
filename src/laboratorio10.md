@@ -1,5 +1,7 @@
 # Laboratorio 10 : Il Metodo di Bisezione
 
+=(laboratorio3)
+
 In questo laboratorio ci occuperemo del problema dell'individuazione degli zeri
 di una funzione **continua** $f : \mathbb{R} \to \mathbb{R}$. Per farlo
 adopereremo il *metodo di bisezione*.
