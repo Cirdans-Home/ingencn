@@ -1,5 +1,6 @@
 /src/_build/
-
+jupyterbook
+.ipynb_checkpoints
 *.svg
 *.aux
 *.synctex.gz
