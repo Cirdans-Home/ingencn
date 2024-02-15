@@ -1,6 +1,8 @@
 # ingencn
 
-Calcolo Numerico - Laurea Triennale in Ingegneria dell'Energia - Esercitazioni di Laboratorio
+[Calcolo Numerico - Laurea Triennale in Ingegneria dell'Energia - Esercitazioni di Laboratorio](https://cirdans-home.github.io/ingencn/)
+
+[![deploy-book](https://github.com/Cirdans-Home/ingencn/actions/workflows/deploy.yaml/badge.svg)](https://github.com/Cirdans-Home/ingencn/actions/workflows/deploy.yaml)
 
 ## L'ambiente jupyter-book
 
@@ -27,4 +29,8 @@ navigare nella cartella del repository ed utilizzare `make`:
 - `make publish` utilizza `gh-pages` per pubblicare le pagine web,
 - `make latex` produce una versione `.tex` dei laboratori.
 
-The script `start.sh` performs the initialization of the environment for you. If you have never initialized the environment, it creates one for you (running exactly the commands above), otherwise it simply sources the virtual environment.
+Lo script `start.sh` esegue per te l'inizializzazione del *virtual environment* `jupyterbook`. Se non hai mai inizializzato il *virtual environment*, ne crea uno per te (eseguendo esattamente i comandi sopra indicati) e lo carica, altrimenti si limita a caricare il *virtual environment* esistente.
+
+Ad ogni commit su `main`, le pagine all'indirizzo <https://cirdans-home.github.io/ingencn/> vengono rigenerate in modo automatico usando la *github action* qui sotto.
+
+[![deploy-book](https://github.com/Cirdans-Home/ingencn/actions/workflows/deploy.yaml/badge.svg)](https://github.com/Cirdans-Home/ingencn/actions/workflows/deploy.yaml)
