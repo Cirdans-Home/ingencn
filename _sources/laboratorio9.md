@@ -1,4 +1,4 @@
-# Laboratorio 8 : Metodi Stazionari per Sistemi Lineari
+# Laboratorio 9 : Metodi Stazionari per Sistemi Lineari
 
 Un **metodo iterativo** è una procedura matematica che a partire da un *valore iniziale* genera una sequenza di *soluzioni approssimate* migliorative per una
 determinata classe di problemi, in cui l'approssimazione $n$esima è derivata dai precedenti. Abbiamo già visto, **ed implementato**, metodi di questo tipo per la ricerca degli zeri di una funzione.

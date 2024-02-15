@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Laboratorio 8 : Metodi Stazionari per Sistemi Lineari &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
+    <title>Laboratorio 9 : Metodi Stazionari per Sistemi Lineari &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -57,7 +57,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
     <link rel="next" title="Laboratorio 10 : Il Metodo di Bisezione" href="laboratorio10.html" />
-    <link rel="prev" title="Laboratorio 8 : L’Eliminazione di Gauss il Metodo LU" href="laboratorio8.html" />
+    <link rel="prev" title="Laboratorio 8 : Il Problema Lineare dei Minimi Quadrati" href="laboratorio8.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
     
@@ -140,27 +140,27 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio5.html">
-   Laboratorio 5 : Il Problema Lineare dei Minimi Quadrati
+   Laboratorio 5 : Metodi di Quadratura
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio6.html">
-   Laboratorio 6 : Metodi di Quadratura
+   Laboratorio 6 : Soluzione dei Sistemi Lineari
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio7.html">
-   Laboratorio 7 : Soluzione dei Sistemi Lineari
+   Laboratorio 7 : L’Eliminazione di Gauss il Metodo LU
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio8.html">
-   Laboratorio 8 : L’Eliminazione di Gauss il Metodo LU
+   Laboratorio 8 : Il Problema Lineare dei Minimi Quadrati
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Laboratorio 8 : Metodi Stazionari per Sistemi Lineari
+   Laboratorio 9 : Metodi Stazionari per Sistemi Lineari
   </a>
  </li>
  <li class="toctree-l1">
@@ -391,7 +391,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Laboratorio 8 : Metodi Stazionari per Sistemi Lineari</h1>
+                <h1>Laboratorio 9 : Metodi Stazionari per Sistemi Lineari</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -438,8 +438,8 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-8-metodi-stazionari-per-sistemi-lineari">
-<h1>Laboratorio 8 : Metodi Stazionari per Sistemi Lineari<a class="headerlink" href="#laboratorio-8-metodi-stazionari-per-sistemi-lineari" title="Link a questa intestazione">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-9-metodi-stazionari-per-sistemi-lineari">
+<h1>Laboratorio 9 : Metodi Stazionari per Sistemi Lineari<a class="headerlink" href="#laboratorio-9-metodi-stazionari-per-sistemi-lineari" title="Link a questa intestazione">#</a></h1>
 <p>Un <strong>metodo iterativo</strong> è una procedura matematica che a partire da un <em>valore iniziale</em> genera una sequenza di <em>soluzioni approssimate</em> migliorative per una
 determinata classe di problemi, in cui l’approssimazione <span class="math notranslate nohighlight">\(n\)</span>esima è derivata dai precedenti. Abbiamo già visto, <strong>ed implementato</strong>, metodi di questo tipo per la ricerca degli zeri di una funzione.</p>
 <p>In questo laboratorio vogliamo concentrarci invece sulla costruzione di alcuni
@@ -659,7 +659,7 @@ per questo metodo la decomposizione additiva della matrice <span class="math not
 </div>
 <ul class="simple">
 <li><p>Si implementi in maniera vettoriale, cioè <strong>senza</strong> usare cicli <code class="docutils literal notranslate"><span class="pre">for</span></code> per scorrere le righe della matrice,</p></li>
-<li><p>Si utilizzi la funzione <code class="docutils literal notranslate"><span class="pre">forwardsolve</span></code> vista in <a class="reference internal" href="laboratorio7.html#forwardandbacwardsolve"><span class="std std-ref">Sostituzione in avanti e all’indietro</span></a></p></li>
+<li><p>Si utilizzi la funzione <code class="docutils literal notranslate"><span class="pre">forwardsolve</span></code> vista in <a class="reference internal" href="laboratorio6.html#forwardandbacwardsolve"><span class="std std-ref">Sostituzione in avanti e all’indietro</span></a></p></li>
 <li><p>Si usi il criterio d’arresto basato sull’errore relativo.</p></li>
 </ul>
 <p>Per <em>testare</em> il metodo si usi il seguente programma</p>
@@ -768,7 +768,7 @@ per questo metodo la decomposizione additiva della matrice <span class="math not
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">precedente</p>
-            <p class="prev-next-title">Laboratorio 8 : L’Eliminazione di Gauss il Metodo LU</p>
+            <p class="prev-next-title">Laboratorio 8 : Il Problema Lineare dei Minimi Quadrati</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="laboratorio10.html" title="successivo pagina">
@@ -785,7 +785,7 @@ per questo metodo la decomposizione additiva della matrice <span class="math not
     <div class="footer-content row">
         <footer class="col footer"><p>
   
-    By F. Durastante, C. Pagliantini, L. Heltai<br/>
+    By F. Durastante, L. Heltai, C. Pagliantini<br/>
   
       &copy; Copyright 2022.<br/>
 </p>

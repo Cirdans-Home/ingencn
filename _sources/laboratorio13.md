@@ -21,56 +21,41 @@ formule di quadratura dalle quali si ottiene l'approssimazione
 discreta della soluzione.
 
 Dato il problema di Cauchy per una equazione del primo ordine
-
 ```{math}
 \begin{cases}
 y'(t)=f(t,y(t))\\
 y(t_0)=y_0
 \end{cases}
 ```
-
 scriviamo la sua formulazione in forma integrale
-
 ```{math}
 y(t)=y_0 + \int_{t_0}^t y'(s)\, ds = y_0 + \int_{t_0}^t f(s,y(s))\,ds
 ```
-
 come nei casi dello scorso laboratorio scegliamo di nuovo una griglia
 uniforme
-
 ```{math}
 \Delta = \{t_i\} = \{t_0+ih\}_{\{i=0,\dots,n\}},
 ```
-
 e approssimiamo il valore della soluzione nel punto $t_1$ con
-
 ```{math}
 y(t_1)=y_0 + \int_{t_0}^{t_0+h} f(s,y(s))\,ds
 ```
-
 applichiamo la sostituzione $s=t_0 + \theta h$ e normalizziamo l'intervallo di integrazione
-
 ```{math}
 y(t_1)=y_0 + h\int_0^1 f(t_0+\theta h,y(t_0 + \theta h))\,d\theta.
 ```
-
 Applicando ora una formula di quadratura su dei nodi $\theta_i$ di pesi $b_i$ otteniamo quindi una stima del valore $y_1$:
-
 ```{math}
 y_1 = y_0 + h \sum_{i=0}^\nu b_i f(t_0+\theta_i h, K_i)
 ```
-
 dove i valori $K_i$ sono approssimazioni di $y(t_0+\theta_i h)$ per cui
 dobbiamo ancora ricavare una approssimazione numerica. Applichiamo
 nuovamente la stessa procedura e scriviamo
-
 ```{math}
 y(t_0+\theta_i h) =  y_0 + h\int_0^{\theta_i} f(t_0+v h,y(t_0 + v h))\,dv
 ```
-
 Scegliamo una nuova formula di quadratura, per semplicità sugli stessi nodi
 di quella per gli integrali "esterni", con pesi $a_{ij}$ e otteniamo:
-
 ```{math}
 K_i=y_0 + h\sum_{j=1}^\nu a_{ij}f(t_0+\theta_j h , K_j)
 ```
@@ -81,7 +66,6 @@ caratterizzato da **tre parametri**: un vettore $b = (b_i)_
 $\theta = (\theta_i)_ {i=0,\ldots,s}$.
 
 L'approssimazione è data dal sistema:
-
 ```{math}
 \begin{cases}
 y_{n+1} = y_n + h\sum_{i=1}^s b_i f(t_n + \theta_i h, K_i) \\
@@ -93,7 +77,6 @@ K_i = y_n + h \sum_{j=1}^s a_{ij} f(t_n+ \theta_j h, K_j) \quad i=1,\dots,s
 
 La versione più popolare, spesso nota semplicemente come metodo
 Runge-Kutta, prevede la seguente sequenza di operazioni:
-
 ```{math}
 :label: eq:RK4
 K_1 = & h f(x,y),\\
@@ -102,13 +85,11 @@ K_3 = & h f\left(x + \frac{h}{2}, y + \frac{K_2}{2} \right),\\
 K_4 = & h F(x+h,y+K_3),\\
 y(x+h) = & y(x) + \frac{1}{6} (K_1 + 2K_2 + 2 K_3 + K_4),
 ```
-
 si tratta di un **metodo esplicito** di ordine 4.
 
 :::{admonition} Esercizio
 Si implementi il metodo RK4 descritto in {eq}`eq:RK4` utilizzando il
 seguente prototipo di funzione
-
 ```matlab
 function [y,x] = RK4(f,y0,a,b,h)
 %RK4 Implementazone del metodo di Runge-Kutta esplicito del quarto ordine.
@@ -125,10 +106,8 @@ function [y,x] = RK4(f,y0,a,b,h)
 
 end
 ```
-
 Che possiamo testare sullo stesso problema che abbiamo usato per i metodi
 di Eulero impliciti/espliciti
-
 ```matlab
 %% Il metodo di RK4
 
@@ -152,13 +131,11 @@ semilogy(x,abs(y-ytrue(x)),'r-','LineWidth',2);
 xlabel('x');
 ylabel('Errore Assoluto');
 ```
-
 :::
 
 Possiamo di nuovo **analizzare la convergenza** di questo metodo e
 confrontarla con quella del metodo di Eulero in avanti che abbiamo visto
 durante lo scorso laboratorio
-
 ```matlab
 %% Convergenza
 k = 9;
@@ -178,16 +155,13 @@ loglog(h,err,'o-',h,errRK,'x-','LineWidth',2);
 xlabel('h')
 ylabel('Errore Relativo');
 ```
-
 Da cui otteniamo i risultati in {numref}`fig:RK4`.
-
 ```{figure} ./images/RK4_convergence.png
 :name: fig:RK4
 
 Paragone tra la convergenza del metodo di Eulero in avanti (esplicito) e
 il metodo esplicito di Runge-Kutta di ordine 4.
 ```
-
 Con il metodo RK4 raggiungiamo più velocemente la precisione di macchina
 per un valore di $h$ più elevato di quello del metodo di Eulero. Questo è
 l'effetto dell'ordine più alto.
