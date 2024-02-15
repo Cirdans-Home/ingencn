@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Laboratorio 10 : Il Problema Lineare dei Minimi Quadrati &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
+    <title>Laboratorio 10 : Il Metodo di Bisezione &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -56,8 +56,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
-    <link rel="next" title="Laboratorio 11 : Metodi di Quadratura" href="laboratorio11.html" />
-    <link rel="prev" title="Laboratorio 9 : Metodi di Interpolazione" href="laboratorio9.html" />
+    <link rel="next" title="Laboratorio 11 : Il Metodo di Newton" href="laboratorio11.html" />
+    <link rel="prev" title="Laboratorio 9 : Metodi Stazionari per Sistemi Lineari" href="laboratorio9.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
     
@@ -135,12 +135,12 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio4.html">
-   Laboratorio 4 : Il Metodo di Bisezione
+   Laboratorio 4 : Metodi di Interpolazione
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio5.html">
-   Laboratorio 5 : Il Metodo di Newton
+   Laboratorio 5 : Metodi di Quadratura
   </a>
  </li>
  <li class="toctree-l1">
@@ -155,22 +155,22 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio8.html">
-   Laboratorio 8 : Metodi Stazionari per Sistemi Lineari
+   Laboratorio 8 : Il Problema Lineare dei Minimi Quadrati
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio9.html">
-   Laboratorio 9 : Metodi di Interpolazione
+   Laboratorio 9 : Metodi Stazionari per Sistemi Lineari
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Laboratorio 10 : Il Problema Lineare dei Minimi Quadrati
+   Laboratorio 10 : Il Metodo di Bisezione
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio11.html">
-   Laboratorio 11 : Metodi di Quadratura
+   Laboratorio 11 : Il Metodo di Newton
   </a>
  </li>
  <li class="toctree-l1">
@@ -333,23 +333,104 @@ title="Print to PDF"
     </ul>
   </div>
 </div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
 
     </div>
 </div>
 
 <!-- Table of contents -->
 <div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#convergenza">
+   Convergenza
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#applicazioni">
+   Applicazioni
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#due-funzioni-di-matlab">
+   Due funzioni di MATLAB
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#zeri-di-polinomi">
+     Zeri di polinomi
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bibliografia">
+   Bibliografia
+  </a>
+ </li>
+</ul>
+
+    </nav>
 </div>
     </div>
     <div class="article row">
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Laboratorio 10 : Il Problema Lineare dei Minimi Quadrati</h1>
+                <h1>Laboratorio 10 : Il Metodo di Bisezione</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#convergenza">
+   Convergenza
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#applicazioni">
+   Applicazioni
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#due-funzioni-di-matlab">
+   Due funzioni di MATLAB
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#zeri-di-polinomi">
+     Zeri di polinomi
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bibliografia">
+   Bibliografia
+  </a>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -357,111 +438,426 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-10-il-problema-lineare-dei-minimi-quadrati">
-<h1>Laboratorio 10 : Il Problema Lineare dei Minimi Quadrati<a class="headerlink" href="#laboratorio-10-il-problema-lineare-dei-minimi-quadrati" title="Link a questa intestazione">#</a></h1>
-<p>Siamo interessati a risolvere sistemi lineari <strong>sovradeterminati</strong>, ossia della forma</p>
-<div class="math notranslate nohighlight">
-\[A \mathbf{x} = \mathbf{b}, \qquad A \in \mathbb{R}^{m \times n},\; \mathbf{x},\mathbf{b} \in \mathbb{R}^n,\;m&gt; n.\]</div>
-<p>Se il problema non ha soluzione si cercano i vettori <span class="math notranslate nohighlight">\(\mathbf{x}\in \mathbb{R}^{n}\)</span> che soddisfano</p>
-<div class="math notranslate nohighlight" id="equation-leastsq">
-<span class="eqno">(14)<a class="headerlink" href="#equation-leastsq" title="Permalink a questa equazione">#</a></span>\[\lVert A\mathbf{x}-\mathbf{b}\rVert_2 = \min_{\mathbf{y}\in\mathbb{R}^n}\lVert A\mathbf{y}-\mathbf{b}\rVert_2.\]</div>
-<p>Tale problema viene detto <strong>problema dei minimi quadrati</strong>.</p>
-<p>In questo laboratorio vogliamo concentrarci su metodi numerici di risoluzione del problema dei minimi quadrati e vedere un’applicazione al <em>fitting</em> di dati.</p>
-<p>La determinazione di un punto di minimo di <span class="math notranslate nohighlight">\(\Psi(\mathbf{x})=\lVert A\mathbf{x}-\mathbf{b}\rVert_2\)</span> si riconduce alla ricerca dei punti che annullano tutte le derivate parziali prime di <span class="math notranslate nohighlight">\(\Psi\)</span> e questo porta alle <strong>equazioni normali</strong></p>
-<div class="math notranslate nohighlight" id="equation-eqnorm">
-<span class="eqno">(15)<a class="headerlink" href="#equation-eqnorm" title="Permalink a questa equazione">#</a></span>\[A^{\top}A\mathbf{x}=A^{\top}\mathbf{b}.\]</div>
-<p>Se la matrice <span class="math notranslate nohighlight">\(A\)</span> ha rango massimo, allora la soluzione del problema dei minimi quadrati <a class="reference internal" href="#equation-leastsq">(14)</a> è unica e può essere ottenuta risolvendo il sistema <a class="reference internal" href="#equation-eqnorm">(15)</a>.</p>
-<p>In tal caso, si può utilizzare la fattorizzazione <span class="math notranslate nohighlight">\(LU\)</span> della matrice <span class="math notranslate nohighlight">\(A^{\top}A\)</span>. Poiché la matrice <span class="math notranslate nohighlight">\(A^{\top}A\)</span> è simmetrica definita positiva, puo essere fattorizzata come</p>
-<div class="math notranslate nohighlight">
-\[A^{\top} A = LL^{\top},\]</div>
-<p>detta <strong>fattorizzazione di Cholesky</strong>, dove <span class="math notranslate nohighlight">\(L\in\mathbb{R}^n\)</span> è una matrice triangolare inferiore con elementi principali positivi.
-La soluzione del sistema delle equazioni normali <a class="reference internal" href="#equation-eqnorm">(15)</a> viene calcolata risolvendo successivamente i due sistemi
-di ordine <span class="math notranslate nohighlight">\(n\)</span> con matrice dei coefficienti triangolare</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-    &amp; L\mathbf{y} = A^{\top}\mathbf{b}\\[1ex]
-    &amp; L^{\top}\mathbf{x} = \mathbf{y}.
-\end{align}\end{split}\]</div>
-<p>In alternativa, abbiamo discusso a lezione il metodo basato sulla fattorizzazione <span class="math notranslate nohighlight">\(QR\)</span> della matrice <span class="math notranslate nohighlight">\(A\)</span> per il calcolo della soluzione del problema dei minimi quadrati <a class="reference internal" href="#equation-leastsq">(14)</a>.</p>
-<div class="admonition-esercizio-1 admonition">
-<p class="admonition-title">Esercizio 1</p>
-<p>Si scriva una <em>function</em> che risolve il problema dei minimi quadrati sfruttando il seguente prototipo:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[x,min_res]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">minquad</span><span class="p">(</span>A,b,flag<span class="p">)</span><span class="w"></span>
-<span class="c">%%MINQUAD risolve il problem ai minimi quadrati associato</span><span class="w"></span>
-<span class="c">% al sistema Ax=b con il metodo specificato in flag</span><span class="w"></span>
-<span class="c">%    INPUT:</span><span class="w"></span>
-<span class="c">%     A matrice del sistema</span><span class="w"></span>
-<span class="c">%     b termine noto del sistema</span><span class="w"></span>
-<span class="c">%     flag stringa che specifica il metodo di risoluzione</span><span class="w"></span>
-<span class="c">%    OUTPUT:</span><span class="w"></span>
-<span class="c">%     x soluzione del problema ai minimi quadrati, punto di minimo</span><span class="w"></span>
-<span class="c">%     min_res valore del minimo</span><span class="w"></span>
+  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-10-il-metodo-di-bisezione">
+<h1>Laboratorio 10 : Il Metodo di Bisezione<a class="headerlink" href="#laboratorio-10-il-metodo-di-bisezione" title="Link a questa intestazione">#</a></h1>
+<p>In questo laboratorio ci occuperemo del problema dell’individuazione degli zeri
+di una funzione <strong>continua</strong> <span class="math notranslate nohighlight">\(f : \mathbb{R} \to \mathbb{R}\)</span>. Per farlo
+adopereremo il <em>metodo di bisezione</em>.</p>
+<p>Per applicare il metodo abbiamo bisogno di un intervallo <span class="math notranslate nohighlight">\([a,b] \subset \mathbb{R}\)</span>
+per cui abbiamo che <span class="math notranslate nohighlight">\(f(a)f(b) &lt; 0\)</span>, ovvero per cui <span class="math notranslate nohighlight">\(f(a)\)</span> e <span class="math notranslate nohighlight">\(f(b)\)</span> assumono
+segni opposti.</p>
+<aside class="margin sidebar">
+<p class="sidebar-title">Function Handle</p>
+<p>Il modo più semplice di passare la funzione scalare <span class="math notranslate nohighlight">\(f\)</span> al nostro algoritmo è
+quello di utilizzare un <strong>function handle</strong>, ovvero un tipo di dato di MATLAB
+che conserva l’associazione ad una funzione.</p>
+<p>Questo può essere fatto in diversi modi, si definisce un file funzione</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>y<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">funzione</span><span class="p">(</span>x<span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="n">y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">x</span><span class="o">.^</span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
 <span class="k">end</span><span class="w"></span>
 </pre></div>
 </div>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">flag</span></code> è una stringa che può assumere il valore <code class="docutils literal notranslate"><span class="pre">'EqNormali'</span></code> oppure <code class="docutils literal notranslate"><span class="pre">'MetodoQR'</span></code> e determina il metodo numerico con cui il problema dei minimi quadrati viene risolto all’interno della <em>function</em>.</p></li>
-<li><p>Si calcoli la fattorizzazione <span class="math notranslate nohighlight">\(LU\)</span> di <span class="math notranslate nohighlight">\(A^{\top}A\)</span> usando l’algoritmo di Doolittle visto nel Laboratorio 7.</p></li>
-<li><p>Si usi il comando MATLAB <code class="docutils literal notranslate"><span class="pre">qr</span></code> per calcolare la fattorizzazione <span class="math notranslate nohighlight">\(QR\)</span> della matrice <span class="math notranslate nohighlight">\(A\)</span>.</p></li>
-<li><p>Si usino le funzioni <code class="docutils literal notranslate"><span class="pre">backwardsolve</span></code> e <code class="docutils literal notranslate"><span class="pre">forwardsolve</span></code>, implementate nel Laboratorio 6, per risolvere i sistemi lineari triangolari risultanti.</p></li>
-</ul>
-</div>
-<p>Una tipica situazione in cui è necessario risolvere un problema dei minimi quadrati si presenta quando si vuole costruire una funzione che «si avvicini il più possibile» ad un insieme di dati.</p>
-<div class="admonition-esercizio-2 admonition">
-<p class="admonition-title">Esercizio 2</p>
-<p>Vogliamo trovare i coefficienti <span class="math notranslate nohighlight">\(a_1\)</span> e <span class="math notranslate nohighlight">\(a_2\)</span> della funzione <span class="math notranslate nohighlight">\(f(t) = t(a_1+a_2 e^{-t})\)</span> in modo che <span class="math notranslate nohighlight">\(f\)</span> approssi i dati <span class="math notranslate nohighlight">\((t_i,f_i)\)</span>, <span class="math notranslate nohighlight">\(i=0,1,2,3,4\)</span>, di Tabella 1 nel senso dei minimi quadrati</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-&amp;\text{Tabella 1}\\
-&amp;\begin{array}{c|ccccc}
-t_i &amp; 0.2 &amp; 0.4 &amp; 0.6 &amp; 0.8 &amp; 1.0\\
-\hline f_i &amp; 2.3 &amp; 3.0 &amp; 2.9 &amp; 2.0 &amp; 1.1
-\end{array}
-\end{aligned}\end{split}\]</div>
-<p>Per risolvere il problema del <em>fitting</em> di dati, si derivino la matrice <span class="math notranslate nohighlight">\(A\)</span> ed il vettore <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> del problema dei minimi quadrati corrispondente. Si utilizzi la <em>function</em> <code class="docutils literal notranslate"><span class="pre">minquad</span></code> implementata nell’Esercizio 1 per risolvere il problema.</p>
-<p>Si completi il seguente programma usando i dati forniti</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Soluzione del problema di fitting di dati</span><span class="w"></span>
-
-<span class="c">% Dati</span><span class="w"></span>
-<span class="n">t</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
-<span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
-<span class="c">% Definizione della matrice e del termine noto del sistema</span><span class="w"></span>
-<span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
-<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
-
-<span class="c">% Soluzione usando le equazioni normali</span><span class="w"></span>
-<span class="nb">flag</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;EqNormali&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">min_a</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">minquad</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="nb">flag</span><span class="p">);</span><span class="w"></span>
-<span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;Il minimo dato dalla soluzione del sistema delle equazioni normali e&#39; %1.2e\n&quot;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
-<span class="w">        </span><span class="n">min_a</span><span class="p">);</span><span class="w"></span>
-<span class="c">% Soluzione usando il metodo QR</span><span class="w"></span>
-<span class="nb">flag</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;MetodoQR&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="p">[</span><span class="n">c</span><span class="p">,</span><span class="n">min_c</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">minquad</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="nb">flag</span><span class="p">);</span><span class="w"></span>
-<span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;Il minimo dato dal metodo QR e&#39; %1.2e\n&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">min_c</span><span class="p">);</span><span class="w"></span>
-
-<span class="c">% Plot dei dati</span><span class="w"></span>
-<span class="nb">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="s">&#39;sk&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="nb">hold</span><span class="w"> </span><span class="n">on</span><span class="p">;</span><span class="w"></span>
-<span class="c">% Valutazione della funzione approssimante nei punti dati in tfine </span><span class="w"></span>
-<span class="n">tfine</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span><span class="mf">0.02</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<span class="n">fa</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
-<span class="n">fc</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
-<span class="c">% Plot delle funzioni approssimanti sulla griglia tfine</span><span class="w"></span>
-<span class="nb">plot</span><span class="p">(</span><span class="n">tfine</span><span class="p">,</span><span class="w"> </span><span class="n">fa</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;-b&#39;</span><span class="p">);</span><span class="w"> </span><span class="n">hold</span><span class="w"> </span><span class="s">on</span><span class="w"></span>
-<span class="nb">plot</span><span class="p">(</span><span class="n">tfine</span><span class="p">,</span><span class="w"> </span><span class="n">fc</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;--r&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;t&#39;</span><span class="p">);</span><span class="w"> </span><span class="nb">legend</span><span class="p">(</span><span class="s">&#39;Dati&#39;</span><span class="p">,</span><span class="s">&#39;Soluzione delle equazioni normali&#39;</span><span class="p">,</span><span class="s">&#39;Soluzione del metodo QR&#39;</span><span class="p">,</span><span class="s">&#39;Location&#39;</span><span class="p">,</span><span class="s">&#39;best&#39;</span><span class="p">)</span><span class="w"></span>
+<p>e poi si invoca la funzione <code class="docutils literal notranslate"><span class="pre">[c,residuo]</span> <span class="pre">=</span> <span class="pre">bisezione(&#64;funzione,a,b,maxit,tol)</span></code>.</p>
+<p>Oppure si definisce direttamente nello script di lancio (o nella <em>command window</em>)
+la funzione come</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="o">.^</span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
-<p>Il grafico risultante è mostrato qui sotto.</p>
-<figure class="align-default">
-<a class="reference internal image-reference" href="_images/datafitting.png"><img alt="_images/datafitting.png" src="_images/datafitting.png" style="width: 90%;" /></a>
-</figure>
+<p>e poi si invoca la funzione semplicemente come <code class="docutils literal notranslate"><span class="pre">[c,residuo]</span> <span class="pre">=</span> <span class="pre">bisezione(f,a,b,maxit,tol)</span></code>.
+Si veda l’esempio di script di seguito.</p>
+</aside>
+<div class="admonition-esercizio-1 admonition">
+<p class="admonition-title">Esercizio 1</p>
+<p>Si implementi in una funzione MATLAB l’algoritmo di bisezione:</p>
+<ol class="simple">
+<li><p>Calcolare <span class="math notranslate nohighlight">\(c\)</span>, punto medio dell’intervallo <span class="math notranslate nohighlight">\([a,b]\)</span>, <span class="math notranslate nohighlight">\(c = (a+b)/2\)</span>,</p></li>
+<li><p>Calcolare il valore della funzione al punto medio <span class="math notranslate nohighlight">\(f(c)\)</span>,</p></li>
+<li><p>Se il <em>criterio di convergenza</em> è soddisfatto, restituire <span class="math notranslate nohighlight">\(c\)</span> e terminare le
+iterazioni</p></li>
+<li><p>Esaminare il segno di <span class="math notranslate nohighlight">\(f(c)\)</span> e rimpiazzare <span class="math notranslate nohighlight">\((a,f(a))\)</span> o <span class="math notranslate nohighlight">\((b,f(b))\)</span> con
+<span class="math notranslate nohighlight">\((c,f(c))\)</span> in modo che ci sia uno zero all’interno del nuovo intervallo.</p></li>
+</ol>
+<p>Un <em>template</em> della funzione da implementare è il seguente:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[c,residuo]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">bisezione</span><span class="p">(</span>f,a,b,maxit,tol<span class="p">)</span><span class="w"></span>
+<span class="c">%%BISEZIONE applica il metodo di bisezione per il calcolo di f(x) = 0</span><span class="w"></span>
+<span class="c">% Input:  f function handle della funzione di cui si cerca lo zero</span><span class="w"></span>
+<span class="c">%         a estremo sinistro dell&#39;intervallo</span><span class="w"></span>
+<span class="c">%         b estremo destro dell&#39;intervallo</span><span class="w"></span>
+<span class="c">%         maxit numero massimo di iterazioni</span><span class="w"></span>
+<span class="c">%         tol tolleranza richiesta su abs(f(c))</span><span class="w"></span>
+<span class="c">% Output: c vettore dei valori trovato dall&#39;algoritmo</span><span class="w"></span>
+<span class="c">%         residuo vettore che contiene tutti i residui abs(f(c))</span><span class="w"></span>
+
+
+<span class="k">end</span><span class="w"></span>
+</pre></div>
 </div>
-<p>Quando la funzione approssimante cercata è un polinomio esistono le seguenti routine di MATLAB:</p>
+<p>È importante che la funzione implementata</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">polyfit(xData,yData,m)</span></code> restituisce il vettore <code class="docutils literal notranslate"><span class="pre">a</span></code> di coefficienti del polinomio di grado <span class="math notranslate nohighlight">\(m\)</span> che approssima i dati <code class="docutils literal notranslate"><span class="pre">(xData,yData)</span></code> nel senso dei minimi quadrati.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">polyval(a,x)</span></code> valuta nel punto <code class="docutils literal notranslate"><span class="pre">x</span></code> il polinomio definito dai coefficienti <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
+<li><p>faccia il controllo degli input,</p></li>
+<li><p>pre-allochi la memoria per i vettori <code class="docutils literal notranslate"><span class="pre">c</span></code> e <code class="docutils literal notranslate"><span class="pre">residuo</span></code>,</p></li>
+<li><p>riduca al minimo le chiamate ad <span class="math notranslate nohighlight">\(f(\cdot)\)</span>.</p></li>
 </ul>
+<p>Per testare l’algoritmo possiamo usare il problema di test:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Test del metodo di bisezione</span><span class="w"></span>
+
+<span class="nb">clear</span><span class="p">;</span><span class="w"> </span><span class="nb">clc</span><span class="p">;</span><span class="w"> </span><span class="n">close</span><span class="w"> </span><span class="s">all</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="o">.^</span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="n">maxit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span><span class="w"></span>
+<span class="n">tol</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-6</span><span class="p">;</span><span class="w"></span>
+
+<span class="p">[</span><span class="n">c</span><span class="p">,</span><span class="n">residuo</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bisezione</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">maxit</span><span class="p">,</span><span class="n">tol</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<section id="convergenza">
+<h2>Convergenza<a class="headerlink" href="#convergenza" title="Link a questa intestazione">#</a></h2>
+<p>L’analisi di convergenza per questo metodo vista a lezione ci dice che, se
+chiamiamo <span class="math notranslate nohighlight">\(c_n\)</span> l’iterata <span class="math notranslate nohighlight">\(n\)</span>-ma prodotta dal metodo e <span class="math notranslate nohighlight">\(c\)</span> la radice dell’equazione
+<span class="math notranslate nohighlight">\(f(x) = 0\)</span>, allora</p>
+<div class="math notranslate nohighlight">
+\[| c_n - c | \leq \frac{|b-a|}{2^n}.\]</div>
+<p>Possiamo usare MATLAB per verificare che quanto abbiamo implementato sia
+consistente con quanto abbiamo dimostrato, per farlo elaboriamo ulteriormente
+l’esempio dell’Esercizio 1 con il seguente codice:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ctrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.52137970680456757</span><span class="p">;</span><span class="w"></span>
+<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">residuo</span><span class="p">);</span><span class="w"></span>
+<span class="nb">semilogy</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">residuo</span><span class="p">,</span><span class="s">&#39;x--&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="n">n</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">c</span><span class="o">-</span><span class="n">ctrue</span><span class="p">),</span><span class="s">&#39;ro--&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="n">n</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">./</span><span class="p">(</span><span class="mf">2.</span>^<span class="n">n</span><span class="p">),</span><span class="s">&#39;k-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Iterazione n&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">legend</span><span class="p">(</span><span class="s">&#39;Residuo del metodo&#39;</span><span class="p">,</span><span class="s">&#39;Errore Assoluto c&#39;</span><span class="p">,</span><span class="s">&#39;Bound&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">axis</span><span class="w"> </span><span class="s">tight</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Che ci permette di produrre la figura <a class="reference internal" href="#bisezione-errore"><span class="std std-numref">Fig. 11</span></a>, da cui osserviamo
+che l’errore assoluto sulla radice <span class="math notranslate nohighlight">\(c\)</span> segue l’andamento predetto dall’analisi
+teorica.</p>
+<figure class="align-default" id="bisezione-errore">
+<img alt="_images/bisezione-errore.png" src="_images/bisezione-errore.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Errore nel metodo di bisezione per la soluzione del problema dell’Esercizio 1.</span><a class="headerlink" href="#bisezione-errore" title="Link a questa immagine">#</a></p>
+</figcaption>
+</figure>
+<p>Alcune note sul codice usato.</p>
+<ul class="simple">
+<li><p>Per confrontare la convergenza sulla <span class="math notranslate nohighlight">\(c_n\)</span> abbiamo avuto necessità di avere un
+valore di <span class="math notranslate nohighlight">\(c\)</span> che abbiamo calcolato per altre via con 16 cifre di accuratezza,</p></li>
+<li><p>Abbiamo usato la funzione <code class="docutils literal notranslate"><span class="pre">semilogy</span></code> per avere un grafico delle quantità in
+oggetto in cui abbiamo usato una scala logaritmica sull’asse delle <span class="math notranslate nohighlight">\(y\)</span> (in cui
+stavamo riportando gli errori).</p></li>
+</ul>
+</section>
+<section id="applicazioni">
+<h2>Applicazioni<a class="headerlink" href="#applicazioni" title="Link a questa intestazione">#</a></h2>
+<p>Consideriamo alcune applicazioni <em>ingegneristiche</em> del problema di trovare lo
+zero di una funzione <span id="id1">[<a class="reference internal" href="laboratorio7.html#id10" title="Jaan Kiusalaas. Numerical Methods in Engineering with MATLAB®. Cambridge University Press, 3 edition, 2015. doi:10.1017/CBO9781316341599.">Kiu15</a>]</span>.</p>
+<div class="admonition-esercizio-2 admonition">
+<p class="admonition-title">Esercizio 2</p>
+<p>Un cavo d’acciao di lunghezza <span class="math notranslate nohighlight">\(L\)</span> è sospeso come mostrato nella figura:</p>
+<figure class="align-default" id="id14">
+<img alt="_images/cavo.png" src="_images/cavo.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">:name: cavo</span><a class="headerlink" href="#id14" title="Link a questa immagine">#</a></p>
+<div class="legend">
+<p>Sospensione di un cavo d’acciaio.</p>
+</div>
+</figcaption>
+</figure>
+<p>La massima trazione (stress tensile) nel cavo, che si verifica in corrispondenza dei supporti, è data dall’espressione</p>
+<div class="math notranslate nohighlight">
+\[\sigma_{\text{max}} = \sigma_0 \cosh \beta, \qquad \beta = \frac{\gamma L}{2\sigma_0},\]</div>
+<p>dove</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\sigma_0 = \)</span> è la tensione del cavo nel punto di origine <span class="math notranslate nohighlight">\(O\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\gamma\)</span> peso del cavo per unità di volume,</p></li>
+<li><p><span class="math notranslate nohighlight">\(L\)</span> distanza tra i punti di supporto del cavo.
+Il rapporto lunghezza/spazio coperto dal cavo è correlato con <span class="math notranslate nohighlight">\(\beta\)</span> dall’espressione</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\frac{s}{L} = \frac{1}{\beta} \sinh \beta.\]</div>
+<p>Si calcoli <span class="math notranslate nohighlight">\(\sigma_{\text{max}}\)</span> se <span class="math notranslate nohighlight">\(\gamma = 77 \times 10^3\,N/m^3\)</span> (acciaio),
+<span class="math notranslate nohighlight">\(L = 1000\,m\)</span> e <span class="math notranslate nohighlight">\(s = 1100\,m\)</span>.</p>
+</div>
+<aside class="margin sidebar">
+<p class="sidebar-title">Secondo momento di inerzia</p>
+<p>Il secondo momento di inerzia per una figura arbitraria <span class="math notranslate nohighlight">\(R\)</span> (anche detto momento di inerzia areale) rispetto ad una coppia di assi <span class="math notranslate nohighlight">\(xy\)</span> è definito da</p>
+<div class="math notranslate nohighlight">
+\[J_{xy} = \iint_R \rho\,{\rm d}A,\]</div>
+<p>dove</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\rho\)</span> è la distanza radiale rispetto all’origine degli assi <span class="math notranslate nohighlight">\(xy\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\({\rm d}A\)</span> è un elemento infinitesimo di area.</p></li>
+</ul>
+<p>Per una sezione rettangolare:</p>
+<figure class="align-default" id="id15">
+<img alt="_images/areamomentrectangle.png" src="_images/areamomentrectangle.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 13 </span><span class="caption-text">:name: inerzia</span><a class="headerlink" href="#id15" title="Link a questa immagine">#</a></p>
+<div class="legend">
+<p>Momento di inerzia areale per una sezione rettangolare.</p>
+</div>
+</figcaption>
+</figure>
+<div class="math notranslate nohighlight">
+\[\begin{split}I_x = \frac{b h^3}{12}, \quad I_y = \frac{b^3 h}{12},\\ J_z = I_x + Y_y = \frac{bh}{12}(b^2+h^2).\end{split}\]</div>
+</aside>
+<div class="admonition-esercizio-3 admonition">
+<p class="admonition-title">Esercizio 3</p>
+<p>Le frequenze naturali di una trave a sbalzo (<em>cantilever</em>) uniforme sono legate
+alle radici <span class="math notranslate nohighlight">\(\beta_i\)</span> dell’equazione</p>
+<div class="math notranslate nohighlight">
+\[f(\beta) = \cosh \beta \cos \beta + 1 = 0,\]</div>
+<p>dove</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\beta_i^4 = (2\pi f_i)^2 \frac{mL^3}{E I}\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(f_i = i\)</span>ma frequenza naturale della trave (misurata in Hz),</p></li>
+<li><p><span class="math notranslate nohighlight">\(m = \)</span> massa della trave,</p></li>
+<li><p><span class="math notranslate nohighlight">\(L = \)</span> lunghezza della trave,</p></li>
+<li><p><span class="math notranslate nohighlight">\(E = \)</span> modulo di elasticità,</p></li>
+<li><p><span class="math notranslate nohighlight">\(I = \)</span> momento di inerzia della sezione della trave.</p></li>
+</ul>
+<p>Si determinano le due frequenze più basse di una trave d’acciaio lunga <span class="math notranslate nohighlight">\(0.9 m\)</span>, con una sezione rettangolare larga <span class="math notranslate nohighlight">\(25 mm\)</span> e alta <span class="math notranslate nohighlight">\(2.5 mm\)</span>. La densità della trave è di <span class="math notranslate nohighlight">\(7850 kg/m^3\)</span> e <span class="math notranslate nohighlight">\(E = 200 GPa\)</span>.</p>
+</div>
+<aside class="margin sidebar">
+<p class="sidebar-title">Bernoulli</p>
+<figure class="align-default" id="bernoulli">
+<img alt="_images/bernoulli.png" src="_images/bernoulli.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 14 </span><span class="caption-text">Equazione di Bernoulli per il fluido attraverso un canale aperto.</span><a class="headerlink" href="#bernoulli" title="Link a questa immagine">#</a></p>
+</figcaption>
+</figure>
+</aside>
+<div class="admonition-esercizio-4 admonition">
+<p class="admonition-title">Esercizio 4</p>
+<p>L’equazione di Bernoulli per il flusso di un fluido attraverso un canale aperto
+con una piccola protuberanza (<a class="reference internal" href="#bernoulli"><span class="std std-numref">Fig. 14</span></a>) è</p>
+<div class="math notranslate nohighlight">
+\[\frac{Q^2}{2 g b^2 h_0^2} + h_0 = \frac{Q^2}{2 g b^2 h^2} + h + H,\]</div>
+<p>dove</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Q = 1.2 m^3/s\)</span> portata del flusso,</p></li>
+<li><p><span class="math notranslate nohighlight">\(g = 9.81 m/s^2\)</span> accelerazione gravitazionale,</p></li>
+<li><p><span class="math notranslate nohighlight">\(b = 1.9m\)</span> larghezza del canale,</p></li>
+<li><p><span class="math notranslate nohighlight">\(h_0 = 0.6m\)</span> livello dell’acqua a monte,</p></li>
+<li><p><span class="math notranslate nohighlight">\(H = 0.075 m\)</span> altezza della protuberanza,</p></li>
+<li><p><span class="math notranslate nohighlight">\(h\)</span> = livello dell’acqua al di sopra della protuberanza.</p></li>
+</ul>
+<p>Si determini il valore di <span class="math notranslate nohighlight">\(h\)</span>.</p>
+</div>
+</section>
+<section id="due-funzioni-di-matlab">
+<h2>Due funzioni di MATLAB<a class="headerlink" href="#due-funzioni-di-matlab" title="Link a questa intestazione">#</a></h2>
+<p>Oltre le versioni che abbiamo implementato da noi, MATLAB dispone di alcune
+funzioni già implementate per risolvere il problema di trovare lo zero di una
+funzione.</p>
+<p>La <strong>funzione generica</strong> per trovare lo zero di una funzione non lineare è la
+funzione</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">fval</span><span class="p">,</span><span class="n">exitflag</span><span class="p">,</span><span class="n">output</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">fzero</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">options</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>dove</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fun</span></code> può essere un <em>function handle</em>, oppure una <em>function</em> salvata su di un  file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">x0</span></code> è il punto di innesco per il metodo, se si ha una localizzazione della
+radice cercata è possibile passargli un vettore di due elementi <code class="docutils literal notranslate"><span class="pre">x0</span> <span class="pre">=</span> <span class="pre">[a,b]</span></code>
+tali che <span class="math notranslate nohighlight">\(f(a)f(b) &lt; 0\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">options</span></code> è una struttura che può essere omessa e che permette di comunicare all’algoritmo alcune opzioni ausiliare.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code> contiene l’approssimazione dell”<span class="math notranslate nohighlight">\(x\,:\,f(x) = 0\)</span>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fval</span></code> contiene il valore di <span class="math notranslate nohighlight">\(f\)</span> nell’approssimazione dello zero.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">exitflag</span></code> e <code class="docutils literal notranslate"><span class="pre">output</span></code> contengono invece delle informazioni sulla convergenza del metodo.</p></li>
+</ul>
+<p>Alcuni <strong>esempi</strong> di opzioni sono:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">options</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">optimset</span><span class="p">(</span><span class="s">&#39;PlotFcns&#39;</span><span class="p">,{@</span><span class="n">optimplotx</span><span class="p">,@</span><span class="n">optimplotfval</span><span class="p">});</span><span class="w"> </span><span class="c">% Stampa delle figure</span><span class="w"></span>
+<span class="w">                                                             </span><span class="c">% informative sulla</span><span class="w"></span>
+<span class="w">                                                             </span><span class="c">% procedura iterativa</span><span class="w"></span>
+</pre></div>
+</div>
+<p>oppure</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">optimset</span><span class="p">(</span><span class="s1">&#39;Display&#39;</span><span class="p">,</span><span class="s1">&#39;iter&#39;</span><span class="p">);</span> <span class="o">%</span> <span class="n">mostra</span> <span class="n">rapporto</span> <span class="n">dettagliato</span> <span class="n">delle</span> <span class="n">iterazioni</span>
+</pre></div>
+</div>
+<p>Per vedere questa funzione all’opera potete provare il seguente esempio</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">fun</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w"> </span><span class="c">% Funzione di cui vogliamo trovare lo zero</span><span class="w"></span>
+<span class="n">x0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span><span class="w"> </span><span class="c">% Intervallo in cui cercare la radice</span><span class="w"></span>
+<span class="n">options</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">optimset</span><span class="p">(</span><span class="s">&#39;Display&#39;</span><span class="p">,</span><span class="s">&#39;iter&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">                   </span><span class="s">&#39;PlotFcns&#39;</span><span class="p">,{@</span><span class="n">optimplotx</span><span class="p">,@</span><span class="n">optimplotfval</span><span class="p">});</span><span class="w"> </span><span class="c">% Produci informazioni</span><span class="w"></span>
+<span class="p">[</span><span class="n">x</span><span class="w"> </span><span class="n">fval</span><span class="w"> </span><span class="n">exitflag</span><span class="w"> </span><span class="n">output</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">fzero</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">options</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Che ci restituirà le seguenti informazioni, dapprima una stampa iterazione per
+iterazione di quello che l’algoritmo sta facendo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Func</span><span class="o">-</span><span class="n">count</span>    <span class="n">x</span>          <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>             <span class="n">Procedure</span>
+	 <span class="mi">2</span>               <span class="mi">1</span>     <span class="o">-</span><span class="mf">0.307799</span>        <span class="n">initial</span>
+	 <span class="mi">3</span>        <span class="mf">0.544459</span>     <span class="mf">0.0153522</span>        <span class="n">interpolation</span>
+	 <span class="mi">4</span>        <span class="mf">0.566101</span>    <span class="mf">0.00070708</span>        <span class="n">interpolation</span>
+	 <span class="mi">5</span>        <span class="mf">0.567143</span>  <span class="o">-</span><span class="mf">1.40255e-08</span>        <span class="n">interpolation</span>
+	 <span class="mi">6</span>        <span class="mf">0.567143</span>   <span class="mf">1.50013e-12</span>        <span class="n">interpolation</span>
+	 <span class="mi">7</span>        <span class="mf">0.567143</span>             <span class="mi">0</span>        <span class="n">interpolation</span>
+
+<span class="n">Zero</span> <span class="n">found</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">interval</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Successivamente, poiché non abbiamo chiuso con un <code class="docutils literal notranslate"><span class="pre">;</span></code> l’istruzione leggiamo il
+valore dello zero, il valore della funzione in quel punto, la <em>flag</em> di uscita:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span>
+
+	 <span class="mf">0.5671</span>
+
+
+<span class="n">fval</span> <span class="o">=</span>
+
+		<span class="mi">0</span>
+
+
+<span class="n">exitflag</span> <span class="o">=</span>
+
+		<span class="mi">1</span>
+</pre></div>
+</div>
+<p><em>flag</em> che ci viene tradotta nel campo <code class="docutils literal notranslate"><span class="pre">message</span></code> della struttura <code class="docutils literal notranslate"><span class="pre">output</span></code>, insieme
+ad un riassunto di quello che l’algoritmo ha fatto.</p>
+<aside class="margin sidebar">
+<p class="sidebar-title"><code class="docutils literal notranslate"><span class="pre">fzero</span></code></p>
+<figure class="align-default" id="id16">
+<img alt="_images/fzero.png" src="_images/fzero.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 15 </span><span class="caption-text">:name: fzero</span><a class="headerlink" href="#id16" title="Link a questa immagine">#</a></p>
+<div class="legend">
+<p>Figure prodotte dalle opzioni del comando <code class="docutils literal notranslate"><span class="pre">fzero</span></code>.</p>
+</div>
+</figcaption>
+</figure>
+</aside>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">output</span> <span class="o">=</span>
+
+ <span class="n">struct</span> <span class="k">with</span> <span class="n">fields</span><span class="p">:</span>
+
+	 <span class="n">intervaliterations</span><span class="p">:</span> <span class="mi">0</span>
+					 <span class="n">iterations</span><span class="p">:</span> <span class="mi">5</span>
+						<span class="n">funcCount</span><span class="p">:</span> <span class="mi">7</span>
+						<span class="n">algorithm</span><span class="p">:</span> <span class="s1">&#39;bisection, interpolation&#39;</span>
+							<span class="n">message</span><span class="p">:</span> <span class="s1">&#39;Zero found in the interval [0, 1]&#39;</span>
+</pre></div>
+</div>
+<p>Vediamo invece la rappresentazione grafica di quanto ci è stato riassunto con
+<code class="docutils literal notranslate"><span class="pre">'display','iter'</span></code> nella figura a lato.</p>
+<p>Questa <em>funzione</em> applica una versione modificata di un algoritmo che non fa uso
+delle derivate da <code class="docutils literal notranslate"><span class="pre">cite</span></code>{MR0339493}.</p>
+<div class="admonition tip">
+<p class="admonition-title">Suggerimento</p>
+<p>Si può provare a risolvere gli esercizi precedenti utilizzando invece che il
+metodo di bisezione implementato da noi la funzione <code class="docutils literal notranslate"><span class="pre">fzero</span></code> e confrontare i
+risultati in termini di <em>tempi di calcolo</em> e <em>numero di valutazioni di funzione</em>.</p>
+<p>Per <strong>misurare il tempo</strong> intercorso in un blocco di istruzioni MATLAB si usano
+i comandi <code class="docutils literal notranslate"><span class="pre">tic</span></code> e <code class="docutils literal notranslate"><span class="pre">toc</span></code>:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">tic</span><span class="p">;</span><span class="w"></span>
+<span class="c">% Blocco di istruzioni MATLAB</span><span class="w"></span>
+<span class="n">tempo</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">toc</span><span class="p">;</span><span class="w"></span>
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;Il tempo trascorso è: %1.2e (s).\n&quot;</span><span class="p">,</span><span class="n">tempo</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<section id="zeri-di-polinomi">
+<h3>Zeri di polinomi<a class="headerlink" href="#zeri-di-polinomi" title="Link a questa intestazione">#</a></h3>
+<p>Una famiglia di funzioni per cui è tipico dover calcolare tutti gli zeri sono
+i polinomi di grado <span class="math notranslate nohighlight">\(n\)</span> <span class="math notranslate nohighlight">\(\mathbb{P}_n[x]\)</span>. A questo scopo esistono diversi
+algoritmi <em>ad-hoc</em> in genere basati su una riformulazione del problema come un
+opportuno problema di calcolo degli autovalori di una matrice. MATLAB ne implementa uno per mezzo del comando <code class="docutils literal notranslate"><span class="pre">roots</span></code></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">r</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">roots</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>dove</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">p</span></code> è un vettore che contiene gli <span class="math notranslate nohighlight">\(n+1\)</span> coefficienti del polinomio <span class="math notranslate nohighlight">\(p(x)\)</span> a partire dal coefficiente di <span class="math notranslate nohighlight">\(x^{n+1}\)</span>, cioè per <span class="math notranslate nohighlight">\(p(x) = a_n x^{n} + a_{n-1} x^{n-1} + \ldots + a_1 x + a_0,\)</span> il vettore <span class="math notranslate nohighlight">\(p\)</span> è <span class="math notranslate nohighlight">\(p = [a_n,a_{n-1},\ldots,a_1,a_0]\)</span>.</p></li>
+</ul>
+<div class="admonition danger">
+<p class="admonition-title">Pericolo</p>
+<p>Il calcolo delle radici di un polinomio può essere un problema <em>estremamente</em>
+malcondizionato. Si consideri ad esempio il seguente polinomio:</p>
+<div class="math notranslate nohighlight">
+\[p(x) = \prod_{i=1}^{20}(x-i) = x^{20}-210 x^{19}+20615 x^{18}-1256850 x^{17}+53327946 x^{16}-1672280820 x^{15}+40171771630 x^{14}-756111184500 x^{13}+11310276995381 x^{12}-135585182899530 x^{11}+1307535010540395 x^{10}-10142299865511450 x^9+63030812099294896 x^8-311333643161390640 x^7+1206647803780373360 x^6-3599979517947607200 x^5+8037811822645051776 x^4-12870931245150988800 x^3+13803759753640704000 x^2-8752948036761600000 x+2432902008176640000\]</div>
+<p>le cui radici sono chiaramente <span class="math notranslate nohighlight">\(i=1,2,\ldots,20\)</span>. Se andiamo ad applicare il
+nostro algoritmo</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">210</span><span class="p">,</span><span class="w"> </span><span class="mi">20615</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">1256850</span><span class="p">,</span><span class="w"> </span><span class="mi">53327946</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">1672280820</span><span class="p">,</span><span class="w"> </span><span class="mi">40171771630</span><span class="p">,</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="o">-</span><span class="mi">756111184500</span><span class="p">,</span><span class="w"> </span><span class="mi">11310276995381</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">135585182899530</span><span class="p">,</span><span class="w"> </span><span class="mi">1307535010540395</span><span class="p">,</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="o">-</span><span class="mi">10142299865511450</span><span class="p">,</span><span class="w"> </span><span class="mi">63030812099294896</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">311333643161390640</span><span class="p">,</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="mi">1206647803780373360</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">3599979517947607200</span><span class="p">,</span><span class="w"> </span><span class="mi">8037811822645051776</span><span class="p">,</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="o">-</span><span class="mi">12870931245150988800</span><span class="p">,</span><span class="w"> </span><span class="mi">13803759753640704000</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">8752948036761600000</span><span class="p">,</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="mi">2432902008176640000</span><span class="p">];</span><span class="w"></span>
+<span class="n">r</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">roots</span><span class="p">(</span><span class="n">p</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>troviamo:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">r</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">   </span><span class="mf">19.9998</span><span class="w"></span>
+<span class="w">   </span><span class="mf">19.0019</span><span class="w"></span>
+<span class="w">   </span><span class="mf">17.9909</span><span class="w"></span>
+<span class="w">   </span><span class="mf">17.0254</span><span class="w"></span>
+<span class="w">   </span><span class="mf">15.9463</span><span class="w"></span>
+<span class="w">   </span><span class="mf">15.0755</span><span class="w"></span>
+<span class="w">   </span><span class="mf">13.9148</span><span class="w"></span>
+<span class="w">   </span><span class="mf">13.0743</span><span class="w"></span>
+<span class="w">   </span><span class="mf">11.9533</span><span class="w"></span>
+<span class="w">   </span><span class="mf">11.0250</span><span class="w"></span>
+<span class="w">    </span><span class="mf">9.9904</span><span class="w"></span>
+<span class="w">    </span><span class="mf">9.0029</span><span class="w"></span>
+<span class="w">    </span><span class="mf">7.9994</span><span class="w"></span>
+<span class="w">    </span><span class="mf">7.0001</span><span class="w"></span>
+<span class="w">    </span><span class="mf">6.0000</span><span class="w"></span>
+<span class="w">    </span><span class="mf">5.0000</span><span class="w"></span>
+<span class="w">    </span><span class="mf">4.0000</span><span class="w"></span>
+<span class="w">    </span><span class="mf">3.0000</span><span class="w"></span>
+<span class="w">    </span><span class="mf">2.0000</span><span class="w"></span>
+<span class="w">    </span><span class="mf">1.0000</span><span class="w"></span>
+</pre></div>
+</div>
+<p>che è <strong>abbastanza vicino</strong> a quello che ci aspettavamo, tuttavia se proviamo
+a perturbare il coefficiente di <span class="math notranslate nohighlight">\(x^{19}\)</span> facendolo diventare da <span class="math notranslate nohighlight">\(-210\)</span> a
+<span class="math notranslate nohighlight">\(-210 - 10^{-6}\)</span> e replichiamo il comando <code class="docutils literal notranslate"><span class="pre">roots</span></code> otteniamo:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="mf">21.7491</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span>0000<span class="nb">i</span><span class="w"></span>
+<span class="mf">20.1114</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">.</span>8284<span class="nb">i</span><span class="w"></span>
+<span class="mf">20.1114</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="p">.</span>8284<span class="nb">i</span><span class="w"></span>
+<span class="mf">16.7872</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">.</span>8754<span class="nb">i</span><span class="w"></span>
+<span class="mf">16.7872</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">3</span><span class="p">.</span>8754<span class="nb">i</span><span class="w"></span>
+<span class="mf">13.7260</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">.</span>3928<span class="nb">i</span><span class="w"></span>
+<span class="mf">13.7260</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">3</span><span class="p">.</span>3928<span class="nb">i</span><span class="w"></span>
+<span class="mf">11.4286</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">.</span>3089<span class="nb">i</span><span class="w"></span>
+<span class="mf">11.4286</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="p">.</span>3089<span class="nb">i</span><span class="w"></span>
+<span class="w"> </span><span class="mf">9.7385</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span>1421<span class="nb">i</span><span class="w"></span>
+<span class="w"> </span><span class="mf">9.7385</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span>1421<span class="nb">i</span><span class="w"></span>
+<span class="w"> </span><span class="mf">8.5965</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span>0000<span class="nb">i</span><span class="w"></span>
+<span class="w"> </span><span class="mf">8.0736</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span>0000<span class="nb">i</span><span class="w"></span>
+<span class="w"> </span><span class="mf">6.9976</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span>0000<span class="nb">i</span><span class="w"></span>
+<span class="w"> </span><span class="mf">6.0000</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span>0000<span class="nb">i</span><span class="w"></span>
+<span class="w"> </span><span class="mf">5.0000</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span>0000<span class="nb">i</span><span class="w"></span>
+<span class="w"> </span><span class="mf">4.0000</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span>0000<span class="nb">i</span><span class="w"></span>
+<span class="w"> </span><span class="mf">3.0000</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span>0000<span class="nb">i</span><span class="w"></span>
+<span class="w"> </span><span class="mf">2.0000</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span>0000<span class="nb">i</span><span class="w"></span>
+<span class="w"> </span><span class="mf">1.0000</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span>0000<span class="nb">i</span><span class="w"></span>
+</pre></div>
+</div>
+<p>che è <strong>sensibilmente diverso</strong>. Se avete la curiosità di leggere di più su questo argomento, il lavoro originale al riguardo è <span id="id2">[<a class="reference internal" href="#id13" title="J. H. Wilkinson. The evaluation of the zeros of ill-conditioned polynomials. I, II. Numer. Math., 1:150–180, 1959. URL: https://doi.org/10.1007/BF01386381, doi:10.1007/BF01386381.">Wil59</a>]</span>.</p>
+</div>
+</section>
+</section>
+<section id="bibliografia">
+<h2>Bibliografia<a class="headerlink" href="#bibliografia" title="Link a questa intestazione">#</a></h2>
+<div class="docutils container" id="id3">
+<dl class="citation">
+<dt class="label" id="id11"><span class="brackets"><a class="fn-backref" href="#id1">Kiu15</a></span></dt>
+<dd><p>Jaan Kiusalaas. <em>Numerical Methods in Engineering with MATLAB®</em>. Cambridge University Press, 3 edition, 2015. <a class="reference external" href="https://doi.org/10.1017/CBO9781316341599">doi:10.1017/CBO9781316341599</a>.</p>
+</dd>
+<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id2">Wil59</a></span></dt>
+<dd><p>J. H. Wilkinson. The evaluation of the zeros of ill-conditioned polynomials. I, II. <em>Numer. Math.</em>, 1:150–180, 1959. URL: <a class="reference external" href="https://doi.org/10.1007/BF01386381">https://doi.org/10.1007/BF01386381</a>, <a class="reference external" href="https://doi.org/10.1007/BF01386381">doi:10.1007/BF01386381</a>.</p>
+</dd>
+</dl>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -495,13 +891,13 @@ t_i &amp; 0.2 &amp; 0.4 &amp; 0.6 &amp; 0.8 &amp; 1.0\\
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">precedente</p>
-            <p class="prev-next-title">Laboratorio 9 : Metodi di Interpolazione</p>
+            <p class="prev-next-title">Laboratorio 9 : Metodi Stazionari per Sistemi Lineari</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="laboratorio11.html" title="successivo pagina">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">successivo</p>
-        <p class="prev-next-title">Laboratorio 11 : Metodi di Quadratura</p>
+        <p class="prev-next-title">Laboratorio 11 : Il Metodo di Newton</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

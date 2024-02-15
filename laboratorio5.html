@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Laboratorio 5 : Il Metodo di Newton &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
+    <title>Laboratorio 5 : Metodi di Quadratura &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -57,7 +57,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
     <link rel="next" title="Laboratorio 6 : Soluzione dei Sistemi Lineari" href="laboratorio6.html" />
-    <link rel="prev" title="Laboratorio 4 : Il Metodo di Bisezione" href="laboratorio4.html" />
+    <link rel="prev" title="Laboratorio 4 : Metodi di Interpolazione" href="laboratorio4.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
     
@@ -135,12 +135,12 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio4.html">
-   Laboratorio 4 : Il Metodo di Bisezione
+   Laboratorio 4 : Metodi di Interpolazione
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Laboratorio 5 : Il Metodo di Newton
+   Laboratorio 5 : Metodi di Quadratura
   </a>
  </li>
  <li class="toctree-l1">
@@ -155,22 +155,22 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio8.html">
-   Laboratorio 8 : Metodi Stazionari per Sistemi Lineari
+   Laboratorio 8 : Il Problema Lineare dei Minimi Quadrati
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio9.html">
-   Laboratorio 9 : Metodi di Interpolazione
+   Laboratorio 9 : Metodi Stazionari per Sistemi Lineari
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio10.html">
-   Laboratorio 10 : Il Problema Lineare dei Minimi Quadrati
+   Laboratorio 10 : Il Metodo di Bisezione
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio11.html">
-   Laboratorio 11 : Metodi di Quadratura
+   Laboratorio 11 : Il Metodo di Newton
   </a>
  </li>
  <li class="toctree-l1">
@@ -356,23 +356,30 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#convergenza">
-   Convergenza
+  <a class="reference internal nav-link" href="#regola-composita-dei-trapezi">
+   Regola composita dei trapezi
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#una-versione-ricorsiva">
+     Una versione ricorsiva
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#formula-di-simpson">
+   Formula di Simpson
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#approssimare-la-derivata-prima">
-   Approssimare la derivata prima
+  <a class="reference internal nav-link" href="#le-funzioni-di-quadratura-di-matlab">
+   Le funzioni di quadratura di MATLAB
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#radici-multiple">
-   Radici multiple
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#esempi-di-applicazioni">
-   Esempi di applicazioni
+  <a class="reference internal nav-link" href="#applicazioni-ed-esercizi">
+   Applicazioni ed esercizi
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -389,7 +396,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Laboratorio 5 : Il Metodo di Newton</h1>
+                <h1>Laboratorio 5 : Metodi di Quadratura</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -400,23 +407,30 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#convergenza">
-   Convergenza
+  <a class="reference internal nav-link" href="#regola-composita-dei-trapezi">
+   Regola composita dei trapezi
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#una-versione-ricorsiva">
+     Una versione ricorsiva
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#formula-di-simpson">
+   Formula di Simpson
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#approssimare-la-derivata-prima">
-   Approssimare la derivata prima
+  <a class="reference internal nav-link" href="#le-funzioni-di-quadratura-di-matlab">
+   Le funzioni di quadratura di MATLAB
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#radici-multiple">
-   Radici multiple
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#esempi-di-applicazioni">
-   Esempi di applicazioni
+  <a class="reference internal nav-link" href="#applicazioni-ed-esercizi">
+   Applicazioni ed esercizi
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -434,301 +448,562 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-5-il-metodo-di-newton">
-<h1>Laboratorio 5 : Il Metodo di Newton<a class="headerlink" href="#laboratorio-5-il-metodo-di-newton" title="Link a questa intestazione">#</a></h1>
-<p>Nello scorso laboratorio abbiamo affrontato il problema di trovare lo zero di
-una funzione continua <span class="math notranslate nohighlight">\(f : \mathbb{R} \to \mathbb{R}\)</span> utilizzando il metodo di
-bisezione. Il passo successivo visto a lezione è quello di costruire un metodo
-che, a patto di avere funzioni di regolarità più alta,
-<span class="math notranslate nohighlight">\(f \in \mathcal{C}^{2}(\mathbb{R})\)</span>, permette di ottenere una velocità di
-convergenza maggiore.</p>
-<p>Prima di dedicarci all’implementazione, riprendiamo brevemente l’idea e la
-costruzione del metodo. L’idea è di cominciare con una approssimazione iniziale
-che sia <em>ragionevolmente vicina</em> alla radice dell’equazione che vogliamo
-risolvere. Approssimiamo in quel punto la funzione con la tangente, calcoliamo
-la sua intercetta con l’asse delle <span class="math notranslate nohighlight">\(x\)</span> e quella è la nuova approssimazione
-per la radice. Possiamo iterare la procedura come:</p>
-<div class="math notranslate nohighlight" id="equation-eq-newton">
-<span class="eqno">(4)<a class="headerlink" href="#equation-eq-newton" title="Permalink a questa equazione">#</a></span>\[x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}, \quad x_0 \text{ assegnato},  \quad k \geq 1,\]</div>
-<p>Per cui avete dimostrato il seguente teorema di convergenza.</p>
-<div class="admonition-teorema admonition">
-<p class="admonition-title">Teorema</p>
-<p>Sia <span class="math notranslate nohighlight">\(f \in \mathcal{C}^{2}([a,b])\)</span>, e supponiamo inoltre che <span class="math notranslate nohighlight">\(f(c) = 0\)</span>,
-<span class="math notranslate nohighlight">\(f'(c) \neq 0\)</span> per qualche <span class="math notranslate nohighlight">\(c \in [a,b]\)</span>. Allora esiste un <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> tale
-per cui l’iterata <a class="reference internal" href="#equation-eq-newton">(4)</a> applicata ad <span class="math notranslate nohighlight">\(f\)</span> converge a <span class="math notranslate nohighlight">\(c\)</span> per ogni
-valore iniziale <span class="math notranslate nohighlight">\(x_0 \in [c-\delta,c+\delta]\)</span>.</p>
-</div>
-<p>Ricordate queste caratteristiche iniziali, possiamo procedere ad implementare
-una versione MATLAB dell’algoritmo di Newton.</p>
-<div class="admonition-esercizio-1 admonition">
-<p class="admonition-title">Esercizio 1</p>
-<p>Si implementi in una funzione MATLAB l’algoritmo di Newton sfruttando l’iterata
-descritta in <a class="reference internal" href="#equation-eq-newton">(4)</a>. Un <em>template</em> della funzione da implementare che
-si può adottare è quindi il seguente:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[c,residuo]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">newton</span><span class="p">(</span>f,fp,x0,maxit,tol<span class="p">)</span><span class="w"></span>
-<span class="c">%%NEWTON Implementazione del metodo di Newton</span><span class="w"></span>
-<span class="c">% Input:  f function handle della funzione di cui si cerca lo zero</span><span class="w"></span>
-<span class="c">%         fp function handle della derivata prima della funzione</span><span class="w"></span>
-<span class="c">%         x0 approssimazione iniziale</span><span class="w"></span>
-<span class="c">%         maxit numero massimo di iterazioni consentite</span><span class="w"></span>
-<span class="c">%         tol tolleranza sul residuo</span><span class="w"></span>
-<span class="c">% Output: c radici candidate prodotte dal metodo</span><span class="w"></span>
-<span class="c">%         residuo vettore dei residui prodotto dal metodo</span><span class="w"></span>
-
-<span class="k">end</span><span class="w"></span>
-</pre></div>
-</div>
-<p>È importante che la funzione implementata</p>
-<ul class="simple">
-<li><p>faccia il controllo degli input,</p></li>
-<li><p>pre-allochi la memoria per i vettori <code class="docutils literal notranslate"><span class="pre">c</span></code> e <code class="docutils literal notranslate"><span class="pre">residuo</span></code>,</p></li>
-<li><p>riduca al minimo le chiamate ad <span class="math notranslate nohighlight">\(f(\cdot)\)</span>.</p></li>
-</ul>
-<p>Per testare l’algoritmo implementato si può usare</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Script di test per il metodo di Newton</span><span class="w"></span>
-<span class="nb">clear</span><span class="p">;</span><span class="w"> </span><span class="nb">clc</span><span class="p">;</span><span class="w"></span>
-<span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="o">.^</span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
-<span class="n">fp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="mi">3</span><span class="o">*</span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="w"> </span><span class="o">-</span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
-<span class="n">maxit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span><span class="w"></span>
-<span class="n">tol</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-6</span><span class="p">;</span><span class="w"></span>
-<span class="n">ctrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">2.09455148154232659</span><span class="p">;</span><span class="w"></span>
-<span class="n">x0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
-<span class="p">[</span><span class="n">c</span><span class="p">,</span><span class="n">residuo</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">newton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">fp</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">maxit</span><span class="p">,</span><span class="n">tol</span><span class="p">);</span><span class="w"></span>
-</pre></div>
-</div>
-<p>Da cui otteniamo</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Iterata</span> <span class="mi">1</span>	<span class="n">c</span> <span class="o">=</span> <span class="mf">3.000000</span>	<span class="n">residuo</span> <span class="o">=</span> <span class="mf">1.600000e+01</span>
-<span class="n">Iterata</span> <span class="mi">2</span>	<span class="n">c</span> <span class="o">=</span> <span class="mf">2.360000</span>	<span class="n">residuo</span> <span class="o">=</span> <span class="mf">3.424256e+00</span>
-<span class="n">Iterata</span> <span class="mi">3</span>	<span class="n">c</span> <span class="o">=</span> <span class="mf">2.127197</span>	<span class="n">residuo</span> <span class="o">=</span> <span class="mf">3.710998e-01</span>
-<span class="n">Iterata</span> <span class="mi">4</span>	<span class="n">c</span> <span class="o">=</span> <span class="mf">2.095136</span>	<span class="n">residuo</span> <span class="o">=</span> <span class="mf">6.526626e-03</span>
-<span class="n">Iterata</span> <span class="mi">5</span>	<span class="n">c</span> <span class="o">=</span> <span class="mf">2.094552</span>	<span class="n">residuo</span> <span class="o">=</span> <span class="mf">2.146143e-06</span>
-<span class="n">Iterata</span> <span class="mi">6</span>	<span class="n">c</span> <span class="o">=</span> <span class="mf">2.094551</span>	<span class="n">residuo</span> <span class="o">=</span> <span class="mf">2.327027e-13</span>
-	<span class="n">Convergenza</span> <span class="n">raggiunta</span> <span class="ow">in</span> <span class="mi">6</span> <span class="n">iterazioni</span>
-</pre></div>
-</div>
-</div>
-<section id="convergenza">
-<span id="newt-convergenza"></span><h2>Convergenza<a class="headerlink" href="#convergenza" title="Link a questa intestazione">#</a></h2>
-<aside class="margin sidebar">
-<p class="sidebar-title"></p>
-<figure class="align-default" id="newtonconvergence">
-<img alt="_images/newtonconvergence.png" src="_images/newtonconvergence.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Paragone tra la convergenza del metodo di Newton e il metodo di bisezione per
-calcolare una radice di <span class="math notranslate nohighlight">\(f(x) = x^3-2x-5\)</span>.</span><a class="headerlink" href="#newtonconvergence" title="Link a questa immagine">#</a></p>
-</figcaption>
-</figure>
-</aside>
-<p>Possiamo confrontare il metodo di Newton con il metodo di bisezione implementato
-nella scorsa lezione, sfruttiamo lo stesso caso di test dell’Esercizio 1 e
-aggiungiamo allo script di test del metodo di Newton:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
-<span class="n">maxit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span><span class="w"></span>
-<span class="n">tol</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-6</span><span class="p">;</span><span class="w"></span>
-<span class="p">[</span><span class="n">c2</span><span class="p">,</span><span class="n">residuo2</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bisezione</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">maxit</span><span class="p">,</span><span class="n">tol</span><span class="p">);</span><span class="w"></span>
-
-<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">residuo</span><span class="p">);</span><span class="w"></span>
-<span class="n">n2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">residuo2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">semilogy</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">c</span><span class="o">-</span><span class="n">ctrue</span><span class="p">),</span><span class="s">&#39;ro-&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
-<span class="w">    </span><span class="n">n2</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">c2</span><span class="o">-</span><span class="n">ctrue</span><span class="p">),</span><span class="s">&#39;bx-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Metodo di Newton&#39;</span><span class="p">,</span><span class="s">&#39;Metodo di Bisezione&#39;</span><span class="p">},</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Iterazione&#39;</span><span class="p">)</span><span class="w"></span>
-</pre></div>
-</div>
-<p>per cui vediamo una rappresentazione in <a class="reference internal" href="#newtonconvergence"><span class="std std-numref">Fig. 9</span></a>. Come ci
-aspettavamo dall’analisi teorica, il metodo di Newton è in questo caso di ordine
-<span class="math notranslate nohighlight">\(2\)</span>. Possiamo investigare l’ordine di convergenza anche in maniera numerica.</p>
-<p>Per farlo ricordiamo che una successione di approssimate <span class="math notranslate nohighlight">\(\{x_n\}_n\)</span> che converge
-ad <span class="math notranslate nohighlight">\(x\)</span> ha ordine di convergenza <span class="math notranslate nohighlight">\(p \geq 1\)</span> se</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-5-metodi-di-quadratura">
+<h1>Laboratorio 5 : Metodi di Quadratura<a class="headerlink" href="#laboratorio-5-metodi-di-quadratura" title="Link a questa intestazione">#</a></h1>
+<p>Compito dell’integrazione numerica, o <em>quadratura</em> è quello di
+approssimare il valore dell’integrale</p>
 <div class="math notranslate nohighlight">
-\[\lim_{n \rightarrow +\infty} \frac{|x_{n+1}-x|}{|x_n -x|^p} = \mu, \text{ con } \mu \in (0,1).\]</div>
-<p>Possiamo sfruttare la definizione per ottenere una stima dell’ordine di
-convergenza mediante i rapporti:</p>
-<p>che possiamo implementare in una funzione MATLAB come</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>q<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">convergenza</span><span class="p">(</span>xn, xtrue<span class="p">)</span><span class="w"></span>
-<span class="c">%%CONVERGENZA produce una stima dell&#39;ordine di convergenza della</span><span class="w"></span>
-<span class="c">%%successione x_n ad xtrue.</span><span class="w"></span>
-<span class="w">  </span><span class="n">e</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">xn</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">xtrue</span><span class="p">);</span><span class="w"></span>
-<span class="w">  </span><span class="n">q</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="nb">length</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">:(</span><span class="nb">length</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="n">q</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">log</span><span class="p">(</span><span class="n">e</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">e</span><span class="p">(</span><span class="n">n</span><span class="p">))</span><span class="o">/</span><span class="nb">log</span><span class="p">(</span><span class="n">e</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">/</span><span class="n">e</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span><span class="w">       </span>
-<span class="w">  </span><span class="k">end</span><span class="w"></span>
+\[\int_{a}^{b} f(x)\,{\rm d}x,\]</div>
+<p>con la somma finita</p>
+<div class="math notranslate nohighlight">
+\[I = \sum_{i=0}^{n} \omega_i f(x_i),\]</div>
+<p>dove i <strong>nodi</strong> <span class="math notranslate nohighlight">\(\{x_i\}_{i=0}^n\)</span> e i <strong>pesi</strong> <span class="math notranslate nohighlight">\(\{ \omega_i \}_{i=0}^{n}\)</span>
+dipendono dalla particolare forma scelta. Come avete visto a lezione, le
+regole di quadratura provengono dalla scelta di un particolare <em>polinomio
+interpolante</em> per la funzione <span class="math notranslate nohighlight">\(f\)</span>. Delle diverse famiglie di formule
+quadrature che esistono ci focalizzeremo qui sull’implementazione delle
+<strong>formule di Newton-Cotes</strong>.</p>
+<p>Ricordiamo brevemente il funzionamento generale di questa procedura.
+Consideriamo l’integrale definito</p>
+<div class="math notranslate nohighlight">
+\[\int_{a}^{b} f(x)\,{\rm d}x,\]</div>
+<p>e dividiamo l’intervallo <span class="math notranslate nohighlight">\((a,b)\)</span> in <span class="math notranslate nohighlight">\(n\)</span> intervalli di uguale lunghezza</p>
+<div class="math notranslate nohighlight">
+\[h = \frac{b-a}{n}, \quad x_{i} = a + i h, \; i=0,\ldots,n,\]</div>
+<p>sostituiamo poi alla funzione <span class="math notranslate nohighlight">\(f\)</span> il suo <strong>polinomio interpolante</strong> in
+forma di Lagrange sui valori <span class="math notranslate nohighlight">\(\{ (x_i,f(x_i))\}_{i=0}^{n}\)</span></p>
+<div class="math notranslate nohighlight">
+\[P_{n}(x) = \sum_{i=0}^{n} f(x_i)\ell_i(x),\]</div>
+<p>da cui otteniamo che</p>
+<div class="math notranslate nohighlight">
+\[I = \int_{a}^{b} P_{n}(x)\,{\rm d}x = \sum_{i=0}^{n}\left[ f(x_i) \int_{a}^{b} \ell_{i}(x) \right] = \sum_{i=0}^{n} \omega_i f(x_i),\]</div>
+<p>dove i <strong>pesi</strong> non sono nient’altro che gli integrali</p>
+<div class="math notranslate nohighlight">
+\[\omega_i = \int_{a}^{b} \ell_i(x)\,{\rm d}x, \quad i=0,\ldots,n.\]</div>
+<p>Vediamo e <strong>implementiamo</strong> ora alcune celebri formule di quadratura di
+questa forma.</p>
+<section id="regola-composita-dei-trapezi">
+<h2>Regola composita dei trapezi<a class="headerlink" href="#regola-composita-dei-trapezi" title="Link a questa intestazione">#</a></h2>
+<p>Supponiamo di scegliere <span class="math notranslate nohighlight">\(n=1\)</span>, ovvero <span class="math notranslate nohighlight">\(h = b-a\)</span> e quindi <span class="math notranslate nohighlight">\(x_0 = a\)</span>,
+<span class="math notranslate nohighlight">\(x_1 = b\)</span>, e quindi</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}w_0 = &amp; -\frac{1}{h}\int_{a}^{b} (x-b)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},\\
+w_1 = &amp; \frac{1}{h}\int_{a}^{b} (x-a)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},\end{split}\]</div>
+<p>da cui</p>
+<div class="math notranslate nohighlight">
+\[I = \sum_{i=0}^{1} \omega_i f(x_i) = \frac{h}{2}(f(a)+f(b)),\]</div>
+<p>e che è <strong>esattamente</strong> l’area del trapezio di altezza <span class="math notranslate nohighlight">\(b-a\)</span> e basi <span class="math notranslate nohighlight">\(f(a)\)</span>
+e <span class="math notranslate nohighlight">\(f(b)\)</span>. L’errore per questa approssimazione, se <span class="math notranslate nohighlight">\(f\)</span> è due volte differenziabile, è dato da</p>
+<div class="math notranslate nohighlight">
+\[E = O\left( \frac{h^3}{12} f''(\xi) \right),\]</div>
+<p>dove <span class="math notranslate nohighlight">\(\xi\)</span> è un punto in <span class="math notranslate nohighlight">\([a,b]\)</span> e che quindi <strong>possiamo maggiorare</strong> con il massimo di <span class="math notranslate nohighlight">\(f''(x)\)</span> in <span class="math notranslate nohighlight">\([a,b]\)</span>.</p>
+<p>Facciamo una rapida verifica con MATLAB</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="nb">sin</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+<span class="n">Ix</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="nb">cos</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+<span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="n">h</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"></span>
+<span class="n">I</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">h</span><span class="o">*</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">+</span><span class="n">f</span><span class="p">(</span><span class="n">b</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="n">Itrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Ix</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">-</span><span class="n">Ix</span><span class="p">(</span><span class="n">a</span><span class="p">);</span><span class="w"></span>
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&#39;|I - Itrue| = %e\n&#39;</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="o">-</span><span class="n">Itrue</span><span class="p">));</span><span class="w"></span>
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;Dovrebbe essere dell&#39;ordine di: %e\n&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">h</span>^<span class="mi">3</span><span class="o">/</span><span class="mi">12</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Questo ovviamente non ci è sufficiente, poiché non appena andiamo ad
+aumentare l’intervallo <span class="math notranslate nohighlight">\([a,b]\)</span> ( e quindi <span class="math notranslate nohighlight">\(h\)</span> ) su cui vogliamo calcolare
+l’integrale le cose peggiorano nettamente</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="nb">sin</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+<span class="n">Ix</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="nb">cos</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+<span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">pi</span><span class="p">;</span><span class="w"></span>
+<span class="n">h</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"></span>
+<span class="n">I</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">h</span><span class="o">*</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">+</span><span class="n">f</span><span class="p">(</span><span class="n">b</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="n">Itrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Ix</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">-</span><span class="n">Ix</span><span class="p">(</span><span class="n">a</span><span class="p">);</span><span class="w"></span>
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&#39;|I - Itrue| = %e\n&#39;</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="o">-</span><span class="n">Itrue</span><span class="p">));</span><span class="w"></span>
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;Dovrebbe essere dell&#39;ordine di: %e\n&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">h</span>^<span class="mi">3</span><span class="o">/</span><span class="mi">12</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>non <strong>abbiamo nemmeno una cifra significativa corretta</strong>.</p>
+<p>Per <em>risolvere questo inconveniente</em>, possiamo passare ad utilizzare una
+composita. Dividiamo di nuovo l’intervallo <span class="math notranslate nohighlight">\([a,b]\)</span> in <span class="math notranslate nohighlight">\(n\)</span>
+sotto-intervalli di ampiezza <span class="math notranslate nohighlight">\(h = (b-a)/n\)</span> e approssimiamo su ogni sotto-intervallo l’integrale con la formula dei trapezi locale</p>
+<div class="math notranslate nohighlight">
+\[I = \frac{h}{2} \sum_{i=0}^{n-1} \big(f(x_i) + f(x_{i+1})\big),\]</div>
+<p>per cui si può ricavare una <strong>nuova stima dell’errore</strong>:</p>
+<div class="math notranslate nohighlight">
+\[E = O\left(\frac{(b-a)h^2}{12} f''(\xi) \right),\]</div>
+<p>dove <span class="math notranslate nohighlight">\(\xi\)</span> è sempre un valore nell’intervallo <span class="math notranslate nohighlight">\([a,b]\)</span>.</p>
+<div class="admonition-esercizio admonition">
+<p class="admonition-title">Esercizio</p>
+<p>Implementiamo la <strong>formula dei trapezi</strong> per una funzione <span class="math notranslate nohighlight">\(f\)</span> utilizzando
+il seguente prototipo</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>I<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">trapezi</span><span class="p">(</span>f,a,b,n<span class="p">)</span><span class="w"></span>
+<span class="c">%% TRAPEZI questa funzione implementa il metodo dei trapezi per la</span><span class="w"></span>
+<span class="c">% funzione f sull&#39;intervallo a,b con n intervalli.</span><span class="w"></span>
+<span class="c">%   INPUT: f function handle dell&#39;integrando,</span><span class="w"></span>
+<span class="c">%          a,b estremi dell&#39;intervallo di integrazione</span><span class="w"></span>
+<span class="c">%          n numero di intervalli</span><span class="w"></span>
+
 <span class="k">end</span><span class="w"></span>
 </pre></div>
 </div>
-<p>E se lo applichiamo al vettore <code class="docutils literal notranslate"><span class="pre">c</span></code> e alla <code class="docutils literal notranslate"><span class="pre">ctrue</span></code> prodotta dal metodo di Newton
-otteniamo i valori</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">convergenza</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">ctrue</span><span class="p">)</span><span class="w"></span>
+<ul class="simple">
+<li><p>Si cerchi di <strong>minimizzare</strong> il numero di <strong>chiamate</strong> alla funzione <span class="math notranslate nohighlight">\(f\)</span> della routine,</p></li>
+<li><p>Un comando utile per questo esercizio è il comando <code class="docutils literal notranslate"><span class="pre">linspace</span></code>,</p></li>
+<li><p>Si scriva un codice che non utilizza cicli <code class="docutils literal notranslate"><span class="pre">for</span></code>.</p></li>
+</ul>
+<p>Per testare l’implementazione si può provare a valutare l’integrale:</p>
+<div class="math notranslate nohighlight">
+\[\pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,\]</div>
+<p>con</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Test del metodo dei Trapezi</span><span class="w"></span>
 
-<span class="n">p</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="nb">clear</span><span class="p">;</span><span class="w"> </span><span class="nb">clc</span><span class="p">;</span><span class="w"> </span><span class="n">close</span><span class="w"> </span><span class="s">all</span><span class="p">;</span><span class="w"></span>
 
-<span class="w">    </span><span class="mf">1.7080</span><span class="w"></span>
-<span class="w">    </span><span class="mf">1.9194</span><span class="w"></span>
-<span class="w">    </span><span class="mf">1.9936</span><span class="w"></span>
-<span class="w">    </span><span class="mf">1.9996</span><span class="w"></span>
+<span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="mi">4</span><span class="o">*</span><span class="nb">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span><span class="w"></span>
+<span class="n">I</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">trapezi</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">n</span><span class="p">);</span><span class="w"></span>
+
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&#39;Errore: %e\n&#39;</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="nb">pi</span><span class="o">-</span><span class="n">I</span><span class="p">)</span><span class="o">/</span><span class="nb">pi</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
-<p>che ci conferma che l’ordine di convergenza si avvicina a <span class="math notranslate nohighlight">\(2\)</span>.</p>
-</section>
-<section id="approssimare-la-derivata-prima">
-<h2>Approssimare la derivata prima<a class="headerlink" href="#approssimare-la-derivata-prima" title="Link a questa intestazione">#</a></h2>
-<p>Non sempre possediamo o possiamo calcolare in forma chiusa la derivata della
-funzione <span class="math notranslate nohighlight">\(f\)</span>. Può essere utile approssimarla direttamente a partire utilizzando
-solo la <span class="math notranslate nohighlight">\(f\)</span>. Possiamo farlo in maniera numerica sfruttando la definizione stessa
-di derivata:</p>
-<div class="math notranslate nohighlight" id="equation-eq-fd">
-<span class="eqno">(5)<a class="headerlink" href="#equation-eq-fd" title="Permalink a questa equazione">#</a></span>\[f'(x_k) = \lim_{h \rightarrow 0} \frac{f(x+h)-f(x)}{h} \approx \frac{f(x+h)-f(x)}{h}\]</div>
-<p>prendendo un <span class="math notranslate nohighlight">\(h\)</span> sufficientemente piccolo, una buona scelta è <span class="math notranslate nohighlight">\(h = \sqrt{\varepsilon}\)</span>
-per <span class="math notranslate nohighlight">\(\varepsilon\)</span> la precisione di macchina.</p>
-<div class="admonition-esercizio-2 admonition">
-<p class="admonition-title">Esercizio 2</p>
-<p>Si modifichi il codice dell’Esercizio 1 per utilizzare l’approssimazione della
-derivata in <a class="reference internal" href="#equation-eq-fd">(5)</a>.</p>
 </div>
-</section>
-<section id="radici-multiple">
-<h2>Radici multiple<a class="headerlink" href="#radici-multiple" title="Link a questa intestazione">#</a></h2>
-<p>Dalla teoria sappiamo che l’ordine di convergenza del metodo di Newton è
-ridotto quando la radice che <span class="math notranslate nohighlight">\(c\)</span> di <span class="math notranslate nohighlight">\(f\)</span> che cerchiamo è di ordine più elevato.</p>
-<div class="admonition tip">
-<p class="admonition-title">Suggerimento</p>
-<p>Ricordiamo che se <span class="math notranslate nohighlight">\(c\)</span> è una radice di <span class="math notranslate nohighlight">\(f\)</span> il suo <strong>ordine</strong> è il più piccolo
-<span class="math notranslate nohighlight">\(q\)</span> per cui <span class="math notranslate nohighlight">\(f^{(q)}(c) \neq 0\)</span>.</p>
-<p>Ad <strong>esempio</strong> <span class="math notranslate nohighlight">\(f(x) = (x-2)^2\)</span>, <span class="math notranslate nohighlight">\(f(2) = 0\)</span>, <span class="math notranslate nohighlight">\(f'(x) = 2(x-2)\)</span>, <span class="math notranslate nohighlight">\(f'(2) = 0\)</span>, ma
-<span class="math notranslate nohighlight">\(f''(x) = 2\)</span> per cui <span class="math notranslate nohighlight">\(f''(2) \neq 0\)</span> e dunque l’ordine è <span class="math notranslate nohighlight">\(q=2\)</span>.</p>
-</div>
-<p>Possiamo <em>modificare il metodo di Newton</em> per recuperare l’ordine quadratico di
-convergenza <strong>se</strong> sappiamo l’ordine <span class="math notranslate nohighlight">\(q\)</span> della radice che stiamo cercando. Si
-tratta di modificare l’iterazione come:</p>
-<div class="math notranslate nohighlight" id="equation-eq-newton2">
-<span class="eqno">(6)<a class="headerlink" href="#equation-eq-newton2" title="Permalink a questa equazione">#</a></span>\[x_{k+1} = x_k - q \frac{f(x_k)}{f'(x_k)}, \quad x_0 \text{ assegnato }, k \geq 1.\]</div>
-<div class="admonition-esercizio-3 admonition">
-<p class="admonition-title">Esercizio 3</p>
-<p>Si modifichi la funzione dell”<strong>Esercizio 1</strong> con una che implementi l’iterazione
-<a class="reference internal" href="#equation-eq-newton2">(6)</a>. Cioè con una funzione che abbiamo tra gli input anche l’ordine
-<span class="math notranslate nohighlight">\(q\)</span> della radice.</p>
-<p>Un prototipo della funzione è quindi</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[c,residuo]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">mnewton</span><span class="p">(</span>f,fp,x0,q,maxit,tol<span class="p">)</span><span class="w"></span>
-<span class="c">%%NEWTON Implementazione del metodo di Newton</span><span class="w"></span>
-<span class="c">% Input:  f function handle della funzione di cui si cerca lo zero</span><span class="w"></span>
-<span class="c">%         fp function handle della derivata prima della funzione</span><span class="w"></span>
-<span class="c">%         x0 approssimazione iniziale</span><span class="w"></span>
-<span class="c">%         q ordine della radice da calcolare</span><span class="w"></span>
-<span class="c">%         maxit numero massimo di iterazioni consentite</span><span class="w"></span>
-<span class="c">%         tol tolleranza sul residuo</span><span class="w"></span>
-<span class="c">% Output: c radici candidate prodotte dal metodo</span><span class="w"></span>
-<span class="c">%         residuo vettore dei residui prodotto dal metodo</span><span class="w"></span>
+<p>Cerchiamo ora di verificare il comportamento della formula rispetto
+alla stima dell’errore che abbiamo <strong>ottenuto dalla teoria</strong>. Valutiamo
+che succede per l’integrale dell’esempio:</p>
+<div class="math notranslate nohighlight">
+\[\pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,\]</div>
+<p>Proviamo a stimare l’errore in maniera numerica e a confrontarlo con il
+comportamento che ci aspettiamo dalla teoria:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">logspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="n">errore</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[];</span><span class="w"></span>
 
+<span class="k">for</span><span class="w"> </span><span class="n">nval</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
+<span class="w">    </span><span class="n">I</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">trapezi</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">nval</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">errore</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">errore</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="o">-</span><span class="nb">pi</span><span class="p">)</span><span class="o">/</span><span class="nb">pi</span><span class="p">];</span><span class="w"></span>
 <span class="k">end</span><span class="w"></span>
-</pre></div>
-</div>
-<p>Dopo averlo implementato possiamo testarlo con il seguente script</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Script di test per il metodo di Newton modificato</span><span class="w"></span>
 
-<span class="nb">clear</span><span class="p">;</span><span class="w"> </span><span class="nb">clc</span><span class="p">;</span><span class="w"></span>
-
-<span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="o">.^</span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="w"> </span><span class="o">-</span><span class="mi">7</span><span class="o">*</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"></span>
-<span class="n">fp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="mi">3</span><span class="o">*</span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="mi">4</span><span class="o">*</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="mi">7</span><span class="p">;</span><span class="w"></span>
-<span class="n">maxit</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span><span class="w"></span>
-<span class="n">tol</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-6</span><span class="p">;</span><span class="w"></span>
-
-<span class="n">ctrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-
-<span class="n">x0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
-<span class="p">[</span><span class="n">c</span><span class="p">,</span><span class="n">residuo</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">newton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">fp</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">maxit</span><span class="p">,</span><span class="n">tol</span><span class="p">);</span><span class="w"></span>
-
-<span class="n">x0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
-<span class="n">q</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
-<span class="p">[</span><span class="n">cm</span><span class="p">,</span><span class="n">residuom</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">mnewton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">fp</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">q</span><span class="p">,</span><span class="n">maxit</span><span class="p">,</span><span class="n">tol</span><span class="p">);</span><span class="w"></span>
-</pre></div>
-</div>
-<p>Per vedere la differenza nell’ordine di convergenza possiamo usare la funzione
-<code class="docutils literal notranslate"><span class="pre">convergenza</span></code> che abbiamo discusso nella sezione <a class="reference internal" href="#newt-convergenza"><span class="std std-ref">Convergenza</span></a> e
-rappresentare di nuovo in maniera grafica il residuo.</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">q</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">convergenza</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">ctrue</span><span class="p">);</span><span class="w"></span>
-<span class="n">qm</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">convergenza</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span><span class="n">ctrue</span><span class="p">);</span><span class="w"></span>
+<span class="n">h</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">./</span><span class="n">n</span><span class="p">;</span><span class="w"></span>
+<span class="n">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">h</span><span class="o">.^</span><span class="mi">2</span><span class="o">/</span><span class="mi">12</span><span class="p">;</span><span class="w"></span>
 
 <span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="nb">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="nb">semilogy</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">residuo</span><span class="p">),</span><span class="n">residuo</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
-<span class="w">    </span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">residuom</span><span class="p">),</span><span class="n">residuom</span><span class="p">,</span><span class="s">&#39;x-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Iterazione&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Errore Assoluto&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Newton&#39;</span><span class="p">,</span><span class="s">&#39;Newton Modificato&#39;</span><span class="p">},</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
-<span class="w">    </span><span class="s">&#39;Location&#39;</span><span class="p">,</span><span class="s">&#39;southeast&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
-<span class="nb">semilogy</span><span class="p">(</span><span class="mi">3</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">residuo</span><span class="p">),</span><span class="n">q</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
-<span class="w">    </span><span class="mi">3</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">residuom</span><span class="p">),</span><span class="n">qm</span><span class="p">,</span><span class="s">&#39;x-&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
-<span class="w">    </span><span class="mi">1</span><span class="p">:</span><span class="mi">14</span><span class="p">,</span><span class="nb">ones</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="s">&#39;k--&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
-<span class="w">    </span><span class="mi">1</span><span class="p">:</span><span class="mi">14</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="nb">ones</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="s">&#39;k--&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Iterazione&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Ordine di Convergenza Stimato&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Newton&#39;</span><span class="p">,</span><span class="s">&#39;Newton Modificato&#39;</span><span class="p">},</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
-<span class="w">    </span><span class="s">&#39;Location&#39;</span><span class="p">,</span><span class="s">&#39;southeast&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">axis</span><span class="p">([</span><span class="mi">1</span><span class="w"> </span><span class="mi">14</span><span class="w"> </span><span class="mf">0.8</span><span class="w"> </span><span class="mf">2.2</span><span class="p">])</span><span class="w"></span>
+<span class="nb">loglog</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">errore</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">err</span><span class="o">/</span><span class="n">errore</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="s">&#39;r--&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;n&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Errore&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Errore Misurato&#39;</span><span class="p">,</span><span class="s">&#39;Stima&#39;</span><span class="p">},</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<p>Quello che osserviamo dalla <a class="reference internal" href="#newtonmodificatoconvergence"><span class="std std-numref">Fig. 10</span></a> è esattamente
-quanto previsto dalla teoria. La versione non modificata di Newton ha convergenza
-lineare, mentre la versione modificata ha un chiaro comportamento quadratico.</p>
-<figure class="align-default" id="newtonmodificatoconvergence">
-<img alt="_images/newtonconvergencemultiple.png" src="_images/newtonconvergencemultiple.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Convergenza del metodo di Newton per radici multiple, confronto tra il caso
-standard e quello modificato.</span><a class="headerlink" href="#newtonmodificatoconvergence" title="Link a questa immagine">#</a></p>
-</figcaption>
-</figure>
+<aside class="margin sidebar">
+<p class="sidebar-title">Errore regola dei trapezi</p>
+<p><img alt="Errore per trapezi non regolare" src="_images/trapezoidal_error1.png" /></p>
+<p>Errore per l’integrale</p>
+<div class="math notranslate nohighlight">
+\[\pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,\]</div>
+<p><img alt="Errore per trapezi regolare" src="_images/trapezoidal_error2.png" /></p>
+<p>Errore per l’integrale</p>
+<div class="math notranslate nohighlight">
+\[\int_0^3 x^2 \sin ^3(x) \, {\rm d}x\]</div>
+</aside>
+<p>La stima non sembra particolarmente soddisfacente, ma siamo sicuri di
+poterla applicare? Calcoliamo la derivata seconda della nostra funzione
+integranda:</p>
+<div class="math notranslate nohighlight">
+\[f''(t) = 4 \left(-\frac{t^2}{\left(1-t^2\right)^{3/2}}-\frac{1}{\sqrt{1-t^2}}\right) = \frac{-4}{\left(1-t^2\right)^{3/2}}\]</div>
+<p>per cui abbiamo che:</p>
+<div class="math notranslate nohighlight">
+\[\underset{t\to 1^-}{\text{lim}}\frac{-4}{\left(1-t^2\right)^{3/2}} = -\infty\]</div>
+<p>ovvero, <strong>non possiamo limitare <span class="math notranslate nohighlight">\(f''(\xi)\)</span> nell’intervallo di
+integrazione</strong>.</p>
+<p>Proviamo con una funzione diversa, ad esempio:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}I = \int_0^3 x^2 \sin ^3(x) \, {\rm d}x = &amp; \frac{1}{108} \left.-81 \left(x^2-2\right) \cos (x)+\left(9 x^2-2\right) \cos (3 x)-6 x (\sin (3 x)-27 \sin (x))\right|_{0}^{3} \\
+= &amp; \frac{1}{108} (-160+486 \sin (3)-18 \sin (9)-567 \cos (3)+79 \cos (9)),\end{split}\]</div>
+<p>per cui la derivata seconda ha la regolarità necessaria</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}f''(x) = &amp; x^2 \left(6 \sin (x) \cos ^2(x)-3 \sin ^3(x)\right)+2 \sin ^3(x)+12 x \sin ^2(x) \cos (x) \\
+= &amp; \frac{1}{2} \sin (x) \left(3 x^2+\left(9 x^2-2\right) \cos (2 x)+12 x \sin (2 x)+2\right)\end{split}\]</div>
+<p>e si osserva che <span class="math notranslate nohighlight">\(|f''(x)| &lt; 10\)</span> per <span class="math notranslate nohighlight">\(x \in [0,3]\)</span>. Vediamo che succede
+numericamente:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="o">.*</span><span class="nb">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.^</span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+<span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+<span class="n">Itrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">3.615857833947287</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">logspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="n">errore</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[];</span><span class="w"></span>
+
+<span class="k">for</span><span class="w"> </span><span class="n">nval</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
+<span class="w">    </span><span class="n">I</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">trapezi</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">nval</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">errore</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">errore</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="o">-</span><span class="n">Itrue</span><span class="p">)</span><span class="o">/</span><span class="n">Itrue</span><span class="p">];</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
+<span class="n">h</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">./</span><span class="n">n</span><span class="p">;</span><span class="w"></span>
+<span class="n">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="o">*</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">h</span><span class="o">.^</span><span class="mi">2</span><span class="o">/</span><span class="mi">12</span><span class="p">;</span><span class="w"></span>
+
+<span class="nb">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="nb">loglog</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">errore</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">err</span><span class="p">,</span><span class="s">&#39;r--&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;n&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Errore&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Errore Misurato&#39;</span><span class="p">,</span><span class="s">&#39;Stima&#39;</span><span class="p">},</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Avvertimento</p>
+<p>Questa stima dell’errore è solo una prima approssimazione, in realtà è
+possibile ottenere stime più precise coinvolgendo termini di ordine
+superiore. Per i nostri scopi è sufficiente, ma sappiate che si può indagare più in profondità la questione.</p>
+</div>
+<section id="una-versione-ricorsiva">
+<h3>Una versione ricorsiva<a class="headerlink" href="#una-versione-ricorsiva" title="Link a questa intestazione">#</a></h3>
+<p>Supponiamo di aver scelto un valore di <span class="math notranslate nohighlight">\(n\)</span> per il nostro integrale, ma che
+alla fine del calcolo il valore ottenuto non abbia l’accuratezza che
+desideravamo. Quello che possiamo fare è scegliere un nuovo valore di <span class="math notranslate nohighlight">\(n\)</span>
+e calcolare di nuovo l’integrale. Questo, tuttavia, ci richiede di
+fare di nuovo tutte le valutazioni di funzione perché ad un nuovo <span class="math notranslate nohighlight">\(n\)</span>
+corrispondono nodi nuovi.</p>
+<p>Possiamo recuperare in qualche modo parte dello sforzo?</p>
+<p>Chiamiamo <span class="math notranslate nohighlight">\(I_k\)</span> l’integrale valutato con la regola composita dei
+trapezi usando <span class="math notranslate nohighlight">\(2^{k-1}\)</span> intervalli. Ora, se passiamo da <span class="math notranslate nohighlight">\(k\)</span> a <span class="math notranslate nohighlight">\(k+1\)</span>
+il <strong>numero di intervalli è raddoppiato</strong>.</p>
+<p>Chiamiamo <span class="math notranslate nohighlight">\(H = b - a\)</span> e scriviamo la regola dei trapezi per i primi <span class="math notranslate nohighlight">\(k\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}k = 1, &amp;\quad I_1 = \frac{H}{2}[f(a) + f(b)],\\
+k = 2, &amp;\quad I_2 = \frac{H}{4}\left[ f(a) + 2 f\left(a + \frac{H}{2} \right) + f(b) \right] \\
+&amp;\quad\; = \frac{1}{2} I_1 + f\left(a + \frac{H}{2}\right)\frac{H}{2}, \\
+k = 3, &amp;\quad I_3 = \frac{H}{8}\left[ f(a) + 2 f\left(a + \frac{H}{4}\right) + 2 f\left(a + \frac{H}{2}\right) + 2 f\left(a + \frac{3H}{4}\right) + f(b) \right] \\
+&amp;\quad\; = \frac{1}{2} I_2 + \frac{H}{4}\left[f\left(a + \frac{H}{4}\right) + f\left(a + \frac{3H}{4}\right)\right].\end{split}\]</div>
+<p>Con un po” di <em>intuizione</em>, possiamo scrivere per <span class="math notranslate nohighlight">\(k &gt; 1\)</span></p>
+<div class="math notranslate nohighlight">
+\[I_k = \frac{1}{2}I_{k-1} + \frac{H}{2^{k-1}} \sum_{i=1}^{2^{k-2}} f \left[ a + \frac{(2i-1)H}{2^{k-1}} \right], \quad k=2,3,\ldots\]</div>
+<div class="admonition tip">
+<p class="admonition-title">Suggerimento</p>
+<p>Qual è il vantaggio di questa scelta? La somma contiene solo nodi creati ad ogni nuovo raddoppio!</p>
+<p>Ovvero, il calcolo della sequenza <span class="math notranslate nohighlight">\(I_1, I_2, I_3, \ldots, I_k\)</span> costa
+esattamente lo stesso numero di operazioni sia che si faccia il calcolo
+tutto insieme, sia che si calcolino separatamente tutti gli <span class="math notranslate nohighlight">\(I_k\)</span> uno
+dopo l’altro.</p>
+<p>Il vantaggio dell’uso di questa forma della regola dei trapezi
+<strong>ricorsiva</strong> è che ci consente di monitorare la convergenza e
+terminare il processo quando la differenza tra <span class="math notranslate nohighlight">\(I_{k-1}\)</span> e <span class="math notranslate nohighlight">\(I_k\)</span>
+diventa sufficientemente piccola.</p>
+</div>
+<p>Per implementare l’algoritmo in modo ricorsivo, riscriviamo la formula
+in termini del valore di <span class="math notranslate nohighlight">\(h\)</span> come:</p>
+<div class="math notranslate nohighlight" id="equation-trapezir">
+<span class="eqno">(7)<a class="headerlink" href="#equation-trapezir" title="Permalink a questa equazione">#</a></span>\[I(h) = \frac{1}{2}I(2h) + h \sum f(x_{\text{new}}), \quad h = \frac{H}{n-1}.\]</div>
+<div class="admonition-esercizio admonition">
+<p class="admonition-title">Esercizio</p>
+<p>Separiamo la funzione ricorsiva in due parti, la prima è quella
+che calcola <span class="math notranslate nohighlight">\(I(h)\)</span>, dato <span class="math notranslate nohighlight">\(I(2h)\)</span>, usando l’equazione <a class="reference internal" href="#equation-trapezir">(7)</a>
+e chiamiamola <code class="docutils literal notranslate"><span class="pre">trapezir</span></code></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>Ih<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">trapezir</span><span class="p">(</span>f,a,b,I2h,k<span class="p">)</span><span class="w"></span>
+<span class="c">%%TRAPEZIR implementa l&#39;algoritmo ricorsivo della regola dei</span><span class="w"></span>
+<span class="c">%trapezi.</span><span class="w"></span>
+<span class="c">%   INPUT:  f = handle della funzione da integrare,</span><span class="w"></span>
+<span class="c">%           a,b = limiti di integrazione</span><span class="w"></span>
+<span class="c">%           I2h = integrale su 2^{k-1} intervalli</span><span class="w"></span>
+<span class="c">%           k  = livello di ricorsione</span><span class="w"></span>
+<span class="c">%   OUTPUT: Ih = integrale su 2^k intervalli</span><span class="w"></span>
+
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Una volta che la parte computazionale è stata completata possiamo
+mettere insieme la funzione ricorsiva</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>I<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">trapeziricorsiva</span><span class="p">(</span>f,a,b,kmax,tol<span class="p">)</span><span class="w"></span>
+<span class="c">%% TRAPEZIRICORSIVA calcola l&#39;integrale di f tra a e b in modo</span><span class="w"></span>
+<span class="c">% ricorsivo. L&#39;integrazione si ferma quando la differenza tra due</span><span class="w"></span>
+<span class="c">% ricorsioni successive è minore della tolleranza richiesta.</span><span class="w"></span>
+<span class="c">%   INPUT:  f = handle della funzione di integrare,</span><span class="w"></span>
+<span class="c">%           a,b = estremi di integrazione</span><span class="w"></span>
+<span class="c">%           kmax = massimo numero di livello di ricorsione</span><span class="w"></span>
+<span class="c">%           tol = tolleranza tra due livelli di ricorsione successivi</span><span class="w"></span>
+
+<span class="n">I2h</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">Ih</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">trapezir</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">I2h</span><span class="p">,</span><span class="n">k</span><span class="p">);</span><span class="w"></span>
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&#39;k = 1 Ih = %1.16f\n&#39;</span><span class="p">,</span><span class="n">Ih</span><span class="p">);</span><span class="w"></span>
+
+<span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span><span class="n">kmax</span><span class="w"></span>
+<span class="w">   </span><span class="n">I2h</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Ih</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="n">Ih</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">trapezir</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">I2h</span><span class="p">,</span><span class="n">k</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="nb">fprintf</span><span class="p">(</span><span class="s">&#39;k = %d Ih = %1.16f\n&#39;</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">Ih</span><span class="p">);</span><span class="w"></span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">Ih</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">I2h</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">tol</span><span class="w"></span>
+<span class="w">       </span><span class="n">I</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Ih</span><span class="p">;</span><span class="w"></span>
+<span class="w">       </span><span class="k">return</span><span class="w"></span>
+<span class="w">   </span><span class="k">end</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+<span class="nb">warning</span><span class="p">(</span><span class="s">&quot;Non abbiamo raggiunto la tolleranza richiesta!&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">I</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Ih</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Dopo averlo fatto la testiamo sullo stesso integrale del caso precedente</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Test della funzione ricorsiva dei trapezi</span><span class="w"></span>
+
+<span class="nb">clear</span><span class="p">;</span><span class="w"> </span><span class="nb">clc</span><span class="p">;</span><span class="w"> </span><span class="n">close</span><span class="w"> </span><span class="s">all</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="o">.*</span><span class="nb">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.^</span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+<span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+<span class="n">Itrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">3.615857833947287</span><span class="p">;</span><span class="w"></span>
+<span class="n">tol</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-9</span><span class="p">;</span><span class="w"></span>
+<span class="n">kmax</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">I</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">trapeziricorsiva</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">kmax</span><span class="p">,</span><span class="n">tol</span><span class="p">);</span><span class="w"></span>
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;\n\tL&#39;errore è %e\n&quot;</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Itrue</span><span class="p">)</span><span class="o">/</span><span class="n">Itrue</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
 </div>
 </section>
-<section id="esempi-di-applicazioni">
-<h2>Esempi di applicazioni<a class="headerlink" href="#esempi-di-applicazioni" title="Link a questa intestazione">#</a></h2>
-<p>Consideriamo alcune applicazioni <em>ingegneristiche</em> del problema di trovare lo
-zero di una funzione <span id="id1">[<a class="reference internal" href="laboratorio7.html#id10" title="Jaan Kiusalaas. Numerical Methods in Engineering with MATLAB®. Cambridge University Press, 3 edition, 2015. doi:10.1017/CBO9781316341599.">Kiu15</a>]</span>.</p>
-<aside class="margin sidebar">
-<p class="sidebar-title">Entalpia</p>
-<p>L”<strong>energia libera di Gibbs</strong> (anche chiamata entalpia libera) è una funzione
-di stato termodinamica utilizzata per rappresentare l’energia libera nelle
-trasformazioni a pressione e temperatura costante. In termochimica è usata per
-determinare la spontaneità di una reazione.</p>
-</aside>
-<div class="admonition-esercizio-4-energia-libera-di-gibbs admonition">
-<p class="admonition-title">Esercizio 4: Energia libera di Gibbs</p>
-<p>L’energia libera di Gibbs di una mole di idrogeno alla temperatura <span class="math notranslate nohighlight">\(T\)</span> è</p>
+</section>
+<section id="formula-di-simpson">
+<h2>Formula di Simpson<a class="headerlink" href="#formula-di-simpson" title="Link a questa intestazione">#</a></h2>
+<p>La formula di quadratura di Simpson può essere ottenuta di nuovo come una
+formula di Newton-Cotes con <span class="math notranslate nohighlight">\(n = 2\)</span>. Laddove nel caso dei trapezi avevamo
+fissato una interpolate lineare, questa volta abbiamo scelto una
+interpolante quadratica attraverso tre nodi adiacenti.</p>
+<p>Possiamo ricavarla direttamente dalla definizione su un solo intervallo <span class="math notranslate nohighlight">\([a,b]\)</span> con i nodi</p>
 <div class="math notranslate nohighlight">
-\[	G = - R T \ln[ (T/T_0)^{5/2}]\,J,\]</div>
-<p>dove <span class="math notranslate nohighlight">\(R = 8.31441\,J/K\)</span> è la costante dei gas e la temperatura iniziale è
-<span class="math notranslate nohighlight">\(T_0 = 4.44418\,K\)</span>. Si determini la temperatura a cui <span class="math notranslate nohighlight">\(G = -10^{5}\,J\)</span>.</p>
+\[x_0 = a, \quad x_1 = \frac{a+b}{2}, \quad x_2 = b,\]</div>
+<p>da cui abbiamo che i pesi si ottengono come</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\omega_0 = \int_{a}^{b} \ell_0(x)\,{\rm d}x = \frac{h}{6}, \\
+\omega_1 = \int_{a}^{b} \ell_1(x)\,{\rm d}x = \frac{2h}{3}, \\
+\omega_2 = \int_{a}^{b} \ell_2(x)\,{\rm d}x = \frac{h}{6},\end{split}\]</div>
+<p>e quindi</p>
+<div class="math notranslate nohighlight">
+\[I = \sum_{i=0}^{2} \omega_i f(x_i) = \frac{h}{6}\left[ f(a) + 4f\left(\frac{a+b}{2}\right)+f(b)\right].\]</div>
+<div class="admonition tip">
+<p class="admonition-title">Suggerimento</p>
+<p>Per calcolare gli integrali <span class="math notranslate nohighlight">\(\omega_i\)</span> è conveniente fare un cambio di
+variabili ponendo l’origine dell’intervallo di integrazione su <span class="math notranslate nohighlight">\(x_1\)</span>.
+In questo modo i nodi diventano <span class="math notranslate nohighlight">\(\{-h,0,h\}\)</span> e gli integrali sono più semplici da calcolare.</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">Pericolo</p>
+<p>La regola di Simpson che abbiamo scritto richiede che il numero di
+intervalli sia pari, ovvero che il numero di nodi sia dispari. Se
+vogliamo ammettere un qualunque numero di intervalli <span class="math notranslate nohighlight">\(n\)</span>, è necessario
+che il primo (o l’ultimo) intervallo usi 4 invece che 3 punti.</p>
+<p>Per l’implementazione seguente ci limiteremo al caso di nodi dispari, ovvero di intervalli pari.</p>
+</div>
+<p>Con calcoli analoghi a quelli che avete visto per la formula dei trapezi
+si può ottenere una prima stima dell’errore anche per la formula di
+Simpson. Infatti si ha che l’errore si comporta come</p>
+<div class="math notranslate nohighlight">
+\[E = O\left( (b-a)\frac{h^4}{180} f^{(iv)}(\xi) \right),\]</div>
+<p>per <span class="math notranslate nohighlight">\(\xi\)</span> un punto nell’intervallo <span class="math notranslate nohighlight">\([a,b]\)</span>.</p>
+<div class="admonition-esercizio admonition">
+<p class="admonition-title">Esercizio.</p>
+<p>Si implementi la versione composita della regola di Simpson per il
+calcolo di un integrale secondo il seguente prototipo</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>I<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">simpson</span><span class="p">(</span>f,a,b,n<span class="p">)</span><span class="w"></span>
+<span class="c">%%SIMPSON calcolo dell&#39;integrale della funzione f tra a e b mediante la</span><span class="w"></span>
+<span class="c">% formula di Simpson.</span><span class="w"></span>
+<span class="c">%   INPUT:  f = handle della funzione di integrare,</span><span class="w"></span>
+<span class="c">%           a,b = estremi di integrazione</span><span class="w"></span>
+<span class="c">%           n numero di intervalli</span><span class="w"></span>
+
+<span class="k">if</span><span class="w"> </span><span class="nb">mod</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">    </span><span class="nb">error</span><span class="p">(</span><span class="s">&#39;n deve essere pari&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Che possiamo testare con:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Test della formula di quadratura di Simpson</span><span class="w"></span>
+
+<span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="o">.*</span><span class="nb">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.^</span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+<span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+<span class="n">Itrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">3.615857833947287</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">logspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
+<span class="n">errore</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[];</span><span class="w"></span>
+
+<span class="k">for</span><span class="w"> </span><span class="n">nval</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
+<span class="w">    </span><span class="n">I</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">simpson</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">nval</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">errore</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">errore</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">I</span><span class="o">-</span><span class="n">Itrue</span><span class="p">)</span><span class="o">/</span><span class="n">Itrue</span><span class="p">];</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
+<span class="n">h</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">./</span><span class="n">n</span><span class="p">;</span><span class="w"></span>
+<span class="n">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">200</span><span class="o">*</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">h</span><span class="o">.^</span><span class="mi">4</span><span class="o">/</span><span class="mi">180</span><span class="p">;</span><span class="w"></span>
+
+<span class="nb">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="nb">loglog</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">errore</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">err</span><span class="p">,</span><span class="s">&#39;r--&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;n&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Errore&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Errore Misurato&#39;</span><span class="p">,</span><span class="s">&#39;Stima&#39;</span><span class="p">},</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Dove nella stima dell’errore <code class="docutils literal notranslate"><span class="pre">24*(b-a)*h.^4/180</span></code>, abbiamo sfruttato il fatto che</p>
+<div class="math notranslate nohighlight">
+\[\frac{d ^4\left(x^2 \sin (x)^3\right)}{d x^4} = x^2 \left(21 \sin ^3(x)-60 \sin (x) \cos ^2(x)\right)+8 x \left(6 \cos ^3(x)-21 \sin ^2(x) \cos (x)\right)+12 \left(6 \sin (x) \cos ^2(x)-3 \sin ^3(x)\right),\]</div>
+<p>che in <span class="math notranslate nohighlight">\([0,3]\)</span> è maggiorata da <span class="math notranslate nohighlight">\(200\)</span>.</p>
 </div>
 <aside class="margin sidebar">
-<p class="sidebar-title">Sistema molle–ammortizzatore</p>
-<figure class="align-default" id="spring">
-<a class="reference internal image-reference" href="_images/spring.png"><img alt="_images/spring.png" src="_images/spring.png" style="width: 40%;" /></a>
+<p class="sidebar-title">Errore di quadratura Simpson</p>
+<p><img alt="Errore per Simpson regolare" src="_images/simpsonerror1.png" /></p>
+<p>Errore per la formula di Simpson.</p>
+</aside>
+<p>Possiamo quindi confrontare gli errori di quadratura ottenuti per le due
+formule stampandoli sullo stesso grafico</p>
+<figure class="align-default" id="id13">
+<img alt="_images/simpson_error2.png" src="_images/simpson_error2.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Un modello accoppiato molla-ammortizzatore.</span><a class="headerlink" href="#spring" title="Link a questa immagine">#</a></p>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Confronto tra l’errore relativo compiuto con la formula dei Trapezi e
+quello ottenuto con la formula di Simpson.</span><a class="headerlink" href="#id13" title="Link a questa immagine">#</a></p>
 </figcaption>
 </figure>
-</aside>
-<div class="admonition-esercizio-5-sistema-molle-ammortizzatore admonition">
-<p class="admonition-title">Esercizio 5: Sistema molle–ammortizzatore</p>
-<p>Consideriamo il sistema accoppiato di molle e ammortizzatori in <a class="reference internal" href="#spring"><span class="std std-numref">Fig. 11</span></a>.
-I due blocchi di massa <span class="math notranslate nohighlight">\(m\)</span> sono connessi tra di loro da due molle e da un
-ammortizzatore. Il coefficiente elastico di ognuna delle due molle è dato da
-<span class="math notranslate nohighlight">\(k\)</span>, mentre <span class="math notranslate nohighlight">\(c\)</span> è il coefficiente che regola l’attenuazione causata dall’ammortizzatore. Quando il sistema è messo in posizione e rilasciato, la
-posizione di ogni blocco durante il moto ha la forma</p>
-<div class="math notranslate nohighlight">
-\[x_k(t) = A_k e^{\omega_r t} \cos(\omega_i t + \phi_k), \qquad k=1,2,\]</div>
-<p>dove <span class="math notranslate nohighlight">\(A_k\)</span> e <span class="math notranslate nohighlight">\(\phi_k\)</span> sono costanti, e <span class="math notranslate nohighlight">\(\omega = \omega_r \pm i \omega_i\)</span> sono le
-radici dell’equazione</p>
-<div class="math notranslate nohighlight">
-\[\omega^4 + 2 \frac{c}{m} \omega^3 + 3 \frac{k}{m}\omega^2 + \frac{ c k}{m^2} \omega + \left(\frac{k}{m}\right)^2 = 0.\]</div>
-<p>Si determinino le possibili combinazioni di <span class="math notranslate nohighlight">\(w_r\)</span> e <span class="math notranslate nohighlight">\(w_i\)</span> se <span class="math notranslate nohighlight">\(c/m = 12\,s^{-1}\)</span>,
-e <span class="math notranslate nohighlight">\(k/m = 1500 s^{-2}\)</span>.</p>
+<p>da cui osserviamo il comportamento che ci aspettavamo considerata
+l’analisi dell’errore.</p>
+</section>
+<section id="le-funzioni-di-quadratura-di-matlab">
+<h2>Le funzioni di quadratura di MATLAB<a class="headerlink" href="#le-funzioni-di-quadratura-di-matlab" title="Link a questa intestazione">#</a></h2>
+<p>MATLAB offre diverse funzioni per il calcolo di integrali. La prima
+da considerare è la funzione <code class="docutils literal notranslate"><span class="pre">quad</span></code>, dal cui <em>help</em> leggiamo</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">quad</span>   <span class="n">Numerically</span> <span class="n">evaluate</span> <span class="n">integral</span><span class="p">,</span> <span class="n">adaptive</span> <span class="n">Simpson</span> <span class="n">quadrature</span><span class="o">.</span>
+   <span class="n">Q</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">FUN</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">)</span> <span class="n">tries</span> <span class="n">to</span> <span class="n">approximate</span> <span class="n">the</span> <span class="n">integral</span> <span class="n">of</span> <span class="n">scalar</span><span class="o">-</span><span class="n">valued</span>
+   <span class="n">function</span> <span class="n">FUN</span> <span class="kn">from</span> <span class="nn">A</span> <span class="n">to</span> <span class="n">B</span> <span class="n">to</span> <span class="n">within</span> <span class="n">an</span> <span class="n">error</span> <span class="n">of</span> <span class="mf">1.e-6</span> <span class="n">using</span> <span class="n">recursive</span>
+   <span class="n">adaptive</span> <span class="n">Simpson</span> <span class="n">quadrature</span><span class="o">.</span> <span class="n">FUN</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">function</span> <span class="n">handle</span><span class="o">.</span> <span class="n">The</span> <span class="n">function</span>
+   <span class="n">Y</span><span class="o">=</span><span class="n">FUN</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="n">should</span> <span class="n">accept</span> <span class="n">a</span> <span class="n">vector</span> <span class="n">argument</span> <span class="n">X</span> <span class="ow">and</span> <span class="k">return</span> <span class="n">a</span> <span class="n">vector</span> <span class="n">result</span>
+   <span class="n">Y</span><span class="p">,</span> <span class="n">the</span> <span class="n">integrand</span> <span class="n">evaluated</span> <span class="n">at</span> <span class="n">each</span> <span class="n">element</span> <span class="n">of</span> <span class="n">X</span><span class="o">.</span>
+
+   <span class="n">Q</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">FUN</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">TOL</span><span class="p">)</span> <span class="n">uses</span> <span class="n">an</span> <span class="n">absolute</span> <span class="n">error</span> <span class="n">tolerance</span> <span class="n">of</span> <span class="n">TOL</span>
+   <span class="n">instead</span> <span class="n">of</span> <span class="n">the</span> <span class="n">default</span><span class="p">,</span> <span class="n">which</span> <span class="ow">is</span> <span class="mf">1.e-6</span><span class="o">.</span>  <span class="n">Larger</span> <span class="n">values</span> <span class="n">of</span> <span class="n">TOL</span>
+   <span class="n">result</span> <span class="ow">in</span> <span class="n">fewer</span> <span class="n">function</span> <span class="n">evaluations</span> <span class="ow">and</span> <span class="n">faster</span> <span class="n">computation</span><span class="p">,</span>
+   <span class="n">but</span> <span class="n">less</span> <span class="n">accurate</span> <span class="n">results</span><span class="o">.</span>  <span class="n">The</span> <span class="n">quad</span> <span class="n">function</span> <span class="ow">in</span> <span class="n">MATLAB</span> <span class="mf">5.3</span> <span class="n">used</span>
+   <span class="n">a</span> <span class="n">less</span> <span class="n">reliable</span> <span class="n">algorithm</span> <span class="ow">and</span> <span class="n">a</span> <span class="n">default</span> <span class="n">tolerance</span> <span class="n">of</span> <span class="mf">1.e-3</span><span class="o">.</span>
+
+   <span class="n">Q</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">FUN</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">TOL</span><span class="p">,</span><span class="n">TRACE</span><span class="p">)</span> <span class="k">with</span> <span class="n">non</span><span class="o">-</span><span class="n">zero</span> <span class="n">TRACE</span> <span class="n">shows</span> <span class="n">the</span> <span class="n">values</span>
+   <span class="n">of</span> <span class="p">[</span><span class="n">fcnt</span> <span class="n">a</span> <span class="n">b</span><span class="o">-</span><span class="n">a</span> <span class="n">Q</span><span class="p">]</span> <span class="n">during</span> <span class="n">the</span> <span class="n">recursion</span><span class="o">.</span> <span class="n">Use</span> <span class="p">[]</span> <span class="k">as</span> <span class="n">a</span> <span class="n">placeholder</span> <span class="n">to</span>
+   <span class="n">obtain</span> <span class="n">the</span> <span class="n">default</span> <span class="n">value</span> <span class="n">of</span> <span class="n">TOL</span><span class="o">.</span>
+</pre></div>
 </div>
-<div class="admonition-esercizio-6 admonition">
-<p class="admonition-title">Esercizio 6</p>
-<p>Si re-implementino/modifichino gli esercizi del <a class="reference internal" href="laboratorio4.html#laboratorio3"><span class="std std-ref">Laboratorio 4 : Il Metodo di Bisezione</span></a>
-cambiando dal metodo di Bisezione al metodo di Newton.</p>
+<p>Questa applica la quadratura di Simpson che abbiamo visto nella sezione
+precedente sfruttando la tecnica ricorsiva che abbiamo visto, applicato
+e implementato nel caso della regola dei trapezi.</p>
+<p>Quest’ultima invece è implementata dal comando <code class="docutils literal notranslate"><span class="pre">trapz</span></code>, dal cui <code class="docutils literal notranslate"><span class="pre">help</span></code>
+leggiamo</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">trapz</span>  <span class="n">Trapezoidal</span> <span class="n">numerical</span> <span class="n">integration</span><span class="o">.</span>
+   <span class="n">Z</span> <span class="o">=</span> <span class="n">trapz</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span> <span class="n">computes</span> <span class="n">an</span> <span class="n">approximation</span> <span class="n">of</span> <span class="n">the</span> <span class="n">integral</span> <span class="n">of</span> <span class="n">Y</span> <span class="n">via</span>
+   <span class="n">the</span> <span class="n">trapezoidal</span> <span class="n">method</span> <span class="p">(</span><span class="k">with</span> <span class="n">unit</span> <span class="n">spacing</span><span class="p">)</span><span class="o">.</span>  <span class="n">To</span> <span class="n">compute</span> <span class="n">the</span> <span class="n">integral</span>
+   <span class="k">for</span> <span class="n">spacing</span> <span class="n">different</span> <span class="kn">from</span> <span class="nn">one</span><span class="p">,</span> <span class="n">multiply</span> <span class="n">Z</span> <span class="n">by</span> <span class="n">the</span> <span class="n">spacing</span> <span class="n">increment</span><span class="o">.</span>
+
+   <span class="n">For</span> <span class="n">vectors</span><span class="p">,</span> <span class="n">trapz</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">integral</span> <span class="n">of</span> <span class="n">Y</span><span class="o">.</span> <span class="n">For</span> <span class="n">matrices</span><span class="p">,</span> <span class="n">trapz</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+   <span class="ow">is</span> <span class="n">a</span> <span class="n">row</span> <span class="n">vector</span> <span class="k">with</span> <span class="n">the</span> <span class="n">integral</span> <span class="n">over</span> <span class="n">each</span> <span class="n">column</span><span class="o">.</span> <span class="n">For</span> <span class="n">N</span><span class="o">-</span><span class="n">D</span>
+   <span class="n">arrays</span><span class="p">,</span> <span class="n">trapz</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span> <span class="n">works</span> <span class="n">across</span> <span class="n">the</span> <span class="n">first</span> <span class="n">non</span><span class="o">-</span><span class="n">singleton</span> <span class="n">dimension</span><span class="o">.</span>
+
+   <span class="n">Z</span> <span class="o">=</span> <span class="n">trapz</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">)</span> <span class="n">computes</span> <span class="n">the</span> <span class="n">integral</span> <span class="n">of</span> <span class="n">Y</span> <span class="k">with</span> <span class="n">respect</span> <span class="n">to</span> <span class="n">X</span> <span class="n">using</span> <span class="n">the</span>
+   <span class="n">trapezoidal</span> <span class="n">method</span><span class="o">.</span> <span class="n">X</span> <span class="n">can</span> <span class="n">be</span> <span class="n">a</span> <span class="n">scalar</span> <span class="ow">or</span> <span class="n">a</span> <span class="n">vector</span> <span class="k">with</span> <span class="n">the</span> <span class="n">same</span> <span class="n">length</span>
+   <span class="k">as</span> <span class="n">the</span> <span class="n">first</span> <span class="n">non</span><span class="o">-</span><span class="n">singleton</span> <span class="n">dimension</span> <span class="ow">in</span> <span class="n">Y</span><span class="o">.</span> <span class="n">trapz</span> <span class="n">operates</span> <span class="n">along</span> <span class="n">this</span>
+   <span class="n">dimension</span><span class="o">.</span> <span class="n">If</span> <span class="n">X</span> <span class="ow">is</span> <span class="n">scalar</span><span class="p">,</span> <span class="n">then</span> <span class="n">trapz</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">)</span> <span class="ow">is</span> <span class="n">equivalent</span> <span class="n">to</span> <span class="n">X</span><span class="o">*</span><span class="n">trapz</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>L’ultima funzione che vogliamo menzionare è <code class="docutils literal notranslate"><span class="pre">integral</span></code> che, in realtà,
+sostituisce la funzione <code class="docutils literal notranslate"><span class="pre">quad</span></code> che è in realtà <em>deprecata</em>. Questa applica
+una formula di quadratura adattiva e permette in realtà di calcolare anche
+integrali complessi, di funzioni con singolarità e regolare le tolleranze</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">integral</span>  <span class="n">Numerically</span> <span class="n">evaluate</span> <span class="n">integral</span><span class="o">.</span>
+   <span class="n">Q</span> <span class="o">=</span> <span class="n">integral</span><span class="p">(</span><span class="n">FUN</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">)</span> <span class="n">approximates</span> <span class="n">the</span> <span class="n">integral</span> <span class="n">of</span> <span class="n">function</span> <span class="n">FUN</span> <span class="kn">from</span> <span class="nn">A</span>
+   <span class="n">to</span> <span class="n">B</span> <span class="n">using</span> <span class="k">global</span> <span class="n">adaptive</span> <span class="n">quadrature</span> <span class="ow">and</span> <span class="n">default</span> <span class="n">error</span> <span class="n">tolerances</span><span class="o">.</span>
+
+   <span class="n">FUN</span> <span class="n">must</span> <span class="n">be</span> <span class="n">a</span> <span class="n">function</span> <span class="n">handle</span><span class="o">.</span> <span class="n">A</span> <span class="ow">and</span> <span class="n">B</span> <span class="n">can</span> <span class="n">be</span> <span class="o">-</span><span class="n">Inf</span> <span class="ow">or</span> <span class="n">Inf</span><span class="o">.</span> <span class="n">If</span> <span class="n">both</span> <span class="n">are</span>
+   <span class="n">finite</span><span class="p">,</span> <span class="n">they</span> <span class="n">can</span> <span class="n">be</span> <span class="nb">complex</span><span class="o">.</span> <span class="n">If</span> <span class="n">at</span> <span class="n">least</span> <span class="n">one</span> <span class="ow">is</span> <span class="nb">complex</span><span class="p">,</span> <span class="n">integral</span>
+   <span class="n">approximates</span> <span class="n">the</span> <span class="n">path</span> <span class="n">integral</span> <span class="kn">from</span> <span class="nn">A</span> <span class="n">to</span> <span class="n">B</span> <span class="n">over</span> <span class="n">a</span> <span class="n">straight</span> <span class="n">line</span> <span class="n">path</span><span class="o">.</span>
+
+   <span class="n">For</span> <span class="n">scalar</span><span class="o">-</span><span class="n">valued</span> <span class="n">problems</span> <span class="n">the</span> <span class="n">function</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">FUN</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="n">must</span> <span class="n">accept</span> <span class="n">a</span> <span class="n">vector</span>
+   <span class="n">argument</span> <span class="n">X</span> <span class="ow">and</span> <span class="k">return</span> <span class="n">a</span> <span class="n">vector</span> <span class="n">result</span> <span class="n">Y</span><span class="p">,</span> <span class="n">the</span> <span class="n">integrand</span> <span class="n">function</span>
+   <span class="n">evaluated</span> <span class="n">at</span> <span class="n">each</span> <span class="n">element</span> <span class="n">of</span> <span class="n">X</span><span class="o">.</span> <span class="n">For</span> <span class="n">array</span><span class="o">-</span><span class="n">valued</span> <span class="n">problems</span> <span class="p">(</span><span class="n">see</span> <span class="n">the</span>
+   <span class="s1">&#39;ArrayValued&#39;</span> <span class="n">option</span> <span class="n">below</span><span class="p">)</span> <span class="n">FUN</span> <span class="n">must</span> <span class="n">accept</span> <span class="n">a</span> <span class="n">scalar</span> <span class="ow">and</span> <span class="k">return</span> <span class="n">an</span>
+   <span class="n">array</span> <span class="n">of</span> <span class="n">values</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Di questa funzione sono disponibili anche le funzioni per il calcolo di integrali di funzioni in 2 e 3 variabili chiamate, rispettivamente, <code class="docutils literal notranslate"><span class="pre">integral2</span></code> e <code class="docutils literal notranslate"><span class="pre">integral3</span></code>.</p>
+</section>
+<section id="applicazioni-ed-esercizi">
+<h2>Applicazioni ed esercizi<a class="headerlink" href="#applicazioni-ed-esercizi" title="Link a questa intestazione">#</a></h2>
+<p>Consideriamo alcuni esercizi sulla quadratura numerica da <span id="id1">[<a class="reference internal" href="laboratorio7.html#id10" title="Jaan Kiusalaas. Numerical Methods in Engineering with MATLAB®. Cambridge University Press, 3 edition, 2015. doi:10.1017/CBO9781316341599.">Kiu15</a>]</span>.</p>
+<div class="admonition-accelerazione-di-una-macchina admonition">
+<p class="admonition-title">Accelerazione di una macchina</p>
+<p>La <a class="reference internal" href="#powertable"><span class="std std-numref">Tabella 9</span></a> riporta la potenza <span class="math notranslate nohighlight">\(P\)</span> fornita alle ruote motrici di una macchina come
+funzione della velocità <span class="math notranslate nohighlight">\(v\)</span>. Se la massa della macchina è <span class="math notranslate nohighlight">\(m = 2000\,kg\)</span>, si
+determini l’intervallo <span class="math notranslate nohighlight">\(\Delta t\)</span> che serve alla macchina per accelerare da
+<span class="math notranslate nohighlight">\(1\,m/s\)</span> a <span class="math notranslate nohighlight">\(6\,m/s\)</span> utilizzando la regola dei trapezi implementata in <code class="docutils literal notranslate"><span class="pre">trapz</span></code>.</p>
+<table class="table" id="powertable">
+<caption><span class="caption-number">Tabella 9 </span><span class="caption-text">Potenza e velocità</span><a class="headerlink" href="#powertable" title="Link a questa tabella">#</a></caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(v\,(m/s)\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(P\,(kW)\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>1.0</p></td>
+<td><p>4.7</p></td>
+</tr>
+<tr class="row-even"><td><p>1.8</p></td>
+<td><p>12.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>2.4</p></td>
+<td><p>19.0</p></td>
+</tr>
+<tr class="row-even"><td><p>3.5</p></td>
+<td><p>31.8</p></td>
+</tr>
+<tr class="row-odd"><td><p>4.4</p></td>
+<td><p>40.1</p></td>
+</tr>
+<tr class="row-even"><td><p>5.1</p></td>
+<td><p>43.8</p></td>
+</tr>
+<tr class="row-odd"><td><p>6.0</p></td>
+<td><p>43.2</p></td>
+</tr>
+</tbody>
+</table>
+<div class="tip dropdown admonition">
+<p class="admonition-title">Suggerimento</p>
+<p>La funzione di cui calcolare l’integrale si può ottenere dalla
+seconda legge della dinamica e dalla definizione di potenza:</p>
+<div class="math notranslate nohighlight">
+\[\Delta t = m \int_{1 s}^{6 s} (v/P)\,{\rm d}v.\]</div>
+</div>
+</div>
+<div class="admonition-esercizio admonition">
+<p class="admonition-title">Esercizio</p>
+<p>Si calcoli l’integrale</p>
+<div class="math notranslate nohighlight">
+\[I = \int_{1}^{+\infty} \frac{{\rm d}x}{1+x^4} = \frac{\pi -2 \coth ^{-1}\left(\sqrt{2}\right)}{4 \sqrt{2}},\]</div>
+<p>con la regola dei trapezi e si paragoni il risultato con il valore
+esatto.</p>
+<div class="tip dropdown admonition">
+<p class="admonition-title">Si applichi un cambio di variabili…</p>
+<p>Per riportare l’integrale su di un intervallo finito si applichi
+il cambio di variabili <span class="math notranslate nohighlight">\(x^3 = 1/t\)</span>.</p>
+</div>
+</div>
+<div class="admonition-esercizio admonition">
+<p class="admonition-title">Esercizio</p>
+<p>Il periodo di un pendolo semplice di lunghezza <span class="math notranslate nohighlight">\(L\)</span> è <span class="math notranslate nohighlight">\(\tau = 4 \sqrt{L/g} h(\theta_0)\)</span>, dove <span class="math notranslate nohighlight">\(g\)</span> è l’accelerazione di gravità, <span class="math notranslate nohighlight">\(\theta_0\)</span> rappresenta l’ampiezza angolare e</p>
+<div class="math notranslate nohighlight">
+\[h(\theta_0) = \int_{0}^{\pi/2} \frac{ {\rm d}\theta }{\sqrt{1- \sin^2(\theta_0/2)\sin^2(\theta)}}.\]</div>
+<p>Si calcolino i periodi per <span class="math notranslate nohighlight">\(h(15 \text{ deg})\)</span>, <span class="math notranslate nohighlight">\(h(30 \text{ deg})\)</span>,
+<span class="math notranslate nohighlight">\(h(45 \text{ deg})\)</span> con la formula di Simpson e si paragonino
+all’approssimazione per piccoli angoli con <span class="math notranslate nohighlight">\(h = \frac{\pi}{2}\)</span>.
+Cosa si osserva?</p>
 </div>
 </section>
 <section id="bibliografia">
@@ -774,7 +1049,7 @@ cambiando dal metodo di Bisezione al metodo di Newton.</p>
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">precedente</p>
-            <p class="prev-next-title">Laboratorio 4 : Il Metodo di Bisezione</p>
+            <p class="prev-next-title">Laboratorio 4 : Metodi di Interpolazione</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="laboratorio6.html" title="successivo pagina">

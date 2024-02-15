@@ -57,7 +57,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
     <link rel="next" title="Laboratorio 7 : L’Eliminazione di Gauss il Metodo LU" href="laboratorio7.html" />
-    <link rel="prev" title="Laboratorio 5 : Il Metodo di Newton" href="laboratorio5.html" />
+    <link rel="prev" title="Laboratorio 5 : Metodi di Quadratura" href="laboratorio5.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
     
@@ -135,12 +135,12 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio4.html">
-   Laboratorio 4 : Il Metodo di Bisezione
+   Laboratorio 4 : Metodi di Interpolazione
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio5.html">
-   Laboratorio 5 : Il Metodo di Newton
+   Laboratorio 5 : Metodi di Quadratura
   </a>
  </li>
  <li class="toctree-l1 current active">
@@ -155,22 +155,22 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio8.html">
-   Laboratorio 8 : Metodi Stazionari per Sistemi Lineari
+   Laboratorio 8 : Il Problema Lineare dei Minimi Quadrati
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio9.html">
-   Laboratorio 9 : Metodi di Interpolazione
+   Laboratorio 9 : Metodi Stazionari per Sistemi Lineari
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio10.html">
-   Laboratorio 10 : Il Problema Lineare dei Minimi Quadrati
+   Laboratorio 10 : Il Metodo di Bisezione
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio11.html">
-   Laboratorio 11 : Metodi di Quadratura
+   Laboratorio 11 : Il Metodo di Newton
   </a>
  </li>
  <li class="toctree-l1">
@@ -487,7 +487,7 @@ non singolare, allora l’errore sulla soluzione <span class="math notranslate n
 \[\frac{\| A^{-1} \mathbf{e} \|}{\| A^{-1} \mathbf{b} \|} / \frac{\|\mathbf{e}\|}{\|\mathbf{b}\|} = \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|},\]</div>
 <p>per cui possiamo esibire la limitazione per il termine destro come</p>
 <div class="math notranslate nohighlight" id="equation-bound">
-<span class="eqno">(7)<a class="headerlink" href="#equation-bound" title="Permalink a questa equazione">#</a></span>\[\begin{split}\frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \leq &amp; \max_{\mathbf{e},\mathbf{b} \neq 0} \left\lbrace \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|}, \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \right\rbrace \\ = &amp; \max_{\mathbf{e}\neq 0} \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \max_{\mathbf{b}\neq 0} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \\
+<span class="eqno">(8)<a class="headerlink" href="#equation-bound" title="Permalink a questa equazione">#</a></span>\[\begin{split}\frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \leq &amp; \max_{\mathbf{e},\mathbf{b} \neq 0} \left\lbrace \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|}, \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \right\rbrace \\ = &amp; \max_{\mathbf{e}\neq 0} \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \max_{\mathbf{b}\neq 0} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \\
 = &amp; \max_{\mathbf{e}\neq 0} \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \max_{\mathbf{b}\neq 0} \frac{\|A\mathbf{x}\|}{\|\mathbf{x}\|} \\
 = &amp; \| A^{-1} \| \|A \| \equiv \kappa(A) \geq \| A^{-1} A \| = 1.\end{split}\]</div>
 <p>Consideriamo ora il seguente esempio artificiale</p>
@@ -564,7 +564,7 @@ rappresentativo del modo in cui è realmente calcolato.</p>
 </pre></div>
 </div>
 <p>che quindi ci mostra che l’errore che abbiamo commesso è abbastanza vicino
-alla limitazione data dalla <a class="reference internal" href="#equation-bound">(7)</a>.</p>
+alla limitazione data dalla <a class="reference internal" href="#equation-bound">(8)</a>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Avvertimento</p>
 <p>Per matrici di grandi dimensioni la funzione <code class="docutils literal notranslate"><span class="pre">cond</span></code> può risultare estremamente
@@ -742,7 +742,7 @@ sistema triangolare con l’algoritmo di sostituzione è un <span class="math no
 dimensione del sistema. Proviamo ad indagare come si comporta a questo riguardo
 la nostra implementazione. Per farlo sfruttiamo i codici che abbiamo appena
 scritto per la sostituzione <em>forward</em> o <em>backward</em> e le funzioni <code class="docutils literal notranslate"><span class="pre">tic</span></code> e <code class="docutils literal notranslate"><span class="pre">toc</span></code>
-che abbiamo menzionato nel <a class="reference internal" href="laboratorio4.html#laboratorio3"><span class="std std-ref">Laboratorio 4 : Il Metodo di Bisezione</span></a>.</p>
+che abbiamo menzionato nel <span class="xref std std-ref">laboratorio3</span>.</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">sizes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">floor</span><span class="p">(</span><span class="nb">logspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">));</span><span class="w"></span>
 <span class="n">times</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">sizes</span><span class="p">));</span><span class="w"></span>
 <span class="n">h</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">waitbar</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s">&quot;Calcolo in corso...&quot;</span><span class="p">);</span><span class="w"></span>
@@ -783,12 +783,12 @@ confrontare i valori del <em>fit</em> con quelli dei dati</p>
 </pre></div>
 </div>
 <p>dove abbiamo stampato sia il tempo misurato, sia il <em>fit</em> con il suo
-<em>intervallo di confidenza</em> entro il 95%. Dalla <a class="reference internal" href="#triangularsolvetime"><span class="std std-numref">Fig. 12</span></a>
+<em>intervallo di confidenza</em> entro il 95%. Dalla <a class="reference internal" href="#triangularsolvetime"><span class="std std-numref">Fig. 5</span></a>
 vediamo che la predizione quadratica è piuttosto efficace.</p>
 <figure class="align-default" id="triangularsolvetime">
 <img alt="_images/triangulartime.png" src="_images/triangulartime.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 12 </span><span class="caption-text">Tempo di calcolo come un <span class="math notranslate nohighlight">\(O(n^2)\)</span> della dimensione.</span><a class="headerlink" href="#triangularsolvetime" title="Link a questa immagine">#</a></p>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Tempo di calcolo come un <span class="math notranslate nohighlight">\(O(n^2)\)</span> della dimensione.</span><a class="headerlink" href="#triangularsolvetime" title="Link a questa immagine">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -808,7 +808,7 @@ del polinomio monico <span class="math notranslate nohighlight">\(B(x)\)</span> 
 \[\frac{t e^{xt}}{e^t - 1} = \sum_{k=0}^{+\infty} \frac{B_n(x)}{n!}t^n.\]</div>
 <p>In particolare, se scegliamo <span class="math notranslate nohighlight">\(x = 0\)</span>, abbiamo che</p>
 <div class="math notranslate nohighlight" id="equation-bernoulliexpansion">
-<span class="eqno">(8)<a class="headerlink" href="#equation-bernoulliexpansion" title="Permalink a questa equazione">#</a></span>\[\frac{t}{e^t - 1} = -\frac{1}{2}t + \sum_{k=0}^{+\infty} \frac{B_{2k}(0)}{(2k)!}t^{2k}.\]</div>
+<span class="eqno">(9)<a class="headerlink" href="#equation-bernoulliexpansion" title="Permalink a questa equazione">#</a></span>\[\frac{t}{e^t - 1} = -\frac{1}{2}t + \sum_{k=0}^{+\infty} \frac{B_{2k}(0)}{(2k)!}t^{2k}.\]</div>
 <p>Facciamo ora la seguente manipolazione algebrica, moltiplichiamo l’equazione
 a sinistra e a destra per <span class="math notranslate nohighlight">\(e^{t} - 1\)</span>, espandiamo <span class="math notranslate nohighlight">\(e^{t}\)</span> con la sua serie
 di potenze, e poniamo uguale a zero i coefficienti di <span class="math notranslate nohighlight">\(t^i\)</span> sul lato destro.
@@ -841,7 +841,7 @@ B_6(0)\\
 <ol class="simple">
 <li><p>Si implementi una funzione che dato un intero <span class="math notranslate nohighlight">\(k\)</span> restituisca i numeri di
 Bernoulli <span class="math notranslate nohighlight">\(\{B_{2j}(0)\}_{j=0}^{k}\)</span> risolvendo questo sistema lineare.</p></li>
-<li><p>Si usino i numeri così ottenuti per determinare lo sviluppo in <a class="reference internal" href="#equation-bernoulliexpansion">(8)</a> e disegnare</p></li>
+<li><p>Si usino i numeri così ottenuti per determinare lo sviluppo in <a class="reference internal" href="#equation-bernoulliexpansion">(9)</a> e disegnare</p></li>
 </ol>
 <ul class="simple">
 <li><p>le due funzioni una accanto all’altra,</p></li>
@@ -899,7 +899,7 @@ i numeri di Bernoulli dal medesimo nome (<code class="docutils literal notransla
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">precedente</p>
-            <p class="prev-next-title">Laboratorio 5 : Il Metodo di Newton</p>
+            <p class="prev-next-title">Laboratorio 5 : Metodi di Quadratura</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="laboratorio7.html" title="successivo pagina">

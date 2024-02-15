@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Laboratorio 8 : Metodi Stazionari per Sistemi Lineari &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
+    <title>Laboratorio 8 : Il Problema Lineare dei Minimi Quadrati &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -56,7 +56,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
-    <link rel="next" title="Laboratorio 9 : Metodi di Interpolazione" href="laboratorio9.html" />
+    <link rel="next" title="Laboratorio 9 : Metodi Stazionari per Sistemi Lineari" href="laboratorio9.html" />
     <link rel="prev" title="Laboratorio 7 : L’Eliminazione di Gauss il Metodo LU" href="laboratorio7.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
@@ -135,12 +135,12 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio4.html">
-   Laboratorio 4 : Il Metodo di Bisezione
+   Laboratorio 4 : Metodi di Interpolazione
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio5.html">
-   Laboratorio 5 : Il Metodo di Newton
+   Laboratorio 5 : Metodi di Quadratura
   </a>
  </li>
  <li class="toctree-l1">
@@ -155,22 +155,22 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Laboratorio 8 : Metodi Stazionari per Sistemi Lineari
+   Laboratorio 8 : Il Problema Lineare dei Minimi Quadrati
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio9.html">
-   Laboratorio 9 : Metodi di Interpolazione
+   Laboratorio 9 : Metodi Stazionari per Sistemi Lineari
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio10.html">
-   Laboratorio 10 : Il Problema Lineare dei Minimi Quadrati
+   Laboratorio 10 : Il Metodo di Bisezione
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio11.html">
-   Laboratorio 11 : Metodi di Quadratura
+   Laboratorio 11 : Il Metodo di Newton
   </a>
  </li>
  <li class="toctree-l1">
@@ -333,104 +333,23 @@ title="Print to PDF"
     </ul>
   </div>
 </div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
-  </span>
-
-</label>
 
     </div>
 </div>
 
 <!-- Table of contents -->
 <div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
-    </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#metodi-di-tipo-stazionario">
-   Metodi di tipo stazionario
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#metodi-per-il-calcolo-agli-autovalori-implementati-in-matlab">
-     Metodi per il calcolo agli autovalori implementati in MATLAB
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#metodo-di-jacobi">
-   Metodo di Jacobi
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#metodo-di-gauss-seidel">
-   Metodo di Gauss-Seidel
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#paragone-tra-i-due-metodi-e-velocita-di-convergenza">
-   Paragone tra i due metodi e velocità di convergenza
-  </a>
- </li>
-</ul>
-
-    </nav>
 </div>
     </div>
     <div class="article row">
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Laboratorio 8 : Metodi Stazionari per Sistemi Lineari</h1>
+                <h1>Laboratorio 8 : Il Problema Lineare dei Minimi Quadrati</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#metodi-di-tipo-stazionario">
-   Metodi di tipo stazionario
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#metodi-per-il-calcolo-agli-autovalori-implementati-in-matlab">
-     Metodi per il calcolo agli autovalori implementati in MATLAB
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#metodo-di-jacobi">
-   Metodo di Jacobi
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#metodo-di-gauss-seidel">
-   Metodo di Gauss-Seidel
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#paragone-tra-i-due-metodi-e-velocita-di-convergenza">
-   Paragone tra i due metodi e velocità di convergenza
-  </a>
- </li>
-</ul>
-
-                        </nav>
                     </div>
                 </div>
             </div>
@@ -438,303 +357,111 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-8-metodi-stazionari-per-sistemi-lineari">
-<h1>Laboratorio 8 : Metodi Stazionari per Sistemi Lineari<a class="headerlink" href="#laboratorio-8-metodi-stazionari-per-sistemi-lineari" title="Link a questa intestazione">#</a></h1>
-<p>Un <strong>metodo iterativo</strong> è una procedura matematica che a partire da un <em>valore iniziale</em> genera una sequenza di <em>soluzioni approssimate</em> migliorative per una
-determinata classe di problemi, in cui l’approssimazione <span class="math notranslate nohighlight">\(n\)</span>esima è derivata dai precedenti. Abbiamo già visto, <strong>ed implementato</strong>, metodi di questo tipo per la ricerca degli zeri di una funzione.</p>
-<p>In questo laboratorio vogliamo concentrarci invece sulla costruzione di alcuni
-metodi di questo tipo per la soluzione di sistemi lineari.</p>
-<p>La prima domanda che è legittimo porsi è perché mai vogliamo mettere in piedi
-dei metodi iterativi se abbiamo già dei metodi diretti che possono raggiungere
-la soluzione del problema cercato?</p>
-<ul class="simple">
-<li><p>A patto di richiedere una tolleranza minore (spesso sufficiente nelle applicazioni) sull’errore commesso sulla soluzione hanno un costo computazionale inferiore alle controparti dirette,</p></li>
-<li><p>Per le dimensioni dei problemi che si vogliono affrontare nelle applicazioni ingegneristiche attuali sono spesso l’unica opzione disponibile (problemi di fluidodinamica computazionale, combustione, meccanica del continuo, …)</p></li>
-</ul>
-<p>Nel corso e in questo laboratorio ci focalizziamo su alcuni dei metodi più semplici e che, in genere, sono usati come i blocchi costituivi di metodi più complessi (e.g., metodi di tipo <em>multigrid</em> o <em>domain decomposition</em>) o come acceleratori per la convergenza (in gergo chiamati: <em>precondizionatori</em>).</p>
-<section id="metodi-di-tipo-stazionario">
-<h2>Metodi di tipo stazionario<a class="headerlink" href="#metodi-di-tipo-stazionario" title="Link a questa intestazione">#</a></h2>
-<p>Dato un sistema lineare della forma</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-8-il-problema-lineare-dei-minimi-quadrati">
+<h1>Laboratorio 8 : Il Problema Lineare dei Minimi Quadrati<a class="headerlink" href="#laboratorio-8-il-problema-lineare-dei-minimi-quadrati" title="Link a questa intestazione">#</a></h1>
+<p>Siamo interessati a risolvere sistemi lineari <strong>sovradeterminati</strong>, ossia della forma</p>
 <div class="math notranslate nohighlight">
-\[A \mathbf{x} = \mathbf{b}, \qquad A \in \mathbb{R}^{n \times n},\; \mathbf{x},\mathbf{b} \in \mathbb{R}^n\]</div>
-<p>siamo interessati a <strong>metodi di punto fisso</strong> basati sugli <em>splitting</em> della matrice <span class="math notranslate nohighlight">\(A\)</span>. Cioè metodi basati su una decomposizione additiva della matrice della forma</p>
+\[A \mathbf{x} = \mathbf{b}, \qquad A \in \mathbb{R}^{m \times n},\; \mathbf{x},\mathbf{b} \in \mathbb{R}^n,\;m&gt; n.\]</div>
+<p>Se il problema non ha soluzione si cercano i vettori <span class="math notranslate nohighlight">\(\mathbf{x}\in \mathbb{R}^{n}\)</span> che soddisfano</p>
+<div class="math notranslate nohighlight" id="equation-leastsq">
+<span class="eqno">(12)<a class="headerlink" href="#equation-leastsq" title="Permalink a questa equazione">#</a></span>\[\lVert A\mathbf{x}-\mathbf{b}\rVert_2 = \min_{\mathbf{y}\in\mathbb{R}^n}\lVert A\mathbf{y}-\mathbf{b}\rVert_2.\]</div>
+<p>Tale problema viene detto <strong>problema dei minimi quadrati</strong>.</p>
+<p>In questo laboratorio vogliamo concentrarci su metodi numerici di risoluzione del problema dei minimi quadrati e vedere un’applicazione al <em>fitting</em> di dati.</p>
+<p>La determinazione di un punto di minimo di <span class="math notranslate nohighlight">\(\Psi(\mathbf{x})=\lVert A\mathbf{x}-\mathbf{b}\rVert_2\)</span> si riconduce alla ricerca dei punti che annullano tutte le derivate parziali prime di <span class="math notranslate nohighlight">\(\Psi\)</span> e questo porta alle <strong>equazioni normali</strong></p>
+<div class="math notranslate nohighlight" id="equation-eqnorm">
+<span class="eqno">(13)<a class="headerlink" href="#equation-eqnorm" title="Permalink a questa equazione">#</a></span>\[A^{\top}A\mathbf{x}=A^{\top}\mathbf{b}.\]</div>
+<p>Se la matrice <span class="math notranslate nohighlight">\(A\)</span> ha rango massimo, allora la soluzione del problema dei minimi quadrati <a class="reference internal" href="#equation-leastsq">(12)</a> è unica e può essere ottenuta risolvendo il sistema <a class="reference internal" href="#equation-eqnorm">(13)</a>.</p>
+<p>In tal caso, si può utilizzare la fattorizzazione <span class="math notranslate nohighlight">\(LU\)</span> della matrice <span class="math notranslate nohighlight">\(A^{\top}A\)</span>. Poiché la matrice <span class="math notranslate nohighlight">\(A^{\top}A\)</span> è simmetrica definita positiva, puo essere fattorizzata come</p>
 <div class="math notranslate nohighlight">
-\[A = M - N, \qquad\text{ con }\qquad \det(M) \neq 0.\]</div>
-<p>Da questa decomposizione si ottiene poi l’iterata di punto fisso come</p>
+\[A^{\top} A = LL^{\top},\]</div>
+<p>detta <strong>fattorizzazione di Cholesky</strong>, dove <span class="math notranslate nohighlight">\(L\in\mathbb{R}^n\)</span> è una matrice triangolare inferiore con elementi principali positivi.
+La soluzione del sistema delle equazioni normali <a class="reference internal" href="#equation-eqnorm">(13)</a> viene calcolata risolvendo successivamente i due sistemi
+di ordine <span class="math notranslate nohighlight">\(n\)</span> con matrice dei coefficienti triangolare</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}A \mathbf{x} = \mathbf{b} \Rightarrow (M - N) \mathbf{x} = \mathbf{b} \Rightarrow M \mathbf{x} = N \mathbf{x} + \mathbf{b} \\
-\mathbf{x} = M^{-1} N \mathbf{x} + M^{-1} \mathbf{b}\end{split}\]</div>
-<p>e quindi</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\mathbf{x}^{(k+1)} = M^{-1} N \mathbf{x}^{(k)} + M^{-1} \mathbf{b}, \quad k = 0,1,2,\ldots, \\
-\mathbf{x}^{(0)} \text{ assegnato}.\end{split}\]</div>
-<p>Essendo questa un’iterata di punto fisso, la sua convergenza dipende dall’essere una <strong>procedura contrattiva</strong>, avete dimostrato a lezione che questo è equivalente alla richiesta che il <em>raggio spettrale</em> della matrice di iterazione <span class="math notranslate nohighlight">\(M^{-1}N\)</span> sia strettamente minore di <span class="math notranslate nohighlight">\(1\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[\rho(M^{-1}N) = \max_{1,\ldots,n }|\lambda_n(M^{-1}N)| &lt; 1.\]</div>
-<section id="metodi-per-il-calcolo-agli-autovalori-implementati-in-matlab">
-<h3>Metodi per il calcolo agli autovalori implementati in MATLAB<a class="headerlink" href="#metodi-per-il-calcolo-agli-autovalori-implementati-in-matlab" title="Link a questa intestazione">#</a></h3>
-<p>In alcuni casi data una matrice <span class="math notranslate nohighlight">\(A\)</span> e uno splitting <span class="math notranslate nohighlight">\(A = M - N\)</span> è possibile calcolare il <em>raggio spettrale</em> carta e penna, oppure inferire le proprietà di convergenza del metodo dalle proprietà della matrice <span class="math notranslate nohighlight">\(A\)</span> e della particolare forma dello splitting. Laddove questo non fosse possibile, o volessimo una stima più precisa di quello che sta accadendo, dobbiamo ricorrere a dei metodi numerici a questo scopo. La loro costruzione è al di fuori degli obiettivi di questo corso, tuttavia MATLAB ci fornisce delle <em>function</em> che fanno al nostro caso.</p>
-<p>Vediamo prima il <strong>caso generale</strong> in cui data una matrice <span class="math notranslate nohighlight">\(A\)</span> vogliamo calcolare <em>tutti</em> i suoi autovalori, costruiamo da principio una <em>matrice simmetrica</em> per
-cui possiamo sfruttare il <strong>Teorema Spettrale</strong> per interpretare i risultati:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"> </span><span class="c">% costruiamo una matrice casuale</span><span class="w"></span>
-<span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">A</span><span class="o">&#39;</span><span class="p">;</span><span class="w"> </span><span class="c">% e facciamo in modo che sia simmetrica</span><span class="w"></span>
-<span class="n">lambda</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">eig</span><span class="p">(</span><span class="n">A</span><span class="p">);</span><span class="w"> </span><span class="c">% calcoliamo *tutti* gli autovalori</span><span class="w"></span>
-<span class="nb">disp</span><span class="p">(</span><span class="n">lambda</span><span class="p">)</span><span class="w"></span>
-</pre></div>
-</div>
-<p>che ci restituisce il vettore:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="mf">2.1767</span>
-<span class="o">-</span><span class="mf">1.8198</span>
-<span class="o">-</span><span class="mf">0.7091</span>
-<span class="o">-</span><span class="mf">0.3270</span>
-<span class="o">-</span><span class="mf">0.1747</span>
- <span class="mf">0.7953</span>
- <span class="mf">0.9842</span>
- <span class="mf">1.3664</span>
- <span class="mf">1.9277</span>
- <span class="mf">9.4423</span>
-</pre></div>
-</div>
-<p>per cui abbiamo ottenuto 10 autovalori reali.</p>
-<p>Se guardiamo il manuale del comando <code class="docutils literal notranslate"><span class="pre">eig</span></code> leggiamo:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">eig</span>    <span class="n">Eigenvalues</span> <span class="ow">and</span> <span class="n">eigenvectors</span><span class="o">.</span>
-   <span class="n">E</span> <span class="o">=</span> <span class="n">eig</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="n">produces</span> <span class="n">a</span> <span class="n">column</span> <span class="n">vector</span> <span class="n">E</span> <span class="n">containing</span> <span class="n">the</span> <span class="n">eigenvalues</span> <span class="n">of</span>
-   <span class="n">a</span> <span class="n">square</span> <span class="n">matrix</span> <span class="n">A</span><span class="o">.</span>
-
-   <span class="p">[</span><span class="n">V</span><span class="p">,</span><span class="n">D</span><span class="p">]</span> <span class="o">=</span> <span class="n">eig</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="n">produces</span> <span class="n">a</span> <span class="n">diagonal</span> <span class="n">matrix</span> <span class="n">D</span> <span class="n">of</span> <span class="n">eigenvalues</span> <span class="ow">and</span>
-   <span class="n">a</span> <span class="n">full</span> <span class="n">matrix</span> <span class="n">V</span> <span class="n">whose</span> <span class="n">columns</span> <span class="n">are</span> <span class="n">the</span> <span class="n">corresponding</span> <span class="n">eigenvectors</span>  
-   <span class="n">so</span> <span class="n">that</span> <span class="n">A</span><span class="o">*</span><span class="n">V</span> <span class="o">=</span> <span class="n">V</span><span class="o">*</span><span class="n">D</span><span class="o">.</span>
-
-   <span class="p">[</span><span class="n">V</span><span class="p">,</span><span class="n">D</span><span class="p">,</span><span class="n">W</span><span class="p">]</span> <span class="o">=</span> <span class="n">eig</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="n">also</span> <span class="n">produces</span> <span class="n">a</span> <span class="n">full</span> <span class="n">matrix</span> <span class="n">W</span> <span class="n">whose</span> <span class="n">columns</span> <span class="n">are</span> <span class="n">the</span>
-   <span class="n">corresponding</span> <span class="n">left</span> <span class="n">eigenvectors</span> <span class="n">so</span> <span class="n">that</span> <span class="n">W</span><span class="s1">&#39;*A = D*W&#39;</span><span class="o">.</span>
-</pre></div>
-</div>
-<p>Possiamo quindi usarlo per ottenere anche le relativi matrici degli autovettori sinistri e destri per la matrice <span class="math notranslate nohighlight">\(A\)</span>, cioè le matrici <span class="math notranslate nohighlight">\(V\)</span> e <span class="math notranslate nohighlight">\(W\)</span> tali che:</p>
-<div class="math notranslate nohighlight">
-\[A V = V D, \quad W^T A = D W^T.\]</div>
-<div class="admonition danger">
-<p class="admonition-title">Pericolo</p>
-<p>MATLAB, e la maggior parte degli algoritmi che calcolano autovalori, non conoscono la forma canonica di Jordan e l’esistenza di matrici non diagonalizzabili. Per cui vi restituiranno sempre una diagonalizzazione, anche quando questa non esiste. Consideriamo ad esempio il blocco di Jordan:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">J</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">gallery</span><span class="p">(</span><span class="s">&#39;jordbloc&#39;</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span><span class="w"></span>
-<span class="p">[</span><span class="n">V</span><span class="p">,</span><span class="n">D</span><span class="p">,</span><span class="n">W</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">eig</span><span class="p">(</span><span class="n">J</span><span class="p">)</span><span class="w"></span>
-</pre></div>
-</div>
-<p>Otteniamo le due matrici, senza <em>warning</em> o altro… tuttavia se calcoliamo</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">cond</span><span class="p">(</span><span class="n">V</span><span class="p">)</span><span class="w"></span>
-
-<span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
-
-<span class="w">   </span><span class="mf">1.3009e+63</span><span class="w"></span>
-</pre></div>
-</div>
-<p>che è un <strong>valore enorme</strong> per una matrice <span class="math notranslate nohighlight">\(5 \times 5\)</span>. Questo ci deve far sospettare che c’è qualcosa che non va!</p>
-</div>
-<p>Per calcolare direttamente il raggio spettrale della matrice <span class="math notranslate nohighlight">\(M^{-1}N\)</span> non abbiamo in realtà la necessità di calcolare tutti gli autovalori della matrice e prendere il massimo. Possiamo accedere ad algoritmi che calcolano direttamente la quantità che ci interessa:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">gallery</span><span class="p">(</span><span class="s">&#39;poisson&#39;</span><span class="p">,</span><span class="mi">5</span><span class="p">);</span><span class="w"> </span><span class="c">% Discretizzazione del Laplaciano in 2D</span><span class="w"></span>
-<span class="n">M</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">diag</span><span class="p">(</span><span class="n">A</span><span class="p">);</span><span class="w"> </span><span class="c">% A = M - N</span><span class="w"></span>
-<span class="n">N</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">M</span><span class="o">-</span><span class="n">A</span><span class="p">;</span><span class="w">     </span><span class="c">% N = M - A</span><span class="w"></span>
-<span class="n">rho</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">eigs</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">M</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s">&#39;largestabs&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">disp</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">rho</span><span class="p">))</span><span class="w"></span>
-</pre></div>
-</div>
-<p>che ci restituisce il valore <code class="docutils literal notranslate"><span class="pre">0.8660</span></code> per il raggio spettrale, cioè abbiamo trovato uno <strong>splitting convergente</strong>.</p>
-<p>Vediamo il manuale del comando <code class="docutils literal notranslate"><span class="pre">eigs</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">eigs</span>   <span class="n">Find</span> <span class="n">a</span> <span class="n">few</span> <span class="n">eigenvalues</span> <span class="ow">and</span> <span class="n">eigenvectors</span> <span class="n">of</span> <span class="n">a</span> <span class="n">matrix</span>
- <span class="n">D</span> <span class="o">=</span> <span class="n">eigs</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="n">returns</span> <span class="n">a</span> <span class="n">vector</span> <span class="n">of</span> <span class="n">A</span><span class="s1">&#39;s 6 largest magnitude eigenvalues.</span>
- <span class="n">A</span> <span class="n">must</span> <span class="n">be</span> <span class="n">square</span> <span class="ow">and</span> <span class="n">should</span> <span class="n">be</span> <span class="n">large</span> <span class="ow">and</span> <span class="n">sparse</span><span class="o">.</span>
-
- <span class="p">[</span><span class="o">...</span><span class="p">]</span>
-
- <span class="n">eigs</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">K</span><span class="p">,</span><span class="n">SIGMA</span><span class="p">)</span> <span class="ow">and</span> <span class="n">eigs</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">K</span><span class="p">,</span><span class="n">SIGMA</span><span class="p">)</span> <span class="k">return</span> <span class="n">K</span> <span class="n">eigenvalues</span><span class="o">.</span> <span class="n">If</span> <span class="n">SIGMA</span> <span class="ow">is</span><span class="p">:</span>
-
-        <span class="s1">&#39;largestabs&#39;</span> <span class="ow">or</span> <span class="s1">&#39;smallestabs&#39;</span> <span class="o">-</span> <span class="n">largest</span> <span class="ow">or</span> <span class="n">smallest</span> <span class="n">magnitude</span>
-      <span class="s1">&#39;largestreal&#39;</span> <span class="ow">or</span> <span class="s1">&#39;smallestreal&#39;</span> <span class="o">-</span> <span class="n">largest</span> <span class="ow">or</span> <span class="n">smallest</span> <span class="n">real</span> <span class="n">part</span>
-                       <span class="s1">&#39;bothendsreal&#39;</span> <span class="o">-</span> <span class="n">K</span><span class="o">/</span><span class="mi">2</span> <span class="n">values</span> <span class="k">with</span> <span class="n">largest</span> <span class="ow">and</span>
-                                        <span class="n">smallest</span> <span class="n">real</span> <span class="n">part</span><span class="p">,</span> <span class="n">respectively</span>
-                                        <span class="p">(</span><span class="n">one</span> <span class="n">more</span> <span class="kn">from</span> <span class="nn">largest</span> <span class="k">if</span> <span class="n">K</span> <span class="ow">is</span> <span class="n">odd</span><span class="p">)</span>
-
-    <span class="n">For</span> <span class="n">nonsymmetric</span> <span class="n">problems</span><span class="p">,</span> <span class="n">SIGMA</span> <span class="n">can</span> <span class="n">also</span> <span class="n">be</span><span class="p">:</span>
-      <span class="s1">&#39;largestimag&#39;</span> <span class="ow">or</span> <span class="s1">&#39;smallestimag&#39;</span> <span class="o">-</span> <span class="n">largest</span> <span class="ow">or</span> <span class="n">smallest</span> <span class="n">imaginary</span> <span class="n">part</span>
-                       <span class="s1">&#39;bothendsimag&#39;</span> <span class="o">-</span> <span class="n">K</span><span class="o">/</span><span class="mi">2</span> <span class="n">values</span> <span class="k">with</span> <span class="n">largest</span> <span class="ow">and</span>
-                                       <span class="n">smallest</span> <span class="n">imaginary</span> <span class="n">part</span><span class="p">,</span> <span class="n">respectively</span>
-                                       <span class="p">(</span><span class="n">one</span> <span class="n">more</span> <span class="kn">from</span> <span class="nn">largest</span> <span class="k">if</span> <span class="n">K</span> <span class="ow">is</span> <span class="n">odd</span><span class="p">)</span>
-
-    <span class="n">If</span> <span class="n">SIGMA</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">real</span> <span class="ow">or</span> <span class="nb">complex</span> <span class="n">scalar</span> <span class="n">including</span> <span class="mi">0</span><span class="p">,</span> <span class="n">eigs</span> <span class="n">finds</span> <span class="n">the</span>
-    <span class="n">eigenvalues</span> <span class="n">closest</span> <span class="n">to</span> <span class="n">SIGMA</span><span class="o">.</span>
-
-</pre></div>
-</div>
-<p>da cui leggiamo che quello che abbiamo chiesto a MATLAB di calcolare è un autovalore (<code class="docutils literal notranslate"><span class="pre">1</span></code>) di massimo valore assoluto (<code class="docutils literal notranslate"><span class="pre">'largestabs'</span></code>) che risolva il problema</p>
-<div class="math notranslate nohighlight">
-\[N \mathbf{v} = \lambda M \mathbf{v},\]</div>
-<p>che, nel nostro caso, è equivalente alla richiesta</p>
-<div class="math notranslate nohighlight">
-\[M^{-1}N \mathbf{v} = \lambda \mathbf{v},\]</div>
-<p>cioè quello che cercavamo. Problemi di questa forma sono detti <strong>problemi generalizzati agli autovalori</strong>, ma sono ben al di fuori degli obiettivi di questo corso.</p>
-<div class="admonition warning">
-<p class="admonition-title">Avvertimento</p>
-<p>Tutte le volte che volete risolvere un problema agli autovalori con matrice <span class="math notranslate nohighlight">\(M^{1}N\)</span> la soluzione opportuna è quella di usare la formulazione come problema generalizzato agli autovalori, sia da un punto di vista di stabilità numerica, sia da un punto di vista di velocità di esecuzione del codice.</p>
-</div>
-</section>
-</section>
-<section id="metodo-di-jacobi">
-<h2>Metodo di Jacobi<a class="headerlink" href="#metodo-di-jacobi" title="Link a questa intestazione">#</a></h2>
-<p>Il primo metodo che vogliamo implementare è il <strong>metodo di Jacobi</strong>, questo è basato sullo splitting additivo per la matrice <span class="math notranslate nohighlight">\(A\)</span> con <span class="math notranslate nohighlight">\(A = D - N\)</span> dove <span class="math notranslate nohighlight">\(D\)</span> è la diagonale della matrice <span class="math notranslate nohighlight">\(A\)</span>.</p>
-<div class="admonition-teorema admonition">
-<p class="admonition-title">Teorema</p>
-<p>Una condizione sufficiente (ma <strong>non necessaria</strong>) affinché il metodo di Jacobi sia convergente è che la matrice <span class="math notranslate nohighlight">\(A\)</span> sia a diagonale strettamente dominante, oppure a diagonale dominante e irriducibile.</p>
-</div>
-<p>Per trasformare il metodo in qualcosa di applicabile dobbiamo accoppiarlo ad un <strong>criterio d’arresto</strong>. Come sempre possiamo guardare al <strong>residuo assoluto</strong> oppure a quello <strong>relativo</strong> in una norma prefissata. Poiché abbiamo deciso di guardare alla convergenza attraverso informazioni spettrali scelta più naturale (e predittiva) è quella di usare la norma <span class="math notranslate nohighlight">\(\|\cdot\|_ 2\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[\|\mathbf{r}^{(k)}\|_2 = \| A \mathbf{x}^{(k)} - \mathbf{b}\|_2 \leq \varepsilon,\]</div>
-<p>ovvero, rispettivamente</p>
-<div class="math notranslate nohighlight">
-\[\|\mathbf{r}^{(k)}\|_2 = \| A \mathbf{x}^{(k)} - \mathbf{b}\|_2 \leq \varepsilon \|\mathbf{r}^{(0)}\|_2,\]</div>
-<p>dove <span class="math notranslate nohighlight">\(\varepsilon\)</span> è una tolleranza prefissata.</p>
-<div class="admonition-esercizio admonition">
-<p class="admonition-title">Esercizio</p>
-<p>Si scriva una <em>function</em> che implementi il metodo di Jacobi per la soluzione di un sistema lineare <span class="math notranslate nohighlight">\(A \mathbf{x} = \mathbf{y}\)</span> entro una tolleranza <span class="math notranslate nohighlight">\(\varepsilon\)</span> sfruttando il seguente prototipo:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[x,res,it]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">jacobi</span><span class="p">(</span>A,b,x,itmax,eps<span class="p">)</span><span class="w"></span>
-<span class="c">%%JACOBI implementa il metodo di Jacobi per la soluzione del sistema A x = b</span><span class="w"></span>
+\[\begin{split}\begin{align}
+    &amp; L\mathbf{y} = A^{\top}\mathbf{b}\\[1ex]
+    &amp; L^{\top}\mathbf{x} = \mathbf{y}.
+\end{align}\end{split}\]</div>
+<p>In alternativa, abbiamo discusso a lezione il metodo basato sulla fattorizzazione <span class="math notranslate nohighlight">\(QR\)</span> della matrice <span class="math notranslate nohighlight">\(A\)</span> per il calcolo della soluzione del problema dei minimi quadrati <a class="reference internal" href="#equation-leastsq">(12)</a>.</p>
+<div class="admonition-esercizio-1 admonition">
+<p class="admonition-title">Esercizio 1</p>
+<p>Si scriva una <em>function</em> che risolve il problema dei minimi quadrati sfruttando il seguente prototipo:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[x,min_res]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">minquad</span><span class="p">(</span>A,b,flag<span class="p">)</span><span class="w"></span>
+<span class="c">%%MINQUAD risolve il problem ai minimi quadrati associato</span><span class="w"></span>
+<span class="c">% al sistema Ax=b con il metodo specificato in flag</span><span class="w"></span>
 <span class="c">%    INPUT:</span><span class="w"></span>
-<span class="c">%     A matrice quadrata</span><span class="w"></span>
-<span class="c">%     b termine destro del sistema lineare da risolvere</span><span class="w"></span>
-<span class="c">%     x innesco della strategia iterativa</span><span class="w"></span>
-<span class="c">%     itmax massimo numero di iterazioni lineari consentito</span><span class="w"></span>
-<span class="c">%    OUTPUT</span><span class="w"></span>
-<span class="c">%     x ultima soluzione calcolata dal metodo</span><span class="w"></span>
-<span class="c">%     res vettore dei residui</span><span class="w"></span>
-<span class="c">%     it numero di iterazioni</span><span class="w"></span>
+<span class="c">%     A matrice del sistema</span><span class="w"></span>
+<span class="c">%     b termine noto del sistema</span><span class="w"></span>
+<span class="c">%     flag stringa che specifica il metodo di risoluzione</span><span class="w"></span>
+<span class="c">%    OUTPUT:</span><span class="w"></span>
+<span class="c">%     x soluzione del problema ai minimi quadrati, punto di minimo</span><span class="w"></span>
+<span class="c">%     min_res valore del minimo</span><span class="w"></span>
 <span class="k">end</span><span class="w"></span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>Si implementi in maniera vettoriale, cioè <strong>senza</strong> usare cicli <code class="docutils literal notranslate"><span class="pre">for</span></code> per scorrere le righe della matrice,</p></li>
-<li><p>Si usi il criterio d’arresto basato sull’errore relativo.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flag</span></code> è una stringa che può assumere il valore <code class="docutils literal notranslate"><span class="pre">'EqNormali'</span></code> oppure <code class="docutils literal notranslate"><span class="pre">'MetodoQR'</span></code> e determina il metodo numerico con cui il problema dei minimi quadrati viene risolto all’interno della <em>function</em>.</p></li>
+<li><p>Si calcoli la fattorizzazione <span class="math notranslate nohighlight">\(LU\)</span> di <span class="math notranslate nohighlight">\(A^{\top}A\)</span> usando l’algoritmo di Doolittle visto nel Laboratorio 7.</p></li>
+<li><p>Si usi il comando MATLAB <code class="docutils literal notranslate"><span class="pre">qr</span></code> per calcolare la fattorizzazione <span class="math notranslate nohighlight">\(QR\)</span> della matrice <span class="math notranslate nohighlight">\(A\)</span>.</p></li>
+<li><p>Si usino le funzioni <code class="docutils literal notranslate"><span class="pre">backwardsolve</span></code> e <code class="docutils literal notranslate"><span class="pre">forwardsolve</span></code>, implementate nel Laboratorio 6, per risolvere i sistemi lineari triangolari risultanti.</p></li>
 </ul>
-<p>Per <em>testare</em> il metodo si usi il seguente programma</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">gallery</span><span class="p">(</span><span class="s">&#39;poisson&#39;</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span><span class="w"> </span><span class="c">% Matrice di prova</span><span class="w"></span>
-<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">ones</span><span class="p">(</span><span class="mi">10</span>^<span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w">           </span><span class="c">% rhs vettore di 1</span><span class="w"></span>
-<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="mi">10</span>^<span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w">          </span><span class="c">% Tentativo iniziale vettore di 0</span><span class="w"></span>
-<span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">res</span><span class="p">,</span><span class="n">it</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">jacobi</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="mf">1e-6</span><span class="p">);</span><span class="w"></span>
+</div>
+<p>Una tipica situazione in cui è necessario risolvere un problema dei minimi quadrati si presenta quando si vuole costruire una funzione che «si avvicini il più possibile» ad un insieme di dati.</p>
+<div class="admonition-esercizio-2 admonition">
+<p class="admonition-title">Esercizio 2</p>
+<p>Vogliamo trovare i coefficienti <span class="math notranslate nohighlight">\(a_1\)</span> e <span class="math notranslate nohighlight">\(a_2\)</span> della funzione <span class="math notranslate nohighlight">\(f(t) = t(a_1+a_2 e^{-t})\)</span> in modo che <span class="math notranslate nohighlight">\(f\)</span> approssi i dati <span class="math notranslate nohighlight">\((t_i,f_i)\)</span>, <span class="math notranslate nohighlight">\(i=0,1,2,3,4\)</span>, di Tabella 1 nel senso dei minimi quadrati</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+&amp;\text{Tabella 1}\\
+&amp;\begin{array}{c|ccccc}
+t_i &amp; 0.2 &amp; 0.4 &amp; 0.6 &amp; 0.8 &amp; 1.0\\
+\hline f_i &amp; 2.3 &amp; 3.0 &amp; 2.9 &amp; 2.0 &amp; 1.1
+\end{array}
+\end{aligned}\end{split}\]</div>
+<p>Per risolvere il problema del <em>fitting</em> di dati, si derivino la matrice <span class="math notranslate nohighlight">\(A\)</span> ed il vettore <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> del problema dei minimi quadrati corrispondente. Si utilizzi la <em>function</em> <code class="docutils literal notranslate"><span class="pre">minquad</span></code> implementata nell’Esercizio 1 per risolvere il problema.</p>
+<p>Si completi il seguente programma usando i dati forniti</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Soluzione del problema di fitting di dati</span><span class="w"></span>
 
-<span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="nb">semilogy</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">it</span><span class="p">,</span><span class="n">res</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Iterazione&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Residuo relativo&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="c">% Dati</span><span class="w"></span>
+<span class="n">t</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="c">% Definizione della matrice e del termine noto del sistema</span><span class="w"></span>
+<span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+
+<span class="c">% Soluzione usando le equazioni normali</span><span class="w"></span>
+<span class="nb">flag</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;EqNormali&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">min_a</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">minquad</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="nb">flag</span><span class="p">);</span><span class="w"></span>
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;Il minimo dato dalla soluzione del sistema delle equazioni normali e&#39; %1.2e\n&quot;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">        </span><span class="n">min_a</span><span class="p">);</span><span class="w"></span>
+<span class="c">% Soluzione usando il metodo QR</span><span class="w"></span>
+<span class="nb">flag</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;MetodoQR&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="p">[</span><span class="n">c</span><span class="p">,</span><span class="n">min_c</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">minquad</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="nb">flag</span><span class="p">);</span><span class="w"></span>
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;Il minimo dato dal metodo QR e&#39; %1.2e\n&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">min_c</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Plot dei dati</span><span class="w"></span>
+<span class="nb">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="s">&#39;sk&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="nb">hold</span><span class="w"> </span><span class="n">on</span><span class="p">;</span><span class="w"></span>
+<span class="c">% Valutazione della funzione approssimante nei punti dati in tfine </span><span class="w"></span>
+<span class="n">tfine</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span><span class="mf">0.02</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="n">fa</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="n">fc</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="c">% Plot delle funzioni approssimanti sulla griglia tfine</span><span class="w"></span>
+<span class="nb">plot</span><span class="p">(</span><span class="n">tfine</span><span class="p">,</span><span class="w"> </span><span class="n">fa</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;-b&#39;</span><span class="p">);</span><span class="w"> </span><span class="n">hold</span><span class="w"> </span><span class="s">on</span><span class="w"></span>
+<span class="nb">plot</span><span class="p">(</span><span class="n">tfine</span><span class="p">,</span><span class="w"> </span><span class="n">fc</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;--r&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;t&#39;</span><span class="p">);</span><span class="w"> </span><span class="nb">legend</span><span class="p">(</span><span class="s">&#39;Dati&#39;</span><span class="p">,</span><span class="s">&#39;Soluzione delle equazioni normali&#39;</span><span class="p">,</span><span class="s">&#39;Soluzione del metodo QR&#39;</span><span class="p">,</span><span class="s">&#39;Location&#39;</span><span class="p">,</span><span class="s">&#39;best&#39;</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-</div>
-</section>
-<section id="metodo-di-gauss-seidel">
-<h2>Metodo di Gauss-Seidel<a class="headerlink" href="#metodo-di-gauss-seidel" title="Link a questa intestazione">#</a></h2>
-<aside class="margin sidebar">
-<p class="sidebar-title">Avanti/Indietro</p>
-<p>Si può utilizzare la stessa idea anche con la parte triangolare superiore <span class="math notranslate nohighlight">\(U\)</span> di <span class="math notranslate nohighlight">\(A\)</span>, in genere si distingue tra i due chiamandoli, rispettivamente, metodo di Gauss-Seidel in <em>avanti</em> (forward Gauss-Seidel) o all”<em>indietro</em> (backward Gauss-Seidel).</p>
-</aside>
-<p>Il secondo metodo di questo tipo che avete visto è il metodo di <strong>Gauss-Seidel</strong>,
-per questo metodo la decomposizione additiva della matrice <span class="math notranslate nohighlight">\(A\)</span> è <span class="math notranslate nohighlight">\(A = L - N\)</span>, dove <span class="math notranslate nohighlight">\(L\)</span> è la parte triangolare inferiore della matrice <span class="math notranslate nohighlight">\(A\)</span>.</p>
-<div class="admonition-teorema admonition">
-<p class="admonition-title">Teorema</p>
-<p>Una condizione sufficiente (ma <strong>non necessaria</strong>) affinché il metodo di Gauss-Seidel sia convergente è che la matrice <span class="math notranslate nohighlight">\(A\)</span> sia a diagonale strettamente dominante, oppure una matrice simmetrica e definita positiva.</p>
-</div>
-<p>Possiamo sfruttare di nuovo il <em>residuo relativo</em> per definire il criterio d’arresto.</p>
-<div class="admonition-esercizio admonition">
-<p class="admonition-title">Esercizio</p>
-<p>Si scriva una <em>function</em> che implementi il metodo di Gauss-Seidel in avanti per la soluzione di un sistema lineare <span class="math notranslate nohighlight">\(A \mathbf{x} = \mathbf{y}\)</span> entro una tolleranza <span class="math notranslate nohighlight">\(\varepsilon\)</span> sfruttando il seguente prototipo:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[x,res,it]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">forwardgs</span><span class="p">(</span>A,b,x,itmax,eps<span class="p">)</span><span class="w"></span>
-<span class="c">%%FORWARDGS implementa il metodo di Gauss-Seidel in avanti per la soluzione del</span><span class="w"></span>
-<span class="c">% sistema A x = b</span><span class="w"></span>
-<span class="c">%    INPUT:</span><span class="w"></span>
-<span class="c">%     A matrice quadrata</span><span class="w"></span>
-<span class="c">%     b termine destro del sistema lineare da risolvere</span><span class="w"></span>
-<span class="c">%     x innesco della strategia iterativa</span><span class="w"></span>
-<span class="c">%     itmax massimo numero di iterazioni lineari consentito</span><span class="w"></span>
-<span class="c">%    OUTPUT</span><span class="w"></span>
-<span class="c">%     x ultima soluzione calcolata dal metodo</span><span class="w"></span>
-<span class="c">%     res vettore dei residui</span><span class="w"></span>
-<span class="c">%     it numero di iterazioni</span><span class="w"></span>
-<span class="k">end</span><span class="w"></span>
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>Si implementi in maniera vettoriale, cioè <strong>senza</strong> usare cicli <code class="docutils literal notranslate"><span class="pre">for</span></code> per scorrere le righe della matrice,</p></li>
-<li><p>Si utilizzi la funzione <code class="docutils literal notranslate"><span class="pre">forwardsolve</span></code> vista in <a class="reference internal" href="laboratorio6.html#forwardandbacwardsolve"><span class="std std-ref">Sostituzione in avanti e all’indietro</span></a></p></li>
-<li><p>Si usi il criterio d’arresto basato sull’errore relativo.</p></li>
-</ul>
-<p>Per <em>testare</em> il metodo si usi il seguente programma</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">gallery</span><span class="p">(</span><span class="s">&#39;poisson&#39;</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span><span class="w"> </span><span class="c">% Matrice di prova</span><span class="w"></span>
-<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">ones</span><span class="p">(</span><span class="mi">10</span>^<span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w">           </span><span class="c">% rhs vettore di 1</span><span class="w"></span>
-<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="mi">10</span>^<span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w">          </span><span class="c">% Tentativo iniziale vettore di 0</span><span class="w"></span>
-<span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">res</span><span class="p">,</span><span class="n">it</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">forwardgs</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="mf">1e-6</span><span class="p">);</span><span class="w"></span>
-
-<span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="nb">semilogy</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">it</span><span class="p">,</span><span class="n">res</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Iterazione&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Residuo relativo&#39;</span><span class="p">);</span><span class="w"></span>
-</pre></div>
-</div>
-</div>
-</section>
-<section id="paragone-tra-i-due-metodi-e-velocita-di-convergenza">
-<h2>Paragone tra i due metodi e velocità di convergenza<a class="headerlink" href="#paragone-tra-i-due-metodi-e-velocita-di-convergenza" title="Link a questa intestazione">#</a></h2>
-<p>Adesso che abbiamo implementato i due diversi metodi possiamo fare un confronto delle loro prestazioni. Possiamo paragonare in primo luogo le due storie di convergenza guardando all’evoluzione dei residui:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">gallery</span><span class="p">(</span><span class="s">&#39;poisson&#39;</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span><span class="w"> </span><span class="c">% Matrice di prova</span><span class="w"></span>
-<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">ones</span><span class="p">(</span><span class="mi">10</span>^<span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w">           </span><span class="c">% rhs vettore di 1</span><span class="w"></span>
-<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="mi">10</span>^<span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w">          </span><span class="c">% Tentativo iniziale vettore di 0</span><span class="w"></span>
-
-<span class="p">[</span><span class="n">xjacobi</span><span class="p">,</span><span class="n">resjacobi</span><span class="p">,</span><span class="n">itjacobi</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">jacobi</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="mf">1e-6</span><span class="p">);</span><span class="w"></span>
-<span class="p">[</span><span class="n">xforwardgs</span><span class="p">,</span><span class="n">resforwardgs</span><span class="p">,</span><span class="n">itforwardgs</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">forwardgs</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="mf">1e-6</span><span class="p">);</span><span class="w"></span>
-
-
-<span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="nb">semilogy</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">itjacobi</span><span class="p">,</span><span class="n">resjacobi</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
-<span class="w">    </span><span class="mi">1</span><span class="p">:</span><span class="n">itforwardgs</span><span class="p">,</span><span class="n">resforwardgs</span><span class="p">,</span><span class="s">&#39;x-&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Iterazione&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Residuo&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Jacobi&#39;</span><span class="p">,</span><span class="s">&#39;Gauss-Seidel (Forward)&#39;</span><span class="p">},</span><span class="k">...</span><span class="w"></span>
-<span class="w">    </span><span class="s">&#39;Location&#39;</span><span class="p">,</span><span class="s">&#39;northeast&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
-<span class="w">    </span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">);</span><span class="w"></span>
-</pre></div>
-</div>
-<p>Da cui osserviamo che il metodo di Gauss-Seidel (forward) impiega meno iterazioni per raggiungere la convergenza desiderata (<a class="reference internal" href="#gaussjac1"><span class="std std-numref">Fig. 17</span></a>).</p>
-<figure class="align-default" id="gaussjac1">
-<a class="reference internal image-reference" href="_images/gaussjacobicomparison1.png"><img alt="convergenza-metodi" src="_images/gaussjacobicomparison1.png" style="width: 50%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Evoluzione del residuo per i metodi di Jacobi e Gauss-Seidel.</span><a class="headerlink" href="#gaussjac1" title="Link a questa immagine">#</a></p>
-</figcaption>
+<p>Il grafico risultante è mostrato qui sotto.</p>
+<figure class="align-default">
+<a class="reference internal image-reference" href="_images/datafitting.png"><img alt="_images/datafitting.png" src="_images/datafitting.png" style="width: 90%;" /></a>
 </figure>
-<p>Possiamo indagare la cosa dal punto di vista teorico andando a guardare il raggio spettrale delle due matrici di iterazione, infatti</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">M</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">diag</span><span class="p">(</span><span class="nb">diag</span><span class="p">(</span><span class="n">A</span><span class="p">));</span><span class="w"> </span><span class="c">% Jacobi</span><span class="w"></span>
-<span class="n">N</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">M</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">A</span><span class="p">;</span><span class="w"></span>
-<span class="n">rhojacobi</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">eigs</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">M</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s">&#39;largestabs&#39;</span><span class="p">);</span><span class="w"></span>
-
-<span class="n">M</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">tril</span><span class="p">(</span><span class="n">A</span><span class="p">);</span><span class="w"> </span><span class="c">% Gauss-Seidel (forward)</span><span class="w"></span>
-<span class="n">N</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">M</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">A</span><span class="p">;</span><span class="w"></span>
-<span class="n">rhoforwardgs</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">eigs</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">M</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s">&#39;largestabs&#39;</span><span class="p">);</span><span class="w"></span>
-
-<span class="nb">fprintf</span><span class="p">(</span><span class="s">&#39;Il raggio spettrale per Jacobi è %f\n&#39;</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">rhojacobi</span><span class="p">));</span><span class="w"></span>
-<span class="nb">fprintf</span><span class="p">(</span><span class="s">&#39;Il raggio spettrale per Gauss-Seidel è %f\n&#39;</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">rhoforwardgs</span><span class="p">));</span><span class="w"></span>
-</pre></div>
 </div>
-<p>Da cui scopriamo che:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Il</span> <span class="n">raggio</span> <span class="n">spettrale</span> <span class="n">per</span> <span class="n">Jacobi</span> <span class="n">è</span> <span class="mf">0.959493</span>
-<span class="n">Il</span> <span class="n">raggio</span> <span class="n">spettrale</span> <span class="n">per</span> <span class="n">Gauss</span><span class="o">-</span><span class="n">Seidel</span> <span class="n">è</span> <span class="mf">0.920627</span>
-</pre></div>
-</div>
-<p>dunque Gauss-Seidel (forward) ha un tasso di riduzione del residuo minore e una convergenza più rapida.</p>
-<p>Possiamo aggiungere delle istruzioni <code class="docutils literal notranslate"><span class="pre">tic</span></code> e <code class="docutils literal notranslate"><span class="pre">toc</span></code> per valutare anche il tempo impiegato dai due differenti metodi:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Il</span> <span class="n">tempo</span> <span class="n">per</span> <span class="n">Jacobi</span> <span class="n">è</span> <span class="mf">0.008983</span> <span class="n">s</span>
-<span class="n">Il</span> <span class="n">tempo</span> <span class="n">per</span> <span class="n">Gauss</span><span class="o">-</span><span class="n">Seidel</span> <span class="n">è</span> <span class="mf">0.182575</span> <span class="n">s</span>
-</pre></div>
-</div>
-<p>ovvero il metodo di Jacobi è in questo caso circa due ordini di grandezza più rapido. Tuttavia, se andiamo a sostituire la nostra implementazione della funzione <code class="docutils literal notranslate"><span class="pre">forwardsolve</span></code> con il <code class="docutils literal notranslate"><span class="pre">\</span></code> implementato da MATLAB scopriamo che:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Il</span> <span class="n">tempo</span> <span class="n">per</span> <span class="n">Jacobi</span> <span class="n">è</span> <span class="mf">0.008191</span> <span class="n">s</span>
-<span class="n">Il</span> <span class="n">tempo</span> <span class="n">per</span> <span class="n">Gauss</span><span class="o">-</span><span class="n">Seidel</span> <span class="n">è</span> <span class="mf">0.004435</span> <span class="n">s</span>
-</pre></div>
-</div>
-<p>ed ora Gauss-Seidel ha ampiamente recuperato su Jacobi. L”<strong>implementazione</strong> conta! Qui il vantaggio è dato dal fatto che la matrice <span class="math notranslate nohighlight">\(L\)</span> associata al problema di test che stiamo guardando è una matrice <em>a banda</em> i non-zeri non riempiono tutto il triangolo. Il codice di MATLAB è in grado di accorgersene e adatto l’algoritmo di soluzione in modo che se ne tenga conto.</p>
-</section>
+<p>Quando la funzione approssimante cercata è un polinomio esistono le seguenti routine di MATLAB:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">polyfit(xData,yData,m)</span></code> restituisce il vettore <code class="docutils literal notranslate"><span class="pre">a</span></code> di coefficienti del polinomio di grado <span class="math notranslate nohighlight">\(m\)</span> che approssima i dati <code class="docutils literal notranslate"><span class="pre">(xData,yData)</span></code> nel senso dei minimi quadrati.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">polyval(a,x)</span></code> valuta nel punto <code class="docutils literal notranslate"><span class="pre">x</span></code> il polinomio definito dai coefficienti <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
+</ul>
 </section>
 
     <script type="text/x-thebe-config">
@@ -774,7 +501,7 @@ per questo metodo la decomposizione additiva della matrice <span class="math not
     <a class='right-next' id="next-link" href="laboratorio9.html" title="successivo pagina">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">successivo</p>
-        <p class="prev-next-title">Laboratorio 9 : Metodi di Interpolazione</p>
+        <p class="prev-next-title">Laboratorio 9 : Metodi Stazionari per Sistemi Lineari</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

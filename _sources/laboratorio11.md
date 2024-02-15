@@ -1,605 +1,312 @@
-# Laboratorio 11 : Metodi di Quadratura
+# Laboratorio 11 : Il Metodo di Newton
 
-Compito dell'integrazione numerica, o *quadratura* è quello di
-approssimare il valore dell'integrale
-```{math}
-\int_{a}^{b} f(x)\,{\rm d}x,
-```
-con la somma finita
-```{math}
-I = \sum_{i=0}^{n} \omega_i f(x_i),
-```
-dove i **nodi** $\{x_i\}_{i=0}^n$ e i **pesi** $\{ \omega_i \}_{i=0}^{n}$
-dipendono dalla particolare forma scelta. Come avete visto a lezione, le
-regole di quadratura provengono dalla scelta di un particolare _polinomio
-interpolante_ per la funzione $f$. Delle diverse famiglie di formule
-quadrature che esistono ci focalizzeremo qui sull'implementazione delle
-**formule di Newton-Cotes**.
+Nello scorso laboratorio abbiamo affrontato il problema di trovare lo zero di
+una funzione continua $f : \mathbb{R} \to \mathbb{R}$ utilizzando il metodo di
+bisezione. Il passo successivo visto a lezione è quello di costruire un metodo
+che, a patto di avere funzioni di regolarità più alta,
+$f \in \mathcal{C}^{2}(\mathbb{R})$, permette di ottenere una velocità di
+convergenza maggiore.
 
-Ricordiamo brevemente il funzionamento generale di questa procedura.
-Consideriamo l'integrale definito
+Prima di dedicarci all'implementazione, riprendiamo brevemente l'idea e la
+costruzione del metodo. L'idea è di cominciare con una approssimazione iniziale
+che sia *ragionevolmente vicina* alla radice dell'equazione che vogliamo
+risolvere. Approssimiamo in quel punto la funzione con la tangente, calcoliamo
+la sua intercetta con l'asse delle $x$ e quella è la nuova approssimazione
+per la radice. Possiamo iterare la procedura come:
 ```{math}
-\int_{a}^{b} f(x)\,{\rm d}x,
+:label: eq-newton
+x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}, \quad x_0 \text{ assegnato},  \quad k \geq 1,
 ```
-e dividiamo l'intervallo $(a,b)$ in $n$ intervalli di uguale lunghezza
-```{math}
-h = \frac{b-a}{n}, \quad x_{i} = a + i h, \; i=0,\ldots,n,
-```
-sostituiamo poi alla funzione $f$ il suo **polinomio interpolante** in
-forma di Lagrange sui valori $\{ (x_i,f(x_i))\}_{i=0}^{n}$
-```{math}
-P_{n}(x) = \sum_{i=0}^{n} f(x_i)\ell_i(x),
-```
-da cui otteniamo che
-```{math}
-I = \int_{a}^{b} P_{n}(x)\,{\rm d}x = \sum_{i=0}^{n}\left[ f(x_i) \int_{a}^{b} \ell_{i}(x) \right] = \sum_{i=0}^{n} \omega_i f(x_i),
-```
-dove i **pesi** non sono nient'altro che gli integrali
-```{math}
-\omega_i = \int_{a}^{b} \ell_i(x)\,{\rm d}x, \quad i=0,\ldots,n.
-```
-Vediamo e **implementiamo** ora alcune celebri formule di quadratura di
-questa forma.
+Per cui avete dimostrato il seguente teorema di convergenza.
+:::{admonition} Teorema
+Sia $f \in \mathcal{C}^{2}([a,b])$, e supponiamo inoltre che $f(c) = 0$,
+$f'(c) \neq 0$ per qualche $c \in [a,b]$. Allora esiste un $\delta > 0$ tale
+per cui l'iterata {eq}`eq-newton` applicata ad $f$ converge a $c$ per ogni
+valore iniziale $x_0 \in [c-\delta,c+\delta]$.
+:::
 
-## Regola composita dei trapezi
-
-Supponiamo di scegliere $n=1$, ovvero $h = b-a$ e quindi $x_0 = a$,
-$x_1 = b$, e quindi
-```{math}
-w_0 = & -\frac{1}{h}\int_{a}^{b} (x-b)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},\\
-w_1 = & \frac{1}{h}\int_{a}^{b} (x-a)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},
-```
-da cui
-```{math}
-I = \sum_{i=0}^{1} \omega_i f(x_i) = \frac{h}{2}(f(a)+f(b)),
-```
-e che è **esattamente** l'area del trapezio di altezza $b-a$ e basi $f(a)$
-e $f(b)$. L'errore per questa approssimazione, se $f$ è due volte differenziabile, è dato da
-```{math}
-E = O\left( \frac{h^3}{12} f''(\xi) \right),
-```
-dove $\xi$ è un punto in $[a,b]$ e che quindi **possiamo maggiorare** con il massimo di $f''(x)$ in $[a,b]$.
-
-Facciamo una rapida verifica con MATLAB
+Ricordate queste caratteristiche iniziali, possiamo procedere ad implementare
+una versione MATLAB dell'algoritmo di Newton.
+:::{admonition} Esercizio 1
+Si implementi in una funzione MATLAB l'algoritmo di Newton sfruttando l'iterata
+descritta in {eq}`eq-newton`. Un *template* della funzione da implementare che
+si può adottare è quindi il seguente:
 ```matlab
-f = @(x) sin(x);
-Ix = @(x) -cos(x);
-a = 0;
-b = 1;
-h = b - a;
-I = h*(f(a)+f(b))/2;
-Itrue = Ix(b)-Ix(a);
-fprintf('|I - Itrue| = %e\n',abs(I-Itrue));
-fprintf("Dovrebbe essere dell'ordine di: %e\n", h^3/12);
-```
-Questo ovviamente non ci è sufficiente, poiché non appena andiamo ad
-aumentare l'intervallo $[a,b]$ ( e quindi $h$ ) su cui vogliamo calcolare
-l'integrale le cose peggiorano nettamente
-```matlab
-f = @(x) sin(x);
-Ix = @(x) -cos(x);
-a = 0;
-b = pi;
-h = b - a;
-I = h*(f(a)+f(b))/2;
-Itrue = Ix(b)-Ix(a);
-fprintf('|I - Itrue| = %e\n',abs(I-Itrue));
-fprintf("Dovrebbe essere dell'ordine di: %e\n", h^3/12);
-```
-non **abbiamo nemmeno una cifra significativa corretta**.
-
-Per *risolvere questo inconveniente*, possiamo passare ad utilizzare una
-composita. Dividiamo di nuovo l'intervallo $[a,b]$ in $n$
-sotto-intervalli di ampiezza $h = (b-a)/n$ e approssimiamo su ogni sotto-intervallo l'integrale con la formula dei trapezi locale
-```{math}
-I = \frac{h}{2} \sum_{i=0}^{n-1} \big(f(x_i) + f(x_{i+1})\big),
-```
-per cui si può ricavare una **nuova stima dell'errore**:
-```{math}
-E = O\left(\frac{(b-a)h^2}{12} f''(\xi) \right),
-```
-dove $\xi$ è sempre un valore nell'intervallo $[a,b]$.
-
-:::{admonition} Esercizio
-Implementiamo la **formula dei trapezi** per una funzione $f$ utilizzando
-il seguente prototipo
-```matlab
-function I = trapezi(f,a,b,n)
-%% TRAPEZI questa funzione implementa il metodo dei trapezi per la
-% funzione f sull'intervallo a,b con n intervalli.
-%   INPUT: f function handle dell'integrando,
-%          a,b estremi dell'intervallo di integrazione
-%          n numero di intervalli
+function [c,residuo] = newton(f,fp,x0,maxit,tol)
+%%NEWTON Implementazione del metodo di Newton
+% Input:  f function handle della funzione di cui si cerca lo zero
+%         fp function handle della derivata prima della funzione
+%         x0 approssimazione iniziale
+%         maxit numero massimo di iterazioni consentite
+%         tol tolleranza sul residuo
+% Output: c radici candidate prodotte dal metodo
+%         residuo vettore dei residui prodotto dal metodo
 
 end
 ```
-- Si cerchi di **minimizzare** il numero di **chiamate** alla funzione $f$ della routine,
-- Un comando utile per questo esercizio è il comando `linspace`,
-- Si scriva un codice che non utilizza cicli `for`.
+È importante che la funzione implementata
+- faccia il controllo degli input,
+- pre-allochi la memoria per i vettori `c` e `residuo`,
+- riduca al minimo le chiamate ad $f(\cdot)$.
 
-Per testare l'implementazione si può provare a valutare l'integrale:
-```{math}
-\pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,
-```
-con
+Per testare l'algoritmo implementato si può usare
 ```matlab
-%% Test del metodo dei Trapezi
-
-clear; clc; close all;
-
-f = @(x) 4*sqrt(1-x.^2);
-a = 0;
-b = 1;
-
-n = 9;
-I = trapezi(f,a,b,n);
-
-fprintf('Errore: %e\n',abs(pi-I)/pi);
+%% Script di test per il metodo di Newton
+clear; clc;
+f = @(x) x.^3 - 2*x - 5;
+fp = @(x) 3*x.^2 -2;
+maxit = 200;
+tol = 1e-6;
+ctrue = 2.09455148154232659;
+x0 = 3;
+[c,residuo] = newton(f,fp,x0,maxit,tol);
+```
+Da cui otteniamo
+```
+Iterata 1	c = 3.000000	residuo = 1.600000e+01
+Iterata 2	c = 2.360000	residuo = 3.424256e+00
+Iterata 3	c = 2.127197	residuo = 3.710998e-01
+Iterata 4	c = 2.095136	residuo = 6.526626e-03
+Iterata 5	c = 2.094552	residuo = 2.146143e-06
+Iterata 6	c = 2.094551	residuo = 2.327027e-13
+	Convergenza raggiunta in 6 iterazioni
 ```
 :::
 
-Cerchiamo ora di verificare il comportamento della formula rispetto
-alla stima dell'errore che abbiamo **ottenuto dalla teoria**. Valutiamo
-che succede per l'integrale dell'esempio:
-```{math}
-\pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,
+
+(newt-convergenza)=
+## Convergenza
+
+:::{margin}
+```{figure} ./images/newtonconvergence.png
+:name: newtonconvergence
+
+Paragone tra la convergenza del metodo di Newton e il metodo di bisezione per
+calcolare una radice di $f(x) = x^3-2x-5$.
 ```
-Proviamo a stimare l'errore in maniera numerica e a confrontarlo con il
-comportamento che ci aspettiamo dalla teoria:
-
+:::
+Possiamo confrontare il metodo di Newton con il metodo di bisezione implementato
+nella scorsa lezione, sfruttiamo lo stesso caso di test dell'Esercizio 1 e
+aggiungiamo allo script di test del metodo di Newton:
 ```matlab
-n = logspace(1,4,4)-1;
-errore = [];
+a = 1;
+b = 3;
+maxit = 200;
+tol = 1e-6;
+[c2,residuo2] = bisezione(f,a,b,maxit,tol);
 
-for nval = n
-    I = trapezi(f,a,b,nval);
-    errore = [errore,abs(I-pi)/pi];
+n = 1:length(residuo);
+n2 = 1:length(residuo2);
+semilogy(n,abs(c-ctrue),'ro-',...
+    n2,abs(c2-ctrue),'bx-','LineWidth',2);
+legend({'Metodo di Newton','Metodo di Bisezione'},'FontSize',14);
+xlabel('Iterazione')
+```
+per cui vediamo una rappresentazione in {numref}`newtonconvergence`. Come ci
+aspettavamo dall'analisi teorica, il metodo di Newton è in questo caso di ordine
+$2$. Possiamo investigare l'ordine di convergenza anche in maniera numerica.
+
+Per farlo ricordiamo che una successione di approssimate $\{x_n\}_n$ che converge
+ad $x$ ha ordine di convergenza $p \geq 1$ se
+```{math}
+\lim_{n \rightarrow +\infty} \frac{|x_{n+1}-x|}{|x_n -x|^p} = \mu, \text{ con } \mu \in (0,1).
+```
+Possiamo sfruttare la definizione per ottenere una stima dell'ordine di
+convergenza mediante i rapporti:
+
+che possiamo implementare in una funzione MATLAB come
+```matlab
+function q = convergenza(xn, xtrue)
+%%CONVERGENZA produce una stima dell'ordine di convergenza della
+%%successione x_n ad xtrue.
+  e = abs(xn - xtrue);
+  q = zeros(length(e)-2,1);
+  for n = 2:(length(e)-1)
+      q(n-1) = log(e(n+1)/e(n))/log(e(n)/e(n-1));       
+  end
 end
+```
+E se lo applichiamo al vettore `c` e alla `ctrue` prodotta dal metodo di Newton
+otteniamo i valori
+```matlab
+>> p = convergenza(c,ctrue)
 
-h = (b-a)./n;
-err = (b-a)*h.^2/12;
+p =
+
+    1.7080
+    1.9194
+    1.9936
+    1.9996
+```
+che ci conferma che l'ordine di convergenza si avvicina a $2$.
+
+## Approssimare la derivata prima
+
+Non sempre possediamo o possiamo calcolare in forma chiusa la derivata della
+funzione $f$. Può essere utile approssimarla direttamente a partire utilizzando
+solo la $f$. Possiamo farlo in maniera numerica sfruttando la definizione stessa
+di derivata:
+```{math}
+:label: eq-fd
+f'(x_k) = \lim_{h \rightarrow 0} \frac{f(x+h)-f(x)}{h} \approx \frac{f(x+h)-f(x)}{h}
+```
+prendendo un $h$ sufficientemente piccolo, una buona scelta è $h = \sqrt{\varepsilon}$
+per $\varepsilon$ la precisione di macchina.
+
+:::{admonition} Esercizio 2
+Si modifichi il codice dell'Esercizio 1 per utilizzare l'approssimazione della
+derivata in {eq}`eq-fd`.
+:::
+
+## Radici multiple
+
+Dalla teoria sappiamo che l'ordine di convergenza del metodo di Newton è
+ridotto quando la radice che $c$ di $f$ che cerchiamo è di ordine più elevato.
+
+:::{tip}
+Ricordiamo che se $c$ è una radice di $f$ il suo **ordine** è il più piccolo
+$q$ per cui $f^{(q)}(c) \neq 0$.
+
+Ad **esempio** $f(x) = (x-2)^2$, $f(2) = 0$, $f'(x) = 2(x-2)$, $f'(2) = 0$, ma
+$f''(x) = 2$ per cui $f''(2) \neq 0$ e dunque l'ordine è $q=2$.
+:::
+
+Possiamo _modificare il metodo di Newton_ per recuperare l'ordine quadratico di
+convergenza **se** sappiamo l'ordine $q$ della radice che stiamo cercando. Si
+tratta di modificare l'iterazione come:
+```{math}
+:label: eq_newton2
+x_{k+1} = x_k - q \frac{f(x_k)}{f'(x_k)}, \quad x_0 \text{ assegnato }, k \geq 1.
+```
+
+:::{admonition} Esercizio 3
+Si modifichi la funzione dell'**Esercizio 1** con una che implementi l'iterazione
+{eq}`eq_newton2`. Cioè con una funzione che abbiamo tra gli input anche l'ordine
+$q$ della radice.
+
+Un prototipo della funzione è quindi
+```matlab
+function [c,residuo] = mnewton(f,fp,x0,q,maxit,tol)
+%%NEWTON Implementazione del metodo di Newton
+% Input:  f function handle della funzione di cui si cerca lo zero
+%         fp function handle della derivata prima della funzione
+%         x0 approssimazione iniziale
+%         q ordine della radice da calcolare
+%         maxit numero massimo di iterazioni consentite
+%         tol tolleranza sul residuo
+% Output: c radici candidate prodotte dal metodo
+%         residuo vettore dei residui prodotto dal metodo
+
+end
+```
+Dopo averlo implementato possiamo testarlo con il seguente script
+```matlab
+%% Script di test per il metodo di Newton modificato
+
+clear; clc;
+
+f = @(x) x.^3 + 2*x.^2 -7*x + 4;
+fp = @(x) 3*x.^2 +4*x -7;
+maxit = 200;
+tol = 1e-6;
+
+ctrue = 1;
+
+x0 = 2;
+[c,residuo] = newton(f,fp,x0,maxit,tol);
+
+x0 = 2;
+q = 2;
+[cm,residuom] = mnewton(f,fp,x0,q,maxit,tol);
+```
+Per vedere la differenza nell'ordine di convergenza possiamo usare la funzione
+`convergenza` che abbiamo discusso nella sezione {ref}`newt-convergenza` e
+rappresentare di nuovo in maniera grafica il residuo.
+```matlab
+q = convergenza(c,ctrue);
+qm = convergenza(cm,ctrue);
 
 figure(1)
-loglog(n,errore,'o-',n,err/errore(1),'r--','LineWidth',2);
-xlabel('n');
-ylabel('Errore');
-legend({'Errore Misurato','Stima'},'FontSize',14)
+subplot(1,2,1)
+semilogy(1:length(residuo),residuo,'o-',...
+    1:length(residuom),residuom,'x-','LineWidth',2);
+xlabel('Iterazione')
+ylabel('Errore Assoluto')
+legend({'Newton','Newton Modificato'},'FontSize',16,...
+    'Location','southeast');
+subplot(1,2,2)
+semilogy(3:length(residuo),q,'o-',...
+    3:length(residuom),qm,'x-',...
+    1:14,ones(14,1),'k--',...
+    1:14,2*ones(14,1),'k--','LineWidth',2);
+xlabel('Iterazione')
+ylabel('Ordine di Convergenza Stimato')
+legend({'Newton','Newton Modificato'},'FontSize',16,...
+    'Location','southeast');
+axis([1 14 0.8 2.2])
 ```
-:::{margin} Errore regola dei trapezi
-![Errore per trapezi non regolare](/images/trapezoidal_error1.png)
+Quello che osserviamo dalla {numref}`newtonmodificatoconvergence` è esattamente
+quanto previsto dalla teoria. La versione non modificata di Newton ha convergenza
+lineare, mentre la versione modificata ha un chiaro comportamento quadratico.
+```{figure} ./images/newtonconvergencemultiple.png
+:name: newtonmodificatoconvergence
 
-Errore per l'integrale
-```{math}
-\pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,
-```
-
-![Errore per trapezi regolare](/images/trapezoidal_error2.png)
-
-Errore per l'integrale
-```{math}
-\int_0^3 x^2 \sin ^3(x) \, {\rm d}x
-```
-:::
-La stima non sembra particolarmente soddisfacente, ma siamo sicuri di
-poterla applicare? Calcoliamo la derivata seconda della nostra funzione
-integranda:
-```{math}
-f''(t) = 4 \left(-\frac{t^2}{\left(1-t^2\right)^{3/2}}-\frac{1}{\sqrt{1-t^2}}\right) = \frac{-4}{\left(1-t^2\right)^{3/2}}
-```
-per cui abbiamo che:
-```{math}
-\underset{t\to 1^-}{\text{lim}}\frac{-4}{\left(1-t^2\right)^{3/2}} = -\infty
-```
-ovvero, **non possiamo limitare $f''(\xi)$ nell'intervallo di
-integrazione**.
-
-Proviamo con una funzione diversa, ad esempio:
-```{math}
-I = \int_0^3 x^2 \sin ^3(x) \, {\rm d}x = & \frac{1}{108} \left.-81 \left(x^2-2\right) \cos (x)+\left(9 x^2-2\right) \cos (3 x)-6 x (\sin (3 x)-27 \sin (x))\right|_{0}^{3} \\
-= & \frac{1}{108} (-160+486 \sin (3)-18 \sin (9)-567 \cos (3)+79 \cos (9)),
-```
-per cui la derivata seconda ha la regolarità necessaria
-```{math}
-f''(x) = & x^2 \left(6 \sin (x) \cos ^2(x)-3 \sin ^3(x)\right)+2 \sin ^3(x)+12 x \sin ^2(x) \cos (x) \\
-= & \frac{1}{2} \sin (x) \left(3 x^2+\left(9 x^2-2\right) \cos (2 x)+12 x \sin (2 x)+2\right)
-```
-e si osserva che $|f''(x)| < 10$ per $x \in [0,3]$. Vediamo che succede
-numericamente:
-```matlab
-f = @(x) x.^2.*sin(x).^3;
-a = 0;
-b = 3;
-Itrue = 3.615857833947287;
-
-n = logspace(1,4,4)-1;
-errore = [];
-
-for nval = n
-    I = trapezi(f,a,b,nval);
-    errore = [errore,abs(I-Itrue)/Itrue];
-end
-
-h = (b-a)./n;
-err = 10*(b-a)*h.^2/12;
-
-figure(2)
-loglog(n,errore,'o-',n,err,'r--','LineWidth',2);
-xlabel('n');
-ylabel('Errore');
-legend({'Errore Misurato','Stima'},'FontSize',14)
-```
-
-:::{warning}
-Questa stima dell'errore è solo una prima approssimazione, in realtà è
-possibile ottenere stime più precise coinvolgendo termini di ordine
-superiore. Per i nostri scopi è sufficiente, ma sappiate che si può indagare più in profondità la questione.
-:::
-
-### Una versione ricorsiva
-
-Supponiamo di aver scelto un valore di $n$ per il nostro integrale, ma che
-alla fine del calcolo il valore ottenuto non abbia l'accuratezza che
-desideravamo. Quello che possiamo fare è scegliere un nuovo valore di $n$
-e calcolare di nuovo l'integrale. Questo, tuttavia, ci richiede di
-fare di nuovo tutte le valutazioni di funzione perché ad un nuovo $n$
-corrispondono nodi nuovi.
-
-Possiamo recuperare in qualche modo parte dello sforzo?
-
-Chiamiamo $I_k$ l'integrale valutato con la regola composita dei
-trapezi usando $2^{k-1}$ intervalli. Ora, se passiamo da $k$ a $k+1$
-il **numero di intervalli è raddoppiato**.
-
-Chiamiamo $H = b - a$ e scriviamo la regola dei trapezi per i primi $k$
-```{math}
-k = 1, &\quad I_1 = \frac{H}{2}[f(a) + f(b)],\\
-k = 2, &\quad I_2 = \frac{H}{4}\left[ f(a) + 2 f\left(a + \frac{H}{2} \right) + f(b) \right] \\
-&\quad\; = \frac{1}{2} I_1 + f\left(a + \frac{H}{2}\right)\frac{H}{2}, \\
-k = 3, &\quad I_3 = \frac{H}{8}\left[ f(a) + 2 f\left(a + \frac{H}{4}\right) + 2 f\left(a + \frac{H}{2}\right) + 2 f\left(a + \frac{3H}{4}\right) + f(b) \right] \\
-&\quad\; = \frac{1}{2} I_2 + \frac{H}{4}\left[f\left(a + \frac{H}{4}\right) + f\left(a + \frac{3H}{4}\right)\right].
-```
-Con un po' di *intuizione*, possiamo scrivere per $k > 1$
-```{math}
-I_k = \frac{1}{2}I_{k-1} + \frac{H}{2^{k-1}} \sum_{i=1}^{2^{k-2}} f \left[ a + \frac{(2i-1)H}{2^{k-1}} \right], \quad k=2,3,\ldots
-```
-
-:::{tip}
-Qual è il vantaggio di questa scelta? La somma contiene solo nodi creati ad ogni nuovo raddoppio!
-
-Ovvero, il calcolo della sequenza $I_1, I_2, I_3, \ldots, I_k$ costa
-esattamente lo stesso numero di operazioni sia che si faccia il calcolo
-tutto insieme, sia che si calcolino separatamente tutti gli $I_k$ uno
-dopo l'altro.
-
-Il vantaggio dell'uso di questa forma della regola dei trapezi
-**ricorsiva** è che ci consente di monitorare la convergenza e
-terminare il processo quando la differenza tra $I_{k-1}$ e $I_k$
-diventa sufficientemente piccola.
-:::
-
-Per implementare l'algoritmo in modo ricorsivo, riscriviamo la formula
-in termini del valore di $h$ come:
-```{math}
-:label: trapezir
-
-I(h) = \frac{1}{2}I(2h) + h \sum f(x_{\text{new}}), \quad h = \frac{H}{n-1}.
-```
-
-:::{admonition} Esercizio  
-Separiamo la funzione ricorsiva in due parti, la prima è quella
-che calcola $I(h)$, dato $I(2h)$, usando l'equazione {eq}`trapezir`
-e chiamiamola `trapezir`
-```matlab
-function Ih = trapezir(f,a,b,I2h,k)
-%%TRAPEZIR implementa l'algoritmo ricorsivo della regola dei
-%trapezi.
-%   INPUT:  f = handle della funzione da integrare,
-%           a,b = limiti di integrazione
-%           I2h = integrale su 2^{k-1} intervalli
-%           k  = livello di ricorsione
-%   OUTPUT: Ih = integrale su 2^k intervalli
-
-end
-```
-Una volta che la parte computazionale è stata completata possiamo
-mettere insieme la funzione ricorsiva
-```matlab
-function I = trapeziricorsiva(f,a,b,kmax,tol)
-%% TRAPEZIRICORSIVA calcola l'integrale di f tra a e b in modo
-% ricorsivo. L'integrazione si ferma quando la differenza tra due
-% ricorsioni successive è minore della tolleranza richiesta.
-%   INPUT:  f = handle della funzione di integrare,
-%           a,b = estremi di integrazione
-%           kmax = massimo numero di livello di ricorsione
-%           tol = tolleranza tra due livelli di ricorsione successivi
-
-I2h = 0; k = 1;
-
-Ih = trapezir(f,a,b,I2h,k);
-fprintf('k = 1 Ih = %1.16f\n',Ih);
-
-for k = 2:kmax
-   I2h = Ih;
-   Ih = trapezir(f,a,b,I2h,k);
-   fprintf('k = %d Ih = %1.16f\n',k,Ih);
-   if abs(Ih - I2h) < tol
-       I = Ih;
-       return
-   end
-end
-warning("Non abbiamo raggiunto la tolleranza richiesta!");
-I = Ih;
-
-end
-```
-Dopo averlo fatto la testiamo sullo stesso integrale del caso precedente
-```matlab
-%% Test della funzione ricorsiva dei trapezi
-
-clear; clc; close all;
-
-f = @(x) x.^2.*sin(x).^3;
-a = 0;
-b = 3;
-Itrue = 3.615857833947287;
-tol = 1e-9;
-kmax = 20;
-
-I = trapeziricorsiva(f,a,b,kmax,tol);
-fprintf("\n\tL'errore è %e\n",abs(I - Itrue)/Itrue);
+Convergenza del metodo di Newton per radici multiple, confronto tra il caso
+standard e quello modificato.
 ```
 :::
 
-## Formula di Simpson
 
-La formula di quadratura di Simpson può essere ottenuta di nuovo come una
-formula di Newton-Cotes con $n = 2$. Laddove nel caso dei trapezi avevamo
-fissato una interpolate lineare, questa volta abbiamo scelto una
-interpolante quadratica attraverso tre nodi adiacenti.
+## Esempi di applicazioni
 
-Possiamo ricavarla direttamente dalla definizione su un solo intervallo $[a,b]$ con i nodi
+Consideriamo alcune applicazioni *ingegneristiche* del problema di trovare lo
+zero di una funzione {cite}`kiusalaas2015`.
+
+:::{margin} Entalpia
+L'**energia libera di Gibbs** (anche chiamata entalpia libera) è una funzione
+di stato termodinamica utilizzata per rappresentare l'energia libera nelle
+trasformazioni a pressione e temperatura costante. In termochimica è usata per
+determinare la spontaneità di una reazione.
+:::
+:::{admonition} Esercizio 4: Energia libera di Gibbs
+L'energia libera di Gibbs di una mole di idrogeno alla temperatura $T$ è
 ```{math}
-x_0 = a, \quad x_1 = \frac{a+b}{2}, \quad x_2 = b,
+	G = - R T \ln[ (T/T_0)^{5/2}]\,J,
 ```
-da cui abbiamo che i pesi si ottengono come
-```{math}
-\omega_0 = \int_{a}^{b} \ell_0(x)\,{\rm d}x = \frac{h}{6}, \\
-\omega_1 = \int_{a}^{b} \ell_1(x)\,{\rm d}x = \frac{2h}{3}, \\
-\omega_2 = \int_{a}^{b} \ell_2(x)\,{\rm d}x = \frac{h}{6},
-```
-e quindi
-```{math}
-I = \sum_{i=0}^{2} \omega_i f(x_i) = \frac{h}{6}\left[ f(a) + 4f\left(\frac{a+b}{2}\right)+f(b)\right].
-```
-:::{tip}
-Per calcolare gli integrali $\omega_i$ è conveniente fare un cambio di
-variabili ponendo l'origine dell'intervallo di integrazione su $x_1$.
-In questo modo i nodi diventano $\{-h,0,h\}$ e gli integrali sono più semplici da calcolare.
+dove $R = 8.31441\,J/K$ è la costante dei gas e la temperatura iniziale è
+$T_0 = 4.44418\,K$. Si determini la temperatura a cui $G = -10^{5}\,J$.
 :::
 
-:::{danger}
-La regola di Simpson che abbiamo scritto richiede che il numero di
-intervalli sia pari, ovvero che il numero di nodi sia dispari. Se
-vogliamo ammettere un qualunque numero di intervalli $n$, è necessario
-che il primo (o l'ultimo) intervallo usi 4 invece che 3 punti.
+:::{margin} Sistema molle--ammortizzatore
+```{figure} ./images/spring.png
+:width: 40%
+:name: spring
 
-Per l'implementazione seguente ci limiteremo al caso di nodi dispari, ovvero di intervalli pari.
-:::
-
-Con calcoli analoghi a quelli che avete visto per la formula dei trapezi
-si può ottenere una prima stima dell'errore anche per la formula di
-Simpson. Infatti si ha che l'errore si comporta come
-```{math}
-E = O\left( (b-a)\frac{h^4}{180} f^{(iv)}(\xi) \right),
-```
-per $\xi$ un punto nell'intervallo $[a,b]$.
-
-::::{admonition} Esercizio.
-Si implementi la versione composita della regola di Simpson per il
-calcolo di un integrale secondo il seguente prototipo
-```matlab
-function I = simpson(f,a,b,n)
-%%SIMPSON calcolo dell'integrale della funzione f tra a e b mediante la
-% formula di Simpson.
-%   INPUT:  f = handle della funzione di integrare,
-%           a,b = estremi di integrazione
-%           n numero di intervalli
-
-if mod(n+1,2) ~= 1
-    error('n deve essere pari');
-end
-
-end
-```
-Che possiamo testare con:
-```matlab
-%% Test della formula di quadratura di Simpson
-
-f = @(x) x.^2.*sin(x).^3;
-a = 0;
-b = 3;
-Itrue = 3.615857833947287;
-
-n = logspace(1,4,4);
-errore = [];
-
-for nval = n
-    I = simpson(f,a,b,nval);
-    errore = [errore,abs(I-Itrue)/Itrue];
-end
-
-h = (b-a)./n;
-err = 200*(b-a)*h.^4/180;
-
-figure(2)
-loglog(n,errore,'o-',n,err,'r--','LineWidth',2);
-xlabel('n');
-ylabel('Errore');
-legend({'Errore Misurato','Stima'},'FontSize',14)
-```
-
-Dove nella stima dell'errore `24*(b-a)*h.^4/180`, abbiamo sfruttato il fatto che
-```{math}
-\frac{d ^4\left(x^2 \sin (x)^3\right)}{d x^4} = x^2 \left(21 \sin ^3(x)-60 \sin (x) \cos ^2(x)\right)+8 x \left(6 \cos ^3(x)-21 \sin ^2(x) \cos (x)\right)+12 \left(6 \sin (x) \cos ^2(x)-3 \sin ^3(x)\right),
-```
-che in $[0,3]$ è maggiorata da $200$.
-::::
-```{margin} Errore di quadratura Simpson
-![Errore per Simpson regolare](/images/simpsonerror1.png)
-
-Errore per la formula di Simpson.
-```
-
-Possiamo quindi confrontare gli errori di quadratura ottenuti per le due
-formule stampandoli sullo stesso grafico
-```{figure} ./images/simpson_error2.png
-
-Confronto tra l'errore relativo compiuto con la formula dei Trapezi e
-quello ottenuto con la formula di Simpson.
-```
-da cui osserviamo il comportamento che ci aspettavamo considerata
-l'analisi dell'errore.
-
-## Le funzioni di quadratura di MATLAB
-
-MATLAB offre diverse funzioni per il calcolo di integrali. La prima
-da considerare è la funzione `quad`, dal cui *help* leggiamo
-```
-quad   Numerically evaluate integral, adaptive Simpson quadrature.
-   Q = quad(FUN,A,B) tries to approximate the integral of scalar-valued
-   function FUN from A to B to within an error of 1.e-6 using recursive
-   adaptive Simpson quadrature. FUN is a function handle. The function
-   Y=FUN(X) should accept a vector argument X and return a vector result
-   Y, the integrand evaluated at each element of X.
-
-   Q = quad(FUN,A,B,TOL) uses an absolute error tolerance of TOL
-   instead of the default, which is 1.e-6.  Larger values of TOL
-   result in fewer function evaluations and faster computation,
-   but less accurate results.  The quad function in MATLAB 5.3 used
-   a less reliable algorithm and a default tolerance of 1.e-3.
-
-   Q = quad(FUN,A,B,TOL,TRACE) with non-zero TRACE shows the values
-   of [fcnt a b-a Q] during the recursion. Use [] as a placeholder to
-   obtain the default value of TOL.
-```
-Questa applica la quadratura di Simpson che abbiamo visto nella sezione
-precedente sfruttando la tecnica ricorsiva che abbiamo visto, applicato
-e implementato nel caso della regola dei trapezi.
-
-Quest'ultima invece è implementata dal comando `trapz`, dal cui `help`
-leggiamo
-```
-trapz  Trapezoidal numerical integration.
-   Z = trapz(Y) computes an approximation of the integral of Y via
-   the trapezoidal method (with unit spacing).  To compute the integral
-   for spacing different from one, multiply Z by the spacing increment.
-
-   For vectors, trapz(Y) is the integral of Y. For matrices, trapz(Y)
-   is a row vector with the integral over each column. For N-D
-   arrays, trapz(Y) works across the first non-singleton dimension.
-
-   Z = trapz(X,Y) computes the integral of Y with respect to X using the
-   trapezoidal method. X can be a scalar or a vector with the same length
-   as the first non-singleton dimension in Y. trapz operates along this
-   dimension. If X is scalar, then trapz(X,Y) is equivalent to X*trapz(Y).
-```
-
-L'ultima funzione che vogliamo menzionare è `integral` che, in realtà,
-sostituisce la funzione `quad` che è in realtà _deprecata_. Questa applica
-una formula di quadratura adattiva e permette in realtà di calcolare anche
-integrali complessi, di funzioni con singolarità e regolare le tolleranze
-```
-integral  Numerically evaluate integral.
-   Q = integral(FUN,A,B) approximates the integral of function FUN from A
-   to B using global adaptive quadrature and default error tolerances.
-
-   FUN must be a function handle. A and B can be -Inf or Inf. If both are
-   finite, they can be complex. If at least one is complex, integral
-   approximates the path integral from A to B over a straight line path.
-
-   For scalar-valued problems the function Y = FUN(X) must accept a vector
-   argument X and return a vector result Y, the integrand function
-   evaluated at each element of X. For array-valued problems (see the
-   'ArrayValued' option below) FUN must accept a scalar and return an
-   array of values.
-```
-
-Di questa funzione sono disponibili anche le funzioni per il calcolo di integrali di funzioni in 2 e 3 variabili chiamate, rispettivamente, `integral2` e `integral3`.
-
-## Applicazioni ed esercizi
-
-Consideriamo alcuni esercizi sulla quadratura numerica da {cite}`kiusalaas2015`.
-
-:::::{admonition} Accelerazione di una macchina
-
-La {numref}`powertable` riporta la potenza $P$ fornita alle ruote motrici di una macchina come
-funzione della velocità $v$. Se la massa della macchina è $m = 2000\,kg$, si
-determini l'intervallo $\Delta t$ che serve alla macchina per accelerare da
-$1\,m/s$ a $6\,m/s$ utilizzando la regola dei trapezi implementata in `trapz`.
-
-```{list-table} Potenza e velocità
-:header-rows: 1
-:name: powertable
-
-* - $v\,(m/s)$
-  - $P\,(kW)$
-* - 0
-  - 0
-* - 1.0
-  - 4.7
-* - 1.8
-  - 12.2
-* - 2.4
-  - 19.0
-* - 3.5
-  - 31.8
-* - 4.4
-  - 40.1
-* - 5.1
-  - 43.8
-* - 6.0
-  - 43.2
-```
-
-:::{admonition} Suggerimento
-:class: tip, dropdown
-La funzione di cui calcolare l'integrale si può ottenere dalla
-seconda legge della dinamica e dalla definizione di potenza:
-```{math}
-\Delta t = m \int_{1 s}^{6 s} (v/P)\,{\rm d}v.
+Un modello accoppiato molla-ammortizzatore.
 ```
 :::
-
-:::::
-
-::::{admonition} Esercizio
-Si calcoli l'integrale
+:::{admonition} Esercizio 5: Sistema molle--ammortizzatore
+Consideriamo il sistema accoppiato di molle e ammortizzatori in {numref}`spring`.
+I due blocchi di massa $m$ sono connessi tra di loro da due molle e da un
+ammortizzatore. Il coefficiente elastico di ognuna delle due molle è dato da
+$k$, mentre $c$ è il coefficiente che regola l'attenuazione causata dall'ammortizzatore. Quando il sistema è messo in posizione e rilasciato, la
+posizione di ogni blocco durante il moto ha la forma
 ```{math}
-I = \int_{1}^{+\infty} \frac{{\rm d}x}{1+x^4} = \frac{\pi -2 \coth ^{-1}\left(\sqrt{2}\right)}{4 \sqrt{2}},
+x_k(t) = A_k e^{\omega_r t} \cos(\omega_i t + \phi_k), \qquad k=1,2,
 ```
-con la regola dei trapezi e si paragoni il risultato con il valore
-esatto.
-
-:::{admonition} Si applichi un cambio di variabili...
-:class: tip, dropdown
-Per riportare l'integrale su di un intervallo finito si applichi
-il cambio di variabili $x^3 = 1/t$.
+dove $A_k$ e $\phi_k$ sono costanti, e $\omega = \omega_r \pm i \omega_i$ sono le
+radici dell'equazione
+```{math}
+\omega^4 + 2 \frac{c}{m} \omega^3 + 3 \frac{k}{m}\omega^2 + \frac{ c k}{m^2} \omega + \left(\frac{k}{m}\right)^2 = 0.
+```
+Si determinino le possibili combinazioni di $w_r$ e $w_i$ se $c/m = 12\,s^{-1}$,
+e $k/m = 1500 s^{-2}$.
 :::
 
-::::
-
-:::{admonition} Esercizio
-Il periodo di un pendolo semplice di lunghezza $L$ è $\tau = 4 \sqrt{L/g} h(\theta_0)$, dove $g$ è l'accelerazione di gravità, $\theta_0$ rappresenta l'ampiezza angolare e
-```{math}
-h(\theta_0) = \int_{0}^{\pi/2} \frac{ {\rm d}\theta }{\sqrt{1- \sin^2(\theta_0/2)\sin^2(\theta)}}.
-```
-Si calcolino i periodi per $h(15 \text{ deg})$, $h(30 \text{ deg})$,
-$h(45 \text{ deg})$ con la formula di Simpson e si paragonino
-all'approssimazione per piccoli angoli con $h = \frac{\pi}{2}$.
-Cosa si osserva?
+:::{admonition} Esercizio 6
+Si re-implementino/modifichino gli esercizi del {ref}`laboratorio3`
+cambiando dal metodo di Bisezione al metodo di Newton.
 :::
-
-
 
 ## Bibliografia
 
