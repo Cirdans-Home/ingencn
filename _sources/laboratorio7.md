@@ -1,13 +1,14 @@
 # Laboratorio 7 : L'Eliminazione di Gauss il Metodo LU
 
-L'**eliminazione gaussiana** (Carl Friedrich Gauss, 1777-1855), noto anche come
+<!---
+L' **eliminazione gaussiana** (Carl Friedrich Gauss, 1777-1855), noto anche come
 algoritmo di riduzione per le righe, è un algoritmo per risolvere sistemi
 quadrati di equazioni lineari. Come avete visto a lezione si riduce ad una
 sequenza di operazioni eseguite sulla corrispondente matrice di coefficienti.
 
 Alcune estensioni di questo metodo possono essere utilizzate anche per calcolare
 il **rango** di una matrice, il **determinante** di una matrice quadrata e
-l'**inversa di una matrice** invertibile.
+l' **inversa di una matrice** invertibile.
 
 Come abbiamo visto nel secondo Laboratorio sul {ref}`condizionamento-spettrale`
 la precisione ottenuta in uscita da questa procedura. Ricordiamo che per
@@ -584,3 +585,5 @@ RCOND =  5.460912e-19.
  ```{bibliography}
  :filter: docname in docnames
  ```
+ 
+ -->

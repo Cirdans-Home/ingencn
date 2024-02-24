@@ -1,6 +1,6 @@
 # Laboratorio 6 : Soluzione dei Sistemi Lineari
 
-<!---
+
 In questo e nel prossimo laboratorio ci focalizzeremo sul problema di risolvere
 un sistema lineare compatibile. Partiremo dal caso dei sistemi triangolari per
 poi occuparci del caso generale tramite la fattorizzazione $PA = LU$ della
@@ -458,4 +458,4 @@ confrontare i risultati ottenuti con la funzione nativa di MATLAB che calcola
 i numeri di Bernoulli dal medesimo nome (`help bernoulli` per le informazioni).
 ```
 :::
--->
+

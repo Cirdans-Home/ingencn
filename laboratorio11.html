@@ -56,8 +56,6 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
-    <link rel="next" title="Laboratorio 12 : Metodi per la Soluzione di ODE" href="laboratorio12.html" />
-    <link rel="prev" title="Laboratorio 10 : Il Metodo di Bisezione" href="laboratorio10.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
     
@@ -117,65 +115,10 @@ const thebe_selector_output = ".output, .cell_output"
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio1.html">
    Laboratorio 1 : Introduzione a MATLAB
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio2.html">
-   Laboratorio 2 : Introduzione a MATLAB - II
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio3.html">
-   Laboratorio 3 : L’Aritmetica di Precisione Finita
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio4.html">
-   Laboratorio 4 : Metodi di Interpolazione
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio5.html">
-   Laboratorio 5 : Metodi di Quadratura
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio6.html">
-   Laboratorio 6 : Soluzione dei Sistemi Lineari
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio7.html">
-   Laboratorio 7 : L’Eliminazione di Gauss il Metodo LU
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio8.html">
-   Laboratorio 8 : Il Problema Lineare dei Minimi Quadrati
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio9.html">
-   Laboratorio 9 : Metodi Stazionari per Sistemi Lineari
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio10.html">
-   Laboratorio 10 : Il Metodo di Bisezione
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Laboratorio 11 : Il Metodo di Newton
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio12.html">
-   Laboratorio 12 : Metodi per la Soluzione di ODE
   </a>
  </li>
 </ul>
@@ -449,13 +392,13 @@ risolvere. Approssimiamo in quel punto la funzione con la tangente, calcoliamo
 la sua intercetta con l’asse delle <span class="math notranslate nohighlight">\(x\)</span> e quella è la nuova approssimazione
 per la radice. Possiamo iterare la procedura come:</p>
 <div class="math notranslate nohighlight" id="equation-eq-newton">
-<span class="eqno">(12)<a class="headerlink" href="#equation-eq-newton" title="Permalink a questa equazione">#</a></span>\[x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}, \quad x_0 \text{ assegnato},  \quad k \geq 1,\]</div>
+<span class="eqno">()<a class="headerlink" href="#equation-eq-newton" title="Permalink a questa equazione">#</a></span>\[x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}, \quad x_0 \text{ assegnato},  \quad k \geq 1,\]</div>
 <p>Per cui avete dimostrato il seguente teorema di convergenza.</p>
 <div class="admonition-teorema admonition">
 <p class="admonition-title">Teorema</p>
 <p>Sia <span class="math notranslate nohighlight">\(f \in \mathcal{C}^{2}([a,b])\)</span>, e supponiamo inoltre che <span class="math notranslate nohighlight">\(f(c) = 0\)</span>,
 <span class="math notranslate nohighlight">\(f'(c) \neq 0\)</span> per qualche <span class="math notranslate nohighlight">\(c \in [a,b]\)</span>. Allora esiste un <span class="math notranslate nohighlight">\(\delta &gt; 0\)</span> tale
-per cui l’iterata <a class="reference internal" href="#equation-eq-newton">(12)</a> applicata ad <span class="math notranslate nohighlight">\(f\)</span> converge a <span class="math notranslate nohighlight">\(c\)</span> per ogni
+per cui l’iterata <a class="reference internal" href="#equation-eq-newton">()</a> applicata ad <span class="math notranslate nohighlight">\(f\)</span> converge a <span class="math notranslate nohighlight">\(c\)</span> per ogni
 valore iniziale <span class="math notranslate nohighlight">\(x_0 \in [c-\delta,c+\delta]\)</span>.</p>
 </div>
 <p>Ricordate queste caratteristiche iniziali, possiamo procedere ad implementare
@@ -463,7 +406,7 @@ una versione MATLAB dell’algoritmo di Newton.</p>
 <div class="admonition-esercizio-1 admonition">
 <p class="admonition-title">Esercizio 1</p>
 <p>Si implementi in una funzione MATLAB l’algoritmo di Newton sfruttando l’iterata
-descritta in <a class="reference internal" href="#equation-eq-newton">(12)</a>. Un <em>template</em> della funzione da implementare che
+descritta in <a class="reference internal" href="#equation-eq-newton">()</a>. Un <em>template</em> della funzione da implementare che
 si può adottare è quindi il seguente:</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[c,residuo]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">newton</span><span class="p">(</span>f,fp,x0,maxit,tol<span class="p">)</span><span class="w"></span>
 <span class="c">%%NEWTON Implementazione del metodo di Newton</span><span class="w"></span>
@@ -514,7 +457,7 @@ si può adottare è quindi il seguente:</p>
 <figure class="align-default" id="newtonconvergence">
 <img alt="_images/newtonconvergence.png" src="_images/newtonconvergence.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 15 </span><span class="caption-text">Paragone tra la convergenza del metodo di Newton e il metodo di bisezione per
+<p><span class="caption-text">Paragone tra la convergenza del metodo di Newton e il metodo di bisezione per
 calcolare una radice di <span class="math notranslate nohighlight">\(f(x) = x^3-2x-5\)</span>.</span><a class="headerlink" href="#newtonconvergence" title="Link a questa immagine">#</a></p>
 </figcaption>
 </figure>
@@ -536,7 +479,7 @@ aggiungiamo allo script di test del metodo di Newton:</p>
 <span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Iterazione&#39;</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<p>per cui vediamo una rappresentazione in <a class="reference internal" href="#newtonconvergence"><span class="std std-numref">Fig. 15</span></a>. Come ci
+<p>per cui vediamo una rappresentazione in <code class="xref std std-numref docutils literal notranslate"><span class="pre">newtonconvergence</span></code>. Come ci
 aspettavamo dall’analisi teorica, il metodo di Newton è in questo caso di ordine
 <span class="math notranslate nohighlight">\(2\)</span>. Possiamo investigare l’ordine di convergenza anche in maniera numerica.</p>
 <p>Per farlo ricordiamo che una successione di approssimate <span class="math notranslate nohighlight">\(\{x_n\}_n\)</span> che converge
@@ -578,13 +521,13 @@ funzione <span class="math notranslate nohighlight">\(f\)</span>. Può essere ut
 solo la <span class="math notranslate nohighlight">\(f\)</span>. Possiamo farlo in maniera numerica sfruttando la definizione stessa
 di derivata:</p>
 <div class="math notranslate nohighlight" id="equation-eq-fd">
-<span class="eqno">(13)<a class="headerlink" href="#equation-eq-fd" title="Permalink a questa equazione">#</a></span>\[f'(x_k) = \lim_{h \rightarrow 0} \frac{f(x+h)-f(x)}{h} \approx \frac{f(x+h)-f(x)}{h}\]</div>
+<span class="eqno">()<a class="headerlink" href="#equation-eq-fd" title="Permalink a questa equazione">#</a></span>\[f'(x_k) = \lim_{h \rightarrow 0} \frac{f(x+h)-f(x)}{h} \approx \frac{f(x+h)-f(x)}{h}\]</div>
 <p>prendendo un <span class="math notranslate nohighlight">\(h\)</span> sufficientemente piccolo, una buona scelta è <span class="math notranslate nohighlight">\(h = \sqrt{\varepsilon}\)</span>
 per <span class="math notranslate nohighlight">\(\varepsilon\)</span> la precisione di macchina.</p>
 <div class="admonition-esercizio-2 admonition">
 <p class="admonition-title">Esercizio 2</p>
 <p>Si modifichi il codice dell’Esercizio 1 per utilizzare l’approssimazione della
-derivata in <a class="reference internal" href="#equation-eq-fd">(13)</a>.</p>
+derivata in <a class="reference internal" href="#equation-eq-fd">()</a>.</p>
 </div>
 </section>
 <section id="radici-multiple">
@@ -602,11 +545,11 @@ ridotto quando la radice che <span class="math notranslate nohighlight">\(c\)</s
 convergenza <strong>se</strong> sappiamo l’ordine <span class="math notranslate nohighlight">\(q\)</span> della radice che stiamo cercando. Si
 tratta di modificare l’iterazione come:</p>
 <div class="math notranslate nohighlight" id="equation-eq-newton2">
-<span class="eqno">(14)<a class="headerlink" href="#equation-eq-newton2" title="Permalink a questa equazione">#</a></span>\[x_{k+1} = x_k - q \frac{f(x_k)}{f'(x_k)}, \quad x_0 \text{ assegnato }, k \geq 1.\]</div>
+<span class="eqno">()<a class="headerlink" href="#equation-eq-newton2" title="Permalink a questa equazione">#</a></span>\[x_{k+1} = x_k - q \frac{f(x_k)}{f'(x_k)}, \quad x_0 \text{ assegnato }, k \geq 1.\]</div>
 <div class="admonition-esercizio-3 admonition">
 <p class="admonition-title">Esercizio 3</p>
 <p>Si modifichi la funzione dell”<strong>Esercizio 1</strong> con una che implementi l’iterazione
-<a class="reference internal" href="#equation-eq-newton2">(14)</a>. Cioè con una funzione che abbiamo tra gli input anche l’ordine
+<a class="reference internal" href="#equation-eq-newton2">()</a>. Cioè con una funzione che abbiamo tra gli input anche l’ordine
 <span class="math notranslate nohighlight">\(q\)</span> della radice.</p>
 <p>Un prototipo della funzione è quindi</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[c,residuo]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">mnewton</span><span class="p">(</span>f,fp,x0,q,maxit,tol<span class="p">)</span><span class="w"></span>
@@ -669,13 +612,13 @@ rappresentare di nuovo in maniera grafica il residuo.</p>
 <span class="nb">axis</span><span class="p">([</span><span class="mi">1</span><span class="w"> </span><span class="mi">14</span><span class="w"> </span><span class="mf">0.8</span><span class="w"> </span><span class="mf">2.2</span><span class="p">])</span><span class="w"></span>
 </pre></div>
 </div>
-<p>Quello che osserviamo dalla <a class="reference internal" href="#newtonmodificatoconvergence"><span class="std std-numref">Fig. 16</span></a> è esattamente
+<p>Quello che osserviamo dalla <code class="xref std std-numref docutils literal notranslate"><span class="pre">newtonmodificatoconvergence</span></code> è esattamente
 quanto previsto dalla teoria. La versione non modificata di Newton ha convergenza
 lineare, mentre la versione modificata ha un chiaro comportamento quadratico.</p>
 <figure class="align-default" id="newtonmodificatoconvergence">
 <img alt="_images/newtonconvergencemultiple.png" src="_images/newtonconvergencemultiple.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 16 </span><span class="caption-text">Convergenza del metodo di Newton per radici multiple, confronto tra il caso
+<p><span class="caption-text">Convergenza del metodo di Newton per radici multiple, confronto tra il caso
 standard e quello modificato.</span><a class="headerlink" href="#newtonmodificatoconvergence" title="Link a questa immagine">#</a></p>
 </figcaption>
 </figure>
@@ -684,7 +627,7 @@ standard e quello modificato.</span><a class="headerlink" href="#newtonmodificat
 <section id="esempi-di-applicazioni">
 <h2>Esempi di applicazioni<a class="headerlink" href="#esempi-di-applicazioni" title="Link a questa intestazione">#</a></h2>
 <p>Consideriamo alcune applicazioni <em>ingegneristiche</em> del problema di trovare lo
-zero di una funzione <span id="id1">[<a class="reference internal" href="laboratorio7.html#id10" title="Jaan Kiusalaas. Numerical Methods in Engineering with MATLAB®. Cambridge University Press, 3 edition, 2015. doi:10.1017/CBO9781316341599.">Kiu15</a>]</span>.</p>
+zero di una funzione <span id="id1">[<a class="reference internal" href="laboratorio5.html#id10" title="Jaan Kiusalaas. Numerical Methods in Engineering with MATLAB®. Cambridge University Press, 3 edition, 2015. doi:10.1017/CBO9781316341599.">Kiu15</a>]</span>.</p>
 <aside class="margin sidebar">
 <p class="sidebar-title">Entalpia</p>
 <p>L”<strong>energia libera di Gibbs</strong> (anche chiamata entalpia libera) è una funzione
@@ -705,13 +648,13 @@ determinare la spontaneità di una reazione.</p>
 <figure class="align-default" id="spring">
 <a class="reference internal image-reference" href="_images/spring.png"><img alt="_images/spring.png" src="_images/spring.png" style="width: 40%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Un modello accoppiato molla-ammortizzatore.</span><a class="headerlink" href="#spring" title="Link a questa immagine">#</a></p>
+<p><span class="caption-text">Un modello accoppiato molla-ammortizzatore.</span><a class="headerlink" href="#spring" title="Link a questa immagine">#</a></p>
 </figcaption>
 </figure>
 </aside>
 <div class="admonition-esercizio-5-sistema-molle-ammortizzatore admonition">
 <p class="admonition-title">Esercizio 5: Sistema molle–ammortizzatore</p>
-<p>Consideriamo il sistema accoppiato di molle e ammortizzatori in <a class="reference internal" href="#spring"><span class="std std-numref">Fig. 17</span></a>.
+<p>Consideriamo il sistema accoppiato di molle e ammortizzatori in <code class="xref std std-numref docutils literal notranslate"><span class="pre">spring</span></code>.
 I due blocchi di massa <span class="math notranslate nohighlight">\(m\)</span> sono connessi tra di loro da due molle e da un
 ammortizzatore. Il coefficiente elastico di ognuna delle due molle è dato da
 <span class="math notranslate nohighlight">\(k\)</span>, mentre <span class="math notranslate nohighlight">\(c\)</span> è il coefficiente che regola l’attenuazione causata dall’ammortizzatore. Quando il sistema è messo in posizione e rilasciato, la
@@ -770,20 +713,6 @@ cambiando dal metodo di Bisezione al metodo di Newton.</p>
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="laboratorio10.html" title="precedente pagina">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">precedente</p>
-            <p class="prev-next-title">Laboratorio 10 : Il Metodo di Bisezione</p>
-        </div>
-    </a>
-    <a class='right-next' id="next-link" href="laboratorio12.html" title="successivo pagina">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">successivo</p>
-        <p class="prev-next-title">Laboratorio 12 : Metodi per la Soluzione di ODE</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
 </div>
             </footer>
         </div>

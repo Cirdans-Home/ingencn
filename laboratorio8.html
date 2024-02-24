@@ -56,8 +56,6 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
-    <link rel="next" title="Laboratorio 9 : Metodi Stazionari per Sistemi Lineari" href="laboratorio9.html" />
-    <link rel="prev" title="Laboratorio 7 : L’Eliminazione di Gauss il Metodo LU" href="laboratorio7.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
     
@@ -117,65 +115,10 @@ const thebe_selector_output = ".output, .cell_output"
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio1.html">
    Laboratorio 1 : Introduzione a MATLAB
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio2.html">
-   Laboratorio 2 : Introduzione a MATLAB - II
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio3.html">
-   Laboratorio 3 : L’Aritmetica di Precisione Finita
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio4.html">
-   Laboratorio 4 : Metodi di Interpolazione
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio5.html">
-   Laboratorio 5 : Metodi di Quadratura
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio6.html">
-   Laboratorio 6 : Soluzione dei Sistemi Lineari
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio7.html">
-   Laboratorio 7 : L’Eliminazione di Gauss il Metodo LU
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Laboratorio 8 : Il Problema Lineare dei Minimi Quadrati
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio9.html">
-   Laboratorio 9 : Metodi Stazionari per Sistemi Lineari
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio10.html">
-   Laboratorio 10 : Il Metodo di Bisezione
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio11.html">
-   Laboratorio 11 : Il Metodo di Newton
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio12.html">
-   Laboratorio 12 : Metodi per la Soluzione di ODE
   </a>
  </li>
 </ul>
@@ -364,25 +307,25 @@ title="Print to PDF"
 \[A \mathbf{x} = \mathbf{b}, \qquad A \in \mathbb{R}^{m \times n},\; \mathbf{x},\mathbf{b} \in \mathbb{R}^n,\;m&gt; n.\]</div>
 <p>Se il problema non ha soluzione si cercano i vettori <span class="math notranslate nohighlight">\(\mathbf{x}\in \mathbb{R}^{n}\)</span> che soddisfano</p>
 <div class="math notranslate nohighlight" id="equation-leastsq">
-<span class="eqno">(10)<a class="headerlink" href="#equation-leastsq" title="Permalink a questa equazione">#</a></span>\[\lVert A\mathbf{x}-\mathbf{b}\rVert_2 = \min_{\mathbf{y}\in\mathbb{R}^n}\lVert A\mathbf{y}-\mathbf{b}\rVert_2.\]</div>
+<span class="eqno">()<a class="headerlink" href="#equation-leastsq" title="Permalink a questa equazione">#</a></span>\[\lVert A\mathbf{x}-\mathbf{b}\rVert_2 = \min_{\mathbf{y}\in\mathbb{R}^n}\lVert A\mathbf{y}-\mathbf{b}\rVert_2.\]</div>
 <p>Tale problema viene detto <strong>problema dei minimi quadrati</strong>.</p>
 <p>In questo laboratorio vogliamo concentrarci su metodi numerici di risoluzione del problema dei minimi quadrati e vedere un’applicazione al <em>fitting</em> di dati.</p>
 <p>La determinazione di un punto di minimo di <span class="math notranslate nohighlight">\(\Psi(\mathbf{x})=\lVert A\mathbf{x}-\mathbf{b}\rVert_2\)</span> si riconduce alla ricerca dei punti che annullano tutte le derivate parziali prime di <span class="math notranslate nohighlight">\(\Psi\)</span> e questo porta alle <strong>equazioni normali</strong></p>
 <div class="math notranslate nohighlight" id="equation-eqnorm">
-<span class="eqno">(11)<a class="headerlink" href="#equation-eqnorm" title="Permalink a questa equazione">#</a></span>\[A^{\top}A\mathbf{x}=A^{\top}\mathbf{b}.\]</div>
-<p>Se la matrice <span class="math notranslate nohighlight">\(A\)</span> ha rango massimo, allora la soluzione del problema dei minimi quadrati <a class="reference internal" href="#equation-leastsq">(10)</a> è unica e può essere ottenuta risolvendo il sistema <a class="reference internal" href="#equation-eqnorm">(11)</a>.</p>
+<span class="eqno">()<a class="headerlink" href="#equation-eqnorm" title="Permalink a questa equazione">#</a></span>\[A^{\top}A\mathbf{x}=A^{\top}\mathbf{b}.\]</div>
+<p>Se la matrice <span class="math notranslate nohighlight">\(A\)</span> ha rango massimo, allora la soluzione del problema dei minimi quadrati <a class="reference internal" href="#equation-leastsq">()</a> è unica e può essere ottenuta risolvendo il sistema <a class="reference internal" href="#equation-eqnorm">()</a>.</p>
 <p>In tal caso, si può utilizzare la fattorizzazione <span class="math notranslate nohighlight">\(LU\)</span> della matrice <span class="math notranslate nohighlight">\(A^{\top}A\)</span>. Poiché la matrice <span class="math notranslate nohighlight">\(A^{\top}A\)</span> è simmetrica definita positiva, puo essere fattorizzata come</p>
 <div class="math notranslate nohighlight">
 \[A^{\top} A = LL^{\top},\]</div>
 <p>detta <strong>fattorizzazione di Cholesky</strong>, dove <span class="math notranslate nohighlight">\(L\in\mathbb{R}^n\)</span> è una matrice triangolare inferiore con elementi principali positivi.
-La soluzione del sistema delle equazioni normali <a class="reference internal" href="#equation-eqnorm">(11)</a> viene calcolata risolvendo successivamente i due sistemi
+La soluzione del sistema delle equazioni normali <a class="reference internal" href="#equation-eqnorm">()</a> viene calcolata risolvendo successivamente i due sistemi
 di ordine <span class="math notranslate nohighlight">\(n\)</span> con matrice dei coefficienti triangolare</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
     &amp; L\mathbf{y} = A^{\top}\mathbf{b}\\[1ex]
     &amp; L^{\top}\mathbf{x} = \mathbf{y}.
 \end{align}\end{split}\]</div>
-<p>In alternativa, abbiamo discusso a lezione il metodo basato sulla fattorizzazione <span class="math notranslate nohighlight">\(QR\)</span> della matrice <span class="math notranslate nohighlight">\(A\)</span> per il calcolo della soluzione del problema dei minimi quadrati <a class="reference internal" href="#equation-leastsq">(10)</a>.</p>
+<p>In alternativa, abbiamo discusso a lezione il metodo basato sulla fattorizzazione <span class="math notranslate nohighlight">\(QR\)</span> della matrice <span class="math notranslate nohighlight">\(A\)</span> per il calcolo della soluzione del problema dei minimi quadrati <a class="reference internal" href="#equation-leastsq">()</a>.</p>
 <div class="admonition-esercizio-1 admonition">
 <p class="admonition-title">Esercizio 1</p>
 <p>Si scriva una <em>function</em> che risolve il problema dei minimi quadrati sfruttando il seguente prototipo:</p>
@@ -491,20 +434,6 @@ t_i &amp; 0.2 &amp; 0.4 &amp; 0.6 &amp; 0.8 &amp; 1.0\\
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="laboratorio7.html" title="precedente pagina">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">precedente</p>
-            <p class="prev-next-title">Laboratorio 7 : L’Eliminazione di Gauss il Metodo LU</p>
-        </div>
-    </a>
-    <a class='right-next' id="next-link" href="laboratorio9.html" title="successivo pagina">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">successivo</p>
-        <p class="prev-next-title">Laboratorio 9 : Metodi Stazionari per Sistemi Lineari</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
 </div>
             </footer>
         </div>

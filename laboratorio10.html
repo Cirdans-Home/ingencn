@@ -56,8 +56,6 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
-    <link rel="next" title="Laboratorio 11 : Il Metodo di Newton" href="laboratorio11.html" />
-    <link rel="prev" title="Laboratorio 9 : Metodi Stazionari per Sistemi Lineari" href="laboratorio9.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
     
@@ -117,65 +115,10 @@ const thebe_selector_output = ".output, .cell_output"
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio1.html">
    Laboratorio 1 : Introduzione a MATLAB
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio2.html">
-   Laboratorio 2 : Introduzione a MATLAB - II
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio3.html">
-   Laboratorio 3 : L’Aritmetica di Precisione Finita
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio4.html">
-   Laboratorio 4 : Metodi di Interpolazione
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio5.html">
-   Laboratorio 5 : Metodi di Quadratura
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio6.html">
-   Laboratorio 6 : Soluzione dei Sistemi Lineari
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio7.html">
-   Laboratorio 7 : L’Eliminazione di Gauss il Metodo LU
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio8.html">
-   Laboratorio 8 : Il Problema Lineare dei Minimi Quadrati
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio9.html">
-   Laboratorio 9 : Metodi Stazionari per Sistemi Lineari
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Laboratorio 10 : Il Metodo di Bisezione
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio11.html">
-   Laboratorio 11 : Il Metodo di Newton
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio12.html">
-   Laboratorio 12 : Metodi per la Soluzione di ODE
   </a>
  </li>
 </ul>
@@ -534,13 +477,13 @@ l’esempio dell’Esercizio 1 con il seguente codice:</p>
 <span class="n">axis</span><span class="w"> </span><span class="s">tight</span><span class="w"></span>
 </pre></div>
 </div>
-<p>Che ci permette di produrre la figura <a class="reference internal" href="#bisezione-errore"><span class="std std-numref">Fig. 10</span></a>, da cui osserviamo
+<p>Che ci permette di produrre la figura <code class="xref std std-numref docutils literal notranslate"><span class="pre">bisezione-errore</span></code>, da cui osserviamo
 che l’errore assoluto sulla radice <span class="math notranslate nohighlight">\(c\)</span> segue l’andamento predetto dall’analisi
 teorica.</p>
 <figure class="align-default" id="bisezione-errore">
 <img alt="_images/bisezione-errore.png" src="_images/bisezione-errore.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Errore nel metodo di bisezione per la soluzione del problema dell’Esercizio 1.</span><a class="headerlink" href="#bisezione-errore" title="Link a questa immagine">#</a></p>
+<p><span class="caption-text">Errore nel metodo di bisezione per la soluzione del problema dell’Esercizio 1.</span><a class="headerlink" href="#bisezione-errore" title="Link a questa immagine">#</a></p>
 </figcaption>
 </figure>
 <p>Alcune note sul codice usato.</p>
@@ -555,14 +498,14 @@ stavamo riportando gli errori).</p></li>
 <section id="applicazioni">
 <h2>Applicazioni<a class="headerlink" href="#applicazioni" title="Link a questa intestazione">#</a></h2>
 <p>Consideriamo alcune applicazioni <em>ingegneristiche</em> del problema di trovare lo
-zero di una funzione <span id="id1">[<a class="reference internal" href="laboratorio7.html#id10" title="Jaan Kiusalaas. Numerical Methods in Engineering with MATLAB®. Cambridge University Press, 3 edition, 2015. doi:10.1017/CBO9781316341599.">Kiu15</a>]</span>.</p>
+zero di una funzione <span id="id1">[<a class="reference internal" href="laboratorio5.html#id10" title="Jaan Kiusalaas. Numerical Methods in Engineering with MATLAB®. Cambridge University Press, 3 edition, 2015. doi:10.1017/CBO9781316341599.">Kiu15</a>]</span>.</p>
 <div class="admonition-esercizio-2 admonition">
 <p class="admonition-title">Esercizio 2</p>
 <p>Un cavo d’acciao di lunghezza <span class="math notranslate nohighlight">\(L\)</span> è sospeso come mostrato nella figura:</p>
 <figure class="align-default" id="id14">
 <img alt="_images/cavo.png" src="_images/cavo.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 11 </span><span class="caption-text">:name: cavo</span><a class="headerlink" href="#id14" title="Link a questa immagine">#</a></p>
+<p><span class="caption-text">:name: cavo</span><a class="headerlink" href="#id14" title="Link a questa immagine">#</a></p>
 <div class="legend">
 <p>Sospensione di un cavo d’acciaio.</p>
 </div>
@@ -597,7 +540,7 @@ Il rapporto lunghezza/spazio coperto dal cavo è correlato con <span class="math
 <figure class="align-default" id="id15">
 <img alt="_images/areamomentrectangle.png" src="_images/areamomentrectangle.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 12 </span><span class="caption-text">:name: inerzia</span><a class="headerlink" href="#id15" title="Link a questa immagine">#</a></p>
+<p><span class="caption-text">:name: inerzia</span><a class="headerlink" href="#id15" title="Link a questa immagine">#</a></p>
 <div class="legend">
 <p>Momento di inerzia areale per una sezione rettangolare.</p>
 </div>
@@ -628,14 +571,14 @@ alle radici <span class="math notranslate nohighlight">\(\beta_i\)</span> dell�
 <figure class="align-default" id="bernoulli">
 <img alt="_images/bernoulli.png" src="_images/bernoulli.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 13 </span><span class="caption-text">Equazione di Bernoulli per il fluido attraverso un canale aperto.</span><a class="headerlink" href="#bernoulli" title="Link a questa immagine">#</a></p>
+<p><span class="caption-text">Equazione di Bernoulli per il fluido attraverso un canale aperto.</span><a class="headerlink" href="#bernoulli" title="Link a questa immagine">#</a></p>
 </figcaption>
 </figure>
 </aside>
 <div class="admonition-esercizio-4 admonition">
 <p class="admonition-title">Esercizio 4</p>
 <p>L’equazione di Bernoulli per il flusso di un fluido attraverso un canale aperto
-con una piccola protuberanza (<a class="reference internal" href="#bernoulli"><span class="std std-numref">Fig. 13</span></a>) è</p>
+con una piccola protuberanza (<code class="xref std std-numref docutils literal notranslate"><span class="pre">bernoulli</span></code>) è</p>
 <div class="math notranslate nohighlight">
 \[\frac{Q^2}{2 g b^2 h_0^2} + h_0 = \frac{Q^2}{2 g b^2 h^2} + h + H,\]</div>
 <p>dove</p>
@@ -726,7 +669,7 @@ ad un riassunto di quello che l’algoritmo ha fatto.</p>
 <figure class="align-default" id="id16">
 <img alt="_images/fzero.png" src="_images/fzero.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 14 </span><span class="caption-text">:name: fzero</span><a class="headerlink" href="#id16" title="Link a questa immagine">#</a></p>
+<p><span class="caption-text">:name: fzero</span><a class="headerlink" href="#id16" title="Link a questa immagine">#</a></p>
 <div class="legend">
 <p>Figure prodotte dalle opzioni del comando <code class="docutils literal notranslate"><span class="pre">fzero</span></code>.</p>
 </div>
@@ -888,20 +831,6 @@ a perturbare il coefficiente di <span class="math notranslate nohighlight">\(x^{
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="laboratorio9.html" title="precedente pagina">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">precedente</p>
-            <p class="prev-next-title">Laboratorio 9 : Metodi Stazionari per Sistemi Lineari</p>
-        </div>
-    </a>
-    <a class='right-next' id="next-link" href="laboratorio11.html" title="successivo pagina">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">successivo</p>
-        <p class="prev-next-title">Laboratorio 11 : Il Metodo di Newton</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
 </div>
             </footer>
         </div>

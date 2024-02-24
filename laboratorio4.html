@@ -56,8 +56,6 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
-    <link rel="next" title="Laboratorio 5 : Metodi di Quadratura" href="laboratorio5.html" />
-    <link rel="prev" title="Laboratorio 3 : L’Aritmetica di Precisione Finita" href="laboratorio3.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
     
@@ -117,65 +115,10 @@ const thebe_selector_output = ".output, .cell_output"
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio1.html">
    Laboratorio 1 : Introduzione a MATLAB
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio2.html">
-   Laboratorio 2 : Introduzione a MATLAB - II
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio3.html">
-   Laboratorio 3 : L’Aritmetica di Precisione Finita
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Laboratorio 4 : Metodi di Interpolazione
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio5.html">
-   Laboratorio 5 : Metodi di Quadratura
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio6.html">
-   Laboratorio 6 : Soluzione dei Sistemi Lineari
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio7.html">
-   Laboratorio 7 : L’Eliminazione di Gauss il Metodo LU
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio8.html">
-   Laboratorio 8 : Il Problema Lineare dei Minimi Quadrati
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio9.html">
-   Laboratorio 9 : Metodi Stazionari per Sistemi Lineari
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio10.html">
-   Laboratorio 10 : Il Metodo di Bisezione
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio11.html">
-   Laboratorio 11 : Il Metodo di Newton
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio12.html">
-   Laboratorio 12 : Metodi per la Soluzione di ODE
   </a>
  </li>
 </ul>
@@ -362,11 +305,11 @@ title="Print to PDF"
 <p>In molti problemi si ha a che fare con una funzione <span class="math notranslate nohighlight">\(f:\mathbb{R}\rightarrow\mathbb{R}\)</span> di forma non elementare, o addirittura sconosciuta, di cui si possiede solo una tabulazione in un insieme finito di punti, per esempio derivanti da misurazioni sperimentali. In questi casi la stima di un valore di <span class="math notranslate nohighlight">\(f\)</span>, in un punto diverso da quelli in cui è data, può essere fatta utilizzando i dati disponibili. Questa operazione si effettua sostituendo a <span class="math notranslate nohighlight">\(f\)</span> una funzione che sia facilmente calcolabile come, per esempio, un polinomio.</p>
 <p>Supponiamo siano dati <span class="math notranslate nohighlight">\(n+1\)</span> punti reali <span class="math notranslate nohighlight">\(x_0,\ldots, x_n\in [a,b]\subset\mathbb{R}\)</span>, due a due distinti, in corrispondenza dei quali siano noti gli <span class="math notranslate nohighlight">\(n+1\)</span> valori reali <span class="math notranslate nohighlight">\(f(x_0), \ldots, f(x_n)\)</span>. L’interpolazione polinomiale consiste nel determinare un polinomio <span class="math notranslate nohighlight">\(P_n\)</span> di grado al più <span class="math notranslate nohighlight">\(n\)</span> tale che</p>
 <div class="math notranslate nohighlight" id="equation-cinterp">
-<span class="eqno">(4)<a class="headerlink" href="#equation-cinterp" title="Permalink a questa equazione">#</a></span>\[P_n(x_i)=f(x_i),\quad \forall i=0,1,\ldots,n.\]</div>
+<span class="eqno">()<a class="headerlink" href="#equation-cinterp" title="Permalink a questa equazione">#</a></span>\[P_n(x_i)=f(x_i),\quad \forall i=0,1,\ldots,n.\]</div>
 <p>Srivendo il polinomio <span class="math notranslate nohighlight">\(P_n\)</span> nella base dei monomi <span class="math notranslate nohighlight">\(\{1,x,x^2,\ldots\}\)</span> si ha</p>
 <div class="math notranslate nohighlight">
 \[P_n(x)=a_n x^n+a_{n-1} x^{n-1}+\ldots+a_1 x+a_0,\]</div>
-<p>i cui coefficienti <span class="math notranslate nohighlight">\(\{a_i\}_{i=0}^n\)</span> si possono ricavare risolvendo il sistema lineare di <span class="math notranslate nohighlight">\(n+1\)</span> equazioni ottenuto imponendo che il polinomio verifichi le condizioni di interpolazione <a class="reference internal" href="#equation-cinterp">(4)</a>.</p>
+<p>i cui coefficienti <span class="math notranslate nohighlight">\(\{a_i\}_{i=0}^n\)</span> si possono ricavare risolvendo il sistema lineare di <span class="math notranslate nohighlight">\(n+1\)</span> equazioni ottenuto imponendo che il polinomio verifichi le condizioni di interpolazione <a class="reference internal" href="#equation-cinterp">()</a>.</p>
 <p>Poiché la matrice del sistema (matrice di Vandermonde) risulta una matrice malcondizionata non conviene risolvere il sistema lineare per determinare il polinomio di interpolazione.</p>
 <p>In questo laboratorio ci concentriamo sull’interpolazione di Lagrange.</p>
 <p>Questa consiste nel costruire un polinomio di interpolazione di grado al più <span class="math notranslate nohighlight">\(n\)</span> della forma</p>
@@ -414,11 +357,11 @@ x_i &amp; -5 &amp; -4 &amp; 0 &amp; 5 \\
 <p class="admonition-title">Esercizio 2</p>
 <p>Si consideri la <strong>funzione di Runge</strong></p>
 <div class="math notranslate nohighlight" id="equation-runge">
-<span class="eqno">(5)<a class="headerlink" href="#equation-runge" title="Permalink a questa equazione">#</a></span>\[f(x) = \dfrac{1}{1+x^2},\quad x\in[a,b].\]</div>
+<span class="eqno">()<a class="headerlink" href="#equation-runge" title="Permalink a questa equazione">#</a></span>\[f(x) = \dfrac{1}{1+x^2},\quad x\in[a,b].\]</div>
 <p>Vogliamo studiare l’influenza della scelta dei nodi di interpolazione sulla qualità dell’interpolante polinomiale di grado <span class="math notranslate nohighlight">\(n\)</span> per diversi valori di <span class="math notranslate nohighlight">\(n\)</span>.</p>
 <p>Si implementi uno script di MATLAB in cui:</p>
 <ul class="simple">
-<li><p>Si calcolino i polinomi <span class="math notranslate nohighlight">\(\{P_n\}_n\)</span> di Lagrange di grado <span class="math notranslate nohighlight">\(n=5,10,19\)</span> che interpolano la funzione data in <a class="reference internal" href="#equation-runge">(5)</a> usando <span class="math notranslate nohighlight">\(n+1\)</span> nodi equispaziati nell’intervallo <span class="math notranslate nohighlight">\([−5, 5]\)</span>. Si riporti il grafico di ciascun polinomio interpolante su <span class="math notranslate nohighlight">\(m=500\)</span> punti nell’intervallo considerato, insieme con quello della funzione data;</p></li>
+<li><p>Si calcolino i polinomi <span class="math notranslate nohighlight">\(\{P_n\}_n\)</span> di Lagrange di grado <span class="math notranslate nohighlight">\(n=5,10,19\)</span> che interpolano la funzione data in <a class="reference internal" href="#equation-runge">()</a> usando <span class="math notranslate nohighlight">\(n+1\)</span> nodi equispaziati nell’intervallo <span class="math notranslate nohighlight">\([−5, 5]\)</span>. Si riporti il grafico di ciascun polinomio interpolante su <span class="math notranslate nohighlight">\(m=500\)</span> punti nell’intervallo considerato, insieme con quello della funzione data;</p></li>
 <li><p>Si calcoli per ciascun valore di <span class="math notranslate nohighlight">\(n\)</span> l’errore commesso ossia <span class="math notranslate nohighlight">\(E_n = \max_{-5\leq x \leq 5} |f(x) − P_n(x)|\)</span> e si riportino gli errori ottenuti in un grafico in scala semilogaritmica;</p></li>
 <li><p>Si utilizzi l’implementazione dell’interpolazione di Lagrange derivata nell’Esercizio 1.</p></li>
 </ul>
@@ -455,15 +398,15 @@ x_i &amp; -5 &amp; -4 &amp; 0 &amp; 5 \\
 </div>
 </div>
 </div>
-<p>Il fenomeno che si osserva nell’Esercizio 2 è la mancata convergenza della successione <span class="math notranslate nohighlight">\(\{P_n\}_n\)</span> dei polinomi di interpolazione alla funzione di Runge <a class="reference internal" href="#equation-runge">(5)</a>.
+<p>Il fenomeno che si osserva nell’Esercizio 2 è la mancata convergenza della successione <span class="math notranslate nohighlight">\(\{P_n\}_n\)</span> dei polinomi di interpolazione alla funzione di Runge <a class="reference internal" href="#equation-runge">()</a>.
 Tale fenomeno, detto anche <strong>fenomeno di Runge</strong>, può essere evitato utilizzando opportune distribuzioni di nodi.</p>
 <p>Nell’intervallo <span class="math notranslate nohighlight">\([a,b]\subset\mathbb{R}\)</span> si considerino i nodi <span class="math notranslate nohighlight">\(\{x_i\}_{i=0}^{n}\)</span> dati da</p>
 <div class="math notranslate nohighlight" id="equation-cheb">
-<span class="eqno">(6)<a class="headerlink" href="#equation-cheb" title="Permalink a questa equazione">#</a></span>\[x_i = \dfrac{a+b}{2} + \dfrac{b-a}{2}\widehat{x}_i\quad\mbox{con}\;\widehat{x}_i = -\cos\left(\dfrac{\pi i}{n}\right),\quad i=0,\ldots,n.\]</div>
+<span class="eqno">()<a class="headerlink" href="#equation-cheb" title="Permalink a questa equazione">#</a></span>\[x_i = \dfrac{a+b}{2} + \dfrac{b-a}{2}\widehat{x}_i\quad\mbox{con}\;\widehat{x}_i = -\cos\left(\dfrac{\pi i}{n}\right),\quad i=0,\ldots,n.\]</div>
 <p>I punti <span class="math notranslate nohighlight">\(\widehat{x}_i\in[−1, 1]\)</span> sono detti <strong>nodi di Chebyshev</strong>.</p>
 <div class="admonition-esercizio-3 admonition">
 <p class="admonition-title">Esercizio 3</p>
-<p>Si ripeta l’Esercizio 2 utilizzando come nodi di interpolazione i nodi di Chebyshev dati dalla <a class="reference internal" href="#equation-cheb">(6)</a>.</p>
+<p>Si ripeta l’Esercizio 2 utilizzando come nodi di interpolazione i nodi di Chebyshev dati dalla <a class="reference internal" href="#equation-cheb">()</a>.</p>
 <p>I grafici dei polinomi interpolanti ottenuti con nodi di interpolazione equidistanti (grafico di sinistra) e con nodi di Chebyshev (grafico di destra) sono riportati qui sotto.</p>
 <figure class="align-default">
 <a class="reference internal image-reference" href="_images/runge.png"><img alt="_images/runge.png" src="_images/runge.png" style="width: 100%;" /></a>
@@ -498,20 +441,6 @@ Tale fenomeno, detto anche <strong>fenomeno di Runge</strong>, può essere evita
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="laboratorio3.html" title="precedente pagina">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">precedente</p>
-            <p class="prev-next-title">Laboratorio 3 : L’Aritmetica di Precisione Finita</p>
-        </div>
-    </a>
-    <a class='right-next' id="next-link" href="laboratorio5.html" title="successivo pagina">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">successivo</p>
-        <p class="prev-next-title">Laboratorio 5 : Metodi di Quadratura</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
 </div>
             </footer>
         </div>

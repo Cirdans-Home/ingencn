@@ -56,8 +56,6 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
-    <link rel="next" title="Laboratorio 10 : Il Metodo di Bisezione" href="laboratorio10.html" />
-    <link rel="prev" title="Laboratorio 8 : Il Problema Lineare dei Minimi Quadrati" href="laboratorio8.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
     
@@ -117,65 +115,10 @@ const thebe_selector_output = ".output, .cell_output"
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio1.html">
    Laboratorio 1 : Introduzione a MATLAB
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio2.html">
-   Laboratorio 2 : Introduzione a MATLAB - II
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio3.html">
-   Laboratorio 3 : L’Aritmetica di Precisione Finita
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio4.html">
-   Laboratorio 4 : Metodi di Interpolazione
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio5.html">
-   Laboratorio 5 : Metodi di Quadratura
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio6.html">
-   Laboratorio 6 : Soluzione dei Sistemi Lineari
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio7.html">
-   Laboratorio 7 : L’Eliminazione di Gauss il Metodo LU
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio8.html">
-   Laboratorio 8 : Il Problema Lineare dei Minimi Quadrati
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Laboratorio 9 : Metodi Stazionari per Sistemi Lineari
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio10.html">
-   Laboratorio 10 : Il Metodo di Bisezione
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio11.html">
-   Laboratorio 11 : Il Metodo di Newton
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="laboratorio12.html">
-   Laboratorio 12 : Metodi per la Soluzione di ODE
   </a>
  </li>
 </ul>
@@ -659,7 +602,7 @@ per questo metodo la decomposizione additiva della matrice <span class="math not
 </div>
 <ul class="simple">
 <li><p>Si implementi in maniera vettoriale, cioè <strong>senza</strong> usare cicli <code class="docutils literal notranslate"><span class="pre">for</span></code> per scorrere le righe della matrice,</p></li>
-<li><p>Si utilizzi la funzione <code class="docutils literal notranslate"><span class="pre">forwardsolve</span></code> vista in <span class="xref std std-ref">forwardandbacwardsolve</span></p></li>
+<li><p>Si utilizzi la funzione <code class="docutils literal notranslate"><span class="pre">forwardsolve</span></code> vista in <a class="reference internal" href="laboratorio6.html#forwardandbacwardsolve"><span class="std std-ref">Sostituzione in avanti e all’indietro</span></a></p></li>
 <li><p>Si usi il criterio d’arresto basato sull’errore relativo.</p></li>
 </ul>
 <p>Per <em>testare</em> il metodo si usi il seguente programma</p>
@@ -697,11 +640,11 @@ per questo metodo la decomposizione additiva della matrice <span class="math not
 <span class="w">    </span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
-<p>Da cui osserviamo che il metodo di Gauss-Seidel (forward) impiega meno iterazioni per raggiungere la convergenza desiderata (<a class="reference internal" href="#gaussjac1"><span class="std std-numref">Fig. 9</span></a>).</p>
+<p>Da cui osserviamo che il metodo di Gauss-Seidel (forward) impiega meno iterazioni per raggiungere la convergenza desiderata (<code class="xref std std-numref docutils literal notranslate"><span class="pre">gaussjac1</span></code>).</p>
 <figure class="align-default" id="gaussjac1">
 <a class="reference internal image-reference" href="_images/gaussjacobicomparison1.png"><img alt="convergenza-metodi" src="_images/gaussjacobicomparison1.png" style="width: 50%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Evoluzione del residuo per i metodi di Jacobi e Gauss-Seidel.</span><a class="headerlink" href="#gaussjac1" title="Link a questa immagine">#</a></p>
+<p><span class="caption-text">Evoluzione del residuo per i metodi di Jacobi e Gauss-Seidel.</span><a class="headerlink" href="#gaussjac1" title="Link a questa immagine">#</a></p>
 </figcaption>
 </figure>
 <p>Possiamo indagare la cosa dal punto di vista teorico andando a guardare il raggio spettrale delle due matrici di iterazione, infatti</p>
@@ -764,20 +707,6 @@ per questo metodo la decomposizione additiva della matrice <span class="math not
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="laboratorio8.html" title="precedente pagina">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">precedente</p>
-            <p class="prev-next-title">Laboratorio 8 : Il Problema Lineare dei Minimi Quadrati</p>
-        </div>
-    </a>
-    <a class='right-next' id="next-link" href="laboratorio10.html" title="successivo pagina">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">successivo</p>
-        <p class="prev-next-title">Laboratorio 10 : Il Metodo di Bisezione</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
 </div>
             </footer>
         </div>
