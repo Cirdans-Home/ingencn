@@ -772,7 +772,7 @@ prettamente numerici e sulle questioni affrontate nelle lezioni di teoria.
 Scrivere una funzioni che calcoli la norma $L^p$ di un vettore, definita come
 
 $$
-\|v \|_{\ell^p} := \left(\sum_i (v_i)^p\right)^{1/p}
+\|v \|_{\ell^p} := \left(\sum_i |v_i|^p\right)^{1/p}
 $$
 se $p\neq\infty$, altrimenti
 
