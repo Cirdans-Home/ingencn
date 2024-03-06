@@ -844,11 +844,30 @@ La "function handle", può essere usata anche per definire funzioni "al volo", a
 res = use_function(@(x) x^2, x);
 ```
 
-la scrittura `@(x) x^2` è equivalente a definire una funzione
+la scrittura `f = @(x) x^2` è equivalente a definire una funzione
 
 ```matlab
-function res = ANONYMOUS(x)
-% equivalente a scrivere: res = cos(x);
+function res = f(x)
+res = x^2
+end
+```
+
+ovvero:
+
+```matlab
+f = @(x) x^2
+
+f =
+
+  function_handle with value:
+
+    @(x)x^2
+ 
+>> f(2)
+
+ans =
+
+     4
 ```
 
 :::
