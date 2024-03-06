@@ -56,6 +56,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
+    <link rel="next" title="Laboratorio 3 : L’Aritmetica di Precisione Finita" href="laboratorio3.html" />
+    <link rel="prev" title="Laboratorio 1 : Introduzione a MATLAB" href="laboratorio1.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
     
@@ -115,10 +117,20 @@ const thebe_selector_output = ".output, .cell_output"
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio1.html">
    Laboratorio 1 : Introduzione a MATLAB
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Laboratorio 2 : Introduzione a MATLAB - II
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio3.html">
+   Laboratorio 3 : L’Aritmetica di Precisione Finita
   </a>
  </li>
 </ul>
@@ -504,9 +516,9 @@ che nel caso precedente ci restituirà</p>
 <h3>Costruttori predefiniti<a class="headerlink" href="#costruttori-predefiniti" title="Link a questa intestazione">#</a></h3>
 <p>Costruire matrici semplicemente inserendo i valori all’interno in sequenza o in
 maniera esplicita è chiaramente scomodo (e molto noioso). A questo scopo MATLAB
-possiede i costruttori riportati in <code class="xref std std-numref docutils literal notranslate"><span class="pre">costruttoriarray</span></code>.</p>
+possiede i costruttori riportati in <a class="reference internal" href="#costruttoriarray"><span class="std std-numref">Tabella 2</span></a>.</p>
 <table class="table" id="costruttoriarray">
-<caption><span class="caption-text">Costruttori per array e matrici.</span><a class="headerlink" href="#costruttoriarray" title="Link a questa tabella">#</a></caption>
+<caption><span class="caption-number">Tabella 2 </span><span class="caption-text">Costruttori per array e matrici.</span><a class="headerlink" href="#costruttoriarray" title="Link a questa tabella">#</a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -865,7 +877,7 @@ implementate.</p>
 <section id="selezione-e-strutture-condizionali">
 <span id="sec-ifelsestuff"></span><h2>Selezione e Strutture Condizionali<a class="headerlink" href="#selezione-e-strutture-condizionali" title="Link a questa intestazione">#</a></h2>
 <table class="table" id="tabcondizionali">
-<caption><span class="caption-text">Strutture Condizionali.</span><a class="headerlink" href="#tabcondizionali" title="Link a questa tabella">#</a></caption>
+<caption><span class="caption-number">Tabella 3 </span><span class="caption-text">Strutture Condizionali.</span><a class="headerlink" href="#tabcondizionali" title="Link a questa tabella">#</a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -919,10 +931,10 @@ decidere di simulare anche un dado a tre facce nel seguente modo</p>
 <p class="admonition-title">Nota</p>
 <p>All’interno dei nostri controlli di tipo <code class="docutils literal notranslate"><span class="pre">if</span></code> (e più in generale) possiamo combinare
 insieme il risultato di diverse operazioni logiche. Queste sono raccolte nella
-Tabella <code class="xref std std-numref docutils literal notranslate"><span class="pre">logicalops</span></code>. Altre funzioni che agiscono sui vettori di logici
+Tabella <a class="reference internal" href="#logicalops"><span class="std std-numref">Tabella 4</span></a>. Altre funzioni che agiscono sui vettori di logici
 e che potete esplorare richiamando la funzione <code class="docutils literal notranslate"><span class="pre">help</span></code> sono <code class="docutils literal notranslate"><span class="pre">any</span></code> e <code class="docutils literal notranslate"><span class="pre">all</span></code>.</p>
 <table class="table" id="logicalops">
-<caption><span class="caption-text">Operazioni logiche</span><a class="headerlink" href="#logicalops" title="Link a questa tabella">#</a></caption>
+<caption><span class="caption-number">Tabella 4 </span><span class="caption-text">Operazioni logiche</span><a class="headerlink" href="#logicalops" title="Link a questa tabella">#</a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -992,7 +1004,7 @@ nel <code class="docutils literal notranslate"><span class="pre">catch</span></c
 <h2>Cicli e Cicli Innestati<a class="headerlink" href="#cicli-e-cicli-innestati" title="Link a questa intestazione">#</a></h2>
 <p>All’interno di qualsiasi programma, è possibile definire sezioni di codice che si ripetono in un ciclo.</p>
 <table class="table" id="tabcicli">
-<caption><span class="caption-text">Strutture Condizionali.</span><a class="headerlink" href="#tabcicli" title="Link a questa tabella">#</a></caption>
+<caption><span class="caption-number">Tabella 5 </span><span class="caption-text">Strutture Condizionali.</span><a class="headerlink" href="#tabcicli" title="Link a questa tabella">#</a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -1036,12 +1048,12 @@ variabile <code class="docutils literal notranslate"><span class="pre">A</span><
 <img alt="Caratteri di escape per il formato" src="_images/format.png" />
 Come descritto nell’immagine l”<em>escape</em> per un operatore di formattazione
 comincia con il segno di percentuale, <code class="docutils literal notranslate"><span class="pre">%</span></code>, e finisce con un carattere di
-conversione (<code class="xref std std-numref docutils literal notranslate"><span class="pre">carattereconversione</span></code>). Il carattere di conversione è richiesto. In maniera opzionale,
+conversione (<a class="reference internal" href="#carattereconversione"><span class="std std-numref">Tabella 6</span></a>). Il carattere di conversione è richiesto. In maniera opzionale,
 si possono specificare un identificatore, delle flag, l’ampiezza del campo,
 la <em>precisione</em>, e un operatore di <em>sottotipo</em> tra il <code class="docutils literal notranslate"><span class="pre">%</span></code> ed il carattere di
 conversione.</p>
 <table class="table" id="carattereconversione">
-<caption><span class="caption-text">Caratteri di conversione</span><a class="headerlink" href="#carattereconversione" title="Link a questa tabella">#</a></caption>
+<caption><span class="caption-number">Tabella 6 </span><span class="caption-text">Caratteri di conversione</span><a class="headerlink" href="#carattereconversione" title="Link a questa tabella">#</a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -1080,9 +1092,9 @@ conversione.</p>
 </div>
 <p>Nell’esempio abbiamo usato ripetutamente i caratteri <code class="docutils literal notranslate"><span class="pre">\n</span></code> che stanno a
 simboleggiare un carattere di fine linea. Altri caratteri utili di questo tipo
-sono in <code class="xref std std-numref docutils literal notranslate"><span class="pre">carformattazione</span></code>.</p>
+sono in <a class="reference internal" href="#carformattazione"><span class="std std-numref">Tabella 7</span></a>.</p>
 <table class="table" id="carformattazione">
-<caption><span class="caption-text">Caratteri di formattazione</span><a class="headerlink" href="#carformattazione" title="Link a questa tabella">#</a></caption>
+<caption><span class="caption-number">Tabella 7 </span><span class="caption-text">Caratteri di formattazione</span><a class="headerlink" href="#carformattazione" title="Link a questa tabella">#</a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -1353,6 +1365,20 @@ da <code class="docutils literal notranslate"><span class="pre">meshgrid</span><
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="laboratorio1.html" title="precedente pagina">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">precedente</p>
+            <p class="prev-next-title">Laboratorio 1 : Introduzione a MATLAB</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="laboratorio3.html" title="successivo pagina">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">successivo</p>
+        <p class="prev-next-title">Laboratorio 3 : L’Aritmetica di Precisione Finita</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
 </div>
             </footer>
         </div>

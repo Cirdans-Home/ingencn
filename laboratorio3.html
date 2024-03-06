@@ -56,6 +56,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
+    <link rel="prev" title="Laboratorio 2 : Introduzione a MATLAB - II" href="laboratorio2.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
     
@@ -115,10 +116,20 @@ const thebe_selector_output = ".output, .cell_output"
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio1.html">
    Laboratorio 1 : Introduzione a MATLAB
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio2.html">
+   Laboratorio 2 : Introduzione a MATLAB - II
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Laboratorio 3 : L’Aritmetica di Precisione Finita
   </a>
  </li>
 </ul>
@@ -391,25 +402,25 @@ fisso di cifre significative (il significando) e scalato usando un esponente
 in una qualche base fissata. Tale base è normalmente due, dieci o sedici.
 Un numero che può essere rappresentato esattamente è della forma seguente:</p>
 <div class="math notranslate nohighlight" id="equation-eq-numeromacchina">
-<span class="eqno">()<a class="headerlink" href="#equation-eq-numeromacchina" title="Permalink a questa equazione">#</a></span>\[ \text{significando} \times \text{base}^{\text{esponente}}.\]</div>
+<span class="eqno">(1)<a class="headerlink" href="#equation-eq-numeromacchina" title="Permalink a questa equazione">#</a></span>\[ \text{significando} \times \text{base}^{\text{esponente}}.\]</div>
 <p>Di tutte le possibili costruzioni di questo tipo, noi adoperiamo quella
 codificata nello standard IEEE-754 <span id="id1">[<a class="reference internal" href="#id8" title="IEEE-754. IEEE 754-2019, Standard for Floating-Point Arithmetic. IEEE, New York, NY, USA, June 2019. ISBN 1-5044-5925-3 (print), 1-5044-5924-5 (e-PDF). URL: https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8766229, doi:https://doi.org/10.1109/IEEESTD.2019.876622.">IEEE75419</a>]</span>, in cui
 (la maggior parte dei) i numeri <em>floating point</em> sono
 normalizzati, cioè possono essere espressi come</p>
 <div class="math notranslate nohighlight" id="equation-rappresentazione">
-<span class="eqno">()<a class="headerlink" href="#equation-rappresentazione" title="Permalink a questa equazione">#</a></span>\[x = \pm (1+f) 2^e, \qquad 0 \leq f &lt; 1, \qquad -1022 \leq e \leq 1023,\]</div>
+<span class="eqno">(2)<a class="headerlink" href="#equation-rappresentazione" title="Permalink a questa equazione">#</a></span>\[x = \pm (1+f) 2^e, \qquad 0 \leq f &lt; 1, \qquad -1022 \leq e \leq 1023,\]</div>
 <p>dove <span class="math notranslate nohighlight">\(f\)</span> è detta la <strong>mantissa</strong>, e deve essere rappresentabile con al più 52 bits,
 cioè <span class="math notranslate nohighlight">\(2^{52}f\)</span> è un intero nell’intervallo <span class="math notranslate nohighlight">\(0 \leq 2^{52} f &lt; 2^{53}\)</span>, abbiamo
 fissato la base a <span class="math notranslate nohighlight">\(2\)</span> e chiamato l’esponente <span class="math notranslate nohighlight">\(e\)</span>.</p>
 <p>Il testo di riferimento per questi argomenti è <span id="id2">[<a class="reference internal" href="#id5" title="Nicholas J. Higham. Accuracy and stability of numerical algorithms. Society for Industrial and Applied Mathematics (SIAM), Philadelphia, PA, second edition, 2002. ISBN 0-89871-521-0. URL: https://doi.org/10.1137/1.9780898718027, doi:10.1137/1.9780898718027.">Hig02</a>]</span>.</p>
 <p>MATLAB implementa diversi formati di numeri <em>floating point</em> e <em>interi</em>; si
-veda la <code class="xref std std-numref docutils literal notranslate"><span class="pre">classiintere</span></code> per i diversi tipi di interi disponibili e le
+veda la <a class="reference internal" href="#classiintere"><span class="std std-numref">Tabella 8</span></a> per i diversi tipi di interi disponibili e le
 relative funzioni di conversione. In generale assumeremo di star lavorando con
 l’aritmetica in precisione doppia (<code class="docutils literal notranslate"><span class="pre">double</span></code>): cioè di usare una <strong>rappresentazione
 con 64 bits</strong>. Specificamente, il bit 63 assume valore <span class="math notranslate nohighlight">\(0\)</span> o <span class="math notranslate nohighlight">\(1\)</span> per indicare
 il segno (<span class="math notranslate nohighlight">\(0\)</span> se positivo, <span class="math notranslate nohighlight">\(1\)</span> se negativo). I bits da 62 a 52 contengono
 l’esponente <span class="math notranslate nohighlight">\(e\)</span>, mentre i bits da 51 a 0 contengo la mantissa <span class="math notranslate nohighlight">\(f\)</span> come illustrato
-in <a class="reference internal" href="#equation-rappresentazione">()</a>.</p>
+in <a class="reference internal" href="#equation-rappresentazione">(2)</a>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Avvertimento</p>
 <p>In alcuni casi MATLAB deciderà autonomamente se la variabile che stiamo usando
@@ -422,7 +433,7 @@ tipologie di intero, <strong>falso</strong> (<span class="math notranslate nohig
 <aside class="margin sidebar">
 <p class="sidebar-title">Classi Numeriche</p>
 <table class="table" id="classiintere">
-<caption><span class="caption-text">Classi di numeri interi</span><a class="headerlink" href="#classiintere" title="Link a questa tabella">#</a></caption>
+<caption><span class="caption-number">Tabella 8 </span><span class="caption-text">Classi di numeri interi</span><a class="headerlink" href="#classiintere" title="Link a questa tabella">#</a></caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 33%" />
@@ -472,7 +483,7 @@ tipologie di intero, <strong>falso</strong> (<span class="math notranslate nohig
 </aside>
 <section id="rappresentazione-dei-numeri-di-macchina">
 <h2>Rappresentazione dei numeri di macchina<a class="headerlink" href="#rappresentazione-dei-numeri-di-macchina" title="Link a questa intestazione">#</a></h2>
-<p>In generale non tutti i numeri potranno essere espressi nella forma <a class="reference internal" href="#equation-eq-numeromacchina">()</a>,
+<p>In generale non tutti i numeri potranno essere espressi nella forma <a class="reference internal" href="#equation-eq-numeromacchina">(1)</a>,
 possiamo scegliere ad esempio il numero <span class="math notranslate nohighlight">\(4/3\)</span> che non può essere scritto esattamente nella
 forma <span class="math notranslate nohighlight">\(s \times 2^k\)</span>. Se proviamo ad eseguire l’operazione</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">e</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="mi">4</span><span class="o">/</span><span class="mi">3</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
@@ -752,19 +763,19 @@ di <span class="math notranslate nohighlight">\(x\)</span>.</p></li>
 <p>Consideriamo un altro esempio, produciamo uno script che valuti il seguente
 polinomio</p>
 <div class="math notranslate nohighlight" id="equation-eq-polinomio">
-<span class="eqno">()<a class="headerlink" href="#equation-eq-polinomio" title="Permalink a questa equazione">#</a></span>\[p(x) = x^7 - 7x^6 + 21x^5 -35x^4 +35x^3 - 21x^2 +7x -1,\]</div>
+<span class="eqno">(3)<a class="headerlink" href="#equation-eq-polinomio" title="Permalink a questa equazione">#</a></span>\[p(x) = x^7 - 7x^6 + 21x^5 -35x^4 +35x^3 - 21x^2 +7x -1,\]</div>
 <p>nell’intervallo <span class="math notranslate nohighlight">\([0.988,1.012]\)</span> su di una griglia con scansione <span class="math notranslate nohighlight">\(10^{-4}\)</span>. Come
 si vede dalla figura al margine questo produce il <em>plot</em> di una funzione che
 non sembra proprio essere un polinomio: non è liscia! Stiamo osservando di nuovo
 degli errori di <strong>roundoff</strong> dati dalla sottrazione di numeri dello stesso
 ordine (elevato), che infatti (come si legge dalla scala sull’asse delle <span class="math notranslate nohighlight">\(y\)</span>)
-hanno un ordine di <span class="math notranslate nohighlight">\(10^{-14}\)</span>. Se guardiamo meglio al polinomio in <a class="reference internal" href="#equation-eq-polinomio">()</a>
+hanno un ordine di <span class="math notranslate nohighlight">\(10^{-14}\)</span>. Se guardiamo meglio al polinomio in <a class="reference internal" href="#equation-eq-polinomio">(3)</a>
 possiamo osservare che questo non è nient’altro che l’espansione di <span class="math notranslate nohighlight">\(p(x) = (x-1)^7\)</span>,
 provate a fare un <em>plot</em> sullo stesso intervallo e confrontiamolo con il precedente</p>
 <figure class="align-default" id="buonpolinomio">
 <img alt="_images/polynomialroundoffgood.png" src="_images/polynomialroundoffgood.png" />
 <figcaption>
-<p><span class="caption-text">Confronto del grafico del polinomio <a class="reference internal" href="#equation-eq-polinomio">()</a> calcolato nella forma <a class="reference internal" href="#equation-eq-polinomio">()</a>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Confronto del grafico del polinomio <a class="reference internal" href="#equation-eq-polinomio">(3)</a> calcolato nella forma <a class="reference internal" href="#equation-eq-polinomio">(3)</a>
 e a partire dalla forma  <span class="math notranslate nohighlight">\(p(x) = (x-1)^7\)</span>.</span><a class="headerlink" href="#buonpolinomio" title="Link a questa immagine">#</a></p>
 </figcaption>
 </figure>
@@ -851,6 +862,13 @@ possibili sviluppi.</p>
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="laboratorio2.html" title="precedente pagina">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">precedente</p>
+            <p class="prev-next-title">Laboratorio 2 : Introduzione a MATLAB - II</p>
+        </div>
+    </a>
 </div>
             </footer>
         </div>
