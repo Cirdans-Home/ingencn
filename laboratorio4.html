@@ -319,14 +319,47 @@ title="Print to PDF"
 <p>Srivendo il polinomio <span class="math notranslate nohighlight">\(P_n\)</span> nella base dei monomi <span class="math notranslate nohighlight">\(\{1,x,x^2,\ldots\}\)</span> si ha</p>
 <div class="math notranslate nohighlight">
 \[P_n(x)=a_n x^n+a_{n-1} x^{n-1}+\ldots+a_1 x+a_0,\]</div>
-<p>i cui coefficienti <span class="math notranslate nohighlight">\(\{a_i\}_{i=0}^n\)</span> si possono ricavare risolvendo il sistema lineare di <span class="math notranslate nohighlight">\(n+1\)</span> equazioni ottenuto imponendo che il polinomio verifichi le condizioni di interpolazione <a class="reference internal" href="#equation-cinterp">()</a>.</p>
-<p>Poiché la matrice del sistema (matrice di Vandermonde) risulta una matrice malcondizionata non conviene risolvere il sistema lineare per determinare il polinomio di interpolazione.</p>
-<p>In questo laboratorio ci concentriamo sull’interpolazione di Lagrange.</p>
-<p>Questa consiste nel costruire un polinomio di interpolazione di grado al più <span class="math notranslate nohighlight">\(n\)</span> della forma</p>
+<p>i cui coefficienti <span class="math notranslate nohighlight">\(\{a_i\}_{i=0}^n\)</span> si possono ricavare risolvendo il sistema lineare di <span class="math notranslate nohighlight">\(n+1\)</span> equazioni ottenuto imponendo che il polinomio verifichi le condizioni di interpolazione <a class="reference internal" href="#equation-cinterp">()</a>, ovvero chiedendo che <span class="math notranslate nohighlight">\(P_n(x_i) = y_i\)</span> per <span class="math notranslate nohighlight">\(i=1,\ldots,n+1\)</span>, si ottiene:</p>
 <div class="math notranslate nohighlight">
-\[P_n(x) = \sum_{j=0}^n f(x_j)\ell_j(x),\qquad \ell_j(x)=\prod_{i\neq j}\dfrac{x-x_i}{x_j-x_i}.\]</div>
+\[
+P_n(x_i) = \sum_{j=1}^{n+1} x_i^{(j-1)} a_j = f(x_i) = y_i\quad \Longrightarrow\quad V a = y
+\]</div>
+<p>Dove la matrice <span class="math notranslate nohighlight">\(V\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+V_{ij} = x_i^{(j-1)}, \qquad i,j = 1,\ldots,n+1
+\]</div>
+<p>è nota come matrice di Vandermonde.</p>
+<p>Dati i punti di interpolazione <code class="docutils literal notranslate"><span class="pre">x</span></code> e i valori <code class="docutils literal notranslate"><span class="pre">y</span></code>, i coefficienti del polinomio che interpola <code class="docutils literal notranslate"><span class="pre">y</span></code> nei punti <code class="docutils literal notranslate"><span class="pre">x</span></code> sono quindi dati da</p>
+<div class="math notranslate nohighlight">
+\[
+ a = A^{-1} y,
+ \]</div>
+<p>che in matlab può essere calcolato con</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="o">\</span><span class="n">y</span><span class="w"></span>
+</pre></div>
+</div>
 <div class="admonition-esercizio-1 admonition">
 <p class="admonition-title">Esercizio 1</p>
+<p>Si implementi una <em>function</em> che, dati i punti di interpolazione come vettore riga <code class="docutils literal notranslate"><span class="pre">x</span></code> di dimensione <span class="math notranslate nohighlight">\(n+1\)</span>, costruisce la matrice di Vandermonde <span class="math notranslate nohighlight">\(V\)</span> tale che <code class="docutils literal notranslate"><span class="pre">size(V)</span> <span class="pre">=</span> <span class="pre">(n+1,n+1)</span></code>.</p>
+<p>Si calcoli il suo numero di condizionamento sui punti di interpolazione <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">linspace(0,1,n+1)</span></code> al variare di <code class="docutils literal notranslate"><span class="pre">n</span></code>. Quando il numero di condizionamento supera <code class="docutils literal notranslate"><span class="pre">1/eps</span></code>?</p>
+<p>Si usi il seguente prototipo</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>V<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">Vandermonde</span><span class="p">(</span>x<span class="p">)</span><span class="w"></span>
+<span class="c">%%VANDERMONDE costruisce la matrice di Vandermonde V</span><span class="w"></span>
+<span class="c">%    INPUT:</span><span class="w"></span>
+<span class="c">%          x vettore riga degli n+1 nodi di interpolazione</span><span class="w"></span>
+<span class="c">%   OUTPUT:</span><span class="w"></span>
+<span class="c">%          V matrice di Vandermonde</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<p>Poiché la matrice di Vandermonde risulta una matrice malcondizionata non conviene risolvere il sistema lineare per determinare il polinomio di interpolazione. Si preferisce cambiare la base in cui rappresentiamo i polinomi, in modo che la matrice di interpolazione sia l’identità.</p>
+<p>Per fare questo, costruiamo il polinomio di interpolazione di grado al più <span class="math notranslate nohighlight">\(n\)</span> della forma</p>
+<div class="math notranslate nohighlight">
+\[P_n(x) = \sum_{j=0}^n f(x_j)\ell_j(x),\qquad \ell_j(x)=\prod_{i\neq j}\dfrac{x-x_i}{x_j-x_i}.\]</div>
+<div class="admonition-esercizio-2 admonition">
+<p class="admonition-title">Esercizio 2</p>
 <p>Si implementi una <em>function</em> che costruisce le funzioni polinomiali <span class="math notranslate nohighlight">\(\ell_j\)</span> dato il vettore <code class="docutils literal notranslate"><span class="pre">x</span></code> di <span class="math notranslate nohighlight">\(n+1\)</span> nodi di interpolazione e restituisce il suo valore nei punti specificati nel vettore <code class="docutils literal notranslate"><span class="pre">z</span></code>. Si segua il seguente prototipo</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>L<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">LagrangePoly</span><span class="p">(</span>x, z, j<span class="p">)</span><span class="w"></span>
 <span class="c">%%LAGRANGEPOLY costruisce il j-esimo polinomio di Lagrange dati i nodi</span><span class="w"></span>
@@ -363,8 +396,8 @@ x_i &amp; -5 &amp; -4 &amp; 0 &amp; 5 \\
 <li><p><code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">polyfit(xData,yData,m)</span></code> restituisce il vettore <code class="docutils literal notranslate"><span class="pre">a</span></code> di coefficienti del polinomio di grado <span class="math notranslate nohighlight">\(m\)</span> che approssima i dati <code class="docutils literal notranslate"><span class="pre">(xData,yData)</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">polyval(a,x)</span></code> valuta nel punto <code class="docutils literal notranslate"><span class="pre">x</span></code> il polinomio definito dai coefficienti <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
 </ul>
-<div class="admonition-esercizio-2 admonition">
-<p class="admonition-title">Esercizio 2</p>
+<div class="admonition-esercizio-3 admonition">
+<p class="admonition-title">Esercizio 3</p>
 <p>Si consideri la <strong>funzione di Runge</strong></p>
 <div class="math notranslate nohighlight" id="equation-runge">
 <span class="eqno">()<a class="headerlink" href="#equation-runge" title="Permalink a questa equazione">#</a></span>\[f(x) = \dfrac{1}{1+x^2},\quad x\in[a,b].\]</div>
@@ -373,7 +406,7 @@ x_i &amp; -5 &amp; -4 &amp; 0 &amp; 5 \\
 <ul class="simple">
 <li><p>Si calcolino i polinomi <span class="math notranslate nohighlight">\(\{P_n\}_n\)</span> di Lagrange di grado <span class="math notranslate nohighlight">\(n=5,10,19\)</span> che interpolano la funzione data in <a class="reference internal" href="#equation-runge">()</a> usando <span class="math notranslate nohighlight">\(n+1\)</span> nodi equispaziati nell’intervallo <span class="math notranslate nohighlight">\([−5, 5]\)</span>. Si riporti il grafico di ciascun polinomio interpolante su <span class="math notranslate nohighlight">\(m=500\)</span> punti nell’intervallo considerato, insieme con quello della funzione data;</p></li>
 <li><p>Si calcoli per ciascun valore di <span class="math notranslate nohighlight">\(n\)</span> l’errore commesso ossia <span class="math notranslate nohighlight">\(E_n = \max_{-5\leq x \leq 5} |f(x) − P_n(x)|\)</span> e si riportino gli errori ottenuti in un grafico in scala semilogaritmica;</p></li>
-<li><p>Si utilizzi l’implementazione dell’interpolazione di Lagrange derivata nell’Esercizio 1.</p></li>
+<li><p>Si utilizzi l’implementazione dell’interpolazione di Lagrange derivata nell’Esercizio 2.</p></li>
 </ul>
 <div class="tip dropdown admonition">
 <p class="admonition-title">Un suggerimento</p>
@@ -408,19 +441,43 @@ x_i &amp; -5 &amp; -4 &amp; 0 &amp; 5 \\
 </div>
 </div>
 </div>
-<p>Il fenomeno che si osserva nell’Esercizio 2 è la mancata convergenza della successione <span class="math notranslate nohighlight">\(\{P_n\}_n\)</span> dei polinomi di interpolazione alla funzione di Runge <a class="reference internal" href="#equation-runge">()</a>.
+<p>Il fenomeno che si osserva nell’Esercizio 3 è la mancata convergenza della successione <span class="math notranslate nohighlight">\(\{P_n\}_n\)</span> dei polinomi di interpolazione alla funzione di Runge <a class="reference internal" href="#equation-runge">()</a>.
 Tale fenomeno, detto anche <strong>fenomeno di Runge</strong>, può essere evitato utilizzando opportune distribuzioni di nodi.</p>
 <p>Nell’intervallo <span class="math notranslate nohighlight">\([a,b]\subset\mathbb{R}\)</span> si considerino i nodi <span class="math notranslate nohighlight">\(\{x_i\}_{i=0}^{n}\)</span> dati da</p>
 <div class="math notranslate nohighlight" id="equation-cheb">
 <span class="eqno">()<a class="headerlink" href="#equation-cheb" title="Permalink a questa equazione">#</a></span>\[x_i = \dfrac{a+b}{2} + \dfrac{b-a}{2}\widehat{x}_i\quad\mbox{con}\;\widehat{x}_i = -\cos\left(\dfrac{\pi i}{n}\right),\quad i=0,\ldots,n.\]</div>
 <p>I punti <span class="math notranslate nohighlight">\(\widehat{x}_i\in[−1, 1]\)</span> sono detti <strong>nodi di Chebyshev</strong>.</p>
-<div class="admonition-esercizio-3 admonition">
-<p class="admonition-title">Esercizio 3</p>
-<p>Si ripeta l’Esercizio 2 utilizzando come nodi di interpolazione i nodi di Chebyshev dati dalla <a class="reference internal" href="#equation-cheb">()</a>.</p>
+<div class="admonition-esercizio-4 admonition">
+<p class="admonition-title">Esercizio 4</p>
+<p>Si ripeta l’Esercizio 3 utilizzando come nodi di interpolazione i nodi di Chebyshev dati dalla <a class="reference internal" href="#equation-cheb">()</a>.</p>
 <p>I grafici dei polinomi interpolanti ottenuti con nodi di interpolazione equidistanti (grafico di sinistra) e con nodi di Chebyshev (grafico di destra) sono riportati qui sotto.</p>
 <figure class="align-default">
 <a class="reference internal image-reference" href="_images/runge.png"><img alt="_images/runge.png" src="_images/runge.png" style="width: 100%;" /></a>
 </figure>
+</div>
+<div class="admonition-esercizio-5 admonition">
+<p class="admonition-title">Esercizio 5</p>
+<p>Si costruisca una funzione che valuta la funzione di Lebesgue <span class="math notranslate nohighlight">\(\Lambda(x)\)</span> definita come</p>
+<div class="math notranslate nohighlight">
+\[
+\Lambda(x) := \sum_{i=1}^{n+1} |\ell_i(x)|.
+\]</div>
+<p>Si usi il seguente prototipo, insieme alla funzione costruita nell’esercizio 2:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>L<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">Lebesgue</span><span class="p">(</span>x, z<span class="p">)</span><span class="w"></span>
+<span class="c">%%LEBESGUE costruisce la lebesgue function dati i nodi</span><span class="w"></span>
+<span class="c">% di interpolazione x e lo valuta nei vettore z</span><span class="w"></span>
+<span class="c">%    INPUT:</span><span class="w"></span>
+<span class="c">%          x vettore riga degli n+1 nodi di interpolazione</span><span class="w"></span>
+<span class="c">%          z vettore riga dei punti di valutazione della Lebesgue function</span><span class="w"></span>
+<span class="c">%   OUTPUT:</span><span class="w"></span>
+<span class="c">%          L la funzione di Lebesgue in z</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Si plotti la funzione di Lebesgue per <span class="math notranslate nohighlight">\(n=5,10,15\)</span> su <code class="docutils literal notranslate"><span class="pre">m=500</span></code> punti nell’intervallo <code class="docutils literal notranslate"><span class="pre">-1,1</span></code>, utilizzando i punti di interpolazione equispaziati (caso 1), e i punti di interpolazione di Chebyshev (caso 2).</p>
+<p>Si costruisca un grafico in scala logaritmica che mostra il variare di <span class="math notranslate nohighlight">\(\max_{x} |\Lambda(x)|\)</span> nell’intervallo considerato al variare di <span class="math notranslate nohighlight">\(n\)</span> nei due casi.</p>
+<div class="math notranslate nohighlight">
+\[\]</div>
 </div>
 </section>
 
