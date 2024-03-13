@@ -7,7 +7,7 @@ chapters:
 - file: laboratorio1
 - file: laboratorio2
 - file: laboratorio3
-#- file: laboratorio4
+- file: laboratorio4
 #- file: laboratorio5
 #- file: laboratorio6
 #- file: laboratorio7
