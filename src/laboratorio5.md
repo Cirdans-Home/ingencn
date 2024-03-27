@@ -1,43 +1,57 @@
-# Laboratorio 5 : Metodi di Quadratura
+# Laboratorio 6 : Metodi di Quadratura
 
 Compito dell'integrazione numerica, o *quadratura* è quello di
 approssimare il valore dell'integrale
+
 ```{math}
 \int_{a}^{b} f(x)\,{\rm d}x,
 ```
+
 con la somma finita
+
 ```{math}
 I = \sum_{i=0}^{n} \omega_i f(x_i),
 ```
+
 dove i **nodi** $\{x_i\}_{i=0}^n$ e i **pesi** $\{ \omega_i \}_{i=0}^{n}$
 dipendono dalla particolare forma scelta. Come avete visto a lezione, le
-regole di quadratura provengono dalla scelta di un particolare _polinomio
-interpolante_ per la funzione $f$. Delle diverse famiglie di formule
+regole di quadratura provengono dalla scelta di un particolare *polinomio
+interpolante* per la funzione $f$. Delle diverse famiglie di formule
 quadrature che esistono ci focalizzeremo qui sull'implementazione delle
 **formule di Newton-Cotes**.
 
 Ricordiamo brevemente il funzionamento generale di questa procedura.
 Consideriamo l'integrale definito
+
 ```{math}
 \int_{a}^{b} f(x)\,{\rm d}x,
 ```
+
 e dividiamo l'intervallo $(a,b)$ in $n$ intervalli di uguale lunghezza
+
 ```{math}
 h = \frac{b-a}{n}, \quad x_{i} = a + i h, \; i=0,\ldots,n,
 ```
+
 sostituiamo poi alla funzione $f$ il suo **polinomio interpolante** in
 forma di Lagrange sui valori $\{ (x_i,f(x_i))\}_{i=0}^{n}$
+
 ```{math}
 P_{n}(x) = \sum_{i=0}^{n} f(x_i)\ell_i(x),
 ```
+
 da cui otteniamo che
+
 ```{math}
 I = \int_{a}^{b} P_{n}(x)\,{\rm d}x = \sum_{i=0}^{n}\left[ f(x_i) \int_{a}^{b} \ell_{i}(x) \right] = \sum_{i=0}^{n} \omega_i f(x_i),
 ```
+
 dove i **pesi** non sono nient'altro che gli integrali
+
 ```{math}
 \omega_i = \int_{a}^{b} \ell_i(x)\,{\rm d}x, \quad i=0,\ldots,n.
 ```
+
 Vediamo e **implementiamo** ora alcune celebri formule di quadratura di
 questa forma.
 
@@ -45,22 +59,29 @@ questa forma.
 
 Supponiamo di scegliere $n=1$, ovvero $h = b-a$ e quindi $x_0 = a$,
 $x_1 = b$, e quindi
+
 ```{math}
 w_0 = & -\frac{1}{h}\int_{a}^{b} (x-b)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},\\
 w_1 = & \frac{1}{h}\int_{a}^{b} (x-a)\,{\rm d}x = \frac{1}{2h}(b-a)^2 = \frac{h}{2},
 ```
+
 da cui
+
 ```{math}
 I = \sum_{i=0}^{1} \omega_i f(x_i) = \frac{h}{2}(f(a)+f(b)),
 ```
+
 e che è **esattamente** l'area del trapezio di altezza $b-a$ e basi $f(a)$
 e $f(b)$. L'errore per questa approssimazione, se $f$ è due volte differenziabile, è dato da
+
 ```{math}
 E = O\left( \frac{h^3}{12} f''(\xi) \right),
 ```
+
 dove $\xi$ è un punto in $[a,b]$ e che quindi **possiamo maggiorare** con il massimo di $f''(x)$ in $[a,b]$.
 
 Facciamo una rapida verifica con MATLAB
+
 ```matlab
 f = @(x) sin(x);
 Ix = @(x) -cos(x);
@@ -72,9 +93,11 @@ Itrue = Ix(b)-Ix(a);
 fprintf('|I - Itrue| = %e\n',abs(I-Itrue));
 fprintf("Dovrebbe essere dell'ordine di: %e\n", h^3/12);
 ```
+
 Questo ovviamente non ci è sufficiente, poiché non appena andiamo ad
 aumentare l'intervallo $[a,b]$ ( e quindi $h$ ) su cui vogliamo calcolare
 l'integrale le cose peggiorano nettamente
+
 ```matlab
 f = @(x) sin(x);
 Ix = @(x) -cos(x);
@@ -86,23 +109,29 @@ Itrue = Ix(b)-Ix(a);
 fprintf('|I - Itrue| = %e\n',abs(I-Itrue));
 fprintf("Dovrebbe essere dell'ordine di: %e\n", h^3/12);
 ```
+
 non **abbiamo nemmeno una cifra significativa corretta**.
 
 Per *risolvere questo inconveniente*, possiamo passare ad utilizzare una
 composita. Dividiamo di nuovo l'intervallo $[a,b]$ in $n$
 sotto-intervalli di ampiezza $h = (b-a)/n$ e approssimiamo su ogni sotto-intervallo l'integrale con la formula dei trapezi locale
+
 ```{math}
 I = \frac{h}{2} \sum_{i=0}^{n-1} \big(f(x_i) + f(x_{i+1})\big),
 ```
+
 per cui si può ricavare una **nuova stima dell'errore**:
+
 ```{math}
 E = O\left(\frac{(b-a)h^2}{12} f''(\xi) \right),
 ```
+
 dove $\xi$ è sempre un valore nell'intervallo $[a,b]$.
 
 :::{admonition} Esercizio
 Implementiamo la **formula dei trapezi** per una funzione $f$ utilizzando
 il seguente prototipo
+
 ```matlab
 function I = trapezi(f,a,b,n)
 %% TRAPEZI questa funzione implementa il metodo dei trapezi per la
@@ -113,15 +142,19 @@ function I = trapezi(f,a,b,n)
 
 end
 ```
+
 - Si cerchi di **minimizzare** il numero di **chiamate** alla funzione $f$ della routine,
 - Un comando utile per questo esercizio è il comando `linspace`,
 - Si scriva un codice che non utilizza cicli `for`.
 
 Per testare l'implementazione si può provare a valutare l'integrale:
+
 ```{math}
 \pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,
 ```
+
 con
+
 ```matlab
 %% Test del metodo dei Trapezi
 
@@ -136,14 +169,17 @@ I = trapezi(f,a,b,n);
 
 fprintf('Errore: %e\n',abs(pi-I)/pi);
 ```
+
 :::
 
 Cerchiamo ora di verificare il comportamento della formula rispetto
 alla stima dell'errore che abbiamo **ottenuto dalla teoria**. Valutiamo
 che succede per l'integrale dell'esempio:
+
 ```{math}
 \pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,
 ```
+
 Proviamo a stimare l'errore in maniera numerica e a confrontarlo con il
 comportamento che ci aspettiamo dalla teoria:
 
@@ -165,10 +201,12 @@ xlabel('n');
 ylabel('Errore');
 legend({'Errore Misurato','Stima'},'FontSize',14)
 ```
+
 :::{margin} Errore regola dei trapezi
 ![Errore per trapezi non regolare](/images/trapezoidal_error1.png)
 
 Errore per l'integrale
+
 ```{math}
 \pi = 4 \int_{0}^{1} \sqrt{1-x^2}\,{\rm d}x,
 ```
@@ -176,35 +214,46 @@ Errore per l'integrale
 ![Errore per trapezi regolare](/images/trapezoidal_error2.png)
 
 Errore per l'integrale
+
 ```{math}
 \int_0^3 x^2 \sin ^3(x) \, {\rm d}x
 ```
+
 :::
 La stima non sembra particolarmente soddisfacente, ma siamo sicuri di
 poterla applicare? Calcoliamo la derivata seconda della nostra funzione
 integranda:
+
 ```{math}
 f''(t) = 4 \left(-\frac{t^2}{\left(1-t^2\right)^{3/2}}-\frac{1}{\sqrt{1-t^2}}\right) = \frac{-4}{\left(1-t^2\right)^{3/2}}
 ```
+
 per cui abbiamo che:
+
 ```{math}
 \underset{t\to 1^-}{\text{lim}}\frac{-4}{\left(1-t^2\right)^{3/2}} = -\infty
 ```
+
 ovvero, **non possiamo limitare $f''(\xi)$ nell'intervallo di
 integrazione**.
 
 Proviamo con una funzione diversa, ad esempio:
+
 ```{math}
 I = \int_0^3 x^2 \sin ^3(x) \, {\rm d}x = & \frac{1}{108} \left.-81 \left(x^2-2\right) \cos (x)+\left(9 x^2-2\right) \cos (3 x)-6 x (\sin (3 x)-27 \sin (x))\right|_{0}^{3} \\
 = & \frac{1}{108} (-160+486 \sin (3)-18 \sin (9)-567 \cos (3)+79 \cos (9)),
 ```
+
 per cui la derivata seconda ha la regolarità necessaria
+
 ```{math}
 f''(x) = & x^2 \left(6 \sin (x) \cos ^2(x)-3 \sin ^3(x)\right)+2 \sin ^3(x)+12 x \sin ^2(x) \cos (x) \\
 = & \frac{1}{2} \sin (x) \left(3 x^2+\left(9 x^2-2\right) \cos (2 x)+12 x \sin (2 x)+2\right)
 ```
+
 e si osserva che $|f''(x)| < 10$ per $x \in [0,3]$. Vediamo che succede
 numericamente:
+
 ```matlab
 f = @(x) x.^2.*sin(x).^3;
 a = 0;
@@ -251,6 +300,7 @@ trapezi usando $2^{k-1}$ intervalli. Ora, se passiamo da $k$ a $k+1$
 il **numero di intervalli è raddoppiato**.
 
 Chiamiamo $H = b - a$ e scriviamo la regola dei trapezi per i primi $k$
+
 ```{math}
 k = 1, &\quad I_1 = \frac{H}{2}[f(a) + f(b)],\\
 k = 2, &\quad I_2 = \frac{H}{4}\left[ f(a) + 2 f\left(a + \frac{H}{2} \right) + f(b) \right] \\
@@ -258,7 +308,9 @@ k = 2, &\quad I_2 = \frac{H}{4}\left[ f(a) + 2 f\left(a + \frac{H}{2} \right) + 
 k = 3, &\quad I_3 = \frac{H}{8}\left[ f(a) + 2 f\left(a + \frac{H}{4}\right) + 2 f\left(a + \frac{H}{2}\right) + 2 f\left(a + \frac{3H}{4}\right) + f(b) \right] \\
 &\quad\; = \frac{1}{2} I_2 + \frac{H}{4}\left[f\left(a + \frac{H}{4}\right) + f\left(a + \frac{3H}{4}\right)\right].
 ```
+
 Con un po' di *intuizione*, possiamo scrivere per $k > 1$
+
 ```{math}
 I_k = \frac{1}{2}I_{k-1} + \frac{H}{2^{k-1}} \sum_{i=1}^{2^{k-2}} f \left[ a + \frac{(2i-1)H}{2^{k-1}} \right], \quad k=2,3,\ldots
 ```
@@ -279,6 +331,7 @@ diventa sufficientemente piccola.
 
 Per implementare l'algoritmo in modo ricorsivo, riscriviamo la formula
 in termini del valore di $h$ come:
+
 ```{math}
 :label: trapezir
 
@@ -289,6 +342,7 @@ I(h) = \frac{1}{2}I(2h) + h \sum f(x_{\text{new}}), \quad h = \frac{H}{n-1}.
 Separiamo la funzione ricorsiva in due parti, la prima è quella
 che calcola $I(h)$, dato $I(2h)$, usando l'equazione {eq}`trapezir`
 e chiamiamola `trapezir`
+
 ```matlab
 function Ih = trapezir(f,a,b,I2h,k)
 %%TRAPEZIR implementa l'algoritmo ricorsivo della regola dei
@@ -301,8 +355,10 @@ function Ih = trapezir(f,a,b,I2h,k)
 
 end
 ```
+
 Una volta che la parte computazionale è stata completata possiamo
 mettere insieme la funzione ricorsiva
+
 ```matlab
 function I = trapeziricorsiva(f,a,b,kmax,tol)
 %% TRAPEZIRICORSIVA calcola l'integrale di f tra a e b in modo
@@ -332,7 +388,9 @@ I = Ih;
 
 end
 ```
+
 Dopo averlo fatto la testiamo sullo stesso integrale del caso precedente
+
 ```matlab
 %% Test della funzione ricorsiva dei trapezi
 
@@ -348,6 +406,7 @@ kmax = 20;
 I = trapeziricorsiva(f,a,b,kmax,tol);
 fprintf("\n\tL'errore è %e\n",abs(I - Itrue)/Itrue);
 ```
+
 :::
 
 ## Formula di Simpson
@@ -358,19 +417,25 @@ fissato una interpolate lineare, questa volta abbiamo scelto una
 interpolante quadratica attraverso tre nodi adiacenti.
 
 Possiamo ricavarla direttamente dalla definizione su un solo intervallo $[a,b]$ con i nodi
+
 ```{math}
 x_0 = a, \quad x_1 = \frac{a+b}{2}, \quad x_2 = b,
 ```
+
 da cui abbiamo che i pesi si ottengono come
+
 ```{math}
 \omega_0 = \int_{a}^{b} \ell_0(x)\,{\rm d}x = \frac{h}{6}, \\
 \omega_1 = \int_{a}^{b} \ell_1(x)\,{\rm d}x = \frac{2h}{3}, \\
 \omega_2 = \int_{a}^{b} \ell_2(x)\,{\rm d}x = \frac{h}{6},
 ```
+
 e quindi
+
 ```{math}
 I = \sum_{i=0}^{2} \omega_i f(x_i) = \frac{h}{6}\left[ f(a) + 4f\left(\frac{a+b}{2}\right)+f(b)\right].
 ```
+
 :::{tip}
 Per calcolare gli integrali $\omega_i$ è conveniente fare un cambio di
 variabili ponendo l'origine dell'intervallo di integrazione su $x_1$.
@@ -389,14 +454,17 @@ Per l'implementazione seguente ci limiteremo al caso di nodi dispari, ovvero di 
 Con calcoli analoghi a quelli che avete visto per la formula dei trapezi
 si può ottenere una prima stima dell'errore anche per la formula di
 Simpson. Infatti si ha che l'errore si comporta come
+
 ```{math}
 E = O\left( (b-a)\frac{h^4}{180} f^{(iv)}(\xi) \right),
 ```
+
 per $\xi$ un punto nell'intervallo $[a,b]$.
 
 ::::{admonition} Esercizio.
 Si implementi la versione composita della regola di Simpson per il
 calcolo di un integrale secondo il seguente prototipo
+
 ```matlab
 function I = simpson(f,a,b,n)
 %%SIMPSON calcolo dell'integrale della funzione f tra a e b mediante la
@@ -411,7 +479,9 @@ end
 
 end
 ```
+
 Che possiamo testare con:
+
 ```matlab
 %% Test della formula di quadratura di Simpson
 
@@ -439,11 +509,14 @@ legend({'Errore Misurato','Stima'},'FontSize',14)
 ```
 
 Dove nella stima dell'errore `24*(b-a)*h.^4/180`, abbiamo sfruttato il fatto che
+
 ```{math}
 \frac{d ^4\left(x^2 \sin (x)^3\right)}{d x^4} = x^2 \left(21 \sin ^3(x)-60 \sin (x) \cos ^2(x)\right)+8 x \left(6 \cos ^3(x)-21 \sin ^2(x) \cos (x)\right)+12 \left(6 \sin (x) \cos ^2(x)-3 \sin ^3(x)\right),
 ```
+
 che in $[0,3]$ è maggiorata da $200$.
 ::::
+
 ```{margin} Errore di quadratura Simpson
 ![Errore per Simpson regolare](/images/simpsonerror1.png)
 
@@ -452,11 +525,13 @@ Errore per la formula di Simpson.
 
 Possiamo quindi confrontare gli errori di quadratura ottenuti per le due
 formule stampandoli sullo stesso grafico
+
 ```{figure} ./images/simpson_error2.png
 
 Confronto tra l'errore relativo compiuto con la formula dei Trapezi e
 quello ottenuto con la formula di Simpson.
 ```
+
 da cui osserviamo il comportamento che ci aspettavamo considerata
 l'analisi dell'errore.
 
@@ -464,6 +539,7 @@ l'analisi dell'errore.
 
 MATLAB offre diverse funzioni per il calcolo di integrali. La prima
 da considerare è la funzione `quad`, dal cui *help* leggiamo
+
 ```
 quad   Numerically evaluate integral, adaptive Simpson quadrature.
    Q = quad(FUN,A,B) tries to approximate the integral of scalar-valued
@@ -482,12 +558,14 @@ quad   Numerically evaluate integral, adaptive Simpson quadrature.
    of [fcnt a b-a Q] during the recursion. Use [] as a placeholder to
    obtain the default value of TOL.
 ```
+
 Questa applica la quadratura di Simpson che abbiamo visto nella sezione
 precedente sfruttando la tecnica ricorsiva che abbiamo visto, applicato
 e implementato nel caso della regola dei trapezi.
 
 Quest'ultima invece è implementata dal comando `trapz`, dal cui `help`
 leggiamo
+
 ```
 trapz  Trapezoidal numerical integration.
    Z = trapz(Y) computes an approximation of the integral of Y via
@@ -505,9 +583,10 @@ trapz  Trapezoidal numerical integration.
 ```
 
 L'ultima funzione che vogliamo menzionare è `integral` che, in realtà,
-sostituisce la funzione `quad` che è in realtà _deprecata_. Questa applica
+sostituisce la funzione `quad` che è in realtà *deprecata*. Questa applica
 una formula di quadratura adattiva e permette in realtà di calcolare anche
 integrali complessi, di funzioni con singolarità e regolare le tolleranze
+
 ```
 integral  Numerically evaluate integral.
    Q = integral(FUN,A,B) approximates the integral of function FUN from A
@@ -565,18 +644,22 @@ $1\,m/s$ a $6\,m/s$ utilizzando la regola dei trapezi implementata in `trapz`.
 :class: tip, dropdown
 La funzione di cui calcolare l'integrale si può ottenere dalla
 seconda legge della dinamica e dalla definizione di potenza:
+
 ```{math}
 \Delta t = m \int_{1 s}^{6 s} (v/P)\,{\rm d}v.
 ```
+
 :::
 
 :::::
 
 ::::{admonition} Esercizio
 Si calcoli l'integrale
+
 ```{math}
 I = \int_{1}^{+\infty} \frac{{\rm d}x}{1+x^4} = \frac{\pi -2 \coth ^{-1}\left(\sqrt{2}\right)}{4 \sqrt{2}},
 ```
+
 con la regola dei trapezi e si paragoni il risultato con il valore
 esatto.
 
@@ -590,16 +673,16 @@ il cambio di variabili $x^3 = 1/t$.
 
 :::{admonition} Esercizio
 Il periodo di un pendolo semplice di lunghezza $L$ è $\tau = 4 \sqrt{L/g} h(\theta_0)$, dove $g$ è l'accelerazione di gravità, $\theta_0$ rappresenta l'ampiezza angolare e
+
 ```{math}
 h(\theta_0) = \int_{0}^{\pi/2} \frac{ {\rm d}\theta }{\sqrt{1- \sin^2(\theta_0/2)\sin^2(\theta)}}.
 ```
+
 Si calcolino i periodi per $h(15 \text{ deg})$, $h(30 \text{ deg})$,
 $h(45 \text{ deg})$ con la formula di Simpson e si paragonino
 all'approssimazione per piccoli angoli con $h = \frac{\pi}{2}$.
 Cosa si osserva?
 :::
-
-
 
 ## Bibliografia
 
