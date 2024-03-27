@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Laboratorio 5 : Metodi di Quadratura &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
+    <title>Laboratorio 6 : Metodi di Quadratura &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -56,6 +56,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
+    <link rel="prev" title="Laboratorio 4 e 5: Metodi di Interpolazione" href="laboratorio4.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
     
@@ -115,7 +116,7 @@ const thebe_selector_output = ".output, .cell_output"
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio1.html">
    Laboratorio 1 : Introduzione a MATLAB
@@ -133,7 +134,12 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio4.html">
-   Laboratorio 4 : Metodi di Interpolazione
+   Laboratorio 4 e 5: Metodi di Interpolazione
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Laboratorio 6 : Metodi di Quadratura
   </a>
  </li>
 </ul>
@@ -354,7 +360,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Laboratorio 5 : Metodi di Quadratura</h1>
+                <h1>Laboratorio 6 : Metodi di Quadratura</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -406,8 +412,8 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-5-metodi-di-quadratura">
-<h1>Laboratorio 5 : Metodi di Quadratura<a class="headerlink" href="#laboratorio-5-metodi-di-quadratura" title="Link a questa intestazione">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-6-metodi-di-quadratura">
+<h1>Laboratorio 6 : Metodi di Quadratura<a class="headerlink" href="#laboratorio-6-metodi-di-quadratura" title="Link a questa intestazione">#</a></h1>
 <p>Compito dell’integrazione numerica, o <em>quadratura</em> è quello di
 approssimare il valore dell’integrale</p>
 <div class="math notranslate nohighlight">
@@ -651,11 +657,11 @@ diventa sufficientemente piccola.</p>
 <p>Per implementare l’algoritmo in modo ricorsivo, riscriviamo la formula
 in termini del valore di <span class="math notranslate nohighlight">\(h\)</span> come:</p>
 <div class="math notranslate nohighlight" id="equation-trapezir">
-<span class="eqno">()<a class="headerlink" href="#equation-trapezir" title="Permalink a questa equazione">#</a></span>\[I(h) = \frac{1}{2}I(2h) + h \sum f(x_{\text{new}}), \quad h = \frac{H}{n-1}.\]</div>
+<span class="eqno">(7)<a class="headerlink" href="#equation-trapezir" title="Permalink a questa equazione">#</a></span>\[I(h) = \frac{1}{2}I(2h) + h \sum f(x_{\text{new}}), \quad h = \frac{H}{n-1}.\]</div>
 <div class="admonition-esercizio admonition">
 <p class="admonition-title">Esercizio</p>
 <p>Separiamo la funzione ricorsiva in due parti, la prima è quella
-che calcola <span class="math notranslate nohighlight">\(I(h)\)</span>, dato <span class="math notranslate nohighlight">\(I(2h)\)</span>, usando l’equazione <a class="reference internal" href="#equation-trapezir">()</a>
+che calcola <span class="math notranslate nohighlight">\(I(h)\)</span>, dato <span class="math notranslate nohighlight">\(I(2h)\)</span>, usando l’equazione <a class="reference internal" href="#equation-trapezir">(7)</a>
 e chiamiamola <code class="docutils literal notranslate"><span class="pre">trapezir</span></code></p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>Ih<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">trapezir</span><span class="p">(</span>f,a,b,I2h,k<span class="p">)</span><span class="w"></span>
 <span class="c">%%TRAPEZIR implementa l&#39;algoritmo ricorsivo della regola dei</span><span class="w"></span>
@@ -815,7 +821,7 @@ formule stampandoli sullo stesso grafico</p>
 <figure class="align-default" id="id13">
 <img alt="_images/simpson_error2.png" src="_images/simpson_error2.png" />
 <figcaption>
-<p><span class="caption-text">Confronto tra l’errore relativo compiuto con la formula dei Trapezi e
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Confronto tra l’errore relativo compiuto con la formula dei Trapezi e
 quello ottenuto con la formula di Simpson.</span><a class="headerlink" href="#id13" title="Link a questa immagine">#</a></p>
 </figcaption>
 </figure>
@@ -890,12 +896,12 @@ integrali complessi, di funzioni con singolarità e regolare le tolleranze</p>
 <p>Consideriamo alcuni esercizi sulla quadratura numerica da <span id="id1">[<a class="reference internal" href="#id10" title="Jaan Kiusalaas. Numerical Methods in Engineering with MATLAB®. Cambridge University Press, 3 edition, 2015. doi:10.1017/CBO9781316341599.">Kiu15</a>]</span>.</p>
 <div class="admonition-accelerazione-di-una-macchina admonition">
 <p class="admonition-title">Accelerazione di una macchina</p>
-<p>La <code class="xref std std-numref docutils literal notranslate"><span class="pre">powertable</span></code> riporta la potenza <span class="math notranslate nohighlight">\(P\)</span> fornita alle ruote motrici di una macchina come
+<p>La <a class="reference internal" href="#powertable"><span class="std std-numref">Tabella 9</span></a> riporta la potenza <span class="math notranslate nohighlight">\(P\)</span> fornita alle ruote motrici di una macchina come
 funzione della velocità <span class="math notranslate nohighlight">\(v\)</span>. Se la massa della macchina è <span class="math notranslate nohighlight">\(m = 2000\,kg\)</span>, si
 determini l’intervallo <span class="math notranslate nohighlight">\(\Delta t\)</span> che serve alla macchina per accelerare da
 <span class="math notranslate nohighlight">\(1\,m/s\)</span> a <span class="math notranslate nohighlight">\(6\,m/s\)</span> utilizzando la regola dei trapezi implementata in <code class="docutils literal notranslate"><span class="pre">trapz</span></code>.</p>
 <table class="table" id="powertable">
-<caption><span class="caption-text">Potenza e velocità</span><a class="headerlink" href="#powertable" title="Link a questa tabella">#</a></caption>
+<caption><span class="caption-number">Tabella 9 </span><span class="caption-text">Potenza e velocità</span><a class="headerlink" href="#powertable" title="Link a questa tabella">#</a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -1003,6 +1009,13 @@ Cosa si osserva?</p>
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="laboratorio4.html" title="precedente pagina">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">precedente</p>
+            <p class="prev-next-title">Laboratorio 4 e 5: Metodi di Interpolazione</p>
+        </div>
+    </a>
 </div>
             </footer>
         </div>

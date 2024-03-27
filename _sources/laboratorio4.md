@@ -1,4 +1,4 @@
-# Laboratorio 4 : Metodi di Interpolazione
+# Laboratorio 4 e 5: Metodi di Interpolazione
 
 In molti problemi si ha a che fare con una funzione $f:\mathbb{R}\rightarrow\mathbb{R}$ di forma non elementare, o addirittura sconosciuta, di cui si possiede solo una tabulazione in un insieme finito di punti, per esempio derivanti da misurazioni sperimentali. In questi casi la stima di un valore di $f$, in un punto diverso da quelli in cui è data, può essere fatta utilizzando i dati disponibili. Questa operazione si effettua sostituendo a $f$ una funzione che sia facilmente calcolabile come, per esempio, un polinomio.
 
