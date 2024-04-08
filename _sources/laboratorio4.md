@@ -93,7 +93,7 @@ Si usi la *function* `LagrangePoly` per costruire il polinomio di interpolazione
 &\text{Tabella 1}\\
 &\begin{array}{c|ccccc}
 x_i & -5 & -4 & 0 & 5 \\
-\hline y_i & -10 & -12 & -16 & 1\\
+\hline y_i & -1 & -1 & -16 & 0\\
 \end{array}
 \end{aligned}
 ```
