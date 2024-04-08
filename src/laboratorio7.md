@@ -1,15 +1,16 @@
-# Laboratorio 7 : L'Eliminazione di Gauss il Metodo LU
+# Laboratorio 7b : Il Metodo di Eliminazione di Gauss e la Fattorizzazione LU
 
-<!---
-L' **eliminazione gaussiana** (Carl Friedrich Gauss, 1777-1855), noto anche come
+
+Il metodo di **eliminazione di Gauss** (Carl Friedrich Gauss, 1777-1855), noto anche come
 algoritmo di riduzione per le righe, è un algoritmo per risolvere sistemi
 quadrati di equazioni lineari. Come avete visto a lezione si riduce ad una
 sequenza di operazioni eseguite sulla corrispondente matrice di coefficienti.
 
 Alcune estensioni di questo metodo possono essere utilizzate anche per calcolare
 il **rango** di una matrice, il **determinante** di una matrice quadrata e
-l' **inversa di una matrice** invertibile.
+l`**inversa di una matrice** invertibile.
 
+ <!---
 Come abbiamo visto nel secondo Laboratorio sul {ref}`condizionamento-spettrale`
 la precisione ottenuta in uscita da questa procedura. Ricordiamo che per
 valutare il *numero di condizionamento* di una matrice $A$, MATLAB mette a
@@ -37,7 +38,8 @@ A = gallery('grcar',8);
 Come illustra questo esempio, `condest` non restituisce necessariamente lo
 stesso risultato ad ogni chiamata, poiché fa uso della funzione `rand` al suo
 interno (si tratta di uno stimatore stocastico).
-
+ -->
+ 
 ## Implementare la fattorizzazione LU
 
 Se $A$ è una matrice $n$ per $n$ su un campo $\mathbb{K}$ ($A  \in M_n(\mathbb{K})$),
@@ -47,17 +49,7 @@ superiore** $U  \in M_n(\mathbb{K})$ tale che
 ```{math}
 A = LU.
 ```
-Questo è particolarmente utile, poiché, se $A = LU$, allora ogni soluzione $\mathbf{x}$
-che sia soluzione di:
-```{math}
-U\mathbf{x} = \mathbf{y},
-```
-per una soluzione $\mathbf{y}$ di
-```{math}
-L\mathbf{y} = \mathbf{b},
-```
-e se $L$ è invertibile, allora $\mathbf{y}$ è unicamente determinata; e se $U$
-è invertibile, allora ogni soluzione $\mathbf{y}$ di $L\mathbf{y} = \mathbf{b}$
+Questo è particolarmente utile, poiché, se $A = LU$, e se $L$ ed $U$ sono invertibile, allora ogni soluzione $\mathbf{y}$ di $L\mathbf{y} = \mathbf{b}$
 produrrà una soluzione $\mathbf{x}$ di $A\mathbf{x} = \mathbf{b}$ via $U\mathbf{x} = \mathbf{y}$.
 
 :::{danger}
@@ -76,7 +68,7 @@ u_{11} & u_{12} \\
 \end{bmatrix} = LU,
 ```
 questa richiederebbe di avere gli elementi diagonali $u_{ii}$, $l_{ii}$, $i=1,2$,
-diversi da $0$, ma questo contraddirebbe $0 = a_{11} = l_{11}u_{11}$.
+diversi da $0$, ma questo contraddirebbe $0 = A_{11} = l_{11}u_{11}$.
 
 Una condizione **necessaria e sufficiente** affinché una fattorizzazione
 di questa forma esista per una matrice $A \in M_n(\mathbb{K})$,
@@ -105,9 +97,9 @@ necessario porre determinati vincoli su $L$ o $U$ ({numref}`tipidilu`).
 * - Nome
   - Vincoli
 * - Doolittle
-  - $L_{ii} = 1$, $i=1,\ldots,n$
+  - $l_{i,i} = 1$, $i=1,\ldots,n$
 * - Crout
-  - $U_{ii} = 1$, $i=1,\ldots,n$
+  - $u_{i,i} = 1$, $i=1,\ldots,n$
 * - Choleski
   - $U = L^T$
 ```
@@ -117,21 +109,21 @@ che è quella più strettamente legata all'algoritmo di eleminazione di Gauss ch
 conoscete sin dal corso di *algebra lineare*.
 
 Se scriviamo l'uguaglianza $A = LU$ con il vincolo aggiuntivo per cui
- $L_{ii} = 1$, $i=1,\ldots,n$, possiamo ricavare che i termini della matrice
+ $l_{i,i} = 1$, per $i=1,\ldots,n,$ possiamo ricavare che i termini della matrice
  $U$ sono dati da
 ```{math}
 :label: lu1
 \forall\,j\quad & \begin{array}{ll}
 i = 1, & u_{i,j} = a_{i,j},\\
-i > 1, & u_{i,j} = \displaystyle a_{i,j} - \sum_{k=1}^{i-1} l_{ik} u_{k,j},
+i > 1, & u_{i,j} = \displaystyle a_{i,j} - \sum_{k=1}^{i-1} l_{i,k} u_{k,j},
 \end{array}
 ```
 mentre quelli della matrice $L$ sono dati da:
 ```{math}
 :label: lu2
 \forall\,i\quad & \begin{array}{ll}
-j = 1, & l_{ij} = \frac{a_{ij}}{u_{jj}}, \\
-j > 1, & l_{ij} = \displaystyle \frac{a_{ij} - \sum_{k=1}^{j-1} l_{ik} u_{kj} }{u_{jj}}.
+j = 1, & l_{i,j} = \frac{a_{i,j}}{u_{j,j}}, \\
+j > 1, & l_{i,j} = \displaystyle \frac{a_{i,j} - \sum_{k=1}^{j-1} l_{i,k} u_{k,j} }{u_{j,j}}.
 \end{array}
 ```
 
@@ -246,59 +238,11 @@ L'**unica differenza** tra le due implementazioni è l'ordine, per colonna e per
 (pivoting)=
 ### La fattorizzazione con *pivoting*
 
-Consideriamo il seguente esempio numerico in cui andiamo a confrontare gli errori
-assoluti e relativi,
-```{math}
-E_{\text{abs}} = \| A - LU\|_2, \qquad E_{\text{rel}} = \frac{\| A - LU\|_2}{\| A\|_2},
-```
-tra la matrice $A$ ed il prodotto dei termini $LU$ ottenuto con l'algoritmo
-implementato nell'esercizio precedente.
-
-```matlab
-clear; clc; close all;
-
-sizes = 100:100:1500;
-N = length(sizes);
-maxerr = zeros(N,1);
-relerr = zeros(N,1);
-for i = 1:N
-   A = rand(sizes(i),sizes(i));
-   [L,U] = doolittlelu(A);
-   [Lm,Um] = lu(A);
-   normA = norm(A,2);
-   maxerr(i) = norm(A - L*U,2);
-   relerr(i) = maxerr(i)/normA;
-   fprintf("Dimensione %d\n\t || A - LU || = %1.2e\n",sizes(i),maxerr(i));
-   fprintf("\t || A - LU ||/||A|| = %1.2e\n",relerr(i));
-end
-
-figure(1)
-loglog(sizes,maxerr,'o-',sizes,relerr,'x-','LineWidth',2);
-xlabel('Dimensione');
-legend({'Errore Assoluto','Errore Relativo'},...
-    'Location','best','FontSize',14);
-```
-Quello che osserviamo nella figura è una crescita di più di un'ordine di
-grandezza nella costruzione fatta dalla fattorizzazione $LU$ accompagnato da un
-certo numero di oscillazioni {numref}`lunopivoting`.
-```{figure} ./images/lunopivoting.png
-:name:  lunopivoting
-
-Errori assoluti e relativi tra una matrice $A$ ad entrate casuali
-uniformemente distribuite in $[0,1]$ e la relativa fattorizzazione $LU$ calcolata
-**senza** pivoting.
-```
-Ci aspetteremo che almeno l'**errore relativo** si comportasse meglio. Quello
-che sta accadendo è che la scelta dei *pivot* affidata alla forma originale della
-matrice sta introducendo dell'instabilità numerica che ci fa perdere in precisione
-relativa più di quanto sarebbe lecito aspettarsi guardando ai numeri di
-condizionamento delle operazioni in questione.
-
-
-Per **migliorare la stabilità dell'algoritmo** e fare sì che la fattorizzazione
+Per fare sì che la fattorizzazione
 $LU$ si possa calcolare per una *generica matrice* (ovvero anche
-  quando si incontrano *pivot* nulli) possiamo introdurre una strategia di
-  **scambio delle righe** della matrice detta, per l'appunto, di *pivoting parziale*.
+  quando si incontrano *pivot* nulli) 
+e per **migliorare la stabilità dell'algoritmo** ,
+possiamo introdurre una strategia di **scambio delle righe** della matrice detta, per l'appunto, di *pivoting parziale*.
 
 Formalmente, questo vuol dire che otterremo una fattorizzazione della forma
 ```{math}
@@ -355,9 +299,15 @@ Qual è l'effetto della traslazione di indice?
 ::::
 
 Possiamo **verificare** l'implementazione della versione con *pivoting parziale*
-facendone un paragone con la versione dell'esercizio precedente con il seguente
-codice:
+facendone un paragone con la versione dell'esercizio precedente.
+
+Confrontiamo gli errori assoluti e relativi,
+```{math}
+E_{\text{abs}} = \| A - LU\|_2, \qquad E_{\text{rel}} = \frac{\| A - LU\|_2}{\| A\|_2},
+```
+tra la matrice $A$ ed il prodotto dei termini $LU$ ottenuti con i diversi algoritmi (con e senza pivoting parziale).
 ```matlab
+clear; clc; close all;
 sizes = 100:100:1500;
 N = length(sizes);
 maxerr = zeros(N,1);
@@ -387,7 +337,18 @@ legend({'Errore Assoluto','Errore Relativo',...
     'Errore Assoluto (Pivoting)','Errore Relativo (Pivoting)'},...
     'Location','best','FontSize',14);
 ```
-Con questa esecuzione possiamo osservare che abbiamo mantenuto un errore
+
+Quello che osserviamo nella figura è una crescita di più di un'ordine di
+grandezza dell'errore assoluto nella fattorizzazione $LU$ senza pivoting, ed un
+certo numero di oscillazioni {numref}`lusipivoting`.
+
+Ci aspetteremmo che almeno l'**errore relativo** si comportasse meglio. Quello
+che sta accadendo è che la scelta dei *pivot* affidata alla forma originale della
+matrice sta introducendo dell'instabilità numerica che ci fa perdere in precisione
+relativa più di quanto sarebbe lecito aspettarsi guardando ai numeri di
+condizionamento delle operazioni in questione.
+
+L'implementazione con pivoting, invece, permette di mantenere un errore
 relativo che è all'incirca della precisione di macchina, migliorando
 sensibilmente le performance rispetto alla versione che utilizzava
 l'ordinamento di partenza.
@@ -436,6 +397,66 @@ nativa di MATLAB dell'ordine di `3.33e-16`.
 :::{warning}
 Per costruire il calcolo del determinante anche nel caso in cui si utilizzi la fattorizzazione $LU$ con *pivoting* è necessario tenere traccia del numero di
 scambi di righe effettuati.
+:::
+
+
+## Le funzioni di MATLAB
+
+MATLAB ha implementata tra le sue routine una versione della fattorizzazione $LU$ ed un
+algoritmo per la soluzione dei sistemi lineari.
+
+Per la fattorizzazione LU il comando ha il medesimo nome `lu` e permette una certa
+flessibilità.
+- `[L,U] = lu(A)`, restituisce una matrice triangolare superiore in $U$ e
+una matrice triangolare inferiore **permutata** in $L$, tale che $A = LU$.
+La matrice di input $A$ può essere *densa* o *sparsa*.
+- `[L,U,P] = lu(A)`, restituisce una matrice triangolare inferiore $L$ con
+diagonale di uno, matrice triangolare superiore $U$ ed una matrice di
+permutazione $P$ tale che $PA = LU.$ Con un argomento di input *opzionale* è
+possibile scegliere il formato della $P$, ovvero se chiama `lu(A, outputForm)`
+con `outputForm` uguale a `'matrix'` (default) $P$ è memorizzata come una matrice,
+se si chiama con l'opzione `'vector'` allora $P$ è un vettore tale che `A(P,:) = L*U`.  
+- `[L,U,P,Q] = lu(A)` restituisce una matrice triangolare inferiore $L$ con
+diagonale di uno, matrice triangolare superiore $U$ e due matrici di
+permutazione $P$ e $Q$ tali che $PAQ = LU$. Per una matrice sparsa questa opzione
+è significativamente più efficiente della versione con tre output.
+
+```{prf:definition}
+Una **matrice sparsa** o **array sparso** è una matrice in cui la maggior parte
+degli elementi è zero. Per dare una definizione rigorosa riguardo alla
+proporzione di elementi di valore zero affinché una matrice sia qualificata
+come sparsa è tipicamente necessario considerare la sorgente del problema che la
+ha generata, e.g., la discretizzazione di una PDE. Un **criterio comune** è che
+il numero di elementi diversi da zero sia approssimativamente uguale al numero
+di righe o colonne.
+
+Al contrario, se la maggior parte degli elementi è diversa da zero, la matrice è
+considerata densa.
+```
+
+Informazioni sulle matrici sparse possono essere recuperate dal manuale di
+MATLAB (`help sparse`). Non scenderemo qui in ulteriori dettagli.
+
+La funzione per **risolvere i sistemi lineari** è la funzione `mldivide` `\`.
+Si tratta di una delle funzioni più elaborate di MATLAB, il comando `A\B` è la
+*divisione matriciale* di `A` in `B`, moralmente è la stessa operazione di
+`INV(A)*B`, ma è **calcolata in modo diverso**, **stabile** ed **efficiente**.
+
+Se $A$ è una matrice $N$ per $N$ e $\mathbf{b}$ è un vettore colonna con $N$
+componenti, o una matrice con più di queste colonne, allora `X = A\b` è la
+soluzione dell'equazione `A*X = B`.
+
+:::{warning}
+Viene stampato un messaggio di avviso se A è scalata male o malcondizionata, ad
+**esempio**
+```matlab
+x = hilb(15)\ones(15,1);
+```
+restituisce
+```
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  5.460912e-19.
+```
 :::
 
 ## Esercizi
@@ -521,64 +542,6 @@ k_1 = k_2 = k_3 = 10\, \text{N}/\text{mm}\;\; k_4 = k_5 = 5\, \text{N}/\text{mm}
 ```
 :::
 
-## Le funzioni di MATLAB
-
-MATLAB implementa ovviamente una sua versione della fattorizzazione $LU$ ed un
-suo algoritmo per la soluzione dei sistemi lineari.
-
-Per la fattorizzazione il comando ha il medesimo nome `lu` e permette una certa
-flessibilità.
-- `[L,U] = lu(A)`, restituisce una matrice triangolare superiore in $U$ e
-una matrice triangolare inferiore **permutata** in $L$, tale che $A = LU$.
-La matrice di input $A$ può essere *densa* o *sparsa*.
-- `[L,U,P] = lu(A)`, restituisce una matrice triangolare inferiore $L$ con
-diagonale di uno, matrice triangolare superiore $U$ ed una matrice di
-permutazione $P$ tale che $PA = LU$. Con un argomento di input *opzionale* è
-possibile scegliere il formato della $P$, ovvero se chiama `lu(A, outputForm)`
-con `outputForm` uguale a `'matrix'` (default) $P$ è memorizzata come una matrice,
-se si chiama con l'opzione `'vector'` allora $P$ è un vettore tale che `A(P,:) = L*U`.  
-- `[L,U,P,Q] = lu(A)` restituisce una matrice triangolare inferiore $L$ con
-diagonale di uno, matrice triangolare superiore $U$ e due matrici di
-permutazione $P$ e $Q$ tali che $PAQ = LU$. Per una matrice sparsa questa opzione
-è significativamente più efficiente della versione con tre output.
-
-```{prf:definition}
-Una **matrice sparsa** o **array sparso** è una matrice in cui la maggior parte
-degli elementi è zero. Per dare una definizione rigorosa riguardo alla
-proporzione di elementi di valore zero affinché una matrice sia qualificata
-come sparsa è tipicamente necessario considerare la sorgente del problema che la
-ha generata, e.g., la discretizzazione di una PDE. Un **criterio comune** è che
-il numero di elementi diversi da zero sia approssimativamente uguale al numero
-di righe o colonne.
-
-Al contrario, se la maggior parte degli elementi è diversa da zero, la matrice è
-considerata densa.
-```
-
-Informazioni sulle matrici sparse possono essere recuperate dal manuale di
-MATLAB (`help sparse`). Non scenderemo qui in ulteriori dettagli.
-
-La funzione per **risolvere i sistemi lineari** è la funzione `mldivide` `\`.
-Si tratta di una delle funzioni più elaborate di MATLAB, il comando `A\B` è la
-*divisione matriciale* di `A` in `B`, moralmente è la stessa operazione di
-`INV(A)*B`, ma è **calcolata in modo diverso**, **stabile** ed **efficiente**.
-
-Se $A$ è una matrice $N$ per $N$ e $\mathbf{b}$ è un vettore colonna con $N$
-componenti, o una matrice con più di queste colonne, allora `X = A\b` è la
-soluzione dell'equazione `A*X = B`.
-
-:::{warning}
-Viene stampato un messaggio di avviso se A è scalata male o malcondizionata, ad
-**esempio**
-```matlab
-x = hilb(15)\ones(15,1);
-```
-restituisce
-```
-Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  5.460912e-19.
-```
-:::
 
 ## Bibliografia
 
@@ -586,4 +549,5 @@ RCOND =  5.460912e-19.
  :filter: docname in docnames
  ```
  
+ <!---
  -->
