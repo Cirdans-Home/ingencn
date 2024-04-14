@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Laboratorio 9 : Metodi Stazionari per Sistemi Lineari &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
+    <title>Laboratorio 9 : Metodi Iterativi Stazionari per Sistemi Lineari &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -149,6 +149,11 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio7.html">
    Laboratorio 7b : Il Metodo di Eliminazione di Gauss e la Fattorizzazione LU
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio8.html">
+   Laboratorio 8 : Il Problema Lineare dei Minimi Quadrati
   </a>
  </li>
 </ul>
@@ -332,13 +337,6 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#metodi-di-tipo-stazionario">
    Metodi di tipo stazionario
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#metodi-per-il-calcolo-agli-autovalori-implementati-in-matlab">
-     Metodi per il calcolo agli autovalori implementati in MATLAB
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#metodo-di-jacobi">
@@ -364,7 +362,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Laboratorio 9 : Metodi Stazionari per Sistemi Lineari</h1>
+                <h1>Laboratorio 9 : Metodi Iterativi Stazionari per Sistemi Lineari</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -378,13 +376,6 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#metodi-di-tipo-stazionario">
    Metodi di tipo stazionario
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#metodi-per-il-calcolo-agli-autovalori-implementati-in-matlab">
-     Metodi per il calcolo agli autovalori implementati in MATLAB
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#metodo-di-jacobi">
@@ -411,26 +402,24 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-9-metodi-stazionari-per-sistemi-lineari">
-<h1>Laboratorio 9 : Metodi Stazionari per Sistemi Lineari<a class="headerlink" href="#laboratorio-9-metodi-stazionari-per-sistemi-lineari" title="Link a questa intestazione">#</a></h1>
-<p>Un <strong>metodo iterativo</strong> è una procedura matematica che a partire da un <em>valore iniziale</em> genera una sequenza di <em>soluzioni approssimate</em> migliorative per una
-determinata classe di problemi, in cui l’approssimazione <span class="math notranslate nohighlight">\(n\)</span>esima è derivata dai precedenti. Abbiamo già visto, <strong>ed implementato</strong>, metodi di questo tipo per la ricerca degli zeri di una funzione.</p>
-<p>In questo laboratorio vogliamo concentrarci invece sulla costruzione di alcuni
+  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-9-metodi-iterativi-stazionari-per-sistemi-lineari">
+<h1>Laboratorio 9 : Metodi Iterativi Stazionari per Sistemi Lineari<a class="headerlink" href="#laboratorio-9-metodi-iterativi-stazionari-per-sistemi-lineari" title="Link a questa intestazione">#</a></h1>
+<p>Un <strong>metodo iterativo</strong> è una procedura matematica che a partire da un <em>valore iniziale</em> genera una sequenza di <em>soluzioni approssimate</em> migliorative, in cui l’approssimazione <span class="math notranslate nohighlight">\(n\)</span>-esima è derivata dalle precedenti.</p>
+<p>In questo laboratorio vogliamo concentrarci sulla costruzione di alcuni
 metodi di questo tipo per la soluzione di sistemi lineari.</p>
 <p>La prima domanda che è legittimo porsi è perché mai vogliamo mettere in piedi
 dei metodi iterativi se abbiamo già dei metodi diretti che possono raggiungere
 la soluzione del problema cercato?</p>
 <ul class="simple">
-<li><p>A patto di richiedere una tolleranza minore (spesso sufficiente nelle applicazioni) sull’errore commesso sulla soluzione hanno un costo computazionale inferiore alle controparti dirette,</p></li>
-<li><p>Per le dimensioni dei problemi che si vogliono affrontare nelle applicazioni ingegneristiche attuali sono spesso l’unica opzione disponibile (problemi di fluidodinamica computazionale, combustione, meccanica del continuo, …)</p></li>
+<li><p>A patto di richiedere una tolleranza minore (spesso sufficiente nelle applicazioni) sull’errore commesso sulla soluzione hanno un costo computazionale inferiore alle controparti dirette.</p></li>
+<li><p>Per le dimensioni dei problemi che si vogliono affrontare nelle applicazioni ingegneristiche attuali sono spesso l’unica opzione disponibile (problemi di fluidodinamica computazionale, combustione, meccanica del continuo, …).</p></li>
 </ul>
-<p>Nel corso e in questo laboratorio ci focalizziamo su alcuni dei metodi più semplici e che, in genere, sono usati come i blocchi costituivi di metodi più complessi (e.g., metodi di tipo <em>multigrid</em> o <em>domain decomposition</em>) o come acceleratori per la convergenza (in gergo chiamati: <em>precondizionatori</em>).</p>
 <section id="metodi-di-tipo-stazionario">
 <h2>Metodi di tipo stazionario<a class="headerlink" href="#metodi-di-tipo-stazionario" title="Link a questa intestazione">#</a></h2>
 <p>Dato un sistema lineare della forma</p>
 <div class="math notranslate nohighlight">
 \[A \mathbf{x} = \mathbf{b}, \qquad A \in \mathbb{R}^{n \times n},\; \mathbf{x},\mathbf{b} \in \mathbb{R}^n\]</div>
-<p>siamo interessati a <strong>metodi di punto fisso</strong> basati sugli <em>splitting</em> della matrice <span class="math notranslate nohighlight">\(A\)</span>. Cioè metodi basati su una decomposizione additiva della matrice della forma</p>
+<p>siamo interessati a <strong>metodi di punto fisso</strong> basati su una decomposizione additiva della matrice <span class="math notranslate nohighlight">\(A\)</span> della forma</p>
 <div class="math notranslate nohighlight">
 \[A = M - N, \qquad\text{ con }\qquad \det(M) \neq 0.\]</div>
 <p>Da questa decomposizione si ottiene poi l’iterata di punto fisso come</p>
@@ -443,112 +432,119 @@ la soluzione del problema cercato?</p>
 \mathbf{x}^{(0)} \text{ assegnato}.\end{split}\]</div>
 <p>Essendo questa un’iterata di punto fisso, la sua convergenza dipende dall’essere una <strong>procedura contrattiva</strong>, avete dimostrato a lezione che questo è equivalente alla richiesta che il <em>raggio spettrale</em> della matrice di iterazione <span class="math notranslate nohighlight">\(M^{-1}N\)</span> sia strettamente minore di <span class="math notranslate nohighlight">\(1\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[\rho(M^{-1}N) = \max_{1,\ldots,n }|\lambda_n(M^{-1}N)| &lt; 1.\]</div>
-<section id="metodi-per-il-calcolo-agli-autovalori-implementati-in-matlab">
-<h3>Metodi per il calcolo agli autovalori implementati in MATLAB<a class="headerlink" href="#metodi-per-il-calcolo-agli-autovalori-implementati-in-matlab" title="Link a questa intestazione">#</a></h3>
-<p>In alcuni casi data una matrice <span class="math notranslate nohighlight">\(A\)</span> e uno splitting <span class="math notranslate nohighlight">\(A = M - N\)</span> è possibile calcolare il <em>raggio spettrale</em> carta e penna, oppure inferire le proprietà di convergenza del metodo dalle proprietà della matrice <span class="math notranslate nohighlight">\(A\)</span> e della particolare forma dello splitting. Laddove questo non fosse possibile, o volessimo una stima più precisa di quello che sta accadendo, dobbiamo ricorrere a dei metodi numerici a questo scopo. La loro costruzione è al di fuori degli obiettivi di questo corso, tuttavia MATLAB ci fornisce delle <em>function</em> che fanno al nostro caso.</p>
-<p>Vediamo prima il <strong>caso generale</strong> in cui data una matrice <span class="math notranslate nohighlight">\(A\)</span> vogliamo calcolare <em>tutti</em> i suoi autovalori, costruiamo da principio una <em>matrice simmetrica</em> per
-cui possiamo sfruttare il <strong>Teorema Spettrale</strong> per interpretare i risultati:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"> </span><span class="c">% costruiamo una matrice casuale</span><span class="w"></span>
-<span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">A</span><span class="o">&#39;</span><span class="p">;</span><span class="w"> </span><span class="c">% e facciamo in modo che sia simmetrica</span><span class="w"></span>
-<span class="n">lambda</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">eig</span><span class="p">(</span><span class="n">A</span><span class="p">);</span><span class="w"> </span><span class="c">% calcoliamo *tutti* gli autovalori</span><span class="w"></span>
-<span class="nb">disp</span><span class="p">(</span><span class="n">lambda</span><span class="p">)</span><span class="w"></span>
-</pre></div>
-</div>
-<p>che ci restituisce il vettore:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="mf">2.1767</span>
-<span class="o">-</span><span class="mf">1.8198</span>
-<span class="o">-</span><span class="mf">0.7091</span>
-<span class="o">-</span><span class="mf">0.3270</span>
-<span class="o">-</span><span class="mf">0.1747</span>
- <span class="mf">0.7953</span>
- <span class="mf">0.9842</span>
- <span class="mf">1.3664</span>
- <span class="mf">1.9277</span>
- <span class="mf">9.4423</span>
-</pre></div>
-</div>
-<p>per cui abbiamo ottenuto 10 autovalori reali.</p>
-<p>Se guardiamo il manuale del comando <code class="docutils literal notranslate"><span class="pre">eig</span></code> leggiamo:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">eig</span>    <span class="n">Eigenvalues</span> <span class="ow">and</span> <span class="n">eigenvectors</span><span class="o">.</span>
-   <span class="n">E</span> <span class="o">=</span> <span class="n">eig</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="n">produces</span> <span class="n">a</span> <span class="n">column</span> <span class="n">vector</span> <span class="n">E</span> <span class="n">containing</span> <span class="n">the</span> <span class="n">eigenvalues</span> <span class="n">of</span>
-   <span class="n">a</span> <span class="n">square</span> <span class="n">matrix</span> <span class="n">A</span><span class="o">.</span>
+\[\rho(M^{-1}N) = \max_{i=1,\ldots,n}|\lambda_i(M^{-1}N)| &lt; 1.\]</div>
+<!---
+### Metodi per il calcolo agli autovalori implementati in MATLAB
 
-   <span class="p">[</span><span class="n">V</span><span class="p">,</span><span class="n">D</span><span class="p">]</span> <span class="o">=</span> <span class="n">eig</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="n">produces</span> <span class="n">a</span> <span class="n">diagonal</span> <span class="n">matrix</span> <span class="n">D</span> <span class="n">of</span> <span class="n">eigenvalues</span> <span class="ow">and</span>
-   <span class="n">a</span> <span class="n">full</span> <span class="n">matrix</span> <span class="n">V</span> <span class="n">whose</span> <span class="n">columns</span> <span class="n">are</span> <span class="n">the</span> <span class="n">corresponding</span> <span class="n">eigenvectors</span>  
-   <span class="n">so</span> <span class="n">that</span> <span class="n">A</span><span class="o">*</span><span class="n">V</span> <span class="o">=</span> <span class="n">V</span><span class="o">*</span><span class="n">D</span><span class="o">.</span>
+In alcuni casi data una matrice $A$ e uno splitting $A = M - N$ è possibile calcolare il *raggio spettrale* carta e penna, oppure inferire le proprietà di convergenza del metodo dalle proprietà della matrice $A$ e della particolare forma dello splitting. Laddove questo non fosse possibile, o volessimo una stima più precisa di quello che sta accadendo, dobbiamo ricorrere a dei metodi numerici a questo scopo. La loro costruzione è al di fuori degli obiettivi di questo corso, tuttavia MATLAB ci fornisce delle *function* che fanno al nostro caso.
 
-   <span class="p">[</span><span class="n">V</span><span class="p">,</span><span class="n">D</span><span class="p">,</span><span class="n">W</span><span class="p">]</span> <span class="o">=</span> <span class="n">eig</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="n">also</span> <span class="n">produces</span> <span class="n">a</span> <span class="n">full</span> <span class="n">matrix</span> <span class="n">W</span> <span class="n">whose</span> <span class="n">columns</span> <span class="n">are</span> <span class="n">the</span>
-   <span class="n">corresponding</span> <span class="n">left</span> <span class="n">eigenvectors</span> <span class="n">so</span> <span class="n">that</span> <span class="n">W</span><span class="s1">&#39;*A = D*W&#39;</span><span class="o">.</span>
-</pre></div>
-</div>
-<p>Possiamo quindi usarlo per ottenere anche le relativi matrici degli autovettori sinistri e destri per la matrice <span class="math notranslate nohighlight">\(A\)</span>, cioè le matrici <span class="math notranslate nohighlight">\(V\)</span> e <span class="math notranslate nohighlight">\(W\)</span> tali che:</p>
-<div class="math notranslate nohighlight">
-\[A V = V D, \quad W^T A = D W^T.\]</div>
-<div class="admonition danger">
-<p class="admonition-title">Pericolo</p>
-<p>MATLAB, e la maggior parte degli algoritmi che calcolano autovalori, non conoscono la forma canonica di Jordan e l’esistenza di matrici non diagonalizzabili. Per cui vi restituiranno sempre una diagonalizzazione, anche quando questa non esiste. Consideriamo ad esempio il blocco di Jordan:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">J</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">gallery</span><span class="p">(</span><span class="s">&#39;jordbloc&#39;</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span><span class="w"></span>
-<span class="p">[</span><span class="n">V</span><span class="p">,</span><span class="n">D</span><span class="p">,</span><span class="n">W</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">eig</span><span class="p">(</span><span class="n">J</span><span class="p">)</span><span class="w"></span>
-</pre></div>
-</div>
-<p>Otteniamo le due matrici, senza <em>warning</em> o altro… tuttavia se calcoliamo</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">cond</span><span class="p">(</span><span class="n">V</span><span class="p">)</span><span class="w"></span>
+Vediamo prima il **caso generale** in cui data una matrice $A$ vogliamo calcolare *tutti* i suoi autovalori, costruiamo da principio una *matrice simmetrica* per
+cui possiamo sfruttare il **Teorema Spettrale** per interpretare i risultati:
+```matlab
+A = rand(10); % costruiamo una matrice casuale
+A = A + A'; % e facciamo in modo che sia simmetrica
+lambda = eig(A); % calcoliamo *tutti* gli autovalori
+disp(lambda)
+```
+che ci restituisce il vettore:
+```
+-2.1767
+-1.8198
+-0.7091
+-0.3270
+-0.1747
+ 0.7953
+ 0.9842
+ 1.3664
+ 1.9277
+ 9.4423
+```
+per cui abbiamo ottenuto 10 autovalori reali.
 
-<span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+Se guardiamo il manuale del comando `eig` leggiamo:
+```
+eig    Eigenvalues and eigenvectors.
+   E = eig(A) produces a column vector E containing the eigenvalues of
+   a square matrix A.
 
-<span class="w">   </span><span class="mf">1.3009e+63</span><span class="w"></span>
-</pre></div>
-</div>
-<p>che è un <strong>valore enorme</strong> per una matrice <span class="math notranslate nohighlight">\(5 \times 5\)</span>. Questo ci deve far sospettare che c’è qualcosa che non va!</p>
-</div>
-<p>Per calcolare direttamente il raggio spettrale della matrice <span class="math notranslate nohighlight">\(M^{-1}N\)</span> non abbiamo in realtà la necessità di calcolare tutti gli autovalori della matrice e prendere il massimo. Possiamo accedere ad algoritmi che calcolano direttamente la quantità che ci interessa:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">gallery</span><span class="p">(</span><span class="s">&#39;poisson&#39;</span><span class="p">,</span><span class="mi">5</span><span class="p">);</span><span class="w"> </span><span class="c">% Discretizzazione del Laplaciano in 2D</span><span class="w"></span>
-<span class="n">M</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">diag</span><span class="p">(</span><span class="n">A</span><span class="p">);</span><span class="w"> </span><span class="c">% A = M - N</span><span class="w"></span>
-<span class="n">N</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">M</span><span class="o">-</span><span class="n">A</span><span class="p">;</span><span class="w">     </span><span class="c">% N = M - A</span><span class="w"></span>
-<span class="n">rho</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">eigs</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">M</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s">&#39;largestabs&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">disp</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">rho</span><span class="p">))</span><span class="w"></span>
-</pre></div>
-</div>
-<p>che ci restituisce il valore <code class="docutils literal notranslate"><span class="pre">0.8660</span></code> per il raggio spettrale, cioè abbiamo trovato uno <strong>splitting convergente</strong>.</p>
-<p>Vediamo il manuale del comando <code class="docutils literal notranslate"><span class="pre">eigs</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">eigs</span>   <span class="n">Find</span> <span class="n">a</span> <span class="n">few</span> <span class="n">eigenvalues</span> <span class="ow">and</span> <span class="n">eigenvectors</span> <span class="n">of</span> <span class="n">a</span> <span class="n">matrix</span>
- <span class="n">D</span> <span class="o">=</span> <span class="n">eigs</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="n">returns</span> <span class="n">a</span> <span class="n">vector</span> <span class="n">of</span> <span class="n">A</span><span class="s1">&#39;s 6 largest magnitude eigenvalues.</span>
- <span class="n">A</span> <span class="n">must</span> <span class="n">be</span> <span class="n">square</span> <span class="ow">and</span> <span class="n">should</span> <span class="n">be</span> <span class="n">large</span> <span class="ow">and</span> <span class="n">sparse</span><span class="o">.</span>
+   [V,D] = eig(A) produces a diagonal matrix D of eigenvalues and
+   a full matrix V whose columns are the corresponding eigenvectors  
+   so that A*V = V*D.
 
- <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+   [V,D,W] = eig(A) also produces a full matrix W whose columns are the
+   corresponding left eigenvectors so that W'*A = D*W'.
+```
+Possiamo quindi usarlo per ottenere anche le relativi matrici degli autovettori sinistri e destri per la matrice $A$, cioè le matrici $V$ e $W$ tali che:
+```{math}
+A V = V D, \quad W^T A = D W^T.
+```
+:::{danger}
+MATLAB, e la maggior parte degli algoritmi che calcolano autovalori, non conoscono la forma canonica di Jordan e l'esistenza di matrici non diagonalizzabili. Per cui vi restituiranno sempre una diagonalizzazione, anche quando questa non esiste. Consideriamo ad esempio il blocco di Jordan:
+```matlab
+J = gallery('jordbloc',5)
+[V,D,W] = eig(J)
+```
+Otteniamo le due matrici, senza *warning* o altro... tuttavia se calcoliamo
+```matlab
+cond(V)
 
- <span class="n">eigs</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">K</span><span class="p">,</span><span class="n">SIGMA</span><span class="p">)</span> <span class="ow">and</span> <span class="n">eigs</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">K</span><span class="p">,</span><span class="n">SIGMA</span><span class="p">)</span> <span class="k">return</span> <span class="n">K</span> <span class="n">eigenvalues</span><span class="o">.</span> <span class="n">If</span> <span class="n">SIGMA</span> <span class="ow">is</span><span class="p">:</span>
+ans =
 
-        <span class="s1">&#39;largestabs&#39;</span> <span class="ow">or</span> <span class="s1">&#39;smallestabs&#39;</span> <span class="o">-</span> <span class="n">largest</span> <span class="ow">or</span> <span class="n">smallest</span> <span class="n">magnitude</span>
-      <span class="s1">&#39;largestreal&#39;</span> <span class="ow">or</span> <span class="s1">&#39;smallestreal&#39;</span> <span class="o">-</span> <span class="n">largest</span> <span class="ow">or</span> <span class="n">smallest</span> <span class="n">real</span> <span class="n">part</span>
-                       <span class="s1">&#39;bothendsreal&#39;</span> <span class="o">-</span> <span class="n">K</span><span class="o">/</span><span class="mi">2</span> <span class="n">values</span> <span class="k">with</span> <span class="n">largest</span> <span class="ow">and</span>
-                                        <span class="n">smallest</span> <span class="n">real</span> <span class="n">part</span><span class="p">,</span> <span class="n">respectively</span>
-                                        <span class="p">(</span><span class="n">one</span> <span class="n">more</span> <span class="kn">from</span> <span class="nn">largest</span> <span class="k">if</span> <span class="n">K</span> <span class="ow">is</span> <span class="n">odd</span><span class="p">)</span>
+   1.3009e+63
+```
+che è un **valore enorme** per una matrice $5 \times 5$. Questo ci deve far sospettare che c'è qualcosa che non va!
+:::
 
-    <span class="n">For</span> <span class="n">nonsymmetric</span> <span class="n">problems</span><span class="p">,</span> <span class="n">SIGMA</span> <span class="n">can</span> <span class="n">also</span> <span class="n">be</span><span class="p">:</span>
-      <span class="s1">&#39;largestimag&#39;</span> <span class="ow">or</span> <span class="s1">&#39;smallestimag&#39;</span> <span class="o">-</span> <span class="n">largest</span> <span class="ow">or</span> <span class="n">smallest</span> <span class="n">imaginary</span> <span class="n">part</span>
-                       <span class="s1">&#39;bothendsimag&#39;</span> <span class="o">-</span> <span class="n">K</span><span class="o">/</span><span class="mi">2</span> <span class="n">values</span> <span class="k">with</span> <span class="n">largest</span> <span class="ow">and</span>
-                                       <span class="n">smallest</span> <span class="n">imaginary</span> <span class="n">part</span><span class="p">,</span> <span class="n">respectively</span>
-                                       <span class="p">(</span><span class="n">one</span> <span class="n">more</span> <span class="kn">from</span> <span class="nn">largest</span> <span class="k">if</span> <span class="n">K</span> <span class="ow">is</span> <span class="n">odd</span><span class="p">)</span>
+Per calcolare direttamente il raggio spettrale della matrice $M^{-1}N$ non abbiamo in realtà la necessità di calcolare tutti gli autovalori della matrice e prendere il massimo. Possiamo accedere ad algoritmi che calcolano direttamente la quantità che ci interessa:
+```matlab
+A = gallery('poisson',5); % Discretizzazione del Laplaciano in 2D
+M = diag(A); % A = M - N
+N = M-A;     % N = M - A
+rho = eigs(N,M,1,'largestabs');
+disp(abs(rho))
+```
+che ci restituisce il valore `0.8660` per il raggio spettrale, cioè abbiamo trovato uno **splitting convergente**.
 
-    <span class="n">If</span> <span class="n">SIGMA</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">real</span> <span class="ow">or</span> <span class="nb">complex</span> <span class="n">scalar</span> <span class="n">including</span> <span class="mi">0</span><span class="p">,</span> <span class="n">eigs</span> <span class="n">finds</span> <span class="n">the</span>
-    <span class="n">eigenvalues</span> <span class="n">closest</span> <span class="n">to</span> <span class="n">SIGMA</span><span class="o">.</span>
+Vediamo il manuale del comando `eigs`.
+```
+eigs   Find a few eigenvalues and eigenvectors of a matrix
+ D = eigs(A) returns a vector of A's 6 largest magnitude eigenvalues.
+ A must be square and should be large and sparse.
 
-</pre></div>
-</div>
-<p>da cui leggiamo che quello che abbiamo chiesto a MATLAB di calcolare è un autovalore (<code class="docutils literal notranslate"><span class="pre">1</span></code>) di massimo valore assoluto (<code class="docutils literal notranslate"><span class="pre">'largestabs'</span></code>) che risolva il problema</p>
-<div class="math notranslate nohighlight">
-\[N \mathbf{v} = \lambda M \mathbf{v},\]</div>
-<p>che, nel nostro caso, è equivalente alla richiesta</p>
-<div class="math notranslate nohighlight">
-\[M^{-1}N \mathbf{v} = \lambda \mathbf{v},\]</div>
-<p>cioè quello che cercavamo. Problemi di questa forma sono detti <strong>problemi generalizzati agli autovalori</strong>, ma sono ben al di fuori degli obiettivi di questo corso.</p>
-<div class="admonition warning">
-<p class="admonition-title">Avvertimento</p>
-<p>Tutte le volte che volete risolvere un problema agli autovalori con matrice <span class="math notranslate nohighlight">\(M^{1}N\)</span> la soluzione opportuna è quella di usare la formulazione come problema generalizzato agli autovalori, sia da un punto di vista di stabilità numerica, sia da un punto di vista di velocità di esecuzione del codice.</p>
-</div>
-</section>
+ [...]
+
+ eigs(A,K,SIGMA) and eigs(A,B,K,SIGMA) return K eigenvalues. If SIGMA is:
+
+        'largestabs' or 'smallestabs' - largest or smallest magnitude
+      'largestreal' or 'smallestreal' - largest or smallest real part
+                       'bothendsreal' - K/2 values with largest and
+                                        smallest real part, respectively
+                                        (one more from largest if K is odd)
+
+    For nonsymmetric problems, SIGMA can also be:
+      'largestimag' or 'smallestimag' - largest or smallest imaginary part
+                       'bothendsimag' - K/2 values with largest and
+                                       smallest imaginary part, respectively
+                                       (one more from largest if K is odd)
+
+    If SIGMA is a real or complex scalar including 0, eigs finds the
+    eigenvalues closest to SIGMA.
+
+```
+da cui leggiamo che quello che abbiamo chiesto a MATLAB di calcolare è un autovalore (`1`) di massimo valore assoluto (`'largestabs'`) che risolva il problema
+```{math}
+N \mathbf{v} = \lambda M \mathbf{v},
+```
+che, nel nostro caso, è equivalente alla richiesta
+```{math}
+M^{-1}N \mathbf{v} = \lambda \mathbf{v},
+```
+cioè quello che cercavamo. Problemi di questa forma sono detti **problemi generalizzati agli autovalori**, ma sono ben al di fuori degli obiettivi di questo corso.
+
+:::{warning}
+Tutte le volte che volete risolvere un problema agli autovalori con matrice $M^{1}N$ la soluzione opportuna è quella di usare la formulazione come problema generalizzato agli autovalori, sia da un punto di vista di stabilità numerica, sia da un punto di vista di velocità di esecuzione del codice.
+:::
+-->
 </section>
 <section id="metodo-di-jacobi">
 <h2>Metodo di Jacobi<a class="headerlink" href="#metodo-di-jacobi" title="Link a questa intestazione">#</a></h2>
@@ -582,7 +578,7 @@ cui possiamo sfruttare il <strong>Teorema Spettrale</strong> per interpretare i 
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>Si implementi in maniera vettoriale, cioè <strong>senza</strong> usare cicli <code class="docutils literal notranslate"><span class="pre">for</span></code> per scorrere le righe della matrice,</p></li>
+<li><p>Si implementi in maniera vettoriale, cioè <strong>senza</strong> usare cicli <code class="docutils literal notranslate"><span class="pre">for</span></code> per scorrere le righe della matrice.</p></li>
 <li><p>Si usi il criterio d’arresto basato sull’errore relativo.</p></li>
 </ul>
 <p>Per <em>testare</em> il metodo si usi il seguente programma</p>
@@ -631,8 +627,8 @@ per questo metodo la decomposizione additiva della matrice <span class="math not
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>Si implementi in maniera vettoriale, cioè <strong>senza</strong> usare cicli <code class="docutils literal notranslate"><span class="pre">for</span></code> per scorrere le righe della matrice,</p></li>
-<li><p>Si utilizzi la funzione <code class="docutils literal notranslate"><span class="pre">forwardsolve</span></code> vista in <a class="reference internal" href="laboratorio6.html#forwardandbacwardsolve"><span class="std std-ref">Sostituzione in avanti e all’indietro</span></a></p></li>
+<li><p>Si implementi in maniera vettoriale, cioè <strong>senza</strong> usare cicli <code class="docutils literal notranslate"><span class="pre">for</span></code> per scorrere le righe della matrice.</p></li>
+<li><p>Si utilizzi la funzione <code class="docutils literal notranslate"><span class="pre">forwardsolve</span></code> vista in <a class="reference internal" href="laboratorio6.html#forwardandbacwardsolve"><span class="std std-ref">Sostituzione in avanti e all’indietro</span></a>.</p></li>
 <li><p>Si usi il criterio d’arresto basato sull’errore relativo.</p></li>
 </ul>
 <p>Per <em>testare</em> il metodo si usi il seguente programma</p>

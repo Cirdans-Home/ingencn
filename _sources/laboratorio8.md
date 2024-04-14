@@ -52,9 +52,9 @@ function [x,min_res] = minquad(A,b,flag)
 end
 ```
 - `flag` è una stringa che può assumere il valore `'EqNormali'` oppure `'MetodoQR'` e determina il metodo numerico con cui il problema dei minimi quadrati viene risolto all'interno della *function*.
-- Si calcoli la fattorizzazione $LU$ di $A^{\top}A$ usando l'algoritmo di Doolittle visto nel Laboratorio 7.
+- Si calcoli la fattorizzazione $LU$ di $A^{\top}A$ usando l'algoritmo di Doolittle visto nel Laboratorio 7a.
 - Si usi il comando MATLAB `qr` per calcolare la fattorizzazione $QR$ della matrice $A$.
-- Si usino le funzioni `backwardsolve` e `forwardsolve`, implementate nel Laboratorio 6, per risolvere i sistemi lineari triangolari risultanti.
+- Si usino le funzioni `backwardsolve` e `forwardsolve`, implementate nel Laboratorio 7b, per risolvere i sistemi lineari triangolari risultanti.
 :::
 
 

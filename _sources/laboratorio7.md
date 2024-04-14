@@ -415,7 +415,7 @@ diagonale di uno, matrice triangolare superiore $U$ ed una matrice di
 permutazione $P$ tale che $PA = LU.$ Con un argomento di input *opzionale* è
 possibile scegliere il formato della $P$, ovvero se chiama `lu(A, outputForm)`
 con `outputForm` uguale a `'matrix'` (default) $P$ è memorizzata come una matrice,
-se si chiama con l'opzione `'vector'` allora $P$ è un vettore tale che `A(P,:) = L*U`.  
+se si chiama con l'opzione `'vector'` allora $P$ è un vettore tale che `A(P,:) = L*U`.
 - `[L,U,P,Q] = lu(A)` restituisce una matrice triangolare inferiore $L$ con
 diagonale di uno, matrice triangolare superiore $U$ e due matrici di
 permutazione $P$ e $Q$ tali che $PAQ = LU$. Per una matrice sparsa questa opzione
