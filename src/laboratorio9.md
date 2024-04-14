@@ -1,18 +1,15 @@
-# Laboratorio 9 : Metodi Stazionari per Sistemi Lineari
+# Laboratorio 9 : Metodi Iterativi Stazionari per Sistemi Lineari
 
-Un **metodo iterativo** è una procedura matematica che a partire da un *valore iniziale* genera una sequenza di *soluzioni approssimate* migliorative per una
-determinata classe di problemi, in cui l'approssimazione $n$esima è derivata dai precedenti. Abbiamo già visto, **ed implementato**, metodi di questo tipo per la ricerca degli zeri di una funzione.
+Un **metodo iterativo** è una procedura matematica che a partire da un *valore iniziale* genera una sequenza di *soluzioni approssimate* migliorative, in cui l'approssimazione $n$-esima è derivata dalle precedenti.
 
-In questo laboratorio vogliamo concentrarci invece sulla costruzione di alcuni
+In questo laboratorio vogliamo concentrarci sulla costruzione di alcuni
 metodi di questo tipo per la soluzione di sistemi lineari.
 
 La prima domanda che è legittimo porsi è perché mai vogliamo mettere in piedi
 dei metodi iterativi se abbiamo già dei metodi diretti che possono raggiungere
 la soluzione del problema cercato?
-- A patto di richiedere una tolleranza minore (spesso sufficiente nelle applicazioni) sull'errore commesso sulla soluzione hanno un costo computazionale inferiore alle controparti dirette,
-- Per le dimensioni dei problemi che si vogliono affrontare nelle applicazioni ingegneristiche attuali sono spesso l'unica opzione disponibile (problemi di fluidodinamica computazionale, combustione, meccanica del continuo, ...)
-
-Nel corso e in questo laboratorio ci focalizziamo su alcuni dei metodi più semplici e che, in genere, sono usati come i blocchi costituivi di metodi più complessi (e.g., metodi di tipo *multigrid* o *domain decomposition*) o come acceleratori per la convergenza (in gergo chiamati: *precondizionatori*).
+- A patto di richiedere una tolleranza minore (spesso sufficiente nelle applicazioni) sull'errore commesso sulla soluzione hanno un costo computazionale inferiore alle controparti dirette.
+- Per le dimensioni dei problemi che si vogliono affrontare nelle applicazioni ingegneristiche attuali sono spesso l'unica opzione disponibile (problemi di fluidodinamica computazionale, combustione, meccanica del continuo, ...).
 
 ## Metodi di tipo stazionario
 
@@ -20,7 +17,7 @@ Dato un sistema lineare della forma
 ```{math}
 A \mathbf{x} = \mathbf{b}, \qquad A \in \mathbb{R}^{n \times n},\; \mathbf{x},\mathbf{b} \in \mathbb{R}^n
 ```
-siamo interessati a **metodi di punto fisso** basati sugli *splitting* della matrice $A$. Cioè metodi basati su una decomposizione additiva della matrice della forma
+siamo interessati a **metodi di punto fisso** basati su una decomposizione additiva della matrice $A$ della forma
 ```{math}
 A = M - N, \qquad\text{ con }\qquad \det(M) \neq 0.
 ```
@@ -36,9 +33,9 @@ e quindi
 ```
 Essendo questa un'iterata di punto fisso, la sua convergenza dipende dall'essere una **procedura contrattiva**, avete dimostrato a lezione che questo è equivalente alla richiesta che il *raggio spettrale* della matrice di iterazione $M^{-1}N$ sia strettamente minore di $1$:
 ```{math}
-\rho(M^{-1}N) = \max_{1,\ldots,n }|\lambda_n(M^{-1}N)| < 1.
+\rho(M^{-1}N) = \max_{i=1,\ldots,n}|\lambda_i(M^{-1}N)| < 1.
 ```
-
+<!---
 ### Metodi per il calcolo agli autovalori implementati in MATLAB
 
 In alcuni casi data una matrice $A$ e uno splitting $A = M - N$ è possibile calcolare il *raggio spettrale* carta e penna, oppure inferire le proprietà di convergenza del metodo dalle proprietà della matrice $A$ e della particolare forma dello splitting. Laddove questo non fosse possibile, o volessimo una stima più precisa di quello che sta accadendo, dobbiamo ricorrere a dei metodi numerici a questo scopo. La loro costruzione è al di fuori degli obiettivi di questo corso, tuttavia MATLAB ci fornisce delle *function* che fanno al nostro caso.
@@ -149,6 +146,7 @@ cioè quello che cercavamo. Problemi di questa forma sono detti **problemi gener
 :::{warning}
 Tutte le volte che volete risolvere un problema agli autovalori con matrice $M^{1}N$ la soluzione opportuna è quella di usare la formulazione come problema generalizzato agli autovalori, sia da un punto di vista di stabilità numerica, sia da un punto di vista di velocità di esecuzione del codice.
 :::
+-->
 
 ## Metodo di Jacobi
 
@@ -184,7 +182,7 @@ function [x,res,it] = jacobi(A,b,x,itmax,eps)
 %     it numero di iterazioni
 end
 ```
-- Si implementi in maniera vettoriale, cioè **senza** usare cicli `for` per scorrere le righe della matrice,
+- Si implementi in maniera vettoriale, cioè **senza** usare cicli `for` per scorrere le righe della matrice.
 - Si usi il criterio d'arresto basato sull'errore relativo.
 
 Per *testare* il metodo si usi il seguente programma
@@ -232,8 +230,8 @@ function [x,res,it] = forwardgs(A,b,x,itmax,eps)
 %     it numero di iterazioni
 end
 ```
-- Si implementi in maniera vettoriale, cioè **senza** usare cicli `for` per scorrere le righe della matrice,
-- Si utilizzi la funzione `forwardsolve` vista in {ref}`forwardandbacwardsolve`
+- Si implementi in maniera vettoriale, cioè **senza** usare cicli `for` per scorrere le righe della matrice.
+- Si utilizzi la funzione `forwardsolve` vista in {ref}`forwardandbacwardsolve`.
 - Si usi il criterio d'arresto basato sull'errore relativo.
 
 Per *testare* il metodo si usi il seguente programma

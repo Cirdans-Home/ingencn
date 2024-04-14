@@ -12,7 +12,7 @@ L = eye(n,n);
 U = zeros(n,n);
 
 for i = 1:n
-    for j = 1:(i - 1)
+    for j = 1:i-1
         L(i,j) = (A(i,j) - L(i,1:(j - 1))*U(1:(j - 1),j)) / U(j,j);
     end
     U(i,i:n) = A(i,i:n) - L(i,1:(i - 1))*U(1:(i - 1),i:n);
