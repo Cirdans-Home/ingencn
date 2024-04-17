@@ -419,7 +419,7 @@ title="Print to PDF"
   <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-11-metodi-per-la-soluzione-di-ode">
 <h1>Laboratorio 11 : Metodi per la Soluzione di ODE<a class="headerlink" href="#laboratorio-11-metodi-per-la-soluzione-di-ode" title="Link a questa intestazione">#</a></h1>
 <p>In questo laboratorio ci vogliamo occupare di alcuni metodi per la
-soluzione di un”<strong>equazione differenziale del primo ordine</strong>, la cui forma
+soluzione di una <strong>equazione differenziale del primo ordine</strong>, la cui forma
 generale è</p>
 <div class="math notranslate nohighlight">
 \[y' = f(x,y)\]</div>
@@ -482,7 +482,7 @@ ipotesi simili a quelle già viste, ammette una e una sola soluzione.</p>
 <div class="tip admonition">
 <p class="admonition-title">Equazione differenziale <span class="math notranslate nohighlight">\(\leadsto\)</span> sistema di ordine 1</p>
 <p>Data
-un’equazione differenziale di ordine :math:<code class="docutils literal notranslate"><span class="pre">n</span></code></p>
+un’equazione differenziale di ordine <span class="math notranslate nohighlight">\(n\)</span></p>
 <div class="math notranslate nohighlight">
 \[y^{(n)}=f(x,y,y',y'',\ldots,y^{(n-1)}),\]</div>
 <p>poniamo</p>
@@ -512,11 +512,11 @@ termini di funzioni elementari. Dobbiamo quindi cercare una soluzione
 approssimata usando un metodo numerico.</p>
 <p>La letteratura che tratta i metodi numerici per equazioni
 differenziali con condizioni iniziali è molto vasta. Come primi
-esempi studieremo</p>
+esempi abbiamo visto</p>
 <ul class="simple">
 <li><p>il metodo di Eulero esplicito,</p></li>
 <li><p>il metodi di Eulero implicito,</p></li>
-<li><p>il metodo di Runge-Kutta classico.</p></li>
+<li><p>il metodo di Crank-Nicolson.</p></li>
 </ul>
 <section id="il-metodo-di-eulero-esplicito">
 <h3>Il metodo di Eulero esplicito<a class="headerlink" href="#il-metodo-di-eulero-esplicito" title="Link a questa intestazione">#</a></h3>
@@ -526,7 +526,7 @@ esempi studieremo</p>
   y'=f(x,y)\\y(a)=\eta
   \end{array}
   \right.\end{split}\]</div>
-<p>che vogliamo risolvere numericamente nell’intervallo <span class="math notranslate nohighlight">\([a,b]\)</span>
+<p>che vogliamo risolvere numericamente nell’intervallo <span class="math notranslate nohighlight">\([a,b]\)</span>.
 Discretizziamo la variabile <span class="math notranslate nohighlight">\(x\)</span> fissando nell’intervallo
 <span class="math notranslate nohighlight">\([a,b]\)</span> una <strong>griglia di nodi</strong> <span class="math notranslate nohighlight">\(\{x_i\}_{i=0,\ldots,N}\)</span>
 <strong>equidistanti</strong> di passo <span class="math notranslate nohighlight">\(h&gt;0\)</span>:</p>

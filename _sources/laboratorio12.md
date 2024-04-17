@@ -1,7 +1,7 @@
 # Laboratorio 11 : Metodi per la Soluzione di ODE
 
 In questo laboratorio ci vogliamo occupare di alcuni metodi per la
-soluzione di un'**equazione differenziale del primo ordine**, la cui forma
+soluzione di una **equazione differenziale del primo ordine**, la cui forma
 generale è
 ```{math}
 y' = f(x,y)
@@ -84,7 +84,7 @@ ipotesi simili a quelle già viste, ammette una e una sola soluzione.
 :::{admonition} Equazione differenziale $\leadsto$ sistema di ordine 1
 :class: tip
 Data
- un’equazione differenziale di ordine :math:`n`
+ un’equazione differenziale di ordine $n$
 ```{math}
 y^{(n)}=f(x,y,y',y'',\ldots,y^{(n-1)}),
 ```
@@ -119,11 +119,11 @@ approssimata usando un metodo numerico.
 
 La letteratura che tratta i metodi numerici per equazioni
 differenziali con condizioni iniziali è molto vasta. Come primi
-esempi studieremo
+esempi abbiamo visto
 
 -  il metodo di Eulero esplicito,
 -  il metodi di Eulero implicito,
--  il metodo di Runge-Kutta classico.
+-  il metodo di Crank-Nicolson.
 
 ### Il metodo di Eulero esplicito
 
@@ -134,7 +134,7 @@ Il metodo di Eulero esplicito Consideriamo il problema di Cauchy
   \end{array}
   \right.
 ```
-che vogliamo risolvere numericamente nell’intervallo $[a,b]$
+che vogliamo risolvere numericamente nell’intervallo $[a,b]$.
 Discretizziamo la variabile $x$ fissando nell’intervallo
 $[a,b]$ una **griglia di nodi** $\{x_i\}_{i=0,\ldots,N}$
 **equidistanti** di passo $h>0$:
