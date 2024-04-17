@@ -1,4 +1,4 @@
-# Laboratorio 11 : Il Metodo di Newton
+# Laboratorio 10b : Il Metodo di Newton
 
 Nello scorso laboratorio abbiamo affrontato il problema di trovare lo zero di
 una funzione continua $f : \mathbb{R} \to \mathbb{R}$ utilizzando il metodo di
