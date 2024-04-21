@@ -11,15 +11,15 @@ function [x,min_res] = minquad(A,b,flag)
 
 switch flag
     case 'EqNormali'
-        %[L,U] = lu(A.'*A);
-        [L,U] = doolittlelu(A.'*A);
-        c = A.'*b;
+        %[L,U] = lu(A'*A);
+        [L,U] = doolittlelu(A'*A);
+        c = A'*b;
         y = forwardsolve(L,c); % Ly=c
         x = backwardsolve(U,y); % Ux=y
     case 'MetodoQR'
         [~,n] = size(A);
         [Q, R] = qr(A);
-        c = Q.'*b;
+        c = Q'*b;
         R1 = R(1:n,:);
         c1 = c(1:n);
         x = backwardsolve(R1,c1); % R1*x=c1
