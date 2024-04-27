@@ -15,10 +15,11 @@ if n ~= m
     error("A deve essere quadrata");
 end
 
+res = zeros(itmax,1);
+
 % Controlliamo che la prima iterazione non abbia già soddisfatto la
 % convergenza
-res = zeros(itmax,1);
-res(1) = norm(A*x - b,2);
+res(1) = norm(A*x - b);
 if res(1) < eps
     fprintf("Jacobi ha raggiunto la convergenza in %d iterazioni r(%d) = %1.2e\n",...
         1,1,res(1));
@@ -27,15 +28,14 @@ if res(1) < eps
     return
 end
 
-D = diag(diag(A));
-N = D - A;
-D = diag(D);
+D = diag(A);
+N = diag(D) - A;
 q = b./D;
 for it = 2:itmax
     x = (N*x)./D + q;
     res(it) = norm(A*x-b);
     fprintf("Jacobi iterazione %d residuo %1.2e\n",it,res(it));
-    if res(it) < eps*res(1)
+    if res(it) < eps
         fprintf("\tJacobi ha raggiunto la convergenza in %d iterazioni r(%d) = %1.2e\n",...
             it,it,res(it));
         res = res(1:it);

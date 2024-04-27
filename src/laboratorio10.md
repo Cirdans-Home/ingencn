@@ -297,7 +297,7 @@ Vediamo invece la rappresentazione grafica di quanto ci è stato riassunto con
 `'display','iter'` nella figura a lato.
 
 Questa *funzione* applica una versione modificata di un algoritmo che non fa uso
-delle derivate da `cite`{MR0339493}.
+delle derivate da {cite}`MR0339493`.
 
 :::{tip}
 Si può provare a risolvere gli esercizi precedenti utilizzando invece che il

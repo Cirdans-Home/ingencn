@@ -46,7 +46,4 @@ for it = 2:itmax
 end
 fprintf("\tforwardgs non ha raggiunto la convergenza in %d iterazioni, ultimo residuo è r(%d) = %1.2e\n",...
     it,it,res(it));
-
-
-
 end
