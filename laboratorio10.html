@@ -56,6 +56,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
+    <link rel="prev" title="Laboratorio 9 : Metodi Iterativi Stazionari per Sistemi Lineari" href="laboratorio9.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
     
@@ -115,7 +116,7 @@ const thebe_selector_output = ".output, .cell_output"
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio1.html">
    Laboratorio 1 : Introduzione a MATLAB
@@ -159,6 +160,11 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio9.html">
    Laboratorio 9 : Metodi Iterativi Stazionari per Sistemi Lineari
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Laboratorio 10a : Il Metodo di Bisezione
   </a>
  </li>
 </ul>
@@ -516,13 +522,13 @@ l’esempio dell’Esercizio 1 con il seguente codice:</p>
 <span class="n">axis</span><span class="w"> </span><span class="s">tight</span><span class="w"></span>
 </pre></div>
 </div>
-<p>Che ci permette di produrre la figura <code class="xref std std-numref docutils literal notranslate"><span class="pre">bisezione-errore</span></code>, da cui osserviamo
+<p>Che ci permette di produrre la figura <a class="reference internal" href="#bisezione-errore"><span class="std std-numref">Fig. 10</span></a>, da cui osserviamo
 che l’errore assoluto sulla radice <span class="math notranslate nohighlight">\(c\)</span> segue l’andamento predetto dall’analisi
 teorica.</p>
 <figure class="align-default" id="bisezione-errore">
 <img alt="_images/bisezione-errore.png" src="_images/bisezione-errore.png" />
 <figcaption>
-<p><span class="caption-text">Errore nel metodo di bisezione per la soluzione del problema dell’Esercizio 1.</span><a class="headerlink" href="#bisezione-errore" title="Link a questa immagine">#</a></p>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Errore nel metodo di bisezione per la soluzione del problema dell’Esercizio 1.</span><a class="headerlink" href="#bisezione-errore" title="Link a questa immagine">#</a></p>
 </figcaption>
 </figure>
 <p>Alcune note sul codice usato.</p>
@@ -541,10 +547,10 @@ zero di una funzione <span id="id1">[<a class="reference internal" href="laborat
 <div class="admonition-esercizio-2 admonition">
 <p class="admonition-title">Esercizio 2</p>
 <p>Un cavo d’acciao di lunghezza <span class="math notranslate nohighlight">\(L\)</span> è sospeso come mostrato nella figura:</p>
-<figure class="align-default" id="id14">
+<figure class="align-default" id="id15">
 <img alt="_images/cavo.png" src="_images/cavo.png" />
 <figcaption>
-<p><span class="caption-text">:name: cavo</span><a class="headerlink" href="#id14" title="Link a questa immagine">#</a></p>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">:name: cavo</span><a class="headerlink" href="#id15" title="Link a questa immagine">#</a></p>
 <div class="legend">
 <p>Sospensione di un cavo d’acciaio.</p>
 </div>
@@ -576,10 +582,10 @@ Il rapporto lunghezza/spazio coperto dal cavo è correlato con <span class="math
 <li><p><span class="math notranslate nohighlight">\({\rm d}A\)</span> è un elemento infinitesimo di area.</p></li>
 </ul>
 <p>Per una sezione rettangolare:</p>
-<figure class="align-default" id="id15">
+<figure class="align-default" id="id16">
 <img alt="_images/areamomentrectangle.png" src="_images/areamomentrectangle.png" />
 <figcaption>
-<p><span class="caption-text">:name: inerzia</span><a class="headerlink" href="#id15" title="Link a questa immagine">#</a></p>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">:name: inerzia</span><a class="headerlink" href="#id16" title="Link a questa immagine">#</a></p>
 <div class="legend">
 <p>Momento di inerzia areale per una sezione rettangolare.</p>
 </div>
@@ -610,14 +616,14 @@ alle radici <span class="math notranslate nohighlight">\(\beta_i\)</span> dell�
 <figure class="align-default" id="bernoulli">
 <img alt="_images/bernoulli.png" src="_images/bernoulli.png" />
 <figcaption>
-<p><span class="caption-text">Equazione di Bernoulli per il fluido attraverso un canale aperto.</span><a class="headerlink" href="#bernoulli" title="Link a questa immagine">#</a></p>
+<p><span class="caption-number">Fig. 13 </span><span class="caption-text">Equazione di Bernoulli per il fluido attraverso un canale aperto.</span><a class="headerlink" href="#bernoulli" title="Link a questa immagine">#</a></p>
 </figcaption>
 </figure>
 </aside>
 <div class="admonition-esercizio-4 admonition">
 <p class="admonition-title">Esercizio 4</p>
 <p>L’equazione di Bernoulli per il flusso di un fluido attraverso un canale aperto
-con una piccola protuberanza (<code class="xref std std-numref docutils literal notranslate"><span class="pre">bernoulli</span></code>) è</p>
+con una piccola protuberanza (<a class="reference internal" href="#bernoulli"><span class="std std-numref">Fig. 13</span></a>) è</p>
 <div class="math notranslate nohighlight">
 \[\frac{Q^2}{2 g b^2 h_0^2} + h_0 = \frac{Q^2}{2 g b^2 h^2} + h + H,\]</div>
 <p>dove</p>
@@ -705,10 +711,10 @@ valore dello zero, il valore della funzione in quel punto, la <em>flag</em> di u
 ad un riassunto di quello che l’algoritmo ha fatto.</p>
 <aside class="margin sidebar">
 <p class="sidebar-title"><code class="docutils literal notranslate"><span class="pre">fzero</span></code></p>
-<figure class="align-default" id="id16">
+<figure class="align-default" id="id17">
 <img alt="_images/fzero.png" src="_images/fzero.png" />
 <figcaption>
-<p><span class="caption-text">:name: fzero</span><a class="headerlink" href="#id16" title="Link a questa immagine">#</a></p>
+<p><span class="caption-number">Fig. 14 </span><span class="caption-text">:name: fzero</span><a class="headerlink" href="#id17" title="Link a questa immagine">#</a></p>
 <div class="legend">
 <p>Figure prodotte dalle opzioni del comando <code class="docutils literal notranslate"><span class="pre">fzero</span></code>.</p>
 </div>
@@ -729,7 +735,7 @@ ad un riassunto di quello che l’algoritmo ha fatto.</p>
 <p>Vediamo invece la rappresentazione grafica di quanto ci è stato riassunto con
 <code class="docutils literal notranslate"><span class="pre">'display','iter'</span></code> nella figura a lato.</p>
 <p>Questa <em>funzione</em> applica una versione modificata di un algoritmo che non fa uso
-delle derivate da <code class="docutils literal notranslate"><span class="pre">cite</span></code>{MR0339493}.</p>
+delle derivate da <span id="id2">[<a class="reference internal" href="#id13" title="Richard P. Brent. Algorithms for minimization without derivatives. Prentice-Hall Series in Automatic Computation. Prentice-Hall, Inc., Englewood Cliffs, N.J., 1973.">Bre73</a>]</span>.</p>
 <div class="admonition tip">
 <p class="admonition-title">Suggerimento</p>
 <p>Si può provare a risolvere gli esercizi precedenti utilizzando invece che il
@@ -824,18 +830,21 @@ a perturbare il coefficiente di <span class="math notranslate nohighlight">\(x^{
 <span class="w"> </span><span class="mf">1.0000</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span>0000<span class="nb">i</span><span class="w"></span>
 </pre></div>
 </div>
-<p>che è <strong>sensibilmente diverso</strong>. Se avete la curiosità di leggere di più su questo argomento, il lavoro originale al riguardo è <span id="id2">[<a class="reference internal" href="#id13" title="J. H. Wilkinson. The evaluation of the zeros of ill-conditioned polynomials. I, II. Numer. Math., 1:150–180, 1959. URL: https://doi.org/10.1007/BF01386381, doi:10.1007/BF01386381.">Wil59</a>]</span>.</p>
+<p>che è <strong>sensibilmente diverso</strong>. Se avete la curiosità di leggere di più su questo argomento, il lavoro originale al riguardo è <span id="id3">[<a class="reference internal" href="#id14" title="J. H. Wilkinson. The evaluation of the zeros of ill-conditioned polynomials. I, II. Numer. Math., 1:150–180, 1959. URL: https://doi.org/10.1007/BF01386381, doi:10.1007/BF01386381.">Wil59</a>]</span>.</p>
 </div>
 </section>
 </section>
 <section id="bibliografia">
 <h2>Bibliografia<a class="headerlink" href="#bibliografia" title="Link a questa intestazione">#</a></h2>
-<div class="docutils container" id="id3">
+<div class="docutils container" id="id4">
 <dl class="citation">
-<dt class="label" id="id11"><span class="brackets"><a class="fn-backref" href="#id1">Kiu15</a></span></dt>
+<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id2">Bre73</a></span></dt>
+<dd><p>Richard P. Brent. <em>Algorithms for minimization without derivatives</em>. Prentice-Hall Series in Automatic Computation. Prentice-Hall, Inc., Englewood Cliffs, N.J., 1973.</p>
+</dd>
+<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id1">Kiu15</a></span></dt>
 <dd><p>Jaan Kiusalaas. <em>Numerical Methods in Engineering with MATLAB®</em>. Cambridge University Press, 3 edition, 2015. <a class="reference external" href="https://doi.org/10.1017/CBO9781316341599">doi:10.1017/CBO9781316341599</a>.</p>
 </dd>
-<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id2">Wil59</a></span></dt>
+<dt class="label" id="id14"><span class="brackets"><a class="fn-backref" href="#id3">Wil59</a></span></dt>
 <dd><p>J. H. Wilkinson. The evaluation of the zeros of ill-conditioned polynomials. I, II. <em>Numer. Math.</em>, 1:150–180, 1959. URL: <a class="reference external" href="https://doi.org/10.1007/BF01386381">https://doi.org/10.1007/BF01386381</a>, <a class="reference external" href="https://doi.org/10.1007/BF01386381">doi:10.1007/BF01386381</a>.</p>
 </dd>
 </dl>
@@ -870,6 +879,13 @@ a perturbare il coefficiente di <span class="math notranslate nohighlight">\(x^{
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="laboratorio9.html" title="precedente pagina">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">precedente</p>
+            <p class="prev-next-title">Laboratorio 9 : Metodi Iterativi Stazionari per Sistemi Lineari</p>
+        </div>
+    </a>
 </div>
             </footer>
         </div>
