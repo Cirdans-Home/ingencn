@@ -39,7 +39,7 @@ function [c,residuo] = newton(f,fp,x0,maxit,tol)
 %         x0 approssimazione iniziale
 %         maxit numero massimo di iterazioni consentite
 %         tol tolleranza sul residuo
-% Output: c radici candidate prodotte dal metodo
+% Output: c vettore delle radici candidate prodotte dal metodo
 %         residuo vettore dei residui prodotto dal metodo
 
 end
@@ -109,12 +109,11 @@ $2$. Possiamo investigare l'ordine di convergenza anche in maniera numerica.
 Per farlo ricordiamo che una successione di approssimate $\{x_n\}_n$ che converge
 ad $x$ ha ordine di convergenza $p \geq 1$ se
 ```{math}
-\lim_{n \rightarrow +\infty} \frac{|x_{n+1}-x|}{|x_n -x|^p} = \mu, \text{ con } \mu \in (0,1).
+\lim_{n \rightarrow +\infty} \frac{|x_{n+1}-x|}{|x_n -x|^p} = c, \text{ con } c \in (0,1).
 ```
 Possiamo sfruttare la definizione per ottenere una stima dell'ordine di
-convergenza mediante i rapporti:
-
-che possiamo implementare in una funzione MATLAB come
+convergenza mediante i rapporti tra gli errori a iterazioni successive.
+Questo può essere implementato in una funzione MATLAB come
 ```matlab
 function q = convergenza(xn, xtrue)
 %%CONVERGENZA produce una stima dell'ordine di convergenza della
@@ -263,7 +262,7 @@ Consideriamo alcune applicazioni *ingegneristiche* del problema di trovare lo
 zero di una funzione {cite}`kiusalaas2015`.
 
 :::{margin} Entalpia
-L'**energia libera di Gibbs** (anche chiamata entalpia libera) è una funzione
+L'energia libera di Gibbs (anche chiamata entalpia libera) è una funzione
 di stato termodinamica utilizzata per rappresentare l'energia libera nelle
 trasformazioni a pressione e temperatura costante. In termochimica è usata per
 determinare la spontaneità di una reazione.
