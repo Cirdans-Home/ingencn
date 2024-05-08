@@ -45,7 +45,6 @@ function [c,residuo] = newton(f,fp,x0,maxit,tol)
 end
 ```
 È importante che la funzione implementata
-- faccia il controllo degli input,
 - pre-allochi la memoria per i vettori `c` e `residuo`,
 - riduca al minimo le chiamate ad $f(\cdot)$.
 
