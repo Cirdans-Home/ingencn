@@ -582,17 +582,17 @@ derivata in <a class="reference internal" href="#equation-eq-fd">(14)</a>.</p>
 </section>
 <section id="radici-multiple">
 <h2>Radici multiple<a class="headerlink" href="#radici-multiple" title="Link a questa intestazione">#</a></h2>
-<p>Dalla teoria sappiamo che l’ordine di convergenza del metodo di Newton è
-ridotto quando la radice che <span class="math notranslate nohighlight">\(c\)</span> di <span class="math notranslate nohighlight">\(f\)</span> che cerchiamo è di ordine più elevato.</p>
+<p>L’ordine di convergenza del metodo di Newton è
+ridotto quando la radice che <span class="math notranslate nohighlight">\(c\)</span> di <span class="math notranslate nohighlight">\(f\)</span> che cerchiamo ha molteplicità più elevata.</p>
 <div class="admonition tip">
 <p class="admonition-title">Suggerimento</p>
-<p>Ricordiamo che se <span class="math notranslate nohighlight">\(c\)</span> è una radice di <span class="math notranslate nohighlight">\(f\)</span> il suo <strong>ordine</strong> è il più piccolo
+<p>Ricordiamo che se <span class="math notranslate nohighlight">\(c\)</span> è una radice di <span class="math notranslate nohighlight">\(f\)</span> la sua <strong>molteplicità</strong> è il più piccolo
 <span class="math notranslate nohighlight">\(q\)</span> per cui <span class="math notranslate nohighlight">\(f^{(q)}(c) \neq 0\)</span>.</p>
 <p>Ad <strong>esempio</strong> <span class="math notranslate nohighlight">\(f(x) = (x-2)^2\)</span>, <span class="math notranslate nohighlight">\(f(2) = 0\)</span>, <span class="math notranslate nohighlight">\(f'(x) = 2(x-2)\)</span>, <span class="math notranslate nohighlight">\(f'(2) = 0\)</span>, ma
-<span class="math notranslate nohighlight">\(f''(x) = 2\)</span> per cui <span class="math notranslate nohighlight">\(f''(2) \neq 0\)</span> e dunque l’ordine è <span class="math notranslate nohighlight">\(q=2\)</span>.</p>
+<span class="math notranslate nohighlight">\(f''(x) = 2\)</span> per cui <span class="math notranslate nohighlight">\(f''(2) \neq 0\)</span> e dunque la molteplicità è <span class="math notranslate nohighlight">\(q=2\)</span>.</p>
 </div>
 <p>Possiamo <em>modificare il metodo di Newton</em> per recuperare l’ordine quadratico di
-convergenza <strong>se</strong> sappiamo l’ordine <span class="math notranslate nohighlight">\(q\)</span> della radice che stiamo cercando. Si
+convergenza <strong>se</strong> sappiamo la molteplicità <span class="math notranslate nohighlight">\(q\)</span> della radice che stiamo cercando. Si
 tratta di modificare l’iterazione come:</p>
 <div class="math notranslate nohighlight" id="equation-eq-newton2">
 <span class="eqno">(15)<a class="headerlink" href="#equation-eq-newton2" title="Permalink a questa equazione">#</a></span>\[x_{k+1} = x_k - q \frac{f(x_k)}{f'(x_k)}, \quad x_0 \text{ assegnato }, k \geq 1.\]</div>

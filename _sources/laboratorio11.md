@@ -158,19 +158,19 @@ derivata in {eq}`eq-fd`.
 
 ## Radici multiple
 
-Dalla teoria sappiamo che l'ordine di convergenza del metodo di Newton è
-ridotto quando la radice che $c$ di $f$ che cerchiamo è di ordine più elevato.
+L'ordine di convergenza del metodo di Newton è
+ridotto quando la radice che $c$ di $f$ che cerchiamo ha molteplicità più elevata.
 
 :::{tip}
-Ricordiamo che se $c$ è una radice di $f$ il suo **ordine** è il più piccolo
+Ricordiamo che se $c$ è una radice di $f$ la sua **molteplicità** è il più piccolo
 $q$ per cui $f^{(q)}(c) \neq 0$.
 
 Ad **esempio** $f(x) = (x-2)^2$, $f(2) = 0$, $f'(x) = 2(x-2)$, $f'(2) = 0$, ma
-$f''(x) = 2$ per cui $f''(2) \neq 0$ e dunque l'ordine è $q=2$.
+$f''(x) = 2$ per cui $f''(2) \neq 0$ e dunque la molteplicità è $q=2$.
 :::
 
 Possiamo _modificare il metodo di Newton_ per recuperare l'ordine quadratico di
-convergenza **se** sappiamo l'ordine $q$ della radice che stiamo cercando. Si
+convergenza **se** sappiamo la molteplicità $q$ della radice che stiamo cercando. Si
 tratta di modificare l'iterazione come:
 ```{math}
 :label: eq_newton2
