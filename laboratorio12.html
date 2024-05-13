@@ -56,6 +56,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Indice" href="genindex.html" />
     <link rel="search" title="Cerca" href="search.html" />
+    <link rel="prev" title="Laboratorio 10b : Il Metodo di Newton" href="laboratorio11.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="it">
     
@@ -115,7 +116,7 @@ const thebe_selector_output = ".output, .cell_output"
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio1.html">
    Laboratorio 1 : Introduzione a MATLAB
@@ -169,6 +170,11 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toctree-l1">
   <a class="reference internal" href="laboratorio11.html">
    Laboratorio 10b : Il Metodo di Newton
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Laboratorio 11 : Metodi per la Soluzione di ODE
   </a>
  </li>
 </ul>
@@ -542,42 +548,41 @@ esempi abbiamo visto</p>
   \end{array}
   \right.\end{split}\]</div>
 <p>che vogliamo risolvere numericamente nell’intervallo <span class="math notranslate nohighlight">\([a,b]\)</span>.
-Discretizziamo la variabile <span class="math notranslate nohighlight">\(x\)</span> fissando nell’intervallo
-<span class="math notranslate nohighlight">\([a,b]\)</span> una <strong>griglia di nodi</strong> <span class="math notranslate nohighlight">\(\{x_i\}_{i=0,\ldots,N}\)</span>
+Discretizziamo la variabile <span class="math notranslate nohighlight">\(x\)</span> fissando, nell’intervallo
+<span class="math notranslate nohighlight">\([a,b]\)</span>, una <strong>griglia di nodi</strong> <span class="math notranslate nohighlight">\(\{x_n\}_{n=0,\ldots,N}\)</span>
 <strong>equidistanti</strong> di passo <span class="math notranslate nohighlight">\(h&gt;0\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[ x_0=a,\quad x_i=x_{i-1}+h,\quad x_N=b.\]</div>
+\[ x_0=a,\quad x_n=x_{n-1}+h,\quad x_N=b.\]</div>
 <p>Il comportamento della soluzione
-<span class="math notranslate nohighlight">\(y(x)\)</span> tra <span class="math notranslate nohighlight">\(x_{i-1}\)</span> e <span class="math notranslate nohighlight">\(x_{i}\)</span> può essere stimato come</p>
+<span class="math notranslate nohighlight">\(y(x)\)</span> tra <span class="math notranslate nohighlight">\(x_{n}\)</span> e <span class="math notranslate nohighlight">\(x_{n+1}\)</span> può essere stimato come</p>
 <div class="math notranslate nohighlight">
-\[ y(x_{i})\sim y(x_{i-1})+hf(x_{i-1},y(x_{i-1})).\]</div>
+\[ y(x_{n+1})\sim y(x_{n})+hf(x_{n},y(x_{n})).\]</div>
 <p>Per cui si
 approssima la funzione <span class="math notranslate nohighlight">\(y(x)\)</span> per mezzo dei suoi valori
-<span class="math notranslate nohighlight">\(y_i\)</span> nei nodi <span class="math notranslate nohighlight">\(x_i\)</span>, calcolati tramite la formula</p>
+<span class="math notranslate nohighlight">\(y_{n}\)</span> nei nodi <span class="math notranslate nohighlight">\(x_{n}\)</span>, calcolati tramite la formula</p>
 <div class="math notranslate nohighlight">
-\[y_0=\eta,\quad y_i=y_{i-1}+hf(x_{i-1},y_{i-1}),\quad i=1,\ldots,N.\]</div>
+\[y_0=\eta,\quad y_{n+1}=y_{n}+hf(x_{n},y_{n}),\quad n=0,\ldots,N-1.\]</div>
 <p>Abbiamo ora tutti gli strumenti necessari ad implementare il metodo di
 Eulero esplicito.</p>
 <div class="admonition-esercizio admonition">
 <p class="admonition-title">Esercizio</p>
 <p>Si usi il seguente prototipo per implementare il <strong>metodo di Eulero
-esplicito</strong> per un sistema di equazioni differenziali del primo ordine.</p>
+esplicito</strong> per un’equazione differenziali del primo ordine.</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[y,x]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">expliciteuler</span><span class="p">(</span>f,y0,a,b,h<span class="p">)</span><span class="w"></span>
 <span class="c">%%EXPLICITEULER implementa il metodo di Eulero esplicito per la soluzione</span><span class="w"></span>
-<span class="c">% di un sistema di equazioni differenziali del primo ordine.</span><span class="w"></span>
+<span class="c">% di un&#39;equazione differenziali del primo ordine.</span><span class="w"></span>
 <span class="c">%   INPUT: f function handle della dinamica del sistema f(x,y)</span><span class="w"></span>
 <span class="c">%          y0 vettore delle condizioni iniziali</span><span class="w"></span>
 <span class="c">%          a,b estremi dell&#39;intervallo di integrazione</span><span class="w"></span>
 <span class="c">%          h ampiezza del passo di integrazione</span><span class="w"></span>
-<span class="c">%   OUTPUT: y vettore (matrice) che contiene le soluzioni calcolate nei</span><span class="w"></span>
-<span class="c">%           punti x(i),</span><span class="w"></span>
+<span class="c">%   OUTPUT: y vettore che contiene le soluzioni calcolate nei</span><span class="w"></span>
+<span class="c">%           punti x(n),</span><span class="w"></span>
 <span class="c">%           x vettore dei nodi</span><span class="w"></span>
 
 <span class="k">end</span><span class="w"></span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>Si verifichino gli <em>input</em>,</p></li>
 <li><p>Si minimizzi il numero di chiamate alla funzione <span class="math notranslate nohighlight">\(f\)</span>.</p></li>
 </ul>
 <p>Per testare il codice si può usare il seguente <strong>problema di test</strong></p>
@@ -646,7 +651,7 @@ per stimare numericamente l’ordine di convergenza:</p>
 <figure class="align-default" id="id1">
 <img alt="_images/forward_euler_error.png" src="_images/forward_euler_error.png" />
 <figcaption>
-<p><span class="caption-text">Errore del metodo di Eulero in avanti.</span><a class="headerlink" href="#id1" title="Link a questa immagine">#</a></p>
+<p><span class="caption-number">Fig. 18 </span><span class="caption-text">Errore del metodo di Eulero in avanti.</span><a class="headerlink" href="#id1" title="Link a questa immagine">#</a></p>
 </figcaption>
 </figure>
 <p>ed il valore di <span class="math notranslate nohighlight">\(q = [0.9784, 0.9972, 1.0000, 1.0001, 1.0000, 1.0000]\)</span> ed
@@ -655,15 +660,15 @@ il previsto ordine di convergenza per questo metodo.</p>
 <span class="math notranslate nohighlight">\(x\)</span> e <span class="math notranslate nohighlight">\(y\)</span>. In questo caso si ha <span class="math notranslate nohighlight">\(y(x)\in\mathcal{C}^2([a,b])\)</span>. Possiamo
 quindi applicare la formula di Taylor (con resto in forma di Lagrange):</p>
 <div class="math notranslate nohighlight">
-\[y(x_i)-y(x_{i-1})=hy'(x_{i-1})+\frac{h^2}{2}y''(\xi),\quad \xi\in (x_{i-1},x_i)\]</div>
+\[y(x_{n+1})-y(x_{n})=hy'(x_{n})+\frac{h^2}{2}y''(\xi),\quad \xi\in (x_{n},x_{n+1})\]</div>
 <p>da cui si deduce</p>
 <div class="math notranslate nohighlight">
-\[|\tau_i|=\frac{h}{2}|y''(\xi)|.\]</div>
-<p>Quindi in ogni intervallo <span class="math notranslate nohighlight">\([x_{i-1},x_i]\)</span> l’<strong>errore locale</strong> è
+\[|\tau_{n+1}|=\frac{h}{2}|y''(\xi)|.\]</div>
+<p>Quindi in ogni intervallo <span class="math notranslate nohighlight">\([x_{n},x_{n+1}]\)</span> l’<strong>errore locale</strong> è
 approssimativamente lineare in <span class="math notranslate nohighlight">\(h\)</span>. Poiché <span class="math notranslate nohighlight">\(|y''(\xi)|\)</span> è
-limitato in <span class="math notranslate nohighlight">\([a,b]\)</span>, si ha che <span class="math notranslate nohighlight">\(\tau_i\)</span> tende a zero con
-<span class="math notranslate nohighlight">\(h\)</span> e si scrive <span class="math notranslate nohighlight">\(\tau_i=\mathcal{O}(h)\)</span>.</p>
-<p>Posto <span class="math notranslate nohighlight">\(\tau=\max_{i=1,\ldots,N}|\tau_i|\)</span>, esiste una costante
+limitato in <span class="math notranslate nohighlight">\([a,b]\)</span>, si ha che <span class="math notranslate nohighlight">\(\tau_{n+1}\)</span> tende a zero con
+<span class="math notranslate nohighlight">\(h\)</span> e si scrive <span class="math notranslate nohighlight">\(\tau_{n+1}=\mathcal{O}(h)\)</span>.</p>
+<p>Posto <span class="math notranslate nohighlight">\(\tau=\max_{n=1,\ldots,N}|\tau_n|\)</span>, esiste una costante
 <span class="math notranslate nohighlight">\(M\neq 0\)</span> per cui <span class="math notranslate nohighlight">\(\tau\leq Mh\)</span>, e quindi</p>
 <div class="math notranslate nohighlight">
 \[ \lim_{h\rightarrow 0}\tau=0,\qquad \tau=\mathcal{O}(h).\]</div>
@@ -671,106 +676,124 @@ limitato in <span class="math notranslate nohighlight">\([a,b]\)</span>, si ha c
 <p>Si può dimostrare che, sotto le stesse ipotesi su <span class="math notranslate nohighlight">\(f\)</span>, anche
 l’errore globale tende a zero con <span class="math notranslate nohighlight">\(h\rightarrow 0\)</span>. Concludiamo
 quindi che il metodo di Eulero è convergente.</p>
-<p>Proviamo ora a <strong>cambiare le condizioni iniziali</strong> per la nostra ODE.</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\left\{\begin{array}{l}
+ <!---
+Proviamo ora a **cambiare le condizioni iniziali** per la nostra ODE.
+```{math}
+\left\{\begin{array}{l}
 y'=-\frac{2y+x^2y^2}{x}\\
 y(1)=10
-\end{array}\right.,\quad x\in [1,2].\end{split}\]</div>
-<p>La soluzione generale è data da</p>
-<div class="math notranslate nohighlight">
-\[y(x) = \frac{1}{x^2 (c_1+\log (x))}\]</div>
-<p>e sostituendo la condizione iniziale</p>
-<div class="math notranslate nohighlight">
-\[y(x) = \frac{10}{x^2 (10 \log (x)+1)}.\]</div>
-<p>Tuttavia se ripetiamo l’analisi di convergenza</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Convergenza per diverse condizioni iniziali</span><span class="w"></span>
-<span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
-<span class="n">y0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
+\end{array}\right.,\quad x\in [1,2].
+```
+La soluzione generale è data da
+```{math}
+y(x) = \frac{1}{x^2 (c_1+\log (x))}
+```
+e sostituendo la condizione iniziale
+```{math}
+y(x) = \frac{10}{x^2 (10 \log (x)+1)}.
+```
+Tuttavia se ripetiamo l'analisi di convergenza
+```matlab
+%% Convergenza per diverse condizioni iniziali
+a = 1;
+b = 2;
+y0 = 10;
 
-<span class="n">ytrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="mi">10</span><span class="o">./</span><span class="p">(</span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="o">.*</span><span class="p">(</span><span class="mi">10</span><span class="o">*</span><span class="nb">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span><span class="w"></span>
+ytrue = @(x) 10./(x.^2.*(10*log(x)+1));
 
-<span class="n">k</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span><span class="w"></span>
-<span class="n">h</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">fliplr</span><span class="p">(</span><span class="nb">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">));</span><span class="w"></span>
-<span class="n">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="n">k</span><span class="w"></span>
-<span class="w">    </span><span class="p">[</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">expliciteuler</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">h</span><span class="p">(</span><span class="nb">i</span><span class="p">));</span><span class="w"></span>
-<span class="w">    </span><span class="n">yt</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ytrue</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="n">err</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">norm</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">yt</span><span class="p">)</span><span class="o">/</span><span class="nb">norm</span><span class="p">(</span><span class="n">yt</span><span class="p">);</span><span class="w"></span>
-<span class="k">end</span><span class="w"></span>
+k = 9;
+h = fliplr(logspace(-6,-1,k));
+err = zeros(k,1);
+for i=1:k
+    [y,x] = expliciteuler(f,y0,a,b,h(i));
+    yt = ytrue(x);
+    err(i) = norm(y - yt)/norm(yt);
+end
 
-<span class="nb">figure</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
-<span class="nb">loglog</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="n">err</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;h&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Errore Assoluto&#39;</span><span class="p">);</span><span class="w"></span>
-</pre></div>
-</div>
-<p>Osserviamo:</p>
-<figure class="align-default" id="id2">
-<img alt="_images/forward_euler_error2.png" src="_images/forward_euler_error2.png" />
-<figcaption>
-<p><span class="caption-text">Convergenza del metodo di Eulero per diverse condizioni iniziali.</span><a class="headerlink" href="#id2" title="Link a questa immagine">#</a></p>
-</figcaption>
-</figure>
-<p>Quello che vediamo è che per il valore di <span class="math notranslate nohighlight">\(h\)</span> più grande, ovvero <span class="math notranslate nohighlight">\(h =
-0.1\)</span>, l’errore relativo è maggiore di <span class="math notranslate nohighlight">\(1\)</span>, cioè <strong>non abbiamo
-convergenza</strong>. Nell’esempio il metodo di Eulero ha quindi un
-comportamento instabile.</p>
-<p>La stabilità di un metodo numerico per problemi differenziali viene
+figure(3)
+loglog(h,err,'o-');
+xlabel('h')
+ylabel('Errore Assoluto');
+```
+Osserviamo:
+```{figure} ./images/forward_euler_error2.png
+
+Convergenza del metodo di Eulero per diverse condizioni iniziali.
+```
+Quello che vediamo è che per il valore di $h$ più grande, ovvero $h =
+0.1$, l'errore relativo è maggiore di $1$, cioè **non abbiamo
+convergenza**. Nell’esempio il metodo di Eulero ha quindi un
+comportamento instabile.
+
+La stabilità di un metodo numerico per problemi differenziali viene
 valutata applicando il metodo ad un particolare problema test ed
 esaminando se l’errore, introdotto ad un passo per effetto del
 calcolo, aumenta o diminuisce quando viene propagato al passo
-successivo.</p>
-<p>Nel caso generale del problema</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}  \left\{\begin{array}{l}
+successivo.
+
+Nel caso generale del problema
+```{math}
+  \left\{\begin{array}{l}
   y'=f(x,y)\\y(a)=\eta
   \end{array}
-  \right.\end{split}\]</div>
-<p>la limitazione sul passo <span class="math notranslate nohighlight">\(h\)</span> diventa</p>
-<div class="math notranslate nohighlight">
-\[0&lt;h&lt;\frac{2}{|f_y(x,y)|}\]</div>
-<p>e quindi cambia punto per punto. Nell’esempio con <span class="math notranslate nohighlight">\(f(x,y)=-\frac{2y+x^2y^2}{x}\)</span> e condizione iniziale <span class="math notranslate nohighlight">\(y(1)=1\)</span> si ha</p>
-<div class="math notranslate nohighlight">
-\[f_y(x,y)=-2\,\frac{1+x^2y}{x},\quad f_y(x_0,y_0)=f_y(1,1)=-4.\]</div>
-<p>Perciò al primo passo il metodo di Eulero è stabile per
-<span class="math notranslate nohighlight">\(0&lt;h&lt;1/2\)</span>; questa proprietà vale anche ai passi successivi
-perché si ha <span class="math notranslate nohighlight">\(|f_y(x_i,y_i)|&lt;|f_y(x_0,y_0)|\)</span> e <span class="math notranslate nohighlight">\(i&gt;1\)</span>.</p>
-<p>Quando invece si modifica la condizione iniziale si ha</p>
-<div class="math notranslate nohighlight">
-\[f_y(x_0,u_0)=f_y(1,10)=-22,\]</div>
-<p>quindi per avere stabilità si richiede <span class="math notranslate nohighlight">\(0&lt;h&lt;1/11\)</span> al primo
+  \right.
+```
+la limitazione sul passo $h$ diventa
+```{math}
+0<h<\frac{2}{|f_y(x,y)|}
+```
+e quindi cambia punto per punto. Nell’esempio con $f(x,y)=-\frac{2y+x^2y^2}{x}$ e condizione iniziale $y(1)=1$ si ha
+```{math}
+f_y(x,y)=-2\,\frac{1+x^2y}{x},\quad f_y(x_0,y_0)=f_y(1,1)=-4.
+```
+Perciò al primo passo il metodo di Eulero è stabile per
+$0<h<1/2$; questa proprietà vale anche ai passi successivi
+perché si ha $|f_y(x_i,y_i)|<|f_y(x_0,y_0)|$ e $i>1$.
+
+Quando invece si modifica la condizione iniziale si ha
+```{math}
+f_y(x_0,u_0)=f_y(1,10)=-22,
+```
+quindi per avere stabilità si richiede $0<h<1/11$ al primo
 passo. Ai passi successivi, vista la decrescenza della soluzione,
 questa limitazione risulta indebolita e si può scegliere un valore di
-<span class="math notranslate nohighlight">\(h\)</span> un più grande e questo è ben descritto dalla figura.</p>
+$h$ un più grande e questo è ben descritto dalla figura.
+-->
 </section>
 <section id="il-metodo-di-eulero-implicito">
 <h3>Il metodo di Eulero implicito<a class="headerlink" href="#il-metodo-di-eulero-implicito" title="Link a questa intestazione">#</a></h3>
-<p>Da quanto detto finora sembra
-che scelte piccole del passo <span class="math notranslate nohighlight">\(h\)</span> siano indispensabili per
-assicurare convergenza e stabilità. Tuttavia, a un <span class="math notranslate nohighlight">\(h\)</span> piccolo
+<!---
+Da quanto detto finora sembra
+che scelte piccole del passo $h$ siano indispensabili per
+assicurare convergenza e stabilità. Tuttavia, a un $h$ piccolo
 corrisponde un numero elevato di nodi di integrazione, e
 quindi un notevole volume di calcolo per approssimare la soluzione in
 tutto l’intervallo richiesto, con un conseguente elevato accumulo
-dell’errore di arrotondamento.</p>
-<p>La scelta di <span class="math notranslate nohighlight">\(h\)</span> deve quindi trovare un <strong>compromesso</strong> tra due
+dell’errore di arrotondamento.
+
+La scelta di $h$ deve quindi trovare un **compromesso** tra due
 esigenze: passo sufficientemente piccolo per ragioni di convergenza e
 stabilità, ma al contempo non troppo piccolo per non rendere
-eccessivo l’errore di arrotondamento.</p>
-<p>Per ridurre le richieste su <span class="math notranslate nohighlight">\(h\)</span>, introduciamo quindi i metodi impliciti.</p>
+eccessivo l’errore di arrotondamento.
+
+Per ridurre le richieste su $h$, introduciamo quindi i metodi impliciti.
+-->
+<p>Nel metodo di <em>Eulero all’indietro</em>
+la funzione <span class="math notranslate nohighlight">\(y(x)\)</span> viene approssimata tramite la formula</p>
+<div class="math notranslate nohighlight">
+\[y_0=\eta,\quad y_{n+1}=y_{n}+hf(x_{n+1},y_{n+1}),\quad n=0,\ldots,N-1.\]</div>
 <div class="admonition-esercizio admonition">
 <p class="admonition-title">Esercizio</p>
 <p>Si implementi il metodo di Eulero implicito.</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[y,x]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">impliciteuler</span><span class="p">(</span>f,y0,a,b,h<span class="p">)</span><span class="w"></span>
 <span class="c">%%IMPLICITEULER implementa il metodo di Eulero implicito per la soluzione</span><span class="w"></span>
-<span class="c">% di un sistema di equazioni differenziali del primo ordine.</span><span class="w"></span>
+<span class="c">% di un&#39;equazione differenziali del primo ordine.</span><span class="w"></span>
 <span class="c">%   INPUT: f function handle della dinamica del sistema f(x,y)</span><span class="w"></span>
 <span class="c">%          y0 vettore delle condizioni iniziali</span><span class="w"></span>
 <span class="c">%          a,b estremi dell&#39;intervallo di integrazione</span><span class="w"></span>
 <span class="c">%          h ampiezza del passo di integrazione</span><span class="w"></span>
-<span class="c">%   OUTPUT: y vettore (matrice) che contiene le soluzioni calcolate nei</span><span class="w"></span>
-<span class="c">%           punti x(i),</span><span class="w"></span>
+<span class="c">%   OUTPUT: y vettore che contiene le soluzioni calcolate nei</span><span class="w"></span>
+<span class="c">%           punti x(n),</span><span class="w"></span>
 <span class="c">%           x vettore dei nodi</span><span class="w"></span>
 
 <span class="k">end</span><span class="w"></span>
@@ -778,9 +801,13 @@ eccessivo l’errore di arrotondamento.</p>
 </div>
 <ul class="simple">
 <li><p>Si usi il comando <code class="docutils literal notranslate"><span class="pre">fsolve</span></code> per risolvere il sistema (possibilmente) non
-lineare, per sopprimere le stampe di controllo di <code class="docutils literal notranslate"><span class="pre">fsolve</span></code> si possono
+lineare.
+Si usi l’approssimazione al passo precedente come dato iniziale per il metodo.
+Per sopprimere le stampe di controllo di <code class="docutils literal notranslate"><span class="pre">fsolve</span></code> si possono
 usare le opzioni generate con <code class="docutils literal notranslate"><span class="pre">optimoptions('fsolve','Display','none')</span></code>.</p></li>
 </ul>
+<p>Si implementi una function <code class="docutils literal notranslate"><span class="pre">impliciteulernewton</span></code> con gli stessi input ed output della funzione precedente ma che utilizza il metodo di Newton per la risoluzione del sistema non lineare risultante dall’approssimazione con Eulero implicito.
+Si usi l’approssimazione al passo precedente come dato iniziale per il metodo di Newton.</p>
 <p>Per verificare l’implementazione possiamo usare lo stesso problema test</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Il metodo di Eulero implicito</span><span class="w"></span>
 <span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">x</span>^<span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">y</span>^<span class="mi">2</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"></span>
@@ -803,39 +830,39 @@ usare le opzioni generate con <code class="docutils literal notranslate"><span c
 </pre></div>
 </div>
 </div>
-<p>Controlliamo ora che succede nel caso che prima ci restituiva dei
+<!--
+Controlliamo ora che succede nel caso che prima ci restituiva dei
 problemi confrontando la soluzione con il metodo di Eulero esplicito
-ed implicito.</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Errore di stabilità</span><span class="w"></span>
-<span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
-<span class="n">h</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="mf">1e-1</span><span class="p">;</span><span class="w"></span>
-<span class="n">y0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
+ed implicito.
+```matlab
+%% Errore di stabilità
+a = 1;
+b = 2;
+h  = 1e-1;
+y0 = 10;
 
-<span class="n">ytrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">@(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="mi">10</span><span class="o">./</span><span class="p">(</span><span class="n">x</span><span class="o">.^</span><span class="mi">2</span><span class="o">.*</span><span class="p">(</span><span class="mi">10</span><span class="o">*</span><span class="nb">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span><span class="w"></span>
+ytrue = @(x) 10./(x.^2.*(10*log(x)+1));
 
-<span class="p">[</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">impliciteuler</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">h</span><span class="p">);</span><span class="w"></span>
-<span class="p">[</span><span class="n">yexp</span><span class="p">,</span><span class="n">xexp</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">expliciteuler</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">h</span><span class="p">);</span><span class="w"></span>
+[y,x] = impliciteuler(f,y0,a,b,h);
+[yexp,xexp] = expliciteuler(f,y0,a,b,h);
 
-<span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<span class="nb">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s">&#39;r--&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">ytrue</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="s">&#39;b-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Computed Solution&#39;</span><span class="p">,</span><span class="s">&#39;True Solution&#39;</span><span class="p">},</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">);</span><span class="w"></span>
-<span class="nb">title</span><span class="p">(</span><span class="s">&#39;Eulero implicito&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">plot</span><span class="p">(</span><span class="n">xexp</span><span class="p">,</span><span class="n">yexp</span><span class="p">,</span><span class="s">&#39;r--&#39;</span><span class="p">,</span><span class="n">xexp</span><span class="p">,</span><span class="n">ytrue</span><span class="p">(</span><span class="n">xexp</span><span class="p">),</span><span class="s">&#39;b-&#39;</span><span class="p">,</span><span class="s">&#39;LineWidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Computed Solution&#39;</span><span class="p">,</span><span class="s">&#39;True Solution&#39;</span><span class="p">},</span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">);</span><span class="w"></span>
-<span class="nb">title</span><span class="p">(</span><span class="s">&#39;Eulero esplicito&#39;</span><span class="p">)</span><span class="w"></span>
-</pre></div>
-</div>
-<figure class="align-default" id="id3">
-<img alt="_images/implicit_euler_error.png" src="_images/implicit_euler_error.png" />
-<figcaption>
-<p><span class="caption-text">Differenza in stabilità tra il metodo di Eulero implicito ed esplicito.</span><a class="headerlink" href="#id3" title="Link a questa immagine">#</a></p>
-</figcaption>
-</figure>
+figure(1)
+subplot(1,2,1);
+plot(x,y,'r--',x,ytrue(x),'b-','LineWidth',2);
+xlabel('x');
+legend({'Computed Solution','True Solution'},'FontSize',14);
+title('Eulero implicito');
+subplot(1,2,2);
+plot(xexp,yexp,'r--',xexp,ytrue(xexp),'b-','LineWidth',2);
+xlabel('x');
+legend({'Computed Solution','True Solution'},'FontSize',14);
+title('Eulero esplicito')
+```
+```{figure} ./images/implicit_euler_error.png
+
+Differenza in stabilità tra il metodo di Eulero implicito ed esplicito.
+```
+-->
 </section>
 </section>
 <section id="esercizi">
@@ -845,7 +872,7 @@ ed implicito.</p>
 <figure class="align-default" id="fig-spacecraft">
 <img alt="_images/spacecraft.png" src="_images/spacecraft.png" />
 <figcaption>
-<p><span class="caption-text">Condizioni iniziali</span><a class="headerlink" href="#fig-spacecraft" title="Link a questa immagine">#</a></p>
+<p><span class="caption-number">Fig. 19 </span><span class="caption-text">Condizioni iniziali</span><a class="headerlink" href="#fig-spacecraft" title="Link a questa immagine">#</a></p>
 </figcaption>
 </figure>
 </aside>
@@ -853,7 +880,7 @@ ed implicito.</p>
 <p class="admonition-title">Esercizio</p>
 <p>Un veicolo spaziale è lanciato ad una altitudine di <span class="math notranslate nohighlight">\(H = 772 \text{ km}\)</span>
 sul livello del mare con velocità iniziale <span class="math notranslate nohighlight">\(v_0 = 6700\,\text{m/s}\)</span> nella
-direzione illustrata in <code class="xref std std-numref docutils literal notranslate"><span class="pre">fig:spacecraft</span></code>. Le equazioni differenziali che descrivono
+direzione illustrata in <a class="reference internal" href="#fig-spacecraft"><span class="std std-numref">Fig. 19</span></a>. Le equazioni differenziali che descrivono
 il moto dell’oggetto in coordinate polari sono</p>
 <div class="math notranslate nohighlight">
 \[\ddot{r} = r \dot{\theta}^2 - \frac{G M_e}{r^2}, \quad \ddot{\theta} = - 2 \frac{\dot{r}\dot{\theta}}{r}.\]</div>
@@ -922,6 +949,13 @@ verso il basso dall’inizio della caduta. L’equazione differenziale che descr
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="laboratorio11.html" title="precedente pagina">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">precedente</p>
+            <p class="prev-next-title">Laboratorio 10b : Il Metodo di Newton</p>
+        </div>
+    </a>
 </div>
             </footer>
         </div>
