@@ -15,15 +15,15 @@ dobbiamo sapere un punto sulla curva della soluzione:
 y(a) = \alpha.
 ```
 
-In modo **più formale**, un’**equazione differenziale ordinaria di ordine $n$**, in *forma
+In modo **più formale**, un’**equazione differenziale ordinaria di ordine $p$**, in *forma
 normale*, è un’equazione del tipo
 
 ```{math}
-y^{(n)}=f(x,y,y',y'',\ldots,y^{(n-1)}),
+y^{(p)}=f(x,y,y',y'',\ldots,y^{(p-1)}),
 ```
 
 che lega una funzione $y=y(x)$ e le sue derivate fino
-all’ordine $n$.
+all'ordine $p$.
 
 Soluzione dell’equazione è una funzione $y(x)$, continua e
 derivabile fino all’ordine $n$ in un intervallo opportuno, che
@@ -38,14 +38,14 @@ le soluzioni che soddisfano le condizioni assegnate.
 Nel problema ai valori iniziali, detto anche di Cauchy, all’equazione
 
 ```{math}
-y^{(n)}=f(x,y,y',y'',\ldots,y^{(n-1)}),
+y^{(p)}=f(x,y,y',y'',\ldots,y^{(p-1)}),
 ```
 si assegnano $n$ condizioni iniziali
 ```{math}
- y(x_0)=\eta_0,\quad y'(x_0)=\eta_1,\quad\ldots\quad,y^{(n-1)}(x_0)=\eta_{n-1}.
+ y(x_0)=\eta_0,\quad y'(x_0)=\eta_1,\quad\ldots\quad,y^{(p-1)}(x_0)=\eta_{p-1}.
 ```
  Sotto **opportune condizioni**, si dimostrano l’esistenza e l’unicità
- della soluzione. In particolare, nel caso $n=1$
+ della soluzione. In particolare, nel caso $p=1$
 ```{math}
     \left\{\begin{array}{l}
     y'=f(x,y)\quad\\y(x_0)=\eta
@@ -59,14 +59,14 @@ si assegnano $n$ condizioni iniziali
 Più in generale, possiamo guardare ad un sistema $n$ equazioni differenziali del primo ordine
 ```{math}
   \left\{\begin{array}{l}
-  y_1'=f_1(x,y_1,\ldots,y_n)\\
-  y_2'=f_2(x,y_1,\ldots,y_n)\\
+  y_1'=f_1(x,y_1,\ldots,y_p)\\
+  y_2'=f_2(x,y_1,\ldots,y_p)\\
   \ldots\\
-  y_n'=f_n(x,y_1,\ldots,y_n)\\
+  y_p'=f_n(x,y_1,\ldots,y_p)\\
   \end{array}\right.
 ```
-dove $f_1,\ldots,f_n$ sono $n$ funzioni di $n+1$
-variabili e $y_1(x), y_2(x),\ldots,y_n(x)$ sono le $n$ incognite.
+dove $f_1,\ldots,f_p$ sono $p$ funzioni di $p+1$
+variabili e $y_1(x), y_2(x),\ldots,y_p(x)$ sono le $p$ incognite.
 
 In **forma compatta**:
 ```{math}
@@ -76,7 +76,7 @@ dove ${\bf y}$, ${\bf y}'$ e ${\bf f}$ sono *vettori di funzioni*.
 
 Se a questo sistema associamo le **condizioni iniziali**
 ```{math}
-{\bf y}(x_0)=(\eta_0,\eta_1,\ldots,\eta_{n-1})^T,
+{\bf y}(x_0)=(\eta_0,\eta_1,\ldots,\eta_{p-1})^T,
 ```
 otteniamo il corrispondente problema ai valori iniziali, che, sotto
 ipotesi simili a quelle già viste, ammette una e una sola soluzione.
@@ -84,13 +84,13 @@ ipotesi simili a quelle già viste, ammette una e una sola soluzione.
 :::{admonition} Equazione differenziale $\leadsto$ sistema di ordine 1
 :class: tip
 Data
- un’equazione differenziale di ordine $n$
+ un’equazione differenziale di ordine $p$
 ```{math}
-y^{(n)}=f(x,y,y',y'',\ldots,y^{(n-1)}),
+y^{(p)}=f(x,y,y',y'',\ldots,y^{(p-1)}),
 ```
  poniamo
 ```{math}
-y_1(x)=y(x),\quad y_2(x)=y'(x),\quad\ldots\quad y_n(x)=y^{(n-1)}(x).
+y_1(x)=y(x),\quad y_2(x)=y'(x),\quad\ldots\quad y_p(x)=y^{(p-1)}(x).
 ```
  Allora l’equazione si trasforma in un sistema di equazioni del primo
  ordine
@@ -99,8 +99,8 @@ y_1(x)=y(x),\quad y_2(x)=y'(x),\quad\ldots\quad y_n(x)=y^{(n-1)}(x).
     y_1'=y_2\\
     y_2'=y_3\\
     \ldots\\
-    y_{n-1}'=y_n\\
-    y_n'=f(x,y_1,y_2,\ldots,y_n)
+    y_{p-1}'=y_p\\
+    y_p'=f(x,y_1,y_2,\ldots,y_p)
     \end{array}\right.
 ```
 :::
