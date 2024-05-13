@@ -14,8 +14,8 @@ N = length(x);
 
 y = zeros(length(y0),N);
 y(:,1) = y0;
-for i=2:N
-    y(:,i) = y(:,i-1) + h*f(x(i-1),y(:,i-1));
+for n=2:N
+    y(:,n) = y(:,n-1) + h*f(x(n-1),y(:,n-1));
 end
 
 end

@@ -135,43 +135,43 @@ Il metodo di Eulero esplicito Consideriamo il problema di Cauchy
   \right.
 ```
 che vogliamo risolvere numericamente nell’intervallo $[a,b]$.
-Discretizziamo la variabile $x$ fissando nell’intervallo
-$[a,b]$ una **griglia di nodi** $\{x_i\}_{i=0,\ldots,N}$
+Discretizziamo la variabile $x$ fissando, nell’intervallo
+$[a,b]$, una **griglia di nodi** $\{x_n\}_{n=0,\ldots,N}$
 **equidistanti** di passo $h>0$:
 ```{math}
- x_0=a,\quad x_i=x_{i-1}+h,\quad x_N=b.
+ x_0=a,\quad x_n=x_{n-1}+h,\quad x_N=b.
 ```
 Il comportamento della soluzione
-$y(x)$ tra $x_{i-1}$ e $x_{i}$ può essere stimato come
+$y(x)$ tra $x_{n}$ e $x_{n+1}$ può essere stimato come
 ```{math}
- y(x_{i})\sim y(x_{i-1})+hf(x_{i-1},y(x_{i-1})).
+ y(x_{n+1})\sim y(x_{n})+hf(x_{n},y(x_{n})).
 ```
 Per cui si
 approssima la funzione $y(x)$ per mezzo dei suoi valori
-$y_i$ nei nodi $x_i$, calcolati tramite la formula
+$y_{n}$ nei nodi $x_{n}$, calcolati tramite la formula
 ```{math}
-y_0=\eta,\quad y_i=y_{i-1}+hf(x_{i-1},y_{i-1}),\quad i=1,\ldots,N.
+y_0=\eta,\quad y_{n+1}=y_{n}+hf(x_{n},y_{n}),\quad n=0,\ldots,N-1.
 ```
 Abbiamo ora tutti gli strumenti necessari ad implementare il metodo di
 Eulero esplicito.
 :::{admonition} Esercizio
 Si usi il seguente prototipo per implementare il **metodo di Eulero
-esplicito** per un sistema di equazioni differenziali del primo ordine.
+esplicito** per un'equazione differenziali del primo ordine.
 ```matlab
 function [y,x] = expliciteuler(f,y0,a,b,h)
 %%EXPLICITEULER implementa il metodo di Eulero esplicito per la soluzione
-% di un sistema di equazioni differenziali del primo ordine.
+% di un'equazione differenziali del primo ordine.
 %   INPUT: f function handle della dinamica del sistema f(x,y)
 %          y0 vettore delle condizioni iniziali
 %          a,b estremi dell'intervallo di integrazione
 %          h ampiezza del passo di integrazione
-%   OUTPUT: y vettore (matrice) che contiene le soluzioni calcolate nei
-%           punti x(i),
+%   OUTPUT: y vettore che contiene le soluzioni calcolate nei
+%           punti x(n),
 %           x vettore dei nodi
 
 end
 ```
-- Si verifichino gli *input*,
+
 - Si minimizzi il numero di chiamate alla funzione $f$.
 
 Per testare il codice si può usare il seguente **problema di test**
@@ -252,18 +252,18 @@ Infatti, se supponiamo che $f(x,y)$ abbia derivate continue rispetto a
 $x$ e $y$. In questo caso si ha $y(x)\in\mathcal{C}^2([a,b])$. Possiamo
 quindi applicare la formula di Taylor (con resto in forma di Lagrange):
 ```{math}
-y(x_i)-y(x_{i-1})=hy'(x_{i-1})+\frac{h^2}{2}y''(\xi),\quad \xi\in (x_{i-1},x_i)
+y(x_{n+1})-y(x_{n})=hy'(x_{n})+\frac{h^2}{2}y''(\xi),\quad \xi\in (x_{n},x_{n+1})
 ```
 da cui si deduce
 ```{math}
-|\tau_i|=\frac{h}{2}|y''(\xi)|.
+|\tau_{n+1}|=\frac{h}{2}|y''(\xi)|.
 ```
-Quindi in ogni intervallo $[x_{i-1},x_i]$ l’**errore locale** è
+Quindi in ogni intervallo $[x_{n},x_{n+1}]$ l’**errore locale** è
 approssimativamente lineare in $h$. Poiché $|y''(\xi)|$ è
-limitato in $[a,b]$, si ha che $\tau_i$ tende a zero con
-$h$ e si scrive $\tau_i=\mathcal{O}(h)$.
+limitato in $[a,b]$, si ha che $\tau_{n+1}$ tende a zero con
+$h$ e si scrive $\tau_{n+1}=\mathcal{O}(h)$.
 
-Posto $\tau=\max_{i=1,\ldots,N}|\tau_i|$, esiste una costante
+Posto $\tau=\max_{n=1,\ldots,N}|\tau_n|$, esiste una costante
 $M\neq 0$ per cui $\tau\leq Mh$, e quindi
 ```{math}
  \lim_{h\rightarrow 0}\tau=0,\qquad \tau=\mathcal{O}(h).
@@ -274,6 +274,7 @@ Si può dimostrare che, sotto le stesse ipotesi su $f$, anche
 l’errore globale tende a zero con $h\rightarrow 0$. Concludiamo
 quindi che il metodo di Eulero è convergente.
 
+ <!---
 Proviamo ora a **cambiare le condizioni iniziali** per la nostra ODE.
 ```{math}
 \left\{\begin{array}{l}
@@ -355,9 +356,11 @@ quindi per avere stabilità si richiede $0<h<1/11$ al primo
 passo. Ai passi successivi, vista la decrescenza della soluzione,
 questa limitazione risulta indebolita e si può scegliere un valore di
 $h$ un più grande e questo è ben descritto dalla figura.
+-->
 
 ### Il metodo di Eulero implicito
 
+<!---
 Da quanto detto finora sembra
 che scelte piccole del passo $h$ siano indispensabili per
 assicurare convergenza e stabilità. Tuttavia, a un $h$ piccolo
@@ -372,27 +375,38 @@ stabilità, ma al contempo non troppo piccolo per non rendere
 eccessivo l’errore di arrotondamento.
 
 Per ridurre le richieste su $h$, introduciamo quindi i metodi impliciti.
+-->
 
+Nel metodo di *Eulero all'indietro*
+la funzione $y(x)$ viene approssimata tramite la formula
+```{math}
+y_0=\eta,\quad y_{n+1}=y_{n}+hf(x_{n+1},y_{n+1}),\quad n=0,\ldots,N-1.
+```
 
 :::{admonition} Esercizio
 Si implementi il metodo di Eulero implicito.
 ```matlab
 function [y,x] = impliciteuler(f,y0,a,b,h)
 %%IMPLICITEULER implementa il metodo di Eulero implicito per la soluzione
-% di un sistema di equazioni differenziali del primo ordine.
+% di un'equazione differenziali del primo ordine.
 %   INPUT: f function handle della dinamica del sistema f(x,y)
 %          y0 vettore delle condizioni iniziali
 %          a,b estremi dell'intervallo di integrazione
 %          h ampiezza del passo di integrazione
-%   OUTPUT: y vettore (matrice) che contiene le soluzioni calcolate nei
-%           punti x(i),
+%   OUTPUT: y vettore che contiene le soluzioni calcolate nei
+%           punti x(n),
 %           x vettore dei nodi
 
 end
 ```
 - Si usi il comando `fsolve` per risolvere il sistema (possibilmente) non
-lineare, per sopprimere le stampe di controllo di `fsolve` si possono
+lineare.
+Si usi l'approssimazione al passo precedente come dato iniziale per il metodo.
+Per sopprimere le stampe di controllo di `fsolve` si possono
 usare le opzioni generate con `optimoptions('fsolve','Display','none')`.
+
+Si implementi una function `impliciteulernewton` con gli stessi input ed output della funzione precedente ma che utilizza il metodo di Newton per la risoluzione del sistema non lineare risultante dall'approssimazione con Eulero implicito. 
+Si usi l'approssimazione al passo precedente come dato iniziale per il metodo di Newton.
 
 Per verificare l'implementazione possiamo usare lo stesso problema test
 ```matlab
@@ -417,6 +431,7 @@ ylabel('Errore Assoluto');
 ```
 :::
 
+<!--
 Controlliamo ora che succede nel caso che prima ci restituiva dei
 problemi confrontando la soluzione con il metodo di Eulero esplicito
 ed implicito.
@@ -448,6 +463,8 @@ title('Eulero esplicito')
 
 Differenza in stabilità tra il metodo di Eulero implicito ed esplicito.
 ```
+-->
+
 
 ## Esercizi
 
