@@ -26,7 +26,7 @@ che lega una funzione $y=y(x)$ e le sue derivate fino
 all'ordine $p$.
 
 Soluzione dell’equazione è una funzione $y(x)$, continua e
-derivabile fino all’ordine $n$ in un intervallo opportuno, che
+derivabile fino all’ordine $p$ in un intervallo opportuno, che
 soddisfa l’equazione.
 
 In generale, un’equazione differenziale ha infinite soluzioni.
@@ -40,7 +40,7 @@ Nel problema ai valori iniziali, detto anche di Cauchy, all’equazione
 ```{math}
 y^{(p)}=f(x,y,y',y'',\ldots,y^{(p-1)}),
 ```
-si assegnano $n$ condizioni iniziali
+si assegnano $p$ condizioni iniziali
 ```{math}
  y(x_0)=\eta_0,\quad y'(x_0)=\eta_1,\quad\ldots\quad,y^{(p-1)}(x_0)=\eta_{p-1}.
 ```
@@ -56,7 +56,7 @@ si assegnano $n$ condizioni iniziali
  che $f(x,y)$ sia continua rispetto a $x$ e *uniformemente
  lipschitziana* rispetto a $y$.
 
-Più in generale, possiamo guardare ad un sistema $n$ equazioni differenziali del primo ordine
+Più in generale, possiamo guardare ad un sistema $p$ equazioni differenziali del primo ordine
 ```{math}
   \left\{\begin{array}{l}
   y_1'=f_1(x,y_1,\ldots,y_p)\\
