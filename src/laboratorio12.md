@@ -127,7 +127,7 @@ esempi abbiamo visto
 
 ### Il metodo di Eulero esplicito
 
-Il metodo di Eulero esplicito Consideriamo il problema di Cauchy
+Consideriamo il problema di Cauchy
 ```{math}
   \left\{\begin{array}{l}
   y'=f(x,y)\\y(a)=\eta
@@ -160,7 +160,7 @@ esplicito** per un'equazione differenziali del primo ordine.
 ```matlab
 function [y,x] = expliciteuler(f,y0,a,b,h)
 %%EXPLICITEULER implementa il metodo di Eulero esplicito per la soluzione
-% di un'equazione differenziali del primo ordine.
+% di un'equazione differenziale del primo ordine.
 %   INPUT: f function handle della dinamica del sistema f(x,y)
 %          y0 vettore delle condizioni iniziali
 %          a,b estremi dell'intervallo di integrazione
@@ -388,7 +388,7 @@ Si implementi il metodo di Eulero implicito.
 ```matlab
 function [y,x] = impliciteuler(f,y0,a,b,h)
 %%IMPLICITEULER implementa il metodo di Eulero implicito per la soluzione
-% di un'equazione differenziali del primo ordine.
+% di un'equazione differenziale del primo ordine.
 %   INPUT: f function handle della dinamica del sistema f(x,y)
 %          y0 vettore delle condizioni iniziali
 %          a,b estremi dell'intervallo di integrazione
