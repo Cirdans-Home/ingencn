@@ -4,6 +4,8 @@
 title: Calcolo Numerico - Esercitazioni di Laboratorio
 author: F. Durastante, L. Heltai, C. Pagliantini
 logo: logo.png
+copyright: "2025"  # Update copyright year to 2025
+only_build_toc_files: true
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html

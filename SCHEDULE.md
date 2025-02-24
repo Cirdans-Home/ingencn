@@ -1,8 +1,15 @@
-Week 1: 27-28 feb - LUCA
+Week 1: 25-26 feb - LUCA
 
 - Introduzione al corso
-- Richiami di algebra lineare
 - Introduzione agli ambienti e comandi di MATLAB (in laboratorio)
+- Richiami di algebra lineare
+
+  - Spazi vettoriali, sottospazi, indipendenza lineare
+  - Norma, prodotto scalare
+  - Basi e dimensione
+  - Applicazioni lineari
+  - Matrici, operazioni su matrici, rango, immagine e nucleo
+  - Autovalori e autovettori
 
 Week 2: 5-6 mar - LUCA
 

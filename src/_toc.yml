@@ -4,16 +4,16 @@
 format: jb-book
 root: intro
 chapters:
-- file: laboratorio1
-- file: laboratorio2
-- file: laboratorio3
-- file: laboratorio4
-- file: laboratorio5
-- file: laboratorio6
-- file: laboratorio7
-- file: laboratorio8
-- file: laboratorio9
-- file: laboratorio10
-- file: laboratorio11
-- file: laboratorio12
-- file: laboratorio14
+- file: laboratorio_01
+# - file: laboratorio_02
+# - file: laboratorio_03
+# - file: laboratorio_04
+# - file: laboratorio_05
+# - file: laboratorio_06
+# - file: laboratorio_07
+# - file: laboratorio_08
+# - file: laboratorio_09
+# - file: laboratorio_10
+# - file: laboratorio_11
+# - file: laboratorio_12
+# - file: laboratorio_14
