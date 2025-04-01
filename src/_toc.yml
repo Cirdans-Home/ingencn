@@ -8,8 +8,8 @@ chapters:
   - file: laboratorio_02
   - file: laboratorio_03
   - file: laboratorio_04
-# - file: laboratorio_05
-# - file: laboratorio_06
+  - file: laboratorio_05
+  - file: laboratorio_06
 # - file: laboratorio_07
 # - file: laboratorio_08
 # - file: laboratorio_09
