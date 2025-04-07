@@ -55,7 +55,7 @@ dove i **pesi** non sono nient'altro che gli integrali
 Vediamo e **implementiamo** ora alcune celebri formule di quadratura di
 questa forma.
 
-## Regola composita dei trapezi
+## Formula dei trapezi
 
 Supponiamo di scegliere $n=1$, ovvero $h = b-a$ e quindi $x_0 = a$,
 $x_1 = b$, e quindi
@@ -112,7 +112,7 @@ fprintf("Dovrebbe essere dell'ordine di: %e\n", h^3/12);
 
 non **abbiamo nemmeno una cifra significativa corretta**.
 
-Per *risolvere questo inconveniente*, possiamo passare ad utilizzare una
+Per *risolvere questo inconveniente*, possiamo passare ad utilizzare una formula
 composita. Dividiamo di nuovo l'intervallo $[a,b]$ in $n$
 sotto-intervalli di ampiezza $h = (b-a)/n$ e approssimiamo su ogni sotto-intervallo l'integrale con la formula dei trapezi locale
 
@@ -413,7 +413,7 @@ fprintf("\n\tL'errore è %e\n",abs(I - Itrue)/Itrue);
 
 La formula di quadratura di Simpson può essere ottenuta di nuovo come una
 formula di Newton-Cotes con $n = 2$. Laddove nel caso dei trapezi avevamo
-fissato una interpolate lineare, questa volta abbiamo scelto una
+fissato una interpolante lineare, questa volta abbiamo scelto una
 interpolante quadratica attraverso tre nodi adiacenti.
 
 Possiamo ricavarla direttamente dalla definizione su un solo intervallo $[a,b]$ con i nodi

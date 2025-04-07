@@ -320,8 +320,8 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#regola-composita-dei-trapezi">
-   Regola composita dei trapezi
+  <a class="reference internal nav-link" href="#formula-dei-trapezi">
+   Formula dei trapezi
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -371,8 +371,8 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#regola-composita-dei-trapezi">
-   Regola composita dei trapezi
+  <a class="reference internal nav-link" href="#formula-dei-trapezi">
+   Formula dei trapezi
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -446,8 +446,8 @@ forma di Lagrange sui valori <span class="math notranslate nohighlight">\(\{ (x_
 \[\omega_i = \int_{a}^{b} \ell_i(x)\,{\rm d}x, \quad i=0,\ldots,n.\]</div>
 <p>Vediamo e <strong>implementiamo</strong> ora alcune celebri formule di quadratura di
 questa forma.</p>
-<section id="regola-composita-dei-trapezi">
-<h2>Regola composita dei trapezi<a class="headerlink" href="#regola-composita-dei-trapezi" title="Link a questa intestazione">#</a></h2>
+<section id="formula-dei-trapezi">
+<h2>Formula dei trapezi<a class="headerlink" href="#formula-dei-trapezi" title="Link a questa intestazione">#</a></h2>
 <p>Supponiamo di scegliere <span class="math notranslate nohighlight">\(n=1\)</span>, ovvero <span class="math notranslate nohighlight">\(h = b-a\)</span> e quindi <span class="math notranslate nohighlight">\(x_0 = a\)</span>,
 <span class="math notranslate nohighlight">\(x_1 = b\)</span>, e quindi</p>
 <div class="math notranslate nohighlight">
@@ -488,7 +488,7 @@ l’integrale le cose peggiorano nettamente</p>
 </pre></div>
 </div>
 <p>non <strong>abbiamo nemmeno una cifra significativa corretta</strong>.</p>
-<p>Per <em>risolvere questo inconveniente</em>, possiamo passare ad utilizzare una
+<p>Per <em>risolvere questo inconveniente</em>, possiamo passare ad utilizzare una formula
 composita. Dividiamo di nuovo l’intervallo <span class="math notranslate nohighlight">\([a,b]\)</span> in <span class="math notranslate nohighlight">\(n\)</span>
 sotto-intervalli di ampiezza <span class="math notranslate nohighlight">\(h = (b-a)/n\)</span> e approssimiamo su ogni sotto-intervallo l’integrale con la formula dei trapezi locale</p>
 <div class="math notranslate nohighlight">
@@ -729,7 +729,7 @@ mettere insieme la funzione ricorsiva</p>
 <h2>Formula di Simpson<a class="headerlink" href="#formula-di-simpson" title="Link a questa intestazione">#</a></h2>
 <p>La formula di quadratura di Simpson può essere ottenuta di nuovo come una
 formula di Newton-Cotes con <span class="math notranslate nohighlight">\(n = 2\)</span>. Laddove nel caso dei trapezi avevamo
-fissato una interpolate lineare, questa volta abbiamo scelto una
+fissato una interpolante lineare, questa volta abbiamo scelto una
 interpolante quadratica attraverso tre nodi adiacenti.</p>
 <p>Possiamo ricavarla direttamente dalla definizione su un solo intervallo <span class="math notranslate nohighlight">\([a,b]\)</span> con i nodi</p>
 <div class="math notranslate nohighlight">
