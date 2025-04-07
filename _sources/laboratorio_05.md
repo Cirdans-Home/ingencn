@@ -412,7 +412,7 @@ fprintf("\n\tL'errore è %e\n",abs(I - Itrue)/Itrue);
 ## Formula di Simpson
 
 La formula di quadratura di Simpson può essere ottenuta di nuovo come una
-formula di Newton-Cotes con $n = 2$. Laddove nel caso dei trapezi avevamo
+formula di Newton-Cotes con $n = 2$ e $h = (b-a)/n$. Laddove nel caso dei trapezi avevamo
 fissato una interpolante lineare, questa volta abbiamo scelto una
 interpolante quadratica attraverso tre nodi adiacenti.
 
@@ -425,15 +425,15 @@ x_0 = a, \quad x_1 = \frac{a+b}{2}, \quad x_2 = b,
 da cui abbiamo che i pesi si ottengono come
 
 ```{math}
-\omega_0 = \int_{a}^{b} \ell_0(x)\,{\rm d}x = \frac{h}{6}, \\
-\omega_1 = \int_{a}^{b} \ell_1(x)\,{\rm d}x = \frac{2h}{3}, \\
-\omega_2 = \int_{a}^{b} \ell_2(x)\,{\rm d}x = \frac{h}{6},
+\omega_0 = \int_{a}^{b} \ell_0(x)\,{\rm d}x = \frac{h}{3}, \\
+\omega_1 = \int_{a}^{b} \ell_1(x)\,{\rm d}x = \frac{4h}{3}, \\
+\omega_2 = \int_{a}^{b} \ell_2(x)\,{\rm d}x = \frac{h}{3},
 ```
 
 e quindi
 
 ```{math}
-I = \sum_{i=0}^{2} \omega_i f(x_i) = \frac{h}{6}\left[ f(a) + 4f\left(\frac{a+b}{2}\right)+f(b)\right].
+I = \sum_{i=0}^{2} \omega_i f(x_i) = \frac{b-a}{6}\left[ f(a) + 4f\left(\frac{a+b}{2}\right)+f(b)\right].
 ```
 
 :::{tip}
@@ -443,7 +443,7 @@ In questo modo i nodi diventano $\{-h,0,h\}$ e gli integrali sono più semplici 
 :::
 
 :::{danger}
-La regola di Simpson che abbiamo scritto richiede che il numero di
+La regola di Simpson, vista come formula di Newton-Cotes, richiede che il numero di
 intervalli sia pari, ovvero che il numero di nodi sia dispari. Se
 vogliamo ammettere un qualunque numero di intervalli $n$, è necessario
 che il primo (o l'ultimo) intervallo usi 4 invece che 3 punti.
@@ -471,7 +471,7 @@ function I = simpson(f,a,b,n)
 % formula di Simpson.
 %   INPUT:  f = handle della funzione di integrare,
 %           a,b = estremi di integrazione
-%           n numero di intervalli
+%           n numero di sub-intervalli
 
 if mod(n+1,2) ~= 1
     error('n deve essere pari');

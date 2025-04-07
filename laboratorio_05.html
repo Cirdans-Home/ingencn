@@ -728,7 +728,7 @@ mettere insieme la funzione ricorsiva</p>
 <section id="formula-di-simpson">
 <h2>Formula di Simpson<a class="headerlink" href="#formula-di-simpson" title="Link a questa intestazione">#</a></h2>
 <p>La formula di quadratura di Simpson può essere ottenuta di nuovo come una
-formula di Newton-Cotes con <span class="math notranslate nohighlight">\(n = 2\)</span>. Laddove nel caso dei trapezi avevamo
+formula di Newton-Cotes con <span class="math notranslate nohighlight">\(n = 2\)</span> e <span class="math notranslate nohighlight">\(h = (b-a)/n\)</span>. Laddove nel caso dei trapezi avevamo
 fissato una interpolante lineare, questa volta abbiamo scelto una
 interpolante quadratica attraverso tre nodi adiacenti.</p>
 <p>Possiamo ricavarla direttamente dalla definizione su un solo intervallo <span class="math notranslate nohighlight">\([a,b]\)</span> con i nodi</p>
@@ -736,12 +736,12 @@ interpolante quadratica attraverso tre nodi adiacenti.</p>
 \[x_0 = a, \quad x_1 = \frac{a+b}{2}, \quad x_2 = b,\]</div>
 <p>da cui abbiamo che i pesi si ottengono come</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\omega_0 = \int_{a}^{b} \ell_0(x)\,{\rm d}x = \frac{h}{6}, \\
-\omega_1 = \int_{a}^{b} \ell_1(x)\,{\rm d}x = \frac{2h}{3}, \\
-\omega_2 = \int_{a}^{b} \ell_2(x)\,{\rm d}x = \frac{h}{6},\end{split}\]</div>
+\[\begin{split}\omega_0 = \int_{a}^{b} \ell_0(x)\,{\rm d}x = \frac{h}{3}, \\
+\omega_1 = \int_{a}^{b} \ell_1(x)\,{\rm d}x = \frac{4h}{3}, \\
+\omega_2 = \int_{a}^{b} \ell_2(x)\,{\rm d}x = \frac{h}{3},\end{split}\]</div>
 <p>e quindi</p>
 <div class="math notranslate nohighlight">
-\[I = \sum_{i=0}^{2} \omega_i f(x_i) = \frac{h}{6}\left[ f(a) + 4f\left(\frac{a+b}{2}\right)+f(b)\right].\]</div>
+\[I = \sum_{i=0}^{2} \omega_i f(x_i) = \frac{b-a}{6}\left[ f(a) + 4f\left(\frac{a+b}{2}\right)+f(b)\right].\]</div>
 <div class="admonition tip">
 <p class="admonition-title">Suggerimento</p>
 <p>Per calcolare gli integrali <span class="math notranslate nohighlight">\(\omega_i\)</span> è conveniente fare un cambio di
@@ -750,7 +750,7 @@ In questo modo i nodi diventano <span class="math notranslate nohighlight">\(\{-
 </div>
 <div class="admonition danger">
 <p class="admonition-title">Pericolo</p>
-<p>La regola di Simpson che abbiamo scritto richiede che il numero di
+<p>La regola di Simpson, vista come formula di Newton-Cotes, richiede che il numero di
 intervalli sia pari, ovvero che il numero di nodi sia dispari. Se
 vogliamo ammettere un qualunque numero di intervalli <span class="math notranslate nohighlight">\(n\)</span>, è necessario
 che il primo (o l’ultimo) intervallo usi 4 invece che 3 punti.</p>
@@ -771,7 +771,7 @@ calcolo di un integrale secondo il seguente prototipo</p>
 <span class="c">% formula di Simpson.</span><span class="w"></span>
 <span class="c">%   INPUT:  f = handle della funzione di integrare,</span><span class="w"></span>
 <span class="c">%           a,b = estremi di integrazione</span><span class="w"></span>
-<span class="c">%           n numero di intervalli</span><span class="w"></span>
+<span class="c">%           n numero di sub-intervalli</span><span class="w"></span>
 
 <span class="k">if</span><span class="w"> </span><span class="nb">mod</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
 <span class="w">    </span><span class="nb">error</span><span class="p">(</span><span class="s">&#39;n deve essere pari&#39;</span><span class="p">);</span><span class="w"></span>
