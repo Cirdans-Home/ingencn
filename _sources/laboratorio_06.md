@@ -2,7 +2,7 @@
 
 
 In questo e nel prossimo laboratorio ci focalizzeremo sul problema di risolvere
-un sistema lineare compatibile. Partiremo dal caso dei sistemi triangolari per
+un sistema lineare. Partiremo dal caso dei sistemi triangolari per
 poi occuparci, nel Laboratorio 7b, del caso generale tramite la fattorizzazione $PA = LU$ della
 matrice dei coefficienti.
 
@@ -65,7 +65,7 @@ b_{n-1} \\
 b_n
 \end{bmatrix}
 ```
-Da cui è facile ricavare che la componente $i$ma della soluzione è
+Da cui è facile ricavare che la componente $i$esima della soluzione è
 ```{math}
 x_i = \frac{1}{l_{i,i}} \left( b_i - \sum_{j=1}^{i-1} l_{i,j} x_j \right), \qquad i=1,\ldots,n.
 ```
