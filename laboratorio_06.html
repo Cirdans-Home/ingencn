@@ -1,0 +1,904 @@
+
+<!DOCTYPE html>
+
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Laboratorio 7a : Soluzione di Sistemi Lineari Triangolari &#8212; Calcolo Numerico - Esercitazioni di Laboratorio</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/translations.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Indice" href="genindex.html" />
+    <link rel="search" title="Cerca" href="search.html" />
+    <link rel="prev" title="Laboratorio 6 : Metodi di Quadratura" href="laboratorio_05.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="it">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Calcolo Numerico - Esercitazioni di Laboratorio</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Calcolo Numerico - Esercitazioni di Laboratorio
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio_01.html">
+   Laboratorio 1 : Introduzione a MATLAB
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio_02.html">
+   Laboratorio 2 : Introduzione a MATLAB - II
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio_03.html">
+   Laboratorio 3 : L’Aritmetica di Precisione Finita
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio_04.html">
+   Laboratorio 4 e 5: Metodi di Interpolazione
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="laboratorio_05.html">
+   Laboratorio 6 : Metodi di Quadratura
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Laboratorio 7a : Soluzione di Sistemi Lineari Triangolari
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/Cirdans-Home/ingencn"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/Cirdans-Home/ingencn/issues/new?title=Issue%20on%20page%20%2Flaboratorio_06.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/laboratorio_06.md"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.md</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#soluzione-di-sistemi-triangolari">
+   Soluzione di sistemi triangolari
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sostituzione-in-avanti-e-all-indietro">
+   Sostituzione in avanti e all’indietro
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tempo-di-calcolo">
+   Tempo di calcolo
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#esercizi">
+   Esercizi
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Laboratorio 7a : Soluzione di Sistemi Lineari Triangolari</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#soluzione-di-sistemi-triangolari">
+   Soluzione di sistemi triangolari
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sostituzione-in-avanti-e-all-indietro">
+   Sostituzione in avanti e all’indietro
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tempo-di-calcolo">
+   Tempo di calcolo
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#esercizi">
+   Esercizi
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="laboratorio-7a-soluzione-di-sistemi-lineari-triangolari">
+<h1>Laboratorio 7a : Soluzione di Sistemi Lineari Triangolari<a class="headerlink" href="#laboratorio-7a-soluzione-di-sistemi-lineari-triangolari" title="Link a questa intestazione">#</a></h1>
+<p>In questo e nel prossimo laboratorio ci focalizzeremo sul problema di risolvere
+un sistema lineare compatibile. Partiremo dal caso dei sistemi triangolari per
+poi occuparci, nel Laboratorio 7b, del caso generale tramite la fattorizzazione <span class="math notranslate nohighlight">\(PA = LU\)</span> della
+matrice dei coefficienti.</p>
+<section id="soluzione-di-sistemi-triangolari">
+<h2>Soluzione di sistemi triangolari<a class="headerlink" href="#soluzione-di-sistemi-triangolari" title="Link a questa intestazione">#</a></h2>
+<p>I sistemi triangolari giocano un ruolo fondamentale nei calcoli matriciali.
+Molti metodi sono costruiti sull’idea di ridurre un problema alla soluzione di uno o più sistemi triangolari, questo include praticamente tutti i <strong>metodi diretti</strong> per la risoluzione di sistemi lineari.</p>
+<p>Due funzioni utili per lavorare con i sistemi triangolari sono le funzioni
+<code class="docutils literal notranslate"><span class="pre">triu</span></code> e <code class="docutils literal notranslate"><span class="pre">tril</span></code>. Dal loro <code class="docutils literal notranslate"><span class="pre">help</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tril</span> <span class="n">Extract</span> <span class="n">lower</span> <span class="n">triangular</span> <span class="n">part</span><span class="o">.</span>
+   <span class="n">tril</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">lower</span> <span class="n">triangular</span> <span class="n">part</span> <span class="n">of</span> <span class="n">X</span><span class="o">.</span>
+   <span class="n">tril</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">K</span><span class="p">)</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">elements</span> <span class="n">on</span> <span class="ow">and</span> <span class="n">below</span> <span class="n">the</span> <span class="n">K</span><span class="o">-</span><span class="n">th</span> <span class="n">diagonal</span>
+   <span class="n">of</span> <span class="n">X</span> <span class="o">.</span>  <span class="n">K</span> <span class="o">=</span> <span class="mi">0</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">main</span> <span class="n">diagonal</span><span class="p">,</span> <span class="n">K</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">is</span> <span class="n">above</span> <span class="n">the</span>
+   <span class="n">main</span> <span class="n">diagonal</span> <span class="ow">and</span> <span class="n">K</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">is</span> <span class="n">below</span> <span class="n">the</span> <span class="n">main</span> <span class="n">diagonal</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>ed analogamente per <code class="docutils literal notranslate"><span class="pre">triu</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">triu</span> <span class="n">Extract</span> <span class="n">upper</span> <span class="n">triangular</span> <span class="n">part</span><span class="o">.</span>
+   <span class="n">triu</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">upper</span> <span class="n">triangular</span> <span class="n">part</span> <span class="n">of</span> <span class="n">X</span><span class="o">.</span>
+   <span class="n">triu</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">K</span><span class="p">)</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">elements</span> <span class="n">on</span> <span class="ow">and</span> <span class="n">above</span> <span class="n">the</span> <span class="n">K</span><span class="o">-</span><span class="n">th</span> <span class="n">diagonal</span> <span class="n">of</span>
+   <span class="n">X</span><span class="o">.</span>  <span class="n">K</span> <span class="o">=</span> <span class="mi">0</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">main</span> <span class="n">diagonal</span><span class="p">,</span> <span class="n">K</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">is</span> <span class="n">above</span> <span class="n">the</span> <span class="n">main</span>
+   <span class="n">diagonal</span> <span class="ow">and</span> <span class="n">K</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">is</span> <span class="n">below</span> <span class="n">the</span> <span class="n">main</span> <span class="n">diagonal</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Possiamo usarle per costruire sistemi triangolari a partire da sistemi densi.</p>
+</section>
+<section id="sostituzione-in-avanti-e-all-indietro">
+<span id="forwardandbacwardsolve"></span><h2>Sostituzione in avanti e all’indietro<a class="headerlink" href="#sostituzione-in-avanti-e-all-indietro" title="Link a questa intestazione">#</a></h2>
+<p>Sui <strong>computer seriali</strong> i sistemi triangolari sono universalmente risolti dagli algoritmi standard di sostituzione in avanti e all’indietro. Sulle <strong>macchine
+parallele</strong> la situazione è sensibilmente più varia, ma questo trascende gli
+obiettivi di questo corso.</p>
+<p>Sia <span class="math notranslate nohighlight">\(L\)</span> una matrice triangolare inferiore, vogliamo risolvere un sistema della forma:</p>
+<div class="math notranslate nohighlight">
+\[L \mathbf{x} = \mathbf{b},\]</div>
+<p>che possiamo riscrivere in forma estesa come:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{bmatrix}
+l_{1,1} &amp; 0       &amp; 0      &amp; \cdots &amp; 0 \\
+l_{2,1} &amp; l_{2,2} &amp; 0      &amp; \cdots &amp; 0 \\
+\vdots  &amp; \ddots  &amp; \ddots &amp; \ddots &amp; \vdots \\
+l_{n-1,1} &amp; l_{n-1,2} &amp; \cdots &amp; l_{n-1,n} &amp; 0 \\
+l_{n,1} &amp; l_{n,2} &amp; \cdots &amp; \cdots &amp; l_{n,n}  \\
+\end{bmatrix} \begin{bmatrix}
+x_1 \\
+x_2 \\
+\vdots \\
+x_{n-1}\\
+x_n
+\end{bmatrix}
+= \begin{bmatrix}
+b_1 \\
+b_2 \\
+\vdots \\
+b_{n-1} \\
+b_n
+\end{bmatrix}\end{split}\]</div>
+<p>Da cui è facile ricavare che la componente <span class="math notranslate nohighlight">\(i\)</span>ma della soluzione è</p>
+<div class="math notranslate nohighlight">
+\[x_i = \frac{1}{l_{i,i}} \left( b_i - \sum_{j=1}^{i-1} l_{i,j} x_j \right), \qquad i=1,\ldots,n.\]</div>
+<div class="admonition-esercizio-1 admonition">
+<p class="admonition-title">Esercizio 1</p>
+<p>Si scriva una <em>function</em> che implementa il metodo di sostituzione in avanti con
+il seguente prototipo.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[x]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">forwardsolve</span><span class="p">(</span>A,b<span class="p">)</span><span class="w"></span>
+<span class="c">% FORWARDSOLVE Se A è una matrice triangolare inferiore risolve</span><span class="w"></span>
+<span class="c">% il sistema Ax=b tramite metodo di sostituzione in avanti.</span><span class="w"></span>
+<span class="c">%   Input:</span><span class="w"></span>
+<span class="c">%   A = matrice triangolare inferiore</span><span class="w"></span>
+<span class="c">%   b = vettore del termine noto</span><span class="w"></span>
+<span class="c">%   Output:</span><span class="w"></span>
+<span class="c">%   x = vettore della soluzione</span><span class="w"></span>
+
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Si presti attenzione:</p>
+<ul class="simple">
+<li><p>alla verifica degli <em>input</em>, il sistema <strong>deve</strong> essere triangolare inferiore e
+quadrato;</p></li>
+<li><p>ad utilizzare le <strong>operazioni vettorizzate</strong> di MATLAB, ovvero si ragioni su
+come evitare di usare un ciclo <code class="docutils literal notranslate"><span class="pre">for</span></code> per effettuare la somma che compare
+nella formula di soluzione.</p></li>
+</ul>
+<p>Si può testare il codice con il seguente problema:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Sostituzione in avanti</span><span class="w"></span>
+<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
+<span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">tril</span><span class="p">(</span><span class="nb">ones</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">));</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">).</span><span class="o">&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">forwardsolve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;Sostituzione in avanti: Errore sulla soluzione è: %1.2e\n&quot;</span><span class="p">,</span><span class="nb">norm</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x</span><span class="o">-</span><span class="n">b</span><span class="p">));</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<p>Sia <span class="math notranslate nohighlight">\(U\)</span> una matrice triangolare superiore, vogliamo risolvere un sistema della forma:</p>
+<div class="math notranslate nohighlight">
+\[U \mathbf{x} = \mathbf{b},\]</div>
+<p>che possiamo riscrivere in forma estesa come:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{bmatrix}
+u_{1,1} &amp; u_{1,2} &amp; \cdots &amp; \cdots &amp; u_{1,n}  \\
+0 &amp; u_{2,2} &amp; u_{2,3} &amp; \cdots &amp; u_{2,n} \\
+\vdots  &amp; \ddots  &amp; \ddots &amp; \ddots &amp; \vdots \\
+0      &amp; \cdots &amp; 0 &amp; u_{n-1,n-1} &amp; u_{n-1,n}  \\
+0       &amp; 0      &amp; \cdots &amp; 0 &amp; u_{n,n} \\
+\end{bmatrix} \begin{bmatrix}
+x_1 \\
+x_2 \\
+\vdots \\
+x_{n-1}\\
+x_n
+\end{bmatrix}
+= \begin{bmatrix}
+b_1 \\
+b_2 \\
+\vdots \\
+b_{n-1} \\
+b_n
+\end{bmatrix}\end{split}\]</div>
+<p>Da cui di nuovo ricaviamo facilmente la componente <span class="math notranslate nohighlight">\(i\)</span>ma della soluzione come:</p>
+<div class="math notranslate nohighlight">
+\[x_i = \frac{1}{u_{i,i}} \left( b_i - \sum_{j=i+1}^{n} u_{i,j} x_j \right), \qquad i=n,n-1,\ldots,1.\]</div>
+<div class="admonition-esercizio-2 admonition">
+<p class="admonition-title">Esercizio 2</p>
+<p>Si scriva una <em>function</em> che implementa il metodo di sostituzione all’indietro con
+il seguente prototipo.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[x]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">backwardsolve</span><span class="p">(</span>A,b<span class="p">)</span><span class="w"></span>
+<span class="c">% BACKWARDSOLVE Se A è una matrice triangolare superiore risolve</span><span class="w"></span>
+<span class="c">% il sistema Ax=b tramite metodo di sostituzione all&#39;indietro.</span><span class="w"></span>
+<span class="c">%   Input:</span><span class="w"></span>
+<span class="c">%   A = matrice triangolare inferiore</span><span class="w"></span>
+<span class="c">%   b = vettore del termine noto</span><span class="w"></span>
+<span class="c">%   Output:</span><span class="w"></span>
+<span class="c">%   x = vettore della soluzione</span><span class="w"></span>
+
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Si presti attenzione:</p>
+<ul class="simple">
+<li><p>alla verifica degli <em>input</em>, il sistema <strong>deve</strong> essere triangolare superiore e
+quadrato;</p></li>
+<li><p>ad utilizzare le <strong>operazioni vettorizzate</strong> di MATLAB, ovvero si ragioni su
+come evitare di usare un ciclo <code class="docutils literal notranslate"><span class="pre">for</span></code> per effettuare la somma che compare
+nella formula di soluzione.</p></li>
+</ul>
+<p>Si può testare il codice con il seguente problema:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Sostituzione all&#39;indietro</span><span class="w"></span>
+<span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
+<span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">triu</span><span class="p">(</span><span class="nb">ones</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">));</span><span class="w"></span>
+<span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">).</span><span class="o">&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">backwardsolve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+
+<span class="nb">fprintf</span><span class="p">(</span><span class="s">&quot;Indietro: Errore sulla soluzione è: %1.2e\n&quot;</span><span class="p">,</span><span class="nb">norm</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x</span><span class="o">-</span><span class="n">b</span><span class="p">));</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="tempo-di-calcolo">
+<h2>Tempo di calcolo<a class="headerlink" href="#tempo-di-calcolo" title="Link a questa intestazione">#</a></h2>
+<p>Si è visto a lezione che il numero di operazioni necessario a risolvere un
+sistema triangolare con l’algoritmo di sostituzione è un <span class="math notranslate nohighlight">\(O(n^2)\)</span> con <span class="math notranslate nohighlight">\(n\)</span> la
+dimensione del sistema. Proviamo ad indagare come si comporta a questo riguardo
+la nostra implementazione. Per farlo sfruttiamo i codici che abbiamo appena
+scritto per la sostituzione <em>forward</em> o <em>backward</em> e le funzioni <code class="docutils literal notranslate"><span class="pre">tic</span></code> e <code class="docutils literal notranslate"><span class="pre">toc</span></code>.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">sizes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">floor</span><span class="p">(</span><span class="nb">logspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">));</span><span class="w"></span>
+<span class="n">times</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="nb">size</span><span class="p">(</span><span class="n">sizes</span><span class="p">));</span><span class="w"></span>
+<span class="n">h</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">waitbar</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s">&quot;Calcolo in corso...&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">sizes</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">n</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sizes</span><span class="p">(</span><span class="nb">i</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">triu</span><span class="p">(</span><span class="nb">ones</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">).</span><span class="o">&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nb">tic</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">backwardsolve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">);</span><span class="w"> </span><span class="c">% Allo stesso modo con forwardsolve</span><span class="w"></span>
+<span class="w">    </span><span class="n">times</span><span class="p">(</span><span class="nb">i</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">toc</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nb">waitbar</span><span class="p">(</span><span class="nb">i</span><span class="o">/</span><span class="nb">length</span><span class="p">(</span><span class="n">sizes</span><span class="p">));</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Ora che abbiamo i tempi possiamo visualizzare quello che abbiamo ottenuto
+sfruttando alcune funzioni di MATLAB. Poiché sappiamo che il numero di
+operazioni è una funzione che scala come un <span class="math notranslate nohighlight">\(O(n^2)\)</span> possiamo assumere in
+prima approssimazione che anche il tempo si comporti allo stesso modo.
+Cerchiamo dunque di <em>fittare</em> un polinomio di secondo grado ai nostri dati:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">P</span><span class="p">,</span><span class="n">S</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">polyfit</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span><span class="n">times</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Con la mia macchina, questa procedure mi restituisce il polinomio:</p>
+<div class="math notranslate nohighlight">
+\[p(x) = 0.000005682501880 x^2  -0.015569138451058 x + 3.230452264767748\]</div>
+<p>insieme ad una struttura <span class="math notranslate nohighlight">\(S\)</span> che contiene informazioni relative all’algoritmo
+con cui questa procedura è stata eseguita. Possiamo usare tutto questo per
+confrontare i valori del <em>fit</em> con quelli dei dati</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">y_fit</span><span class="p">,</span><span class="n">delta</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">polyval</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="n">sizes</span><span class="p">,</span><span class="n">S</span><span class="p">);</span><span class="w"></span>
+<span class="nb">plot</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span><span class="n">times</span><span class="p">,</span><span class="s">&#39;o-&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="n">sizes</span><span class="p">,</span><span class="n">y_fit</span><span class="p">,</span><span class="s">&#39;--&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="n">sizes</span><span class="p">,</span><span class="n">y_fit</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">delta</span><span class="p">,</span><span class="s">&#39;m--&#39;</span><span class="p">,</span><span class="n">sizes</span><span class="p">,</span><span class="n">y_fit</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">delta</span><span class="p">,</span><span class="s">&#39;m--&#39;</span><span class="p">,</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="s">&#39;Linewidth&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Dimensione del sistema&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Tempo di calcolo (s)&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;Tempo misurato&#39;</span><span class="p">,</span><span class="s">&#39;Stima asintotica&#39;</span><span class="p">,</span><span class="s">&#39;Intervallo di Confidenza&#39;</span><span class="p">},</span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="s">&#39;FontSize&#39;</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="s">&#39;Location&#39;</span><span class="p">,</span><span class="s">&#39;northwest&#39;</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>dove abbiamo stampato sia il tempo misurato, sia il <em>fit</em> con il suo
+<em>intervallo di confidenza</em> entro il 95%. Dalla <a class="reference internal" href="#triangularsolvetime"><span class="std std-numref">Fig. 5</span></a>
+vediamo che la predizione quadratica è piuttosto efficace.</p>
+<figure class="align-default" id="triangularsolvetime">
+<img alt="_images/triangulartime.png" src="_images/triangulartime.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Tempo di calcolo come un <span class="math notranslate nohighlight">\(O(n^2)\)</span> della dimensione.</span><a class="headerlink" href="#triangularsolvetime" title="Link a questa immagine">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="esercizi">
+<h2>Esercizi<a class="headerlink" href="#esercizi" title="Link a questa intestazione">#</a></h2>
+<div class="admonition-esercizio-3-numeri-di-bernoulli admonition">
+<p class="admonition-title">Esercizio 3: Numeri di Bernoulli</p>
+<p>Consideriamo le condizioni</p>
+<div class="math notranslate nohighlight">
+\[B(x+1) - B(x) = n x^{n-1}, \quad \int_{0}^{1} B(x)\,{\rm d}x, \quad B(x)\, \text{polinomio}.\]</div>
+<p>Queste definiscono in maniera unica la funzione <span class="math notranslate nohighlight">\(B(x)\)</span>. Se assumiamo che il grado
+del polinomio monico <span class="math notranslate nohighlight">\(B(x)\)</span> sia <span class="math notranslate nohighlight">\(n\)</span> abbiamo così costruito i <strong>polinomi di Bernoulli</strong>. Si possono calcolare esattamente i primi polinomi come:</p>
+<div class="math notranslate nohighlight">
+\[B_0(x) = 1, \quad B_1(x) = x - \frac{1}{2}, \quad B_2(x) = x(x-1)+\frac{1}{6}, \quad B_3(x) = x(x-\frac{1}{2})(x-1), \ldots\]</div>
+<p>Si può dimostrare che i polinomi di Bernoulli definiscono i coefficienti della rappresentazione in serie di potenze di diverse funzioni, ad esempio:</p>
+<div class="math notranslate nohighlight">
+\[\frac{t e^{xt}}{e^t - 1} = \sum_{k=0}^{+\infty} \frac{B_n(x)}{n!}t^n.\]</div>
+<p>In particolare, se scegliamo <span class="math notranslate nohighlight">\(x = 0\)</span>, abbiamo che</p>
+<div class="math notranslate nohighlight" id="equation-bernoulliexpansion">
+<span class="eqno">(8)<a class="headerlink" href="#equation-bernoulliexpansion" title="Permalink a questa equazione">#</a></span>\[\frac{t}{e^t - 1} = -\frac{1}{2}t + \sum_{k=0}^{+\infty} \frac{B_{2k}(0)}{(2k)!}t^{2k}.\]</div>
+<p>Facciamo ora la seguente manipolazione algebrica, moltiplichiamo l’equazione
+a sinistra e a destra per <span class="math notranslate nohighlight">\(e^{t} - 1\)</span>, espandiamo <span class="math notranslate nohighlight">\(e^{t}\)</span> con la sua serie
+di potenze, e poniamo uguale a zero i coefficienti di <span class="math notranslate nohighlight">\(t^i\)</span> sul lato destro.
+Così otteniamo il seguente sistema di equazioni:</p>
+<div class="math notranslate nohighlight">
+\[- \frac{1}{2} j + \sum_{k=0}^{[\frac{j-1}{2}]} \binom{j}{2k} B_{2k}(0), \qquad j=2,3,4,\ldots\]</div>
+<p>Da cui otteniamo, per gli <span class="math notranslate nohighlight">\(j\)</span> pari, il seguente sistema di equazioni lineari</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{bmatrix}
+\binom{2}{0} \\
+\binom{4}{0} &amp; \binom{4}{2} \\
+\binom{6}{0} &amp; \binom{6}{2} &amp; \binom{6}{4} \\
+\binom{8}{0} &amp; \binom{8}{2} &amp; \binom{8}{4} &amp; \binom{8}{6} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \ddots \\
+\end{bmatrix}
+\begin{bmatrix}
+B_0(0)\\
+B_2(0)\\
+B_4(0)\\
+B_6(0)\\
+\vdots
+\end{bmatrix}
+= \begin{bmatrix}
+1\\
+2\\
+3\\
+4\\
+\vdots
+\end{bmatrix}.\end{split}\]</div>
+<ol class="simple">
+<li><p>Si implementi una funzione che dato un intero <span class="math notranslate nohighlight">\(k\)</span> restituisca i numeri di
+Bernoulli <span class="math notranslate nohighlight">\(\{B_{2j}(0)\}_{j=0}^{k}\)</span> risolvendo questo sistema lineare.</p></li>
+<li><p>Si usino i numeri così ottenuti per determinare lo sviluppo in <a class="reference internal" href="#equation-bernoulliexpansion">(8)</a> e disegnare</p></li>
+</ol>
+<ul class="simple">
+<li><p>le due funzioni una accanto all’altra,</p></li>
+<li><p>l’errore di approssimazione commesso in scala logaritmica.</p></li>
+</ul>
+<p>Un prototipo della funzione è:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span>[Bk]<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nf">nbernoulli</span><span class="p">(</span>k<span class="p">)</span><span class="w"></span>
+<span class="c">% NBERNOULLI Produce i numeri di Bernoulli B_{2j}(0) per j=0,...,k</span><span class="w"></span>
+<span class="c">% risolvendo un sistema triangolare inferiore.</span><span class="w"></span>
+<span class="c">%   INPUT:</span><span class="w"></span>
+<span class="c">%   k =  Numero di termini (-1) da calcolare</span><span class="w"></span>
+<span class="c">%   OUTPUT:</span><span class="w"></span>
+<span class="c">%   Bk = Vettore di lunghezza k+1 che contiene i numeri richiesti</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Suggerimento</p>
+<p>La funzione binomiale in MATLAB è implementata come <code class="docutils literal notranslate"><span class="pre">nchoosek</span></code>. Potete inoltre
+confrontare i risultati ottenuti con la funzione nativa di MATLAB che calcola
+i numeri di Bernoulli dal medesimo nome (<code class="docutils literal notranslate"><span class="pre">help</span> <span class="pre">bernoulli</span></code> per le informazioni).</p>
+</div>
+</div>
+ <!---
+(condizionamento-spettrale)=
+## Condizionamento di un sistema lineare
+
+Ricordiamo che il **numero di condizionamento** associato all'equazione lineare
+$A \mathbf{x} = \mathbf{b}$ fornisce un limite sulla precisione della soluzione
+$\mathbf{x}$ dopo che un qualunque algoritmo sarà stato applicato per la
+sua approssimazione ed in maniera indipendente dalla precisione *floating point*
+usata.
+
+:::{margin} Norma di una matrice
+Ricordiamo che una norma sullo spazio vettoriale $K^{m\times n}$ delle matrici
+a elementi nel campo $K$ è una funzione
+```{math}
+\| \cdot \|:K^{m \times n} \mapsto \mathbb{R}^{+}
+```
+tale che per ogni coppia di matrici $A$ e $B$ e per ogni scalare $\lambda \in K$ si verifica:
+
+- ${\displaystyle \|A\|=0}$ se e solo se ${\displaystyle A=0}$,
+- ${\displaystyle \|\lambda A\|=|\lambda |\|A\|}$.
+- ${\displaystyle \|A+B\|\leq \|A\|+\|B\|}$.
+
+Se è data una norma sullo spazio vettoriale $K^n$, si può costruire una **norma indotta**
+sullo spazio delle matrici in $K^{n \times n}$ considerando
+```{math}
+\|A\| = \sup_{x \neq \mathbf{0}} \frac{\| A \mathbf{x} \|}{\|\mathbf{x}\|},
+```
+ovvero
+```{math}
+\|A\| = \sup_{\|x\|  = 1} \| A \mathbf{x} \|.
+```
+Nei casi speciali in cui la norma vettoriale sia la norma  ${\displaystyle p=1,2,\infty ,}$
+la norma matriciale indotta può essere calcolata come
+```{math}
+{\displaystyle \|A\|_{1}=\max _{1\leq j\leq n}\sum _{i=1}^{m}|a_{ij}|,}
+```
+che è il massimo della somma dei valori assoluti delle colonne di $A$;
+```{math}
+{\displaystyle \|A\|_{\infty }=\max _{1\leq i\leq m}\sum _{j=1}^{n}|a_{ij}|,}
+```
+che è il massimo della somma dei valori assoluti delle righe di $A$;
+```{math}
+{\displaystyle \|A\|_{2}={\sqrt {\lambda _{\max }\left(A^{*}A\right)}}.}
+```
+che è detta **norma spettrale** della matrice ${\displaystyle A}$, ovver la
+radice quadrata the più grande autovalore di ${\displaystyle A^{* }A}$,
+dove $A^{* }$ denota la coniugata trasposta di $A$.
+:::
+
+Sia $\mathbf{e}$ l'errore commesso rispetto a $\mathbf{b}$, assumiamo che $A$ sia
+non singolare, allora l'errore sulla soluzione $A^{-1} \mathbf{b}$ è dato da
+$A^{-1} \mathbf{e}$. Allora il rapporto tra gli errori relativi è dato da
+```{math}
+\frac{\| A^{-1} \mathbf{e} \|}{\| A^{-1} \mathbf{b} \|} / \frac{\|\mathbf{e}\|}{\|\mathbf{b}\|} = \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|},
+```
+per cui possiamo esibire la limitazione per il termine destro come
+```{math}
+:label: bound
+\frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \leq & \max_{\mathbf{e},\mathbf{b} \neq 0} \left\lbrace \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|}, \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \right\rbrace \\ = & \max_{\mathbf{e}\neq 0} \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \max_{\mathbf{b}\neq 0} \frac{\|\mathbf{b}\|}{\|A^{-1}\mathbf{b}\|} \\
+= & \max_{\mathbf{e}\neq 0} \frac{\| A^{-1}\mathbf{e}\|}{\|\mathbf{e}\|} \max_{\mathbf{b}\neq 0} \frac{\|A\mathbf{x}\|}{\|\mathbf{x}\|} \\
+= & \| A^{-1} \| \|A \| \equiv \kappa(A) \geq \| A^{-1} A \| = 1.
+```
+Consideriamo ora il seguente esempio artificiale
+```{math}
+A \mathbf{x} = \begin{bmatrix}
+4.1 & 2.8 \\
+9.7 & 6.6
+\end{bmatrix}  \begin{bmatrix}
+x_1 \\ x_2
+\end{bmatrix} = \begin{bmatrix}
+4.1 \\ 9.7
+\end{bmatrix}
+```
+Proviamo a risolvere direttamente con MATLAB il sistema lineare
+```matlab
+A = [4.1 2.8; 9.7 6.6];
+b = A(:,1);
+x = A\b
+```
+da cui otteniamo come risposta:
+```
+x =
+
+   1.000000000000002
+  -0.000000000000003
+```
+Ritracciamo i passi del bound sul termine noto, per cui introduciamo una
+perturbazione di $0.01$ sulla prima componente di $\mathbf{b}$ e paragoniamo le
+due soluzioni
+```matlab
+b2 = [4.11; 9.7];
+x2 = A\b2
+```
+da cui otteniamo
+```
+x2 =
+
+   0.339999999999957
+   0.970000000000064
+```
+
+Andiamo ora a verificare la limitazione che abbiamo mostrato in termini del
+numero di condizionamento. A questo scopo facciamo uso del comando `cond`
+```
+cond   Condition number with respect to inversion.
+   cond(X) returns the 2-norm condition number (the ratio of the
+   largest singular value of X to the smallest).  Large condition
+   numbers indicate a nearly singular matrix.
+
+   cond(X,P) returns the condition number of X in P-norm:
+
+      NORM(X,P) * NORM(INV(X),P).
+
+   where P = 1, 2, inf, or 'fro'.
+```
+:::{danger}
+Il calcolo del numero di condizionamento per una matrice è bene che sia eseguito
+tramite la funzione `cond`, la forma `NORM(X,P) * NORM(INV(X),P)` nella
+documentazione è identificativa di ciò che stiamo calcolando, ma *non* è
+rappresentativo del modo in cui è realmente calcolato.
+:::
+
+Calcoliamo quindi
+```matlab
+kappa = cond(A);
+bound = kappa*norm(b-b2)/norm(b);
+errore_relativo = norm(x-x2)/norm(x);
+```
+e osserviamo che
+```
+bound =
+
+   1.54117722269025
+errore_relativo =
+
+  1.173243367763135
+```
+che quindi ci mostra che l'errore che abbiamo commesso è abbastanza vicino
+alla limitazione data dalla {eq}`bound`.
+
+:::{warning}
+Per matrici di grandi dimensioni la funzione `cond` può risultare estremamente
+lenta o andare **out of memory**. Per questo motivo sono disponibili altre
+due funzioni chiamate `rcond` e `condest`.
+
+La funzione `rcond(A)` calcola il reciproco di `cond(A,1)`, per cui più questo è
+vicino a $0$ più la matrice è *malcondizionata*, più questo è vicino a $1$ più
+la matrice è *ben condizionata*. Questa funzione si basa sulla libreria [LAPACK](http://www.netlib.org/lapack/).
+Questa è una libreria di software in Fortran 90 che produce le implementazioni
+standard delle operazioni dell'algebra lineare per matrici dense.
+
+La funzione `condest` calcola un limite inferiore per il numero di condizionamento
+in norma $1$ di una matrice quadrata $A$. Informazioni sull'algoritmo applicato
+per ottenere questa approssimazione si trovano in {cite:p}`MR740850` e {cite:p}`MR1780268`.
+:::
+-->
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="laboratorio_05.html" title="precedente pagina">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">precedente</p>
+            <p class="prev-next-title">Laboratorio 6 : Metodi di Quadratura</p>
+        </div>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By F. Durastante, L. Heltai, C. Pagliantini<br/>
+  
+      &copy; Copyright 2025.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
