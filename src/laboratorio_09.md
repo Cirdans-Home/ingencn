@@ -33,7 +33,7 @@ e quindi
 ```
 Essendo questa un'iterata di punto fisso, la sua convergenza dipende dall'essere una **procedura contrattiva**, avete dimostrato a lezione che questo è equivalente alla richiesta che il *raggio spettrale* della matrice di iterazione $M^{-1}N$ sia strettamente minore di $1$:
 ```{math}
-\rho(M^{-1}N) = \max_{i=1,\ldots,n}|\lambda_i(M^{-1}N)| < 1.
+\rho(M^{-1}N) = \max_{1\leq i\leq n}|\lambda_i(M^{-1}N)| < 1.
 ```
 <!---
 ### Metodi per il calcolo agli autovalori implementati in MATLAB
@@ -309,4 +309,4 @@ ovvero il metodo di Jacobi è in questo caso circa due ordini di grandezza più 
 Il tempo per Jacobi è 0.008191 s
 Il tempo per Gauss-Seidel è 0.004435 s
 ```
-ed ora Gauss-Seidel ha ampiamente recuperato su Jacobi. L'**implementazione** conta! Qui il vantaggio è dato dal fatto che la matrice $L$ associata al problema di test che stiamo guardando è una matrice *a banda* i non-zeri non riempiono tutto il triangolo. Il codice di MATLAB è in grado di accorgersene e adatto l'algoritmo di soluzione in modo che se ne tenga conto.
+ed ora Gauss-Seidel ha ampiamente recuperato su Jacobi. L' **implementazione** conta! Qui il vantaggio è dato dal fatto che la matrice $L$ associata al problema di test che stiamo guardando è una matrice *a banda* i non-zeri non riempiono tutto il triangolo. Il codice di MATLAB è in grado di accorgersene e adatto l'algoritmo di soluzione in modo che se ne tenga conto.
