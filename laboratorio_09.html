@@ -438,7 +438,7 @@ la soluzione del problema cercato?</p>
 \mathbf{x}^{(0)} \text{ assegnato}.\end{split}\]</div>
 <p>Essendo questa un’iterata di punto fisso, la sua convergenza dipende dall’essere una <strong>procedura contrattiva</strong>, avete dimostrato a lezione che questo è equivalente alla richiesta che il <em>raggio spettrale</em> della matrice di iterazione <span class="math notranslate nohighlight">\(M^{-1}N\)</span> sia strettamente minore di <span class="math notranslate nohighlight">\(1\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[\rho(M^{-1}N) = \max_{i=1,\ldots,n}|\lambda_i(M^{-1}N)| &lt; 1.\]</div>
+\[\rho(M^{-1}N) = \max_{1\leq i\leq n}|\lambda_i(M^{-1}N)| &lt; 1.\]</div>
 <!---
 ### Metodi per il calcolo agli autovalori implementati in MATLAB
 
@@ -708,7 +708,7 @@ per questo metodo la decomposizione additiva della matrice <span class="math not
 <span class="n">Il</span> <span class="n">tempo</span> <span class="n">per</span> <span class="n">Gauss</span><span class="o">-</span><span class="n">Seidel</span> <span class="n">è</span> <span class="mf">0.004435</span> <span class="n">s</span>
 </pre></div>
 </div>
-<p>ed ora Gauss-Seidel ha ampiamente recuperato su Jacobi. L”<strong>implementazione</strong> conta! Qui il vantaggio è dato dal fatto che la matrice <span class="math notranslate nohighlight">\(L\)</span> associata al problema di test che stiamo guardando è una matrice <em>a banda</em> i non-zeri non riempiono tutto il triangolo. Il codice di MATLAB è in grado di accorgersene e adatto l’algoritmo di soluzione in modo che se ne tenga conto.</p>
+<p>ed ora Gauss-Seidel ha ampiamente recuperato su Jacobi. L” <strong>implementazione</strong> conta! Qui il vantaggio è dato dal fatto che la matrice <span class="math notranslate nohighlight">\(L\)</span> associata al problema di test che stiamo guardando è una matrice <em>a banda</em> i non-zeri non riempiono tutto il triangolo. Il codice di MATLAB è in grado di accorgersene e adatto l’algoritmo di soluzione in modo che se ne tenga conto.</p>
 </section>
 </section>
 
