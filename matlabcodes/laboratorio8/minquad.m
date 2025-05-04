@@ -11,8 +11,8 @@ function [x,min_res] = minquad(A,b,flag)
 
 switch flag
     case 'EqNormali'
-        %[L,U] = lu(A'*A);
-        [L,U] = doolittlelu(A'*A);
+        [L,U] = lu(A'*A);
+        %[L,U] = doolittlelu(A'*A);
         c = A'*b;
         y = forwardsolve(L,c); % Ly=c
         x = backwardsolve(U,y); % Ux=y

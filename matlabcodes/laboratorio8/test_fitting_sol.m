@@ -2,7 +2,7 @@
 
 % Dati
 t = (0.2:0.2:1).';
-f = [2.3 3.0 2.9 2.0 1.1].';
+f = [2.3; 3.0; 2.9; 2.0; 1.1];
 % Definizione della matrice e del termine noto del sistema
 A = [t t.*exp(-t)];
 b = f;
