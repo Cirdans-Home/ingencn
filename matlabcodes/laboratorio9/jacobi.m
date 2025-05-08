@@ -31,6 +31,7 @@ end
 D = diag(A);
 N = diag(D) - A;
 q = b./D;
+
 for it = 2:itmax
     x = (N*x)./D + q;
     res(it) = norm(A*x-b);
