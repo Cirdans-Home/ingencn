@@ -515,7 +515,8 @@ chiamiamo <span class="math notranslate nohighlight">\(c_n\)</span> l’iterata 
 <span class="math notranslate nohighlight">\(f(x) = 0\)</span>, allora</p>
 <div class="math notranslate nohighlight">
 \[| c_n - c | \leq \frac{|b-a|}{2^n}.\]</div>
-<p>Possiamo usare MATLAB per verificare che quanto abbiamo implementato sia
+<p>Si noti che questo implica che il numero di iterazioni necessarie ad avere un errore assoluto minore di una fissata tolleranza <span class="math notranslate nohighlight">\(\varepsilon\)</span> è <span class="math notranslate nohighlight">\(k\geq \log_2(|b-a|\varespilon^{-1})\)</span>.
+Possiamo usare MATLAB per verificare che quanto abbiamo implementato sia
 consistente con quanto abbiamo dimostrato, per farlo elaboriamo ulteriormente
 l’esempio dell’Esercizio 1 con il seguente codice:</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ctrue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.52137970680456757</span><span class="p">;</span><span class="w"></span>
