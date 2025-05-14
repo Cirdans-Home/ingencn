@@ -83,6 +83,7 @@ $f(x) = 0$, allora
 ```{math}
 | c_n - c | \leq \frac{|b-a|}{2^n}.
 ```
+Si noti che questo implica che il numero di iterazioni necessarie ad avere un errore assoluto minore di una fissata tolleranza $\varepsilon$ è $n\geq \log_2(|b-a|\varepsilon^{-1})$.
 Possiamo usare MATLAB per verificare che quanto abbiamo implementato sia
 consistente con quanto abbiamo dimostrato, per farlo elaboriamo ulteriormente
 l'esempio dell'Esercizio 1 con il seguente codice:
