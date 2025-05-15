@@ -232,7 +232,7 @@ Tempo di calcolo come un $O(n^2)$ della dimensione.
 
 Consideriamo le condizioni
 ```{math}
-B(x+1) - B(x) = n x^{n-1}, \quad \int_{0}^{1} B(x)\,{\rm d}x, \quad B(x)\, \text{polinomio}.
+B(x+1) - B(x) = n x^{n-1}, \quad \int_{0}^{1} B(x)\,{\rm d}x=0, \quad B(x)\, \text{polinomio}.
 ```
 Queste definiscono in maniera unica la funzione $B(x)$. Se assumiamo che il grado
 del polinomio monico $B(x)$ sia $n$ abbiamo così costruito i **polinomi di Bernoulli**. Si possono calcolare esattamente i primi polinomi come:

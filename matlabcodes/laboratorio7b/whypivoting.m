@@ -42,7 +42,7 @@ for i = 1:N
    relerrm(i) = maxerrm(i)/normA;
    fprintf("Dimensione %d\n \t || A - LU || = %1.2e\n",sizes(i),maxerr(i));
    fprintf("\t || A - LU ||/||A|| = %1.2e\n",relerr(i));
-   fprintf("\t || P*A - LU ||/||A|| = %1.2e\n",maxerrm(i));
+   fprintf("\t || P*A - LU || = %1.2e\n",maxerrm(i));
    fprintf("\t || P*A - LU ||/||A|| = %1.2e\n",relerrm(i));
 end
 
