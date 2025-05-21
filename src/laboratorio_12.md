@@ -56,54 +56,6 @@ si assegnano $p$ condizioni iniziali
  che $f(x,y)$ sia continua rispetto a $x$ e *uniformemente
  lipschitziana* rispetto a $y$.
 
-Più in generale, possiamo guardare ad un sistema $p$ equazioni differenziali del primo ordine
-```{math}
-  \left\{\begin{array}{l}
-  y_1'=f_1(x,y_1,\ldots,y_p)\\
-  y_2'=f_2(x,y_1,\ldots,y_p)\\
-  \ldots\\
-  y_p'=f_n(x,y_1,\ldots,y_p)\\
-  \end{array}\right.
-```
-dove $f_1,\ldots,f_p$ sono $p$ funzioni di $p+1$
-variabili e $y_1(x), y_2(x),\ldots,y_p(x)$ sono le $p$ incognite.
-
-In **forma compatta**:
-```{math}
-{\bf y}'={\bf f}(x,{\bf y}),
-```
-dove ${\bf y}$, ${\bf y}'$ e ${\bf f}$ sono *vettori di funzioni*.
-
-Se a questo sistema associamo le **condizioni iniziali**
-```{math}
-{\bf y}(x_0)=(\eta_0,\eta_1,\ldots,\eta_{p-1})^T,
-```
-otteniamo il corrispondente problema ai valori iniziali, che, sotto
-ipotesi simili a quelle già viste, ammette una e una sola soluzione.
-
-:::{admonition} Equazione differenziale $\leadsto$ sistema di ordine 1
-:class: tip
-Data
- un’equazione differenziale di ordine $p$
-```{math}
-y^{(p)}=f(x,y,y',y'',\ldots,y^{(p-1)}),
-```
- poniamo
-```{math}
-y_1(x)=y(x),\quad y_2(x)=y'(x),\quad\ldots\quad y_p(x)=y^{(p-1)}(x).
-```
- Allora l’equazione si trasforma in un sistema di equazioni del primo
- ordine
-```{math}
-    \left\{\begin{array}{l}
-    y_1'=y_2\\
-    y_2'=y_3\\
-    \ldots\\
-    y_{p-1}'=y_p\\
-    y_p'=f(x,y_1,y_2,\ldots,y_p)
-    \end{array}\right.
-```
-:::
 
 ## Metodi numerici
 
@@ -467,6 +419,30 @@ Differenza in stabilità tra il metodo di Eulero implicito ed esplicito.
 
 
 ## Esercizi
+
+:::{admonition} Equazione differenziale $\leadsto$ sistema di ordine 1
+:class: tip
+Data
+ un’equazione differenziale di ordine $p$
+```{math}
+y^{(p)}=f(x,y,y',y'',\ldots,y^{(p-1)}),
+```
+ poniamo
+```{math}
+y_1(x)=y(x),\quad y_2(x)=y'(x),\quad\ldots\quad y_p(x)=y^{(p-1)}(x).
+```
+ Allora l’equazione si trasforma in un sistema di equazioni del primo
+ ordine
+```{math}
+    \left\{\begin{array}{l}
+    y_1'=y_2\\
+    y_2'=y_3\\
+    \ldots\\
+    y_{p-1}'=y_p\\
+    y_p'=f(x,y_1,y_2,\ldots,y_p)
+    \end{array}\right.
+```
+:::
 
 :::{margin} Condizione iniziale
 ```{figure} ./images/spacecraft.png
