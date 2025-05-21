@@ -420,6 +420,30 @@ Differenza in stabilità tra il metodo di Eulero implicito ed esplicito.
 
 ## Esercizi
 
+:::{admonition} Equazione differenziale $\leadsto$ sistema di ordine 1
+:class: tip
+Data
+ un’equazione differenziale di ordine $p$
+```{math}
+y^{(p)}=f(x,y,y',y'',\ldots,y^{(p-1)}),
+```
+ poniamo
+```{math}
+y_1(x)=y(x),\quad y_2(x)=y'(x),\quad\ldots\quad y_p(x)=y^{(p-1)}(x).
+```
+ Allora l’equazione si trasforma in un sistema di equazioni del primo
+ ordine
+```{math}
+    \left\{\begin{array}{l}
+    y_1'=y_2\\
+    y_2'=y_3\\
+    \ldots\\
+    y_{p-1}'=y_p\\
+    y_p'=f(x,y_1,y_2,\ldots,y_p)
+    \end{array}\right.
+```
+:::
+
 :::{margin} Condizione iniziale
 ```{figure} ./images/spacecraft.png
 :name: fig:spacecraft
